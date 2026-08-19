@@ -48,6 +48,15 @@ export interface Holding {
   unrealized_pl_after_tax_pct: string | null
 }
 
+export interface PortfolioSummary {
+  total_value: string
+  total_cost_basis: string
+  total_unrealized_pl: string
+  total_unrealized_pl_pct: string | null
+  total_unrealized_pl_after_tax: string
+  total_unrealized_pl_after_tax_pct: string | null
+}
+
 export type BankAccountType = 'checking' | 'savings' | 'brokerage' | 'business' | 'ike' | 'ikze' | 'crypto'
 
 export interface BankAccount {
@@ -128,6 +137,7 @@ export interface Dividend {
   payment_date: string
   status: 'paid' | 'planned'
   auto_detected: boolean
+  is_confirmed: boolean
 }
 
 export interface DividendSummaryRow {

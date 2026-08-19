@@ -10,6 +10,7 @@ import {
   CategoryManager,
   CategoryPieCard,
   CategoryTrendChart,
+  EXPENSE_PALETTE,
   PeriodSelector,
   StatCard,
   StoreBreakdownCard,
@@ -152,12 +153,14 @@ export default function Wydatki() {
           loading={isLoading}
           onSelectCategory={onSelectCategory}
           selectedCategoryId={selectedCategoryId}
+          palette={EXPENSE_PALETTE}
         />
         <CategoryTrendChart
           type="expense"
           months={6}
           onSelectCategory={onSelectCategory}
           selectedCategoryId={selectedCategoryId}
+          palette={EXPENSE_PALETTE}
         />
       </div>
 
@@ -168,6 +171,7 @@ export default function Wydatki() {
         dateTo={period.range.to}
         onSelectStore={onSelectStore}
         selectedStoreId={selectedStoreId}
+        palette={EXPENSE_PALETTE}
       />
 
       <TransactionList transactions={transactions ?? []} onDelete={(id) => deleteTx.mutate(id)} title={listTitle} />

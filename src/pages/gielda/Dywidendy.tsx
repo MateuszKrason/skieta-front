@@ -13,6 +13,12 @@ interface DividendTrendRow {
   total: string
 }
 
+interface DividendSimulationRow {
+  month: string
+  total: string
+  known: string
+}
+
 interface DividendYearlyRow {
   year: string
   total: string
@@ -70,7 +76,7 @@ export default function Dywidendy() {
     queryKey: ['dividend-simulation', stockFilter],
     queryFn: async () =>
       (
-        await api.get<DividendTrendRow[]>('/dividends/simulate/', {
+        await api.get<DividendSimulationRow[]>('/dividends/simulate/', {
           params: { months: 12, ...(stockFilter ? { stock: stockFilter } : {}) },
         })
       ).data,
@@ -97,6 +103,12 @@ export default function Dywidendy() {
   }, [trend])
 
   const pieData = (summary?.rows ?? []).map((row) => ({ name: row.stock.ticker, value: Number(row.total_received) }))
+
+  const simulationChartData = (simulation ?? []).map((row) => {
+    const known = Number(row.known)
+    const estimated = Math.max(Number(row.total) - known, 0)
+    return { month: row.month, known, estimated }
+  })
 
   return (
     <div className="space-y-6">
@@ -182,7 +194,13 @@ export default function Dywidendy() {
             {(summary?.upcoming ?? []).map((d) => (
               <div key={d.id} className="flex justify-between border-b border-amber-100 py-1.5 text-sm last:border-0">
                 <span>
-                  {d.stock_detail.ticker} — {t('ok.')} {formatMoney(d.total_amount, d.currency)}
+                  {d.stock_detail.ticker} — {d.is_confirmed ? '' : `${t('ok.')} `}
+                  {formatMoney(d.total_amount, d.currency)}
+                  {d.is_confirmed && (
+                    <span className="ml-2 rounded-full bg-emerald-100 dark:bg-emerald-900/50 px-2 py-0.5 text-xs font-medium text-emerald-700 dark:text-emerald-400">
+                      {t('ogłoszona')}
+                    </span>
+                  )}
                 </span>
                 <span className="text-amber-600 dark:text-amber-400">{formatDate(d.payment_date)}</span>
               </div>
@@ -265,6 +283,10 @@ export default function Dywidendy() {
           {t(
             'Szacunek na podstawie obecnie posiadanych akcji i historycznego rytmu wypłat każdej spółki — nie jest to gwarancja przyszłych dywidend.',
           )}
+          {' '}
+          {t(
+            'Kolor oznacza pewność: najbliższa spodziewana wypłata każdej spółki (ostatnia znana kwota) vs. dalsze miesiące (uwzględniające szacowany wzrost dywidendy).',
+          )}
         </p>
         {(simulation ?? []).every((row) => Number(row.total) === 0) ? (
           <p className="text-slate-400 dark:text-slate-500">
@@ -273,12 +295,14 @@ export default function Dywidendy() {
         ) : (
           <div className="h-56">
             <ResponsiveContainer width="100%" height="100%">
-              <BarChart data={simulation ?? []}>
+              <BarChart data={simulationChartData}>
                 <CartesianGrid strokeDasharray="3 3" stroke="#94a3b8" strokeOpacity={0.15} />
                 <XAxis dataKey="month" tick={{ fontSize: 12 }} stroke="#94a3b8" />
                 <YAxis tickFormatter={formatAxisValue} tick={{ fontSize: 12 }} stroke="#94a3b8" width={40} />
                 <Tooltip formatter={(value) => formatMoney(value as number, base)} />
-                <Bar dataKey="total" name={t('Szac. dywidendy')} fill="#8b5cf6" radius={[4, 4, 0, 0]} />
+                <Legend />
+                <Bar dataKey="known" name={t('Najbliższa wypłata (znana kwota)')} stackId="sim" fill="#8b5cf6" radius={[0, 0, 0, 0]} />
+                <Bar dataKey="estimated" name={t('Dalsza prognoza (szac. wzrost)')} stackId="sim" fill="#c4b5fd" radius={[4, 4, 0, 0]} />
               </BarChart>
             </ResponsiveContainer>
           </div>

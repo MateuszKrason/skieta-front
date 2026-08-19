@@ -56,12 +56,12 @@ export default function Onboarding() {
         </p>
       </div>
 
-      <div className="flex items-center gap-2">
+      <div className="flex flex-wrap items-center gap-2">
         {STEPS.map((s, i) => (
           <button
             key={s.id}
             onClick={() => setStepIndex(i)}
-            className={`rounded-full px-3 py-1 text-xs font-medium ${
+            className={`shrink-0 rounded-full px-3 py-1 text-xs font-medium ${
               i === stepIndex
                 ? 'bg-emerald-600 text-white'
                 : i < stepIndex

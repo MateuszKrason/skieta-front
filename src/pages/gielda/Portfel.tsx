@@ -5,7 +5,7 @@ import ReinvestmentThreads from '../../components/ReinvestmentThreads'
 import StockAutocomplete from '../../components/StockAutocomplete'
 import { useLanguage } from '../../i18n/LanguageContext'
 import { accountTypeLabel, formatDateTime, formatMoney, formatNumber, formatPct } from '../../lib/format'
-import type { BankAccount, Currency, Holding, Stock, StockSearchResult, StockTransaction } from '../../types'
+import type { BankAccount, Currency, Holding, PortfolioSummary, Stock, StockSearchResult, StockTransaction } from '../../types'
 
 export default function Portfel() {
   const queryClient = useQueryClient()
@@ -17,6 +17,12 @@ export default function Portfel() {
   const { data: holdings, isFetching } = useQuery({
     queryKey: ['holdings'],
     queryFn: async () => (await api.get<Holding[]>('/stocks/holdings/')).data,
+    refetchInterval: 60_000,
+  })
+
+  const { data: portfolioSummary } = useQuery({
+    queryKey: ['portfolio-summary'],
+    queryFn: async () => (await api.get<PortfolioSummary>('/stocks/portfolio-summary/')).data,
     refetchInterval: 60_000,
   })
 
@@ -37,6 +43,7 @@ export default function Portfel() {
 
   function invalidatePortfolio() {
     queryClient.invalidateQueries({ queryKey: ['holdings'] })
+    queryClient.invalidateQueries({ queryKey: ['portfolio-summary'] })
     queryClient.invalidateQueries({ queryKey: ['transactions'] })
     queryClient.invalidateQueries({ queryKey: ['accounts'] })
     queryClient.invalidateQueries({ queryKey: ['dashboard'] })
@@ -45,7 +52,10 @@ export default function Portfel() {
 
   const refreshPrices = useMutation({
     mutationFn: () => api.get<Holding[]>('/stocks/holdings/', { params: { refresh: 'true' } }),
-    onSuccess: () => queryClient.invalidateQueries({ queryKey: ['holdings'] }),
+    onSuccess: () => {
+      queryClient.invalidateQueries({ queryKey: ['holdings'] })
+      queryClient.invalidateQueries({ queryKey: ['portfolio-summary'] })
+    },
   })
 
   return (
@@ -105,6 +115,56 @@ export default function Portfel() {
             invalidatePortfolio()
           }}
         />
+      )}
+
+      {holdings && holdings.length > 0 && (
+        <div className="grid grid-cols-1 gap-4 sm:grid-cols-3">
+          <div className="rounded-xl border border-slate-200 dark:border-slate-700 bg-white dark:bg-slate-800 p-4 shadow-sm">
+            <p className="text-xs text-slate-500 dark:text-slate-400">{t('Suma wartości akcji')}</p>
+            <p className="mt-1 text-xl font-bold text-slate-900 dark:text-slate-100">
+              {formatMoney(portfolioSummary?.total_value, 'PLN')}
+            </p>
+          </div>
+          <div
+            className={`rounded-xl border p-4 shadow-sm ${
+              Number(portfolioSummary?.total_unrealized_pl ?? 0) >= 0
+                ? 'border-emerald-200 dark:border-emerald-800 bg-emerald-50 dark:bg-emerald-900/30'
+                : 'border-red-200 dark:border-red-800 bg-red-50 dark:bg-red-900/30'
+            }`}
+          >
+            <p className="text-xs text-slate-500 dark:text-slate-400">{t('Łączny zysk/strata')}</p>
+            <p
+              className={`mt-1 text-xl font-bold ${
+                Number(portfolioSummary?.total_unrealized_pl ?? 0) >= 0
+                  ? 'text-emerald-700 dark:text-emerald-400'
+                  : 'text-red-700 dark:text-red-400'
+              }`}
+            >
+              {formatMoney(portfolioSummary?.total_unrealized_pl, 'PLN')} ({formatPct(portfolioSummary?.total_unrealized_pl_pct)})
+            </p>
+          </div>
+          <div
+            className={`rounded-xl border p-4 shadow-sm ${
+              Number(portfolioSummary?.total_unrealized_pl_after_tax ?? 0) >= 0
+                ? 'border-emerald-200 dark:border-emerald-800 bg-emerald-50 dark:bg-emerald-900/30'
+                : 'border-red-200 dark:border-red-800 bg-red-50 dark:bg-red-900/30'
+            }`}
+          >
+            <p className="text-xs text-slate-500 dark:text-slate-400" title={t('Po podatku od zysków kapitałowych (19%)')}>
+              {t('Zysk/strata po Belce')}
+            </p>
+            <p
+              className={`mt-1 text-xl font-bold ${
+                Number(portfolioSummary?.total_unrealized_pl_after_tax ?? 0) >= 0
+                  ? 'text-emerald-700 dark:text-emerald-400'
+                  : 'text-red-700 dark:text-red-400'
+              }`}
+            >
+              {formatMoney(portfolioSummary?.total_unrealized_pl_after_tax, 'PLN')} (
+              {formatPct(portfolioSummary?.total_unrealized_pl_after_tax_pct)})
+            </p>
+          </div>
+        </div>
       )}
 
       <div className="overflow-x-auto rounded-xl border border-slate-200 dark:border-slate-700 bg-white dark:bg-slate-800 shadow-sm">

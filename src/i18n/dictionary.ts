@@ -12,6 +12,7 @@ export const en: Record<string, string> = {
   'Przełącz na jasny motyw': 'Switch to light theme',
   'Przełącz na ciemny motyw': 'Switch to dark theme',
   'Wyloguj': 'Log out',
+  'Menu': 'Menu',
 
   // Login / Register
   'Nieprawidłowy login lub hasło.': 'Invalid username or password.',
@@ -266,6 +267,8 @@ export const en: Record<string, string> = {
   // Portfel
   'Anuluj': 'Cancel',
   'Portfel akcji': 'Stock portfolio',
+  'Suma wartości akcji': 'Total stock value',
+  'Łączny zysk/strata': 'Total profit/loss',
   'Kursy aktualizowane automatycznie 2x dziennie — kliknij "Odśwież kursy" po bieżącą cenę':
     'Prices update automatically twice a day — click "Refresh prices" for the current quote',
   '⟳ Odśwież kursy': '⟳ Refresh prices',
@@ -548,4 +551,9 @@ export const en: Record<string, string> = {
   'Za mało historii wypłat dla posiadanych spółek, żeby oszacować przyszłość.':
     'Not enough payout history for your current holdings to estimate the future.',
   'Szac. dywidendy': 'Est. dividends',
+  'Kolor oznacza pewność: najbliższa spodziewana wypłata każdej spółki (ostatnia znana kwota) vs. dalsze miesiące (uwzględniające szacowany wzrost dywidendy).':
+    "Color shows confidence: each stock's next expected payment (last known amount) vs. later months (including the estimated dividend growth).",
+  'Najbliższa wypłata (znana kwota)': 'Next payment (known amount)',
+  'Dalsza prognoza (szac. wzrost)': 'Further forecast (est. growth)',
+  'ogłoszona': 'announced',
 }

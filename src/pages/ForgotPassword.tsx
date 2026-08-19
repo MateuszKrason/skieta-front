@@ -1,6 +1,7 @@
 import { useState, type FormEvent } from 'react'
 import { Link } from 'react-router-dom'
 import { api } from '../api/client'
+import AuthTopBar from '../components/AuthTopBar'
 import SockLogo from '../components/SockLogo'
 import { useLanguage } from '../i18n/LanguageContext'
 
@@ -25,6 +26,7 @@ export default function ForgotPassword() {
 
   return (
     <div className="flex min-h-screen items-center justify-center bg-slate-50 dark:bg-slate-900">
+      <AuthTopBar />
       <form onSubmit={onSubmit} className="w-full max-w-sm rounded-xl border border-slate-200 dark:border-slate-700 bg-white dark:bg-slate-800 p-8 shadow-sm">
         <h1 className="mb-1 flex items-center gap-2 text-2xl font-bold text-emerald-700 dark:text-emerald-400">
           <SockLogo className="h-8 w-8" />

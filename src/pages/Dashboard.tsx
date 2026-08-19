@@ -208,7 +208,12 @@ export default function Dashboard() {
           </div>
 
           <div className="mt-6 border-t border-slate-100 dark:border-slate-800 pt-4">
-            <h3 className="text-sm font-semibold text-slate-700 dark:text-slate-300">{t('Realny zwrot')}</h3>
+            <div className="flex items-center justify-between">
+              <h3 className="text-sm font-semibold text-slate-700 dark:text-slate-300">{t('Realny zwrot')}</h3>
+              <Link to="/timeline" className="text-xs font-medium text-emerald-700 dark:text-emerald-400 hover:underline">
+                {t('+ Wpłata / wypłata')}
+              </Link>
+            </div>
             <p className="mt-2 text-xs text-slate-500 dark:text-slate-400">{t('Wpłacone środki')}</p>
             <p className="text-sm font-medium">{formatMoney(summary?.growth.net_contributed, base)}</p>
             <p className="mt-2 text-xs text-slate-500 dark:text-slate-400">{t('Zysk / strata')}</p>

@@ -47,6 +47,22 @@ export const PALETTE = [
   '#6366f1',
 ]
 
+// Red/orange family for expense-only pages (Wydatki) — still distinct shades per
+// category, but reading unmistakably as "money going out" instead of the
+// general-purpose rainbow palette shared with income charts.
+export const EXPENSE_PALETTE = [
+  '#ef4444',
+  '#f97316',
+  '#f43f5e',
+  '#dc2626',
+  '#fb923c',
+  '#e11d48',
+  '#b91c1c',
+  '#fda4af',
+  '#c2410c',
+  '#991b1b',
+]
+
 export type Preset = 'this_month' | 'last_month' | 'this_year' | 'custom'
 
 export function presetRange(preset: Preset): { from: string; to: string } {
@@ -126,12 +142,14 @@ export function CategoryPieCard({
   loading,
   onSelectCategory,
   selectedCategoryId,
+  palette = PALETTE,
 }: {
   title: string
   rows: CategoryBreakdownRow[]
   loading: boolean
   onSelectCategory?: (id: number | null) => void
   selectedCategoryId?: number | null
+  palette?: string[]
 }) {
   const { t } = useLanguage()
   const data = rows.map((r) => ({ id: r.category?.id ?? null, name: r.category?.name ?? t('Bez kategorii'), value: Number(r.total) }))
@@ -149,7 +167,7 @@ export function CategoryPieCard({
             <PieChart>
               <Pie data={data} dataKey="value" nameKey="name" innerRadius={55} outerRadius={90} paddingAngle={2}>
                 {data.map((_, i) => (
-                  <Cell key={i} fill={PALETTE[i % PALETTE.length]} />
+                  <Cell key={i} fill={palette[i % palette.length]} />
                 ))}
               </Pie>
               <Tooltip formatter={(value) => formatMoney(value as number, 'PLN')} />
@@ -168,7 +186,7 @@ export function CategoryPieCard({
             } ${selectedCategoryId === (r.category?.id ?? null) && onSelectCategory ? 'bg-emerald-50 dark:bg-emerald-900/30 ring-1 ring-emerald-200 dark:ring-emerald-800' : ''}`}
           >
             <span className="flex items-center gap-2">
-              <span className="h-2 w-2 rounded-full" style={{ backgroundColor: PALETTE[i % PALETTE.length] }} />
+              <span className="h-2 w-2 rounded-full" style={{ backgroundColor: palette[i % palette.length] }} />
               {r.category?.name ?? t('Bez kategorii')}
             </span>
             <span className="text-slate-500 dark:text-slate-400">
@@ -186,11 +204,13 @@ export function CategoryTrendChart({
   months = 6,
   onSelectCategory,
   selectedCategoryId,
+  palette = PALETTE,
 }: {
   type: BudgetType
   months?: number
   onSelectCategory: (id: number | null) => void
   selectedCategoryId: number | null
+  palette?: string[]
 }) {
   const { t } = useLanguage()
   const { data } = useQuery({
@@ -239,7 +259,7 @@ export function CategoryTrendChart({
                       dataKey={(entry: Record<string, string | number>) => entry[key]}
                       name={row.category?.name ?? t('Bez kategorii')}
                       stackId="cat"
-                      fill={PALETTE[i % PALETTE.length]}
+                      fill={palette[i % palette.length]}
                     />
                   )
                 })}
@@ -258,7 +278,7 @@ export function CategoryTrendChart({
                     active ? 'border-emerald-400 dark:border-emerald-600 bg-emerald-50 dark:bg-emerald-900/30 text-emerald-700 dark:text-emerald-400' : 'border-slate-200 dark:border-slate-700 text-slate-600 dark:text-slate-400 hover:bg-slate-50 dark:hover:bg-slate-700'
                   }`}
                 >
-                  <span className="h-2 w-2 rounded-full" style={{ backgroundColor: PALETTE[i % PALETTE.length] }} />
+                  <span className="h-2 w-2 rounded-full" style={{ backgroundColor: palette[i % palette.length] }} />
                   {row.category?.name ?? t('Bez kategorii')}
                 </button>
               )
@@ -291,10 +311,6 @@ export function TransactionList({
     queryKey: ['budget-stores'],
     queryFn: async () => (await api.get<Store[]>('/budget/stores/')).data,
   })
-  const { data: tags } = useQuery({
-    queryKey: ['budget-tags'],
-    queryFn: async () => (await api.get<Tag[]>('/budget/tags/')).data,
-  })
 
   function invalidateAfterEdit() {
     queryClient.invalidateQueries({ queryKey: ['budget-breakdown'] })
@@ -326,7 +342,6 @@ export function TransactionList({
               tx={tx}
               categories={(categories ?? []).filter((c) => c.type === tx.type)}
               stores={stores ?? []}
-              tags={tags ?? []}
               onSave={(category, store, tagIds) => updateMutation.mutate({ id: tx.id, category, store, tags: tagIds })}
               onCancel={() => setEditingId(null)}
               saving={updateMutation.isPending}
@@ -377,11 +392,108 @@ export function TransactionList({
   )
 }
 
+function TagPicker({ selected, onToggle }: { selected: number[]; onToggle: (id: number) => void }) {
+  const { t } = useLanguage()
+  const queryClient = useQueryClient()
+  const [adding, setAdding] = useState(false)
+  const [newTagName, setNewTagName] = useState('')
+  const [error, setError] = useState<string | null>(null)
+
+  const { data: tags } = useQuery({
+    queryKey: ['budget-tags'],
+    queryFn: async () => (await api.get<Tag[]>('/budget/tags/')).data,
+  })
+
+  const addTag = useMutation({
+    mutationFn: (name: string) => api.post<Tag>('/budget/tags/', { name }),
+    onSuccess: ({ data: tag }) => {
+      queryClient.invalidateQueries({ queryKey: ['budget-tags'] })
+      setNewTagName('')
+      setAdding(false)
+      setError(null)
+      onToggle(tag.id)
+    },
+    onError: (err: unknown) => {
+      const data = (err as { response?: { data?: unknown } }).response?.data
+      if (data && typeof data === 'object') {
+        setError(Object.values(data as Record<string, unknown>).flat().join(' '))
+      } else {
+        setError(t('Nie udało się zapisać transakcji.'))
+      }
+    },
+  })
+
+  function onSubmitNewTag(e: FormEvent) {
+    e.preventDefault()
+    if (!newTagName.trim()) return
+    addTag.mutate(newTagName.trim())
+  }
+
+  return (
+    <div>
+      <p className="mb-1 text-xs font-medium text-slate-500 dark:text-slate-400">{t('Tagi (opcjonalnie)')}</p>
+      <div className="flex flex-wrap items-center gap-1.5">
+        {(tags ?? []).map((tag) => (
+          <button
+            key={tag.id}
+            type="button"
+            onClick={() => onToggle(tag.id)}
+            className={`rounded-full border px-2.5 py-1 text-xs font-medium transition ${
+              selected.includes(tag.id)
+                ? 'border-emerald-400 dark:border-emerald-600 bg-emerald-50 dark:bg-emerald-900/30 text-emerald-700 dark:text-emerald-400'
+                : 'border-slate-200 dark:border-slate-700 text-slate-600 dark:text-slate-400 hover:bg-slate-50 dark:hover:bg-slate-700'
+            }`}
+          >
+            {tag.name}
+          </button>
+        ))}
+        {adding ? (
+          <form onSubmit={onSubmitNewTag} className="flex items-center gap-1">
+            <input
+              autoFocus
+              value={newTagName}
+              onChange={(e) => setNewTagName(e.target.value)}
+              placeholder={t('np. wakacje')}
+              className="input h-7 w-28 py-0.5 text-xs"
+            />
+            <button
+              type="submit"
+              disabled={addTag.isPending}
+              className="rounded-full bg-emerald-600 px-2.5 py-1 text-xs font-medium text-white hover:bg-emerald-700 disabled:opacity-60"
+            >
+              {t('Dodaj')}
+            </button>
+            <button
+              type="button"
+              onClick={() => {
+                setAdding(false)
+                setNewTagName('')
+                setError(null)
+              }}
+              className="rounded-full px-1.5 py-1 text-xs text-slate-400 hover:text-slate-600 dark:hover:text-slate-300"
+            >
+              ×
+            </button>
+          </form>
+        ) : (
+          <button
+            type="button"
+            onClick={() => setAdding(true)}
+            className="rounded-full border border-dashed border-slate-300 dark:border-slate-600 px-2.5 py-1 text-xs font-medium text-slate-500 dark:text-slate-400 hover:border-emerald-400 dark:hover:border-emerald-600 hover:text-emerald-700 dark:hover:text-emerald-400"
+          >
+            {t('+ Dodaj tag')}
+          </button>
+        )}
+      </div>
+      {error && <p className="mt-1 text-xs text-red-600 dark:text-red-400">{error}</p>}
+    </div>
+  )
+}
+
 function EditTransactionCategoryStore({
   tx,
   categories,
   stores,
-  tags,
   onSave,
   onCancel,
   saving,
@@ -389,7 +501,6 @@ function EditTransactionCategoryStore({
   tx: BudgetTransaction
   categories: Category[]
   stores: Store[]
-  tags: Tag[]
   onSave: (category: number | null, store: number | null, tags: number[]) => void
   onCancel: () => void
   saving: boolean
@@ -428,27 +539,7 @@ function EditTransactionCategoryStore({
           ))}
         </select>
       </Field>
-      {tags.length > 0 && (
-        <div>
-          <p className="mb-1 text-xs font-medium text-slate-500 dark:text-slate-400">{t('Tagi')}</p>
-          <div className="flex flex-wrap gap-1.5">
-            {tags.map((tag) => (
-              <button
-                key={tag.id}
-                type="button"
-                onClick={() => toggleTag(tag.id)}
-                className={`rounded-full border px-2.5 py-1 text-xs font-medium transition ${
-                  selectedTags.includes(tag.id)
-                    ? 'border-emerald-400 dark:border-emerald-600 bg-emerald-50 dark:bg-emerald-900/30 text-emerald-700 dark:text-emerald-400'
-                    : 'border-slate-200 dark:border-slate-700 text-slate-600 dark:text-slate-400 hover:bg-slate-50 dark:hover:bg-slate-700'
-                }`}
-              >
-                {tag.name}
-              </button>
-            ))}
-          </div>
-        </div>
-      )}
+      <TagPicker selected={selectedTags} onToggle={toggleTag} />
       <button
         onClick={() => onSave(category || null, store || null, selectedTags)}
         disabled={saving}
@@ -588,11 +679,6 @@ export function AddTransactionForm({
     queryFn: async () => (await api.get<Store[]>('/budget/stores/')).data,
   })
 
-  const { data: allTags } = useQuery({
-    queryKey: ['budget-tags'],
-    queryFn: async () => (await api.get<Tag[]>('/budget/tags/')).data,
-  })
-
   function toggleTag(id: number) {
     setTags((prev) => (prev.includes(id) ? prev.filter((t) => t !== id) : [...prev, id]))
   }
@@ -693,27 +779,9 @@ export function AddTransactionForm({
       <Field label="Opis (opcjonalnie)">
         <input value={description} onChange={(e) => setDescription(e.target.value)} className="input" />
       </Field>
-      {(allTags?.length ?? 0) > 0 && (
-        <div className="col-span-2 sm:col-span-4">
-          <p className="mb-1 text-xs font-medium text-slate-500 dark:text-slate-400">{t('Tagi (opcjonalnie)')}</p>
-          <div className="flex flex-wrap gap-1.5">
-            {allTags!.map((tag) => (
-              <button
-                key={tag.id}
-                type="button"
-                onClick={() => toggleTag(tag.id)}
-                className={`rounded-full border px-2.5 py-1 text-xs font-medium transition ${
-                  tags.includes(tag.id)
-                    ? 'border-emerald-400 dark:border-emerald-600 bg-emerald-50 dark:bg-emerald-900/30 text-emerald-700 dark:text-emerald-400'
-                    : 'border-slate-200 dark:border-slate-700 text-slate-600 dark:text-slate-400 hover:bg-slate-50 dark:hover:bg-slate-700'
-                }`}
-              >
-                {tag.name}
-              </button>
-            ))}
-          </div>
-        </div>
-      )}
+      <div className="col-span-2 sm:col-span-4">
+        <TagPicker selected={tags} onToggle={toggleTag} />
+      </div>
       {error && <p className="col-span-2 text-sm text-red-600 dark:text-red-400 sm:col-span-4">{error}</p>}
       <div className="flex items-end">
         <button type="submit" className="btn-primary w-full" disabled={mutation.isPending}>
@@ -914,12 +982,14 @@ export function StoreBreakdownCard({
   type = 'expense',
   onSelectStore,
   selectedStoreId,
+  palette = PALETTE,
 }: {
   dateFrom: string
   dateTo: string
   type?: BudgetType
   onSelectStore: (id: number | null) => void
   selectedStoreId: number | null
+  palette?: string[]
 }) {
   const { t } = useLanguage()
   const { data, isLoading } = useQuery({
@@ -952,7 +1022,7 @@ export function StoreBreakdownCard({
               <PieChart>
                 <Pie data={chartData} dataKey="value" nameKey="name" innerRadius={45} outerRadius={80} paddingAngle={2}>
                   {chartData.map((_, i) => (
-                    <Cell key={i} fill={PALETTE[i % PALETTE.length]} />
+                    <Cell key={i} fill={palette[i % palette.length]} />
                   ))}
                 </Pie>
                 <Tooltip formatter={(value) => formatMoney(value as number, 'PLN')} />
@@ -973,7 +1043,7 @@ export function StoreBreakdownCard({
                   }`}
                 >
                   <span className="flex items-center gap-2">
-                    <span className="h-2 w-2 rounded-full" style={{ backgroundColor: PALETTE[i % PALETTE.length] }} />
+                    <span className="h-2 w-2 rounded-full" style={{ backgroundColor: palette[i % palette.length] }} />
                     {r.store?.name ?? t('Bez sklepu')}
                   </span>
                   <span className="text-slate-500 dark:text-slate-400">
