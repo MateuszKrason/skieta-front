@@ -17,6 +17,8 @@ export const en: Record<string, string> = {
   'Nieprawidłowy login lub hasło.': 'Invalid username or password.',
   'Zaloguj się do swojego portfela finansowego': 'Log in to your finance portfolio',
   'Login': 'Username',
+  'Imię': 'First name',
+  'Nazwisko': 'Last name',
   'Hasło': 'Password',
   'Logowanie…': 'Logging in…',
   'Zaloguj się': 'Log in',
@@ -26,6 +28,33 @@ export const en: Record<string, string> = {
   'Załóż konto i zacznij śledzić swój majątek': 'Create an account and start tracking your net worth',
   'Tworzenie konta…': 'Creating account…',
   'Masz już konto?': 'Already have an account?',
+  'Zapomniałeś hasła?': 'Forgot your password?',
+  '← Powrót do logowania': '← Back to login',
+  'Adres e-mail': 'Email address',
+  'Wysyłanie…': 'Sending…',
+  'Podaj adres e-mail przypisany do konta — wyślemy link do resetu hasła.':
+    'Enter the email address on your account — we’ll send a password reset link.',
+  'Jeśli podany adres e-mail istnieje w naszej bazie, wysłaliśmy na niego link do resetu hasła.':
+    'If that email address is in our system, we’ve sent a password reset link to it.',
+  'Wyślij link do resetu': 'Send reset link',
+  'Link resetu hasła jest niepełny — otwórz go bezpośrednio z wiadomości e-mail.':
+    'This password reset link is incomplete — open it directly from the email.',
+  'Hasło zostało zresetowane. Przekierowuję do logowania…': 'Password reset — redirecting you to login…',
+  'Ustaw nowe hasło do swojego konta.': 'Set a new password for your account.',
+  'Zapisywanie…': 'Saving…',
+  'Ustaw nowe hasło': 'Set new password',
+  'Nie udało się zresetować hasła.': 'Failed to reset the password.',
+  'Weryfikuję adres e-mail…': 'Verifying your email…',
+  'Brak tokenu weryfikacyjnego w linku.': 'This link is missing a verification token.',
+  'Nie udało się potwierdzić adresu e-mail.': 'Failed to verify the email address.',
+  'Przejdź do aplikacji →': 'Go to the app →',
+  'Adres e-mail nie jest jeszcze potwierdzony': 'Your email address isn’t verified yet',
+  'Wysłano nowy link weryfikacyjny — sprawdź skrzynkę.': 'A new verification link was sent — check your inbox.',
+  'Sprawdź skrzynkę i kliknij link, który wysłaliśmy przy rejestracji.':
+    'Check your inbox and click the link we sent when you registered.',
+  'Dodaj adres e-mail poniżej, żeby móc go potwierdzić i odzyskać konto w razie potrzeby.':
+    'Add an email address below so you can verify it and recover your account if you ever need to.',
+  'Wyślij link ponownie': 'Resend link',
 
   // Onboarding wizard
   'Konta': 'Accounts',
@@ -315,7 +344,6 @@ export const en: Record<string, string> = {
   'wykrywam dywidendy…': 'detecting dividends…',
   'Wykrywam…': 'Detecting…',
   '⟳ Wykryj dywidendy': '⟳ Detect dividends',
-  '⟳ Sprawdź teraz': '⟳ Check now',
   'Automatyczne wykrywanie odświeża się samo przy wejściu na tę stronę — ten przycisk wymusza sprawdzenie od razu.':
     'Automatic detection refreshes itself when you open this page — this button forces an immediate check.',
   '+ Dywidenda': '+ Dividend',

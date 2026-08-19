@@ -191,7 +191,9 @@ export interface User {
   id: number
   username: string
   email: string
-  profile: { base_currency: Currency }
+  first_name: string
+  last_name: string
+  profile: { base_currency: Currency; email_verified: boolean }
 }
 
 export type BudgetType = 'income' | 'expense'

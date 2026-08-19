@@ -74,7 +74,7 @@ export default function Layout() {
                 `rounded-md px-2 py-1 font-medium hover:bg-slate-100 dark:hover:bg-slate-700 ${isActive ? 'text-emerald-700 dark:text-emerald-400' : ''}`
               }
             >
-              {user?.username}
+              {user?.first_name || user?.username}
             </NavLink>
             <button
               onClick={logout}

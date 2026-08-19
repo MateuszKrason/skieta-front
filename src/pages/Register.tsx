@@ -9,6 +9,8 @@ export default function Register() {
   const { register } = useAuth()
   const { t } = useLanguage()
   const navigate = useNavigate()
+  const [firstName, setFirstName] = useState('')
+  const [lastName, setLastName] = useState('')
   const [username, setUsername] = useState('')
   const [email, setEmail] = useState('')
   const [password, setPassword] = useState('')
@@ -20,7 +22,7 @@ export default function Register() {
     setError(null)
     setSubmitting(true)
     try {
-      await register(username, email, password)
+      await register(username, email, password, firstName, lastName)
       navigate('/onboarding')
     } catch (err) {
       if (err instanceof AxiosError && err.response?.data) {
@@ -42,6 +44,26 @@ export default function Register() {
           Skieta
         </h1>
         <p className="mb-6 text-sm text-slate-500 dark:text-slate-400">{t('Załóż konto i zacznij śledzić swój majątek')}</p>
+        <div className="mb-3 flex gap-3">
+          <label className="block flex-1 text-sm">
+            {t('Imię')}
+            <input
+              className="mt-1 w-full rounded-md border border-slate-300 dark:border-slate-600 px-3 py-2 text-sm focus:border-emerald-500 focus:outline-none"
+              value={firstName}
+              onChange={(e) => setFirstName(e.target.value)}
+              required
+            />
+          </label>
+          <label className="block flex-1 text-sm">
+            {t('Nazwisko')}
+            <input
+              className="mt-1 w-full rounded-md border border-slate-300 dark:border-slate-600 px-3 py-2 text-sm focus:border-emerald-500 focus:outline-none"
+              value={lastName}
+              onChange={(e) => setLastName(e.target.value)}
+              required
+            />
+          </label>
+        </div>
         <label className="mb-3 block text-sm">
           {t('Login')}
           <input

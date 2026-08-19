@@ -5,6 +5,9 @@ import { useLanguage } from './i18n/LanguageContext'
 import ProtectedRoute from './components/ProtectedRoute'
 import Login from './pages/Login'
 import Register from './pages/Register'
+import ForgotPassword from './pages/ForgotPassword'
+import ResetPassword from './pages/ResetPassword'
+import VerifyEmail from './pages/VerifyEmail'
 import Onboarding from './pages/Onboarding'
 import Dashboard from './pages/Dashboard'
 import Banking from './pages/Banking'
@@ -23,6 +26,9 @@ import Wydatki from './pages/analysis/Wydatki'
 const PAGE_TITLES: [string, string][] = [
   ['/login', 'Logowanie'],
   ['/register', 'Rejestracja'],
+  ['/zapomnialem-hasla', 'Reset hasła'],
+  ['/reset-hasla', 'Reset hasła'],
+  ['/zweryfikuj-email', 'Weryfikacja e-mail'],
   ['/onboarding', 'Dodaj posiadane rzeczy'],
   ['/moje-konto', 'Moje konto'],
   ['/konta', 'Konta i lokaty'],
@@ -54,6 +60,9 @@ export default function App() {
     <Routes>
       <Route path="/login" element={<Login />} />
       <Route path="/register" element={<Register />} />
+      <Route path="/zapomnialem-hasla" element={<ForgotPassword />} />
+      <Route path="/reset-hasla" element={<ResetPassword />} />
+      <Route path="/zweryfikuj-email" element={<VerifyEmail />} />
       <Route element={<ProtectedRoute />}>
         <Route element={<Layout />}>
           <Route path="/" element={<Dashboard />} />

@@ -44,7 +44,7 @@ export default function Login() {
             required
           />
         </label>
-        <label className="mb-4 block text-sm">
+        <label className="mb-1 block text-sm">
           {t('Hasło')}
           <input
             type="password"
@@ -54,6 +54,11 @@ export default function Login() {
             required
           />
         </label>
+        <p className="mb-4 text-right text-xs">
+          <Link to="/zapomnialem-hasla" className="font-medium text-emerald-700 dark:text-emerald-400 hover:underline">
+            {t('Zapomniałeś hasła?')}
+          </Link>
+        </p>
         {error && <p className="mb-3 text-sm text-red-600 dark:text-red-400">{error}</p>}
         <button
           type="submit"
