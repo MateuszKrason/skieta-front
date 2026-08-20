@@ -203,7 +203,68 @@ export interface User {
   email: string
   first_name: string
   last_name: string
+  is_staff: boolean
   profile: { base_currency: Currency; email_verified: boolean }
+}
+
+export interface AdminUser {
+  id: number
+  username: string
+  email: string
+  date_joined: string
+  last_login: string | null
+  last_login_ip: string | null
+  last_seen: string | null
+  is_active: boolean
+  is_staff: boolean
+  email_verified: boolean
+  accounts_count: number
+  stock_transactions_count: number
+  budget_transactions_count: number
+}
+
+export interface AdminActivityStats {
+  active_today: number
+  total_users: number
+  staff_users: number
+  verified_users: number
+  new_this_week: number
+  daily: { date: string; count: number }[]
+}
+
+export interface Article {
+  id: number
+  title: string
+  slug: string
+  summary: string
+  body: string
+  published_at: string
+}
+
+export interface StatementPreviewRow {
+  import_hash: string
+  date: string
+  amount: string
+  currency: Currency
+  type: BudgetType
+  raw_type: string
+  description: string
+  counterparty: string | null
+  category_id: number | null
+  category_name_hint: string | null
+  needs_review: boolean
+  is_duplicate: boolean
+  is_possible_duplicate: boolean
+  default_selected: boolean
+}
+
+export interface StatementPreview {
+  preview_id: string
+  bank: string
+  account_number: string | null
+  period_from: string | null
+  period_to: string | null
+  rows: StatementPreviewRow[]
 }
 
 export type BudgetType = 'income' | 'expense'
@@ -212,6 +273,8 @@ export interface Category {
   id: number
   name: string
   type: BudgetType
+  account: number | null
+  account_detail: BankAccount | null
   created_at: string
 }
 
@@ -356,6 +419,8 @@ export interface BudgetPlan {
 
 export interface SavingsGoal {
   id: number
+  category: number | null
+  category_detail: Category | null
   name: string
   target_amount: string
   current_amount: string
@@ -383,5 +448,7 @@ export interface PlanningSummary {
   free_monthly_budget: string
   current_savings: string
   total_reserved_for_goals: string
+  total_unpaid_planned_expenses: string
+  remaining_after_commitments: string
   base_currency: Currency
 }

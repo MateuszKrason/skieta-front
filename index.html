@@ -5,17 +5,18 @@
     <link rel="icon" type="image/svg+xml" href="/favicon.svg" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <meta name="theme-color" content="#059669" />
-    <meta name="description" content="Skieta — osobisty tracker finansowy: konta bankowe, akcje, obligacje, lokaty, budżet i dywidendy w jednym miejscu." />
-    <!-- Skieta is a private, login-only personal finance app — there is nothing here
-         a search engine should index (it would just be someone's login screen), so
-         crawling is explicitly turned off rather than optimized for ranking. -->
-    <meta name="robots" content="noindex, nofollow" />
-    <meta property="og:title" content="Skieta" />
-    <meta property="og:description" content="Osobisty tracker finansowy — konta, akcje, obligacje, lokaty, budżet i dywidendy w jednym miejscu." />
+    <meta name="description" content="Skieta — osobisty tracker finansowy: konta bankowe, akcje, obligacje, lokaty, budżet i dywidendy w jednym miejscu, plus artykuły o finansach osobistych." />
+    <!-- The app itself (behind login) stays private, but the landing page and
+         its articles at / and /artykuly/* are genuinely public marketing/
+         educational content — index those. Logged-in-only routes have no
+         separate server-rendered URLs a crawler could reach anyway. -->
+    <meta name="robots" content="index, follow" />
+    <meta property="og:title" content="Skieta — panuj nad swoimi finansami" />
+    <meta property="og:description" content="Osobisty tracker finansowy — konta, akcje, obligacje, lokaty, budżet i dywidendy w jednym miejscu, plus artykuły o finansach osobistych." />
     <meta property="og:type" content="website" />
     <meta property="og:image" content="/favicon.svg" />
     <meta name="twitter:card" content="summary" />
-    <title>Skieta</title>
+    <title>Skieta — panuj nad swoimi finansami</title>
   </head>
   <body>
     <div id="root"></div>

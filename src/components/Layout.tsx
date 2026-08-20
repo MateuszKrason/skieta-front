@@ -5,13 +5,19 @@ import SockLogo from './SockLogo'
 import { useTheme } from '../theme/ThemeContext'
 import { useLanguage } from '../i18n/LanguageContext'
 
-const links = [
+const baseLinks = [
   { to: '/', label: 'Dashboard', end: true },
   { to: '/gielda', label: 'Giełda' },
   { to: '/konta', label: 'Konta i lokaty' },
+  { to: '/analiza/przychody', label: 'Przychody' },
+  { to: '/analiza/wydatki', label: 'Wydatki' },
   { to: '/analiza', label: 'Analiza' },
   { to: '/planowanie', label: 'Planowanie' },
 ]
+
+function getNavLinks(isStaff: boolean | undefined) {
+  return isStaff ? [...baseLinks, { to: '/admin', label: 'Admin' }] : baseLinks
+}
 
 function navLinkClass({ isActive }: { isActive: boolean }) {
   return `rounded-md px-3 py-1.5 text-sm font-medium transition ${
@@ -75,7 +81,9 @@ function HeaderActions({ stacked = false, onNavigate }: { stacked?: boolean; onN
 
 export default function Layout() {
   const { t } = useLanguage()
+  const { user } = useAuth()
   const [mobileOpen, setMobileOpen] = useState(false)
+  const links = getNavLinks(user?.is_staff)
 
   return (
     <div className="min-h-screen">

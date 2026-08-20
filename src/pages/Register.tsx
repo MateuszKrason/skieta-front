@@ -15,6 +15,7 @@ export default function Register() {
   const [username, setUsername] = useState('')
   const [email, setEmail] = useState('')
   const [password, setPassword] = useState('')
+  const [baseCurrency, setBaseCurrency] = useState('PLN')
   const [error, setError] = useState<string | null>(null)
   const [submitting, setSubmitting] = useState(false)
 
@@ -23,7 +24,7 @@ export default function Register() {
     setError(null)
     setSubmitting(true)
     try {
-      await register(username, email, password, firstName, lastName)
+      await register(username, email, password, firstName, lastName, baseCurrency)
       navigate('/onboarding')
     } catch (err) {
       if (err instanceof AxiosError && err.response?.data) {
@@ -84,7 +85,7 @@ export default function Register() {
             onChange={(e) => setEmail(e.target.value)}
           />
         </label>
-        <label className="mb-4 block text-sm">
+        <label className="mb-3 block text-sm">
           {t('Hasło')}
           <input
             type="password"
@@ -93,6 +94,24 @@ export default function Register() {
             onChange={(e) => setPassword(e.target.value)}
             required
           />
+        </label>
+        <label className="mb-4 block text-sm">
+          {t('Domyślna waluta')}
+          <select
+            className="mt-1 w-full rounded-md border border-slate-300 dark:border-slate-600 px-3 py-2 text-sm focus:border-emerald-500 focus:outline-none"
+            value={baseCurrency}
+            onChange={(e) => setBaseCurrency(e.target.value)}
+          >
+            <option value="PLN">PLN</option>
+            <option value="USD">USD</option>
+            <option value="EUR">EUR</option>
+            <option value="NOK">NOK</option>
+            <option value="DKK">DKK</option>
+            <option value="GBP">GBP</option>
+          </select>
+          <span className="mt-1 block text-xs text-slate-400 dark:text-slate-500">
+            {t('Konta w innej walucie będą oznaczone jako walutowe — to tylko etykieta, nie wpływa na przeliczenia.')}
+          </span>
         </label>
         {error && <p className="mb-3 text-sm text-red-600 dark:text-red-400">{error}</p>}
         <button

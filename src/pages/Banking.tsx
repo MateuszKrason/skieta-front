@@ -1,13 +1,18 @@
 import { Fragment, useState, type FormEvent } from 'react'
 import { useMutation, useQuery, useQueryClient } from '@tanstack/react-query'
 import { api } from '../api/client'
+import { useAuth } from '../auth/AuthContext'
+import BankNameAutocomplete from '../components/BankNameAutocomplete'
+import StatementImportPanel from '../components/StatementImportPanel'
 import { useLanguage } from '../i18n/LanguageContext'
 import { accountTypeLabel, formatDate, formatMoney, formatNumber } from '../lib/format'
+import { AddTransactionForm } from './analysis/shared'
 import type {
   AccountTransfer,
   BankAccount,
   BankAccountType,
   BondType,
+  Category,
   Currency,
   DashboardSummary,
   TermDeposit,
@@ -32,10 +37,13 @@ const BOND_TYPE_LABELS: Record<BondType, string> = {
 export default function Banking() {
   const queryClient = useQueryClient()
   const { t } = useLanguage()
+  const { user } = useAuth()
+  const baseCurrency = user?.profile.base_currency
   const [showAddAccount, setShowAddAccount] = useState(false)
   const [showAddDeposit, setShowAddDeposit] = useState(false)
   const [showAddBond, setShowAddBond] = useState(false)
   const [showTransfer, setShowTransfer] = useState(false)
+  const [showImportStatement, setShowImportStatement] = useState(false)
   const [editingAccountId, setEditingAccountId] = useState<number | null>(null)
   const [editingDepositId, setEditingDepositId] = useState<number | null>(null)
   const [editingBondId, setEditingBondId] = useState<number | null>(null)
@@ -59,6 +67,13 @@ export default function Banking() {
     queryKey: ['accounts'],
     queryFn: async () => (await api.get<BankAccount[]>('/banking/accounts/')).data,
   })
+
+  const { data: categories } = useQuery({
+    queryKey: ['budget-categories'],
+    queryFn: async () => (await api.get<Category[]>('/budget/categories/')).data,
+  })
+
+  const [quickTxAccountId, setQuickTxAccountId] = useState<number | null>(null)
 
   const { data: deposits } = useQuery({
     queryKey: ['deposits'],
@@ -95,6 +110,10 @@ export default function Banking() {
     queryClient.invalidateQueries({ queryKey: ['bonds'] })
     queryClient.invalidateQueries({ queryKey: ['dashboard'] })
     queryClient.invalidateQueries({ queryKey: ['timeline'] })
+    queryClient.invalidateQueries({ queryKey: ['budget-breakdown'] })
+    queryClient.invalidateQueries({ queryKey: ['budget-trend'] })
+    queryClient.invalidateQueries({ queryKey: ['budget-transactions'] })
+    queryClient.invalidateQueries({ queryKey: ['budget-summary'] })
   }
 
   const deleteAccount = useMutation({
@@ -142,6 +161,12 @@ export default function Banking() {
               {t('⇄ Przelew')}
             </button>
             <button
+              onClick={() => setShowImportStatement((v) => !v)}
+              className="rounded-md border border-slate-300 dark:border-slate-600 px-3 py-1.5 text-sm font-medium text-slate-700 dark:text-slate-300 hover:bg-slate-100 dark:hover:bg-slate-700"
+            >
+              {t('⇪ Importuj wyciąg')}
+            </button>
+            <button
               onClick={() => setShowAddAccount((v) => !v)}
               className="rounded-md bg-emerald-600 px-3 py-1.5 text-sm font-medium text-white hover:bg-emerald-700"
             >
@@ -158,6 +183,19 @@ export default function Banking() {
                 invalidateAccountsRelated()
               }}
               onCancel={() => setShowAddAccount(false)}
+            />
+          </div>
+        )}
+
+        {showImportStatement && (
+          <div className="mt-3">
+            <StatementImportPanel
+              accounts={accounts ?? []}
+              onDone={() => {
+                setShowImportStatement(false)
+                invalidateAccountsRelated()
+              }}
+              onCancel={() => setShowImportStatement(false)}
             />
           </div>
         )}
@@ -205,7 +243,17 @@ export default function Banking() {
                   ) : (
                     <div key={a.id} className="rounded-xl border border-slate-200 dark:border-slate-700 bg-white dark:bg-slate-800 p-4 shadow-sm">
                       <div className="flex items-start justify-between">
-                        <p className="text-xs text-slate-500 dark:text-slate-400">{a.bank_name}</p>
+                        <p className="flex items-center gap-1.5 text-xs text-slate-500 dark:text-slate-400">
+                          {a.bank_name}
+                          {baseCurrency && a.currency !== baseCurrency && (
+                            <span
+                              title={t('Waluta inna niż domyślna ({0})', baseCurrency)}
+                              className="rounded-full bg-amber-100 dark:bg-amber-900/40 px-1.5 py-0.5 text-[10px] font-medium text-amber-700 dark:text-amber-400"
+                            >
+                              {t('walutowe')}
+                            </span>
+                          )}
+                        </p>
                         <div className="flex items-center gap-2">
                           <button
                             onClick={() => moveAccount(group.items, i, -1)}
@@ -238,9 +286,30 @@ export default function Banking() {
                         </div>
                       </div>
                       <p className="text-sm font-medium text-slate-700 dark:text-slate-300">{a.name}</p>
-                      <p className="mt-2 text-xl font-bold text-slate-900 dark:text-slate-100">
-                        {formatMoney(a.current_balance, a.currency)}
-                      </p>
+                      <div className="mt-2 flex items-center justify-between">
+                        <p className="text-xl font-bold text-slate-900 dark:text-slate-100">
+                          {formatMoney(a.current_balance, a.currency)}
+                        </p>
+                        <button
+                          onClick={() => setQuickTxAccountId(quickTxAccountId === a.id ? null : a.id)}
+                          className="text-xs font-medium text-emerald-700 dark:text-emerald-400 hover:underline"
+                        >
+                          {t('+ Przychód/Wydatek')}
+                        </button>
+                      </div>
+                      {quickTxAccountId === a.id && (
+                        <div className="mt-3">
+                          <AddTransactionForm
+                            categories={categories ?? []}
+                            accounts={accounts ?? []}
+                            lockedAccount={a}
+                            onDone={() => {
+                              setQuickTxAccountId(null)
+                              invalidateAccountsRelated()
+                            }}
+                          />
+                        </div>
+                      )}
                     </div>
                   ),
                 )}
@@ -584,7 +653,7 @@ function AccountForm({
   return (
     <form onSubmit={onSubmit} className="grid grid-cols-2 gap-3 rounded-xl border border-slate-200 dark:border-slate-700 bg-white dark:bg-slate-800 p-4 shadow-sm sm:grid-cols-5">
       <Field label="Bank">
-        <input value={bankName} onChange={(e) => setBankName(e.target.value)} required className="input" />
+        <BankNameAutocomplete value={bankName} onChange={setBankName} required />
       </Field>
       <Field label="Nazwa konta">
         <input value={name} onChange={(e) => setName(e.target.value)} required className="input" />
@@ -763,7 +832,7 @@ function AddDepositForm({ accounts, onDone }: { accounts: BankAccount[]; onDone:
   return (
     <form onSubmit={onSubmit} className="grid grid-cols-2 gap-3 rounded-xl border border-slate-200 dark:border-slate-700 bg-white dark:bg-slate-800 p-4 shadow-sm sm:grid-cols-4">
       <Field label="Bank">
-        <input value={bankName} onChange={(e) => setBankName(e.target.value)} required className="input" />
+        <BankNameAutocomplete value={bankName} onChange={setBankName} required />
       </Field>
       <Field label="Środki z konta">
         <select value={account} onChange={(e) => setAccount(e.target.value ? Number(e.target.value) : '')} className="input">
@@ -876,7 +945,7 @@ function EditDepositForm({
   return (
     <form onSubmit={onSubmit} className="grid grid-cols-2 gap-3 rounded-xl border border-emerald-200 dark:border-emerald-800 bg-emerald-50 dark:bg-emerald-900/20 p-4 sm:grid-cols-4">
       <Field label="Bank">
-        <input value={bankName} onChange={(e) => setBankName(e.target.value)} required className="input" />
+        <BankNameAutocomplete value={bankName} onChange={setBankName} required />
       </Field>
       <Field label="Środki z konta">
         <select value={account} onChange={(e) => setAccount(e.target.value ? Number(e.target.value) : '')} className="input">

@@ -12,6 +12,7 @@ interface AuthContextValue {
     password: string,
     firstName: string,
     lastName: string,
+    baseCurrency: string,
   ) => Promise<void>
   logout: () => void
   refreshUser: () => Promise<void>
@@ -54,6 +55,7 @@ export function AuthProvider({ children }: { children: ReactNode }) {
     password: string,
     firstName: string,
     lastName: string,
+    baseCurrency: string,
   ) {
     const { data } = await api.post('/auth/register/', {
       username,
@@ -61,6 +63,7 @@ export function AuthProvider({ children }: { children: ReactNode }) {
       password,
       first_name: firstName,
       last_name: lastName,
+      base_currency: baseCurrency,
     })
     tokenStore.set(data.access, data.refresh)
     setUser(data.user)

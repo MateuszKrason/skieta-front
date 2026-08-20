@@ -418,13 +418,12 @@ function TagPicker({ selected, onToggle }: { selected: number[]; onToggle: (id: 
       if (data && typeof data === 'object') {
         setError(Object.values(data as Record<string, unknown>).flat().join(' '))
       } else {
-        setError(t('Nie udało się zapisać transakcji.'))
+        setError(t('Nie udało się dodać tagu.'))
       }
     },
   })
 
-  function onSubmitNewTag(e: FormEvent) {
-    e.preventDefault()
+  function submitNewTag() {
     if (!newTagName.trim()) return
     addTag.mutate(newTagName.trim())
   }
@@ -448,16 +447,28 @@ function TagPicker({ selected, onToggle }: { selected: number[]; onToggle: (id: 
           </button>
         ))}
         {adding ? (
-          <form onSubmit={onSubmitNewTag} className="flex items-center gap-1">
+          // Plain div, not a <form> — this already lives inside the outer
+          // transaction/category <form>, and nested <form> elements are
+          // invalid HTML: the browser can fall back to a native full-page
+          // submit instead of React's handler, silently wiping the whole
+          // outer form the user was filling in.
+          <div className="flex items-center gap-1">
             <input
               autoFocus
               value={newTagName}
               onChange={(e) => setNewTagName(e.target.value)}
+              onKeyDown={(e) => {
+                if (e.key === 'Enter') {
+                  e.preventDefault()
+                  submitNewTag()
+                }
+              }}
               placeholder={t('np. wakacje')}
               className="input h-7 w-28 py-0.5 text-xs"
             />
             <button
-              type="submit"
+              type="button"
+              onClick={submitNewTag}
               disabled={addTag.isPending}
               className="rounded-full bg-emerald-600 px-2.5 py-1 text-xs font-medium text-white hover:bg-emerald-700 disabled:opacity-60"
             >
@@ -474,7 +485,7 @@ function TagPicker({ selected, onToggle }: { selected: number[]; onToggle: (id: 
             >
               ×
             </button>
-          </form>
+          </div>
         ) : (
           <button
             type="button"
@@ -557,13 +568,22 @@ function EditTransactionCategoryStore({
   )
 }
 
-export function AddCategoryForm({ onDone, lockedType }: { onDone: () => void; lockedType?: BudgetType }) {
+export function AddCategoryForm({
+  onDone,
+  lockedType,
+  accounts,
+}: {
+  onDone: () => void
+  lockedType?: BudgetType
+  accounts?: BankAccount[]
+}) {
   const { t } = useLanguage()
   const [name, setName] = useState('')
   const [type, setType] = useState<BudgetType>(lockedType ?? 'expense')
+  const [account, setAccount] = useState<number | ''>('')
 
   const mutation = useMutation({
-    mutationFn: () => api.post('/budget/categories/', { name, type }),
+    mutationFn: () => api.post('/budget/categories/', { name, type, account: account || null }),
     onSuccess: onDone,
   })
 
@@ -582,6 +602,18 @@ export function AddCategoryForm({ onDone, lockedType }: { onDone: () => void; lo
           <select value={type} onChange={(e) => setType(e.target.value as BudgetType)} className="input">
             <option value="expense">{t('Wydatek')}</option>
             <option value="income">{t('Przychód')}</option>
+          </select>
+        </Field>
+      )}
+      {accounts && accounts.length > 0 && (
+        <Field label="Konto (opcjonalnie)">
+          <select value={account} onChange={(e) => setAccount(e.target.value ? Number(e.target.value) : '')} className="input">
+            <option value="">{t('wszystkie konta')}</option>
+            {accounts.map((a) => (
+              <option key={a.id} value={a.id}>
+                {a.bank_name} — {a.name}
+              </option>
+            ))}
           </select>
         </Field>
       )}
@@ -634,6 +666,14 @@ export function CategoryManager({ type }: { type: BudgetType }) {
             className="flex items-center gap-1.5 rounded-full border border-slate-200 dark:border-slate-700 bg-slate-50 dark:bg-slate-900 py-1 pl-3 pr-1.5 text-xs text-slate-600 dark:text-slate-400"
           >
             {c.name}
+            {c.account_detail && (
+              <span
+                title={t('Kategoria widoczna tylko dla tego konta')}
+                className="rounded-full bg-slate-200 dark:bg-slate-700 px-1.5 py-0.5 text-[10px] text-slate-500 dark:text-slate-400"
+              >
+                {c.account_detail.bank_name}
+              </span>
+            )}
             <button
               onClick={() => onDelete(c)}
               title={t('Usuń kategorię')}
@@ -654,25 +694,29 @@ export function AddTransactionForm({
   accounts,
   onDone,
   lockedType,
+  lockedAccount,
 }: {
   categories: Category[]
   accounts: BankAccount[]
   onDone: () => void
   lockedType?: BudgetType
+  lockedAccount?: BankAccount
 }) {
   const { t } = useLanguage()
   const [type, setType] = useState<BudgetType>(lockedType ?? 'expense')
   const [category, setCategory] = useState<number | ''>('')
   const [store, setStore] = useState<number | ''>('')
   const [tags, setTags] = useState<number[]>([])
-  const [account, setAccount] = useState<number | ''>('')
+  const [account, setAccount] = useState<number | ''>(lockedAccount?.id ?? '')
   const [amount, setAmount] = useState('')
-  const [currency, setCurrency] = useState<Currency>('PLN')
+  const [currency, setCurrency] = useState<Currency>(lockedAccount?.currency ?? 'PLN')
   const [date, setDate] = useState(() => new Date().toISOString().slice(0, 10))
   const [description, setDescription] = useState('')
   const [error, setError] = useState<string | null>(null)
 
-  const filteredCategories = categories.filter((c) => c.type === type)
+  const filteredCategories = categories.filter(
+    (c) => c.type === type && (c.account === null || c.account === account),
+  )
 
   const { data: stores } = useQuery({
     queryKey: ['budget-stores'],
@@ -764,7 +808,19 @@ export function AddTransactionForm({
         </select>
       </Field>
       <Field label="Konto (opcjonalnie)">
-        <select value={account} onChange={(e) => setAccount(e.target.value ? Number(e.target.value) : '')} className="input">
+        {lockedAccount ? (
+          <p className="input flex items-center bg-slate-50 dark:bg-slate-900 text-slate-600 dark:text-slate-400">
+            {lockedAccount.bank_name} — {lockedAccount.name}
+          </p>
+        ) : (
+        <select
+          value={account}
+          onChange={(e) => {
+            setAccount(e.target.value ? Number(e.target.value) : '')
+            setCategory('')
+          }}
+          className="input"
+        >
           <option value="">{t('bez powiązania')}</option>
           {accounts.filter((a) => a.currency === currency).map((a) => (
             <option key={a.id} value={a.id}>
@@ -772,6 +828,7 @@ export function AddTransactionForm({
             </option>
           ))}
         </select>
+        )}
       </Field>
       <Field label="Data">
         <input type="date" value={date} onChange={(e) => setDate(e.target.value)} required className="input" />

@@ -2,6 +2,7 @@ import { useState, type FormEvent } from 'react'
 import { useMutation, useQuery, useQueryClient } from '@tanstack/react-query'
 import { useNavigate } from 'react-router-dom'
 import { api } from '../api/client'
+import BankNameAutocomplete from '../components/BankNameAutocomplete'
 import StockAutocomplete from '../components/StockAutocomplete'
 import { useLanguage } from '../i18n/LanguageContext'
 import { accountTypeLabel, BOND_TYPE_LABELS, formatDate, formatMoney, formatNumber } from '../lib/format'
@@ -167,7 +168,7 @@ function AccountsStep() {
       )}
       <form onSubmit={onSubmit} className="grid grid-cols-2 gap-3 rounded-xl border border-slate-200 dark:border-slate-700 bg-white dark:bg-slate-800 p-4 shadow-sm sm:grid-cols-5">
         <Field label="Bank">
-          <input value={bankName} onChange={(e) => setBankName(e.target.value)} required className="input" />
+          <BankNameAutocomplete value={bankName} onChange={setBankName} required />
         </Field>
         <Field label="Nazwa konta">
           <input value={name} onChange={(e) => setName(e.target.value)} required className="input" />
@@ -446,7 +447,7 @@ function DepositsStep() {
       )}
       <form onSubmit={onSubmit} className="grid grid-cols-2 gap-3 rounded-xl border border-slate-200 dark:border-slate-700 bg-white dark:bg-slate-800 p-4 shadow-sm sm:grid-cols-4">
         <Field label="Bank">
-          <input value={bankName} onChange={(e) => setBankName(e.target.value)} required className="input" />
+          <BankNameAutocomplete value={bankName} onChange={setBankName} required />
         </Field>
         <Field label="Powiąż z kontem (opcjonalnie)">
           <select value={account} onChange={(e) => setAccount(e.target.value ? Number(e.target.value) : '')} className="input">

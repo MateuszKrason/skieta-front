@@ -123,6 +123,7 @@ export default function Wydatki() {
       {showAddCategory && (
         <AddCategoryForm
           lockedType="expense"
+          accounts={accounts}
           onDone={() => {
             setShowAddCategory(false)
             invalidateBudget()

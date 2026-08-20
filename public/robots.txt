@@ -1,2 +1,9 @@
 User-agent: *
+Allow: /$
+Allow: /witaj
+Allow: /artykuly/
+Allow: /login
+Allow: /register
 Disallow: /
+
+Sitemap: /sitemap.xml

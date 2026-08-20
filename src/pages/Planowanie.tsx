@@ -3,7 +3,7 @@ import { useMutation, useQuery, useQueryClient } from '@tanstack/react-query'
 import { api } from '../api/client'
 import { useLanguage } from '../i18n/LanguageContext'
 import { formatDate, formatMoney } from '../lib/format'
-import type { BudgetPlan, Currency, PlannedExpense, PlanningSummary, SavingsGoal } from '../types'
+import type { BudgetPlan, Category, Currency, PlannedExpense, PlanningSummary, SavingsGoal } from '../types'
 
 function Field({ label, children }: { label: string; children: React.ReactNode }) {
   const { t } = useLanguage()
@@ -63,6 +63,11 @@ export default function Planowanie() {
     queryFn: async () => (await api.get<PlannedExpense[]>('/planning/expenses/')).data,
   })
 
+  const { data: categories } = useQuery({
+    queryKey: ['budget-categories'],
+    queryFn: async () => (await api.get<Category[]>('/budget/categories/')).data,
+  })
+
   function invalidateAll() {
     queryClient.invalidateQueries({ queryKey: ['planning-summary'] })
     queryClient.invalidateQueries({ queryKey: ['planning-goals'] })
@@ -100,7 +105,7 @@ export default function Planowanie() {
 
       <SalaryForm plan={summary} onDone={invalidateAll} />
 
-      <div className="grid grid-cols-1 gap-4 sm:grid-cols-2 lg:grid-cols-5">
+      <div className="grid grid-cols-1 gap-4 sm:grid-cols-2 lg:grid-cols-4">
         <StatCard label={t('Pensja miesięczna')} value={formatMoney(summary?.monthly_salary, base)} />
         <StatCard label={t('Śr. wydatki (3 mies.)')} value={formatMoney(summary?.avg_monthly_expense, base)} tone="negative" />
         <StatCard
@@ -109,7 +114,15 @@ export default function Planowanie() {
           tone={Number(summary?.free_monthly_budget ?? 0) >= 0 ? 'positive' : 'negative'}
         />
         <StatCard label={t('Oszczędności (konta)')} value={formatMoney(summary?.current_savings, base)} />
+      </div>
+      <div className="grid grid-cols-1 gap-4 sm:grid-cols-3">
         <StatCard label={t('Zarezerwowano na cele')} value={formatMoney(summary?.total_reserved_for_goals, base)} />
+        <StatCard label={t('Zarezerwowano na duże wydatki')} value={formatMoney(summary?.total_unpaid_planned_expenses, base)} />
+        <StatCard
+          label={t('Zostaje po rezerwacjach i odkładaniu')}
+          value={formatMoney(summary?.remaining_after_commitments, base)}
+          tone={Number(summary?.remaining_after_commitments ?? 0) >= 0 ? 'positive' : 'negative'}
+        />
       </div>
 
       <div className="rounded-xl border border-slate-200 dark:border-slate-700 bg-white dark:bg-slate-800 p-5 shadow-sm">
@@ -125,6 +138,7 @@ export default function Planowanie() {
         {showAddGoal && (
           <div className="mb-4">
             <AddGoalForm
+              categories={categories ?? []}
               onDone={() => {
                 setShowAddGoal(false)
                 invalidateAll()
@@ -275,7 +289,7 @@ function SalaryForm({ plan, onDone }: { plan: PlanningSummary | undefined; onDon
   )
 }
 
-function AddGoalForm({ onDone }: { onDone: () => void }) {
+function AddGoalForm({ onDone, categories }: { onDone: () => void; categories: Category[] }) {
   const { t } = useLanguage()
   const [name, setName] = useState('')
   const [targetAmount, setTargetAmount] = useState('')
@@ -283,6 +297,7 @@ function AddGoalForm({ onDone }: { onDone: () => void }) {
   const [currency, setCurrency] = useState<Currency>('PLN')
   const [targetDate, setTargetDate] = useState('')
   const [notes, setNotes] = useState('')
+  const [category, setCategory] = useState<number | ''>('')
 
   const mutation = useMutation({
     mutationFn: () =>
@@ -293,6 +308,7 @@ function AddGoalForm({ onDone }: { onDone: () => void }) {
         currency,
         target_date: targetDate || null,
         notes,
+        category: category || null,
       }),
     onSuccess: onDone,
   })
@@ -325,6 +341,16 @@ function AddGoalForm({ onDone }: { onDone: () => void }) {
       </Field>
       <Field label="Data docelowa (opcjonalnie)">
         <input type="date" value={targetDate} onChange={(e) => setTargetDate(e.target.value)} className="input" />
+      </Field>
+      <Field label="Kategoria (opcjonalnie)">
+        <select value={category} onChange={(e) => setCategory(e.target.value ? Number(e.target.value) : '')} className="input">
+          <option value="">{t('bez kategorii')}</option>
+          {categories.map((c) => (
+            <option key={c.id} value={c.id}>
+              {c.name}
+            </option>
+          ))}
+        </select>
       </Field>
       <Field label="Notatka (opcjonalnie)">
         <input value={notes} onChange={(e) => setNotes(e.target.value)} className="input" />
@@ -369,6 +395,11 @@ function GoalRow({ goal, onDelete, onChange }: { goal: SavingsGoal; onDelete: ()
         <div>
           <p className="text-sm font-medium text-slate-700 dark:text-slate-300">
             {goal.name} {achieved && <span className="text-emerald-600 dark:text-emerald-400">✓</span>}
+            {goal.category_detail && (
+              <span className="ml-1.5 rounded-full bg-slate-200 dark:bg-slate-700 px-1.5 py-0.5 text-[10px] font-normal text-slate-500 dark:text-slate-400">
+                {goal.category_detail.name}
+              </span>
+            )}
           </p>
           <p className="text-xs text-slate-400 dark:text-slate-500">
             {formatMoney(goal.current_amount, goal.currency)} / {formatMoney(goal.target_amount, goal.currency)}

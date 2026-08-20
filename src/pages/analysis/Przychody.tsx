@@ -98,6 +98,7 @@ export default function Przychody() {
       {showAddCategory && (
         <AddCategoryForm
           lockedType="income"
+          accounts={accounts}
           onDone={() => {
             setShowAddCategory(false)
             invalidateBudget()

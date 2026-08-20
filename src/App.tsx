@@ -2,7 +2,10 @@ import { useEffect } from 'react'
 import { Navigate, Route, Routes, useLocation } from 'react-router-dom'
 import Layout from './components/Layout'
 import { useLanguage } from './i18n/LanguageContext'
+import AdminRoute from './components/AdminRoute'
 import ProtectedRoute from './components/ProtectedRoute'
+import ArticleDetail from './pages/ArticleDetail'
+import Landing from './pages/Landing'
 import Login from './pages/Login'
 import Register from './pages/Register'
 import ForgotPassword from './pages/ForgotPassword'
@@ -14,6 +17,7 @@ import Banking from './pages/Banking'
 import Planowanie from './pages/Planowanie'
 import Timeline from './pages/Timeline'
 import Account from './pages/Account'
+import Admin from './pages/Admin'
 import GieldaLayout from './pages/gielda/GieldaLayout'
 import Portfel from './pages/gielda/Portfel'
 import Dywidendy from './pages/gielda/Dywidendy'
@@ -24,6 +28,7 @@ import Przychody from './pages/analysis/Przychody'
 import Wydatki from './pages/analysis/Wydatki'
 
 const PAGE_TITLES: [string, string][] = [
+  ['/witaj', 'Panuj nad swoimi finansami'],
   ['/login', 'Logowanie'],
   ['/register', 'Rejestracja'],
   ['/zapomnialem-hasla', 'Reset hasła'],
@@ -31,6 +36,7 @@ const PAGE_TITLES: [string, string][] = [
   ['/zweryfikuj-email', 'Weryfikacja e-mail'],
   ['/onboarding', 'Dodaj posiadane rzeczy'],
   ['/moje-konto', 'Moje konto'],
+  ['/admin', 'Panel administratora'],
   ['/konta', 'Konta i lokaty'],
   ['/planowanie', 'Planowanie budżetu'],
   ['/timeline', 'Timeline'],
@@ -58,6 +64,8 @@ export default function App() {
   useDocumentTitle()
   return (
     <Routes>
+      <Route path="/witaj" element={<Landing />} />
+      <Route path="/artykuly/:slug" element={<ArticleDetail />} />
       <Route path="/login" element={<Login />} />
       <Route path="/register" element={<Register />} />
       <Route path="/zapomnialem-hasla" element={<ForgotPassword />} />
@@ -71,6 +79,9 @@ export default function App() {
           <Route path="/planowanie" element={<Planowanie />} />
           <Route path="/timeline" element={<Timeline />} />
           <Route path="/moje-konto" element={<Account />} />
+          <Route element={<AdminRoute />}>
+            <Route path="/admin" element={<Admin />} />
+          </Route>
 
           <Route path="/gielda" element={<GieldaLayout />}>
             <Route index element={<Navigate to="portfel" replace />} />
