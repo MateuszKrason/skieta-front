@@ -19,6 +19,20 @@ export function formatNumber(value: string | number | null | undefined, digits =
   return num.toLocaleString('pl-PL', { minimumFractionDigits: digits, maximumFractionDigits: digits })
 }
 
+/** Share count as a whole number, with any fractional remainder shown in
+ * parentheses (and omitted entirely when the holding is a whole number) —
+ * e.g. 12.345 -> "12 (0.345)", 12 -> "12", 0.5 -> "0 (0.5)". */
+export function formatShareQuantity(value: string | number | null | undefined): string {
+  if (value === null || value === undefined) return '—'
+  const num = typeof value === 'string' ? Number(value) : value
+  if (Number.isNaN(num)) return '—'
+  const whole = Math.trunc(num)
+  const fraction = Math.abs(num - whole)
+  if (fraction < 1e-9) return `${whole}`
+  const fractionStr = fraction.toFixed(6).replace(/0+$/, '').replace(/\.$/, '')
+  return `${whole} (${fractionStr})`
+}
+
 /** Auto-scaling tick label for chart axes: uses "k" only once values actually reach
  * the thousands, so small amounts (e.g. 17) don't render as a misleading "0.0k". */
 export function formatAxisValue(value: number): string {

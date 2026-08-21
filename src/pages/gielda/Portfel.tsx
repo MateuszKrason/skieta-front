@@ -5,7 +5,7 @@ import { PageLoader, Spinner } from '../../components/Loader'
 import ReinvestmentThreads from '../../components/ReinvestmentThreads'
 import StockAutocomplete from '../../components/StockAutocomplete'
 import { useLanguage } from '../../i18n/LanguageContext'
-import { accountTypeLabel, formatDateTime, formatMoney, formatNumber, formatPct } from '../../lib/format'
+import { accountTypeLabel, formatDateTime, formatMoney, formatNumber, formatPct, formatShareQuantity } from '../../lib/format'
 import type { BankAccount, Currency, Holding, PortfolioSummary, Stock, StockSearchResult, StockTransaction } from '../../types'
 
 export default function Portfel() {
@@ -19,12 +19,16 @@ export default function Portfel() {
     queryKey: ['holdings'],
     queryFn: async () => (await api.get<Holding[]>('/stocks/holdings/')).data,
     refetchInterval: 60_000,
+    // Otherwise this silently stops polling whenever the tab isn't focused —
+    // see the same fix + explanation in Dashboard.tsx.
+    refetchIntervalInBackground: true,
   })
 
   const { data: portfolioSummary } = useQuery({
     queryKey: ['portfolio-summary'],
     queryFn: async () => (await api.get<PortfolioSummary>('/stocks/portfolio-summary/')).data,
     refetchInterval: 60_000,
+    refetchIntervalInBackground: true,
   })
 
   const { data: stocks } = useQuery({
@@ -93,7 +97,7 @@ export default function Portfel() {
           </button>
           <button
             onClick={() => setShowAddTx((v) => !v)}
-            className="rounded-md bg-emerald-600 px-3 py-1.5 text-sm font-medium text-white hover:bg-emerald-700"
+            className="rounded-md bg-accent-600 px-3 py-1.5 text-sm font-medium text-white hover:bg-accent-700"
           >
             {t('+ Kupno')}
           </button>
@@ -201,7 +205,7 @@ export default function Portfel() {
                     <span className="font-medium">{h.stock.ticker}</span>{' '}
                     <span className="text-xs text-slate-400 dark:text-slate-500">({h.stock.market})</span>
                   </td>
-                  <td className="px-4 py-2 text-right">{formatNumber(h.quantity, 4)}</td>
+                  <td className="px-4 py-2 text-right">{formatShareQuantity(h.quantity)}</td>
                   <td className="px-4 py-2 text-right">{formatMoney(h.avg_cost, h.stock.currency)}</td>
                   <td className="px-4 py-2 text-right">{formatMoney(h.current_price, h.stock.currency)}</td>
                   <td className="px-4 py-2 text-right">{formatMoney(h.market_value, h.stock.currency)}</td>
@@ -430,7 +434,7 @@ function StockManager({ stocks, onChange }: { stocks: Stock[]; onChange: () => v
                 </button>
                 <button
                   onClick={() => setEditingId(s.id)}
-                  className="text-xs font-medium text-emerald-700 dark:text-emerald-400 hover:underline"
+                  className="text-xs font-medium text-accent-700 dark:text-accent-400 hover:underline"
                 >
                   {t('Edytuj')}
                 </button>
@@ -481,7 +485,7 @@ function EditStockRow({ stock, onDone, onCancel }: { stock: Stock; onDone: () =>
   return (
     <form
       onSubmit={onSubmit}
-      className="grid grid-cols-2 gap-2 rounded-md border border-emerald-200 dark:border-emerald-800 bg-emerald-50 dark:bg-emerald-900/20 px-3 py-2 sm:grid-cols-5"
+      className="grid grid-cols-2 gap-2 rounded-md border border-accent-200 dark:border-accent-800 bg-accent-50 dark:bg-accent-900/20 px-3 py-2 sm:grid-cols-5"
     >
       <Field label="Ticker">
         <input value={ticker} onChange={(e) => setTicker(e.target.value.toUpperCase())} required className="input" />

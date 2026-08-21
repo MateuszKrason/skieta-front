@@ -556,4 +556,153 @@ export const en: Record<string, string> = {
   'Najbliższa wypłata (znana kwota)': 'Next payment (known amount)',
   'Dalsza prognoza (szac. wzrost)': 'Further forecast (est. growth)',
   'ogłoszona': 'announced',
+
+  // Invite-only registration / streak / onboarding gate
+  'Login lub e-mail': 'Username or email',
+  'Rejestracja jest dostępna tylko na zaproszenie od innego użytkownika — poproś o link lub zeskanuj kod QR.':
+    'Registration is invite-only — ask someone for a link or scan a QR code.',
+  'Masz już konto? Zaloguj się': 'Already have an account? Log in',
+  'Rejestracja jest dostępna tylko na zaproszenie od innego użytkownika.': 'Registration is invite-only.',
+  'Seria logowań: {0} dni': '{0}-day login streak',
+  'Zaproś znajomych': 'Invite friends',
+  'Limit: bez ograniczeń': 'Limit: unlimited',
+  'Pozostało w tym tygodniu: {0} z {1}': '{0} of {1} left this week',
+  '+ Wygeneruj zaproszenie': '+ Generate invitation',
+  'Wykorzystano limit zaproszeń na ten tydzień — odnawia się na bieżąco, 7 dni po każdym zaproszeniu.':
+    'You’ve used this week’s invitation limit — it renews continuously, 7 days after each invite.',
+  'Skopiowano!': 'Copied!',
+  'Kopiuj link': 'Copy link',
+  'Pokaż QR': 'Show QR',
+  'Ukryj QR': 'Hide QR',
+  'Zaakceptowane przez {0} ({1})': 'Accepted by {0} ({1})',
+  'Oczekuje — wygenerowano {0}': 'Pending — generated {0}',
+  'Czy na pewno chcesz zmienić nazwę użytkownika? Można to zrobić tylko raz na 30 dni.':
+    'Are you sure you want to change your username? This can only be done once every 30 days.',
+  'Dodaj co najmniej jedno konto bankowe, żeby przejść dalej.': 'Add at least one bank account to continue.',
+  'Dodaj najpierw co najmniej jedno konto bankowe.': 'Add at least one bank account first.',
+
+  // Color variants (theme)
+  'Przełącz na lawendowy motyw': 'Switch to the lavender theme',
+  'Wygląd': 'Appearance',
+  'Domyślny kolor interfejsu': 'Default interface color',
+  'Jasny': 'Light',
+  'Ciemny': 'Dark',
+  'Lawendowy': 'Lavender',
+
+  // Editor role / article CRM / admin role assignment
+  'Redakcja': 'Editorial',
+  'Masz uprawnienia redaktora — możesz dodawać i edytować artykuły.':
+    'You have editor permissions — you can add and edit articles.',
+  'Przejdź do redakcji': 'Go to editorial',
+  'Redakcja artykułów': 'Article editorial',
+  'Dodawaj i edytuj artykuły widoczne na stronie głównej.': 'Add and edit articles shown on the homepage.',
+  '+ Nowy artykuł': '+ New article',
+  'Edytuj artykuł': 'Edit article',
+  'Nowy artykuł': 'New article',
+  'Tytuł': 'Title',
+  'Krótki opis': 'Short summary',
+  'Treść': 'Body',
+  'Opublikowany': 'Published',
+  'Kolejność': 'Order',
+  'Nie udało się zapisać artykułu.': 'Failed to save the article.',
+  'szkic': 'draft',
+  'Autor: {0} • {1}': 'By {0} • {1}',
+  'Czy na pewno chcesz usunąć ten artykuł?': 'Are you sure you want to delete this article?',
+  'Nadaj admina': 'Grant admin',
+  'Odbierz admina': 'Revoke admin',
+  'Nadaj redaktora': 'Grant editor',
+  'Odbierz redaktora': 'Revoke editor',
+
+  // Financial cleanup phase: delete closed lokaty/bonds, unified category management
+  'Czy na pewno chcesz usunąć tę lokatę?': 'Are you sure you want to delete this deposit?',
+  'Czy na pewno chcesz usunąć tę obligację?': 'Are you sure you want to delete this bond?',
+  'Kategorie, sklepy i tagi': 'Categories, stores & tags',
+  'Zarządzaj tu wszystkimi kategoriami, sklepami i tagami używanymi w budżecie — w jednym miejscu.':
+    'Manage all the categories, stores, and tags used in your budget here — in one place.',
+  'Kategorie przychodów': 'Income categories',
+  'Kategorie wydatków': 'Expense categories',
+  'po Belce': 'after tax',
+  'Wykres pokazuje udział wartości każdej spółki w całym portfelu akcji. Przy każdej pozycji: pierwszy % to jej udział w portfelu, drugi (kolorowy) to zysk/strata na tej pozycji.':
+    'The chart shows each company’s share of your total stock portfolio value. Next to each holding: the first % is its share of the portfolio, the second (colored) one is the gain/loss on that position.',
+  'Udział tej spółki w wartości całego portfela': "This company's share of your total portfolio value",
+  'Zysk/strata (niezrealizowane) na tej pozycji': 'Unrealized gain/loss on this position',
+
+  // Per-account language
+  'Wygląd i język': 'Appearance & language',
+  'Język interfejsu': 'Interface language',
+
+  // Feature-interest onboarding + account settings
+  'Zainteresowania': 'Interests',
+  'Z czego chcesz korzystać? Odznacz to, czego nie potrzebujesz — zawsze możesz to zmienić później w ustawieniach konta.':
+    'What do you want to use? Uncheck anything you don’t need — you can always change this later in account settings.',
+  'Budżet': 'Budget',
+  'Portfel akcji, dywidendy, analiza spółek': 'Stock portfolio, dividends, company analysis',
+  'Notowanie przychodów i wydatków': 'Tracking income and expenses',
+  'Cele oszczędnościowe i planowane wydatki': 'Savings goals and planned expenses',
+  'Z czego korzystasz': 'What you use',
+  'Odznaczone opcje znikają z górnego menu — możesz je włączyć z powrotem w każdej chwili.':
+    'Unchecked options disappear from the top menu — you can turn them back on any time.',
+
+  // Chart type switcher
+  'Wykres kołowy': 'Pie chart',
+  'Wykres słupkowy': 'Bar chart',
+
+  // Feedback widget
+  'Feedback': 'Feedback',
+  'Dziękujemy za wiadomość! Przeczytamy ją wkrótce.': 'Thanks for the message! We’ll read it soon.',
+  'Co możemy poprawić? Czego brakuje? Napisz śmiało.': "What could we improve? What's missing? Go ahead and tell us.",
+  'Twoja wiadomość…': 'Your message…',
+  'Wyślij': 'Send',
+  'Zostaw feedback': 'Leave feedback',
+
+  // Admin feedback triage tab
+  'Użytkownicy': 'Users',
+  'Zrobione': 'Done',
+  'Odrzucone': 'Rejected',
+  'Na później': 'Later',
+  'Brak zgłoszeń spełniających kryteria.': 'No submissions match these criteria.',
+  'Oznacz jako: {0}': 'Mark as: {0}',
+
+  // Invite by email
+  'Wygeneruj link i kod QR, albo od razu podaj e-mail znajomego, żeby wysłać mu zaproszenie.':
+    'Generate a link and QR code, or enter a friend’s email to send the invitation straight to them.',
+  'E-mail znajomego (opcjonalnie)': "Friend's email (optional)",
+  '+ Wyślij zaproszenie mailem': '+ Send invitation by email',
+
+  // Growth summary "no data" state
+  'Brak danych — zarejestruj pierwszą wpłatę, aby zobaczyć realny zwrot.':
+    'No data — record your first deposit to see your real return.',
+
+  // Admin user detail page
+  'Szczegóły': 'Details',
+  '← Wróć do listy': '← Back to list',
+  'zarchiwizowane': 'archived',
+  'brak imienia i nazwiska': 'no name given',
+  'Nie znaleziono użytkownika.': 'User not found.',
+  'E-mail zweryfikowany': 'Email verified',
+  'tak': 'yes',
+  'nie': 'no',
+  'Status konta': 'Account status',
+  'Wariant kolorystyczny': 'Color variant',
+  'Język': 'Language',
+  'Role': 'Roles',
+  'administrator': 'admin',
+  'redaktor': 'editor',
+  'zwykły użytkownik': 'regular user',
+  'Zarządzanie kontem': 'Account management',
+  'Przywrócić to konto z archiwum?': 'Restore this account from the archive?',
+  'Zarchiwizować to konto? Zostanie zablokowane, ale dane pozostaną zachowane.':
+    'Archive this account? It will be blocked, but its data will be kept.',
+  'Przywróć z archiwum': 'Restore from archive',
+  'Zarchiwizuj konto': 'Archive account',
+  'Zarchiwizowano {0}': 'Archived {0}',
+  'Zaproszeni użytkownicy': 'Invited users',
+  'Nikogo jeszcze nie zaprosił(a).': "Hasn't invited anyone yet.",
+  'Napisane artykuły': 'Written articles',
+  'Nie napisał(a) jeszcze żadnego artykułu.': "Hasn't written any articles yet.",
+  'Statystyki aktywności': 'Activity stats',
+  'Aktywne dni łącznie': 'Total active days',
+  'Aktywność w ostatnich 30 dniach': 'Activity over the last 30 days',
+  'aktywny': 'active',
+  'nieaktywny': 'inactive',
 }

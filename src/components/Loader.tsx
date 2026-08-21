@@ -11,7 +11,7 @@ export function Spinner({ size = 'md', className = '' }: { size?: keyof typeof S
     <span
       role="status"
       aria-label="loading"
-      className={`inline-block animate-spin rounded-full border-slate-200 dark:border-slate-700 border-t-emerald-600 dark:border-t-emerald-500 ${SPINNER_SIZES[size]} ${className}`}
+      className={`inline-block animate-spin rounded-full border-slate-200 dark:border-slate-700 border-t-accent-600 dark:border-t-accent-500 ${SPINNER_SIZES[size]} ${className}`}
     />
   )
 }

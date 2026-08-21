@@ -7,7 +7,6 @@ import type { BankAccount, BudgetTransaction, Category, CategoryBreakdown } from
 import {
   AddCategoryForm,
   AddTransactionForm,
-  CategoryManager,
   CategoryPieCard,
   CategoryTrendChart,
   PeriodSelector,
@@ -86,7 +85,7 @@ export default function Przychody() {
           </button>
           <button
             onClick={() => setShowAddTx((v) => !v)}
-            className="rounded-md bg-emerald-600 px-3 py-1.5 text-sm font-medium text-white hover:bg-emerald-700"
+            className="rounded-md bg-accent-600 px-3 py-1.5 text-sm font-medium text-white hover:bg-accent-700"
           >
             {t('+ Przychód')}
           </button>
@@ -119,8 +118,6 @@ export default function Przychody() {
       )}
 
       <StatCard label={t('Przychody w okresie')} value={formatMoney(breakdown?.income_total, 'PLN')} tone="positive" />
-
-      <CategoryManager type="income" />
 
       <div className="grid grid-cols-1 gap-4 lg:grid-cols-2">
         <CategoryPieCard

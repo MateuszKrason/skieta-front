@@ -163,7 +163,7 @@ export default function ReinvestmentThreads() {
         <h2 className="text-sm font-semibold text-slate-700 dark:text-slate-300">{t('Ścieżki reinwestycji')}</h2>
         <button
           onClick={() => setShowCreate((v) => !v)}
-          className="rounded-md bg-emerald-600 px-3 py-1.5 text-sm font-medium text-white hover:bg-emerald-700"
+          className="rounded-md bg-accent-600 px-3 py-1.5 text-sm font-medium text-white hover:bg-accent-700"
         >
           {t('+ Nowa ścieżka')}
         </button>
@@ -522,7 +522,7 @@ function AddNodeForm({
 
   if (!open) {
     return (
-      <button onClick={() => setOpen(true)} className="text-xs font-medium text-emerald-700 dark:text-emerald-400 hover:underline">
+      <button onClick={() => setOpen(true)} className="text-xs font-medium text-accent-700 dark:text-accent-400 hover:underline">
         {t('+ Dodaj pozycję (reinwestycja)')}
       </button>
     )

@@ -1,6 +1,30 @@
 @import "tailwindcss";
 
 @custom-variant dark (&:where(.dark, .dark *));
+@custom-variant pink (&:where(.pink, .pink *));
+
+/* `accent` is the BRAND/UI color (buttons, active nav, links, focus rings) —
+   deliberately a separate token from Tailwind's own `emerald` and `slate`.
+   Financial gain/loss coloring (unrealized P/L, income vs. expense, dividends,
+   interest earned, etc.) is hardcoded emerald/red throughout the app and must
+   stay that way regardless of color variant — conflating "brand color" with
+   "this number went up" was tried and reverted, see git history. Only actual
+   UI chrome was renamed from emerald-* to accent-* across components; plain
+   body text (`slate-*`) was never touched, so labels/paragraphs read normally
+   in every variant. Default value = emerald's own value (zero visual change
+   in light/dark mode); overridden below for the pink/lavender variant. */
+@theme {
+  --color-accent-50: var(--color-emerald-50);
+  --color-accent-100: var(--color-emerald-100);
+  --color-accent-200: var(--color-emerald-200);
+  --color-accent-300: var(--color-emerald-300);
+  --color-accent-400: var(--color-emerald-400);
+  --color-accent-500: var(--color-emerald-500);
+  --color-accent-600: var(--color-emerald-600);
+  --color-accent-700: var(--color-emerald-700);
+  --color-accent-800: var(--color-emerald-800);
+  --color-accent-900: var(--color-emerald-900);
+}
 
 :root {
   color-scheme: light;
@@ -10,15 +34,45 @@
   color-scheme: dark;
 }
 
+:root.pink {
+  color-scheme: light;
+  /* Lavender-leaning powder pink, not hot pink — violet reads softer than
+     rose for this much surface area (nav, buttons, borders). */
+  --color-accent-50: var(--color-violet-50);
+  --color-accent-100: var(--color-violet-100);
+  --color-accent-200: var(--color-violet-200);
+  --color-accent-300: var(--color-violet-300);
+  --color-accent-400: var(--color-violet-400);
+  --color-accent-500: var(--color-violet-500);
+  --color-accent-600: var(--color-violet-600);
+  --color-accent-700: var(--color-violet-700);
+  --color-accent-800: var(--color-violet-800);
+  --color-accent-900: var(--color-violet-900);
+}
+
 body {
   @apply bg-slate-50 text-slate-900 dark:bg-slate-900 dark:text-slate-100;
 }
 
+:root.pink body {
+  @apply bg-violet-100;
+}
+
+/* Most pages wrap themselves in an explicit `bg-slate-50 dark:bg-slate-900`
+   container (pre-login pages) or use it for subtle row/table-header tinting
+   inside cards — that literal class shadows `body`'s own background, so it
+   needs its own override too. `:where()` keeps specificity at exactly
+   `:root.pink` + one class, which still beats Tailwind's plain `.bg-slate-50`
+   utility regardless of source order. */
+:root.pink :where(.bg-slate-50) {
+  @apply bg-violet-100;
+}
+
 @layer components {
   .input {
-    @apply w-full rounded-md border border-slate-300 px-2.5 py-1.5 text-sm text-slate-900 focus:border-emerald-500 focus:outline-none dark:border-slate-600 dark:bg-slate-800 dark:text-slate-100;
+    @apply w-full rounded-md border border-slate-300 px-2.5 py-1.5 text-sm text-slate-900 focus:border-accent-500 focus:outline-none dark:border-slate-600 dark:bg-slate-800 dark:text-slate-100;
   }
   .btn-primary {
-    @apply rounded-md bg-emerald-600 px-4 py-1.5 text-sm font-medium text-white hover:bg-emerald-700 disabled:opacity-60;
+    @apply rounded-md bg-accent-600 px-4 py-1.5 text-sm font-medium text-white hover:bg-accent-700 disabled:opacity-60;
   }
 }

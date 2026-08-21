@@ -65,6 +65,11 @@ function PortfolioAnalyticsBody({ data }: { data: PortfolioAnalytics }) {
     <div className="space-y-4">
       <div className="grid grid-cols-1 gap-4 lg:grid-cols-3">
         <div className="lg:col-span-2">
+          <p className="mb-2 text-xs text-slate-400 dark:text-slate-500">
+            {t(
+              'Wykres pokazuje udział wartości każdej spółki w całym portfelu akcji. Przy każdej pozycji: pierwszy % to jej udział w portfelu, drugi (kolorowy) to zysk/strata na tej pozycji.',
+            )}
+          </p>
           <div className="h-64">
             <ResponsiveContainer width="100%" height="100%">
               <PieChart>
@@ -160,6 +165,7 @@ function PortfolioAnalyticsBody({ data }: { data: PortfolioAnalytics }) {
 }
 
 function AllocationLine({ row, color }: { row: AllocationRow; color: string }) {
+  const { t } = useLanguage()
   const plPct = row.unrealized_pl_pct !== null ? Number(row.unrealized_pl_pct) : null
   return (
     <div className="flex items-center justify-between rounded-md px-1.5 py-1 text-xs">
@@ -168,9 +174,12 @@ function AllocationLine({ row, color }: { row: AllocationRow; color: string }) {
         {row.stock.ticker}
       </span>
       <span className="flex items-center gap-2 text-slate-500 dark:text-slate-400">
-        {formatPct(row.pct)}
+        <span title={t('Udział tej spółki w wartości całego portfela')}>{formatPct(row.pct)}</span>
         {plPct !== null && (
-          <span className={plPct >= 0 ? 'text-emerald-600 dark:text-emerald-400' : 'text-red-600 dark:text-red-400'}>
+          <span
+            title={t('Zysk/strata (niezrealizowane) na tej pozycji')}
+            className={plPct >= 0 ? 'text-emerald-600 dark:text-emerald-400' : 'text-red-600 dark:text-red-400'}
+          >
             {formatPct(row.unrealized_pl_pct)}
           </span>
         )}
@@ -308,7 +317,7 @@ export default function AnalizaSpolek() {
                 <span className="rounded-full bg-slate-100 dark:bg-slate-700 px-2 py-0.5 text-xs font-medium text-slate-600 dark:text-slate-400">
                   {item.stock_detail.ticker}
                 </span>
-                <span className="rounded-full bg-emerald-50 dark:bg-emerald-900/30 px-2 py-0.5 text-xs font-medium text-emerald-700 dark:text-emerald-400">
+                <span className="rounded-full bg-accent-50 dark:bg-accent-900/30 px-2 py-0.5 text-xs font-medium text-accent-700 dark:text-accent-400">
                   {item.source}
                 </span>
                 {item.is_new && (
@@ -322,7 +331,7 @@ export default function AnalizaSpolek() {
                 href={item.url}
                 target="_blank"
                 rel="noreferrer"
-                className="text-sm font-medium text-slate-800 dark:text-slate-200 hover:text-emerald-700 dark:hover:text-emerald-400 hover:underline"
+                className="text-sm font-medium text-slate-800 dark:text-slate-200 hover:text-accent-700 dark:hover:text-accent-400 hover:underline"
               >
                 {item.title}
               </a>

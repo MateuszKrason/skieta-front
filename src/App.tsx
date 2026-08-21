@@ -3,6 +3,7 @@ import { Navigate, Route, Routes, useLocation } from 'react-router-dom'
 import Layout from './components/Layout'
 import { useLanguage } from './i18n/LanguageContext'
 import AdminRoute from './components/AdminRoute'
+import EditorRoute from './components/EditorRoute'
 import ProtectedRoute from './components/ProtectedRoute'
 import ArticleDetail from './pages/ArticleDetail'
 import Landing from './pages/Landing'
@@ -17,7 +18,11 @@ import Banking from './pages/Banking'
 import Planowanie from './pages/Planowanie'
 import Timeline from './pages/Timeline'
 import Account from './pages/Account'
-import Admin from './pages/Admin'
+import AdminLayout from './pages/admin/AdminLayout'
+import AdminUsers from './pages/admin/AdminUsers'
+import AdminUserDetail from './pages/admin/AdminUserDetail'
+import AdminFeedback from './pages/admin/AdminFeedback'
+import Redakcja from './pages/Redakcja'
 import GieldaLayout from './pages/gielda/GieldaLayout'
 import Portfel from './pages/gielda/Portfel'
 import Dywidendy from './pages/gielda/Dywidendy'
@@ -26,6 +31,7 @@ import AnalysisLayout from './pages/analysis/AnalysisLayout'
 import Bilans from './pages/analysis/Bilans'
 import Przychody from './pages/analysis/Przychody'
 import Wydatki from './pages/analysis/Wydatki'
+import Kategorie from './pages/analysis/Kategorie'
 
 const PAGE_TITLES: [string, string][] = [
   ['/witaj', 'Panuj nad swoimi finansami'],
@@ -36,6 +42,10 @@ const PAGE_TITLES: [string, string][] = [
   ['/zweryfikuj-email', 'Weryfikacja e-mail'],
   ['/onboarding', 'Dodaj posiadane rzeczy'],
   ['/moje-konto', 'Moje konto'],
+  ['/redakcja', 'Redakcja artykułów'],
+  ['/admin/uzytkownicy/', 'Szczegóły użytkownika'],
+  ['/admin/uzytkownicy', 'Panel administratora'],
+  ['/admin/feedback', 'Panel administratora'],
   ['/admin', 'Panel administratora'],
   ['/konta', 'Konta i lokaty'],
   ['/planowanie', 'Planowanie budżetu'],
@@ -47,6 +57,7 @@ const PAGE_TITLES: [string, string][] = [
   ['/analiza/bilans', 'Bilans'],
   ['/analiza/przychody', 'Przychody'],
   ['/analiza/wydatki', 'Wydatki'],
+  ['/analiza/kategorie', 'Kategorie'],
   ['/analiza', 'Analiza'],
   ['/', 'Dashboard'],
 ]
@@ -79,8 +90,16 @@ export default function App() {
           <Route path="/planowanie" element={<Planowanie />} />
           <Route path="/timeline" element={<Timeline />} />
           <Route path="/moje-konto" element={<Account />} />
+          <Route element={<EditorRoute />}>
+            <Route path="/redakcja" element={<Redakcja />} />
+          </Route>
           <Route element={<AdminRoute />}>
-            <Route path="/admin" element={<Admin />} />
+            <Route path="/admin" element={<AdminLayout />}>
+              <Route index element={<Navigate to="uzytkownicy" replace />} />
+              <Route path="uzytkownicy" element={<AdminUsers />} />
+              <Route path="feedback" element={<AdminFeedback />} />
+            </Route>
+            <Route path="/admin/uzytkownicy/:id" element={<AdminUserDetail />} />
           </Route>
 
           <Route path="/gielda" element={<GieldaLayout />}>
@@ -95,6 +114,7 @@ export default function App() {
             <Route path="bilans" element={<Bilans />} />
             <Route path="przychody" element={<Przychody />} />
             <Route path="wydatki" element={<Wydatki />} />
+            <Route path="kategorie" element={<Kategorie />} />
           </Route>
         </Route>
       </Route>

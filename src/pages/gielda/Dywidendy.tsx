@@ -201,8 +201,16 @@ export default function Dywidendy() {
                 <span>
                   {d.stock_detail.ticker} — {d.is_confirmed ? '' : `${t('ok.')} `}
                   {formatMoney(d.total_amount, d.currency)}
+                  {d.after_tax_amount !== null && (
+                    <span
+                      className="ml-1 text-xs text-slate-400 dark:text-slate-500"
+                      title={t('Po podatku od zysków kapitałowych (19%)')}
+                    >
+                      ({t('po Belce')}: {formatMoney(d.after_tax_amount, d.currency)})
+                    </span>
+                  )}
                   {d.is_confirmed && (
-                    <span className="ml-2 rounded-full bg-emerald-100 dark:bg-emerald-900/50 px-2 py-0.5 text-xs font-medium text-emerald-700 dark:text-emerald-400">
+                    <span className="ml-2 rounded-full bg-accent-100 dark:bg-accent-900/50 px-2 py-0.5 text-xs font-medium text-accent-700 dark:text-accent-400">
                       {t('ogłoszona')}
                     </span>
                   )}

@@ -2,6 +2,7 @@ import { useState, type FormEvent } from 'react'
 import { useMutation, useQuery, useQueryClient } from '@tanstack/react-query'
 import { useNavigate } from 'react-router-dom'
 import { api } from '../api/client'
+import { useAuth } from '../auth/AuthContext'
 import BankNameAutocomplete from '../components/BankNameAutocomplete'
 import StockAutocomplete from '../components/StockAutocomplete'
 import { useLanguage } from '../i18n/LanguageContext'
@@ -18,9 +19,10 @@ import type {
   TreasuryBond,
 } from '../types'
 
-type StepId = 'accounts' | 'stocks' | 'deposits' | 'bonds' | 'done'
+type StepId = 'interests' | 'accounts' | 'stocks' | 'deposits' | 'bonds' | 'done'
 
 const STEPS: { id: StepId; label: string }[] = [
+  { id: 'interests', label: 'Zainteresowania' },
   { id: 'accounts', label: 'Konta' },
   { id: 'stocks', label: 'Akcje' },
   { id: 'deposits', label: 'Lokaty' },
@@ -28,12 +30,23 @@ const STEPS: { id: StepId; label: string }[] = [
   { id: 'done', label: 'Gotowe' },
 ]
 
+const ACCOUNTS_STEP_INDEX = STEPS.findIndex((s) => s.id === 'accounts')
+
 export default function Onboarding() {
   const navigate = useNavigate()
   const queryClient = useQueryClient()
   const { t } = useLanguage()
   const [stepIndex, setStepIndex] = useState(0)
   const step = STEPS[stepIndex]
+
+  const { data: accounts } = useQuery({
+    queryKey: ['accounts'],
+    queryFn: async () => (await api.get<BankAccount[]>('/banking/accounts/')).data,
+  })
+  // Registration requires at least one bank account — the "accounts" step
+  // can't be skipped or passed until one exists.
+  const hasAccount = (accounts?.length ?? 0) > 0
+  const accountsStepBlocked = step.id === 'accounts' && !hasAccount
 
   function next() {
     setStepIndex((i) => Math.min(i + 1, STEPS.length - 1))
@@ -61,23 +74,35 @@ export default function Onboarding() {
         {STEPS.map((s, i) => (
           <button
             key={s.id}
-            onClick={() => setStepIndex(i)}
-            className={`shrink-0 rounded-full px-3 py-1 text-xs font-medium ${
+            onClick={() => (i <= ACCOUNTS_STEP_INDEX || hasAccount) && setStepIndex(i)}
+            disabled={i > ACCOUNTS_STEP_INDEX && !hasAccount}
+            className={`shrink-0 rounded-full px-3 py-1 text-xs font-medium disabled:cursor-not-allowed disabled:opacity-40 ${
               i === stepIndex
-                ? 'bg-emerald-600 text-white'
+                ? 'bg-accent-600 text-white'
                 : i < stepIndex
-                  ? 'bg-emerald-100 dark:bg-emerald-900/50 text-emerald-700 dark:text-emerald-400'
+                  ? 'bg-accent-100 dark:bg-accent-900/50 text-accent-700 dark:text-accent-400'
                   : 'bg-slate-100 dark:bg-slate-700 text-slate-500 dark:text-slate-400'
             }`}
           >
             {i + 1}. {t(s.label)}
           </button>
         ))}
-        <button onClick={finish} className="ml-auto text-xs font-medium text-slate-400 hover:text-slate-600 dark:hover:text-slate-300 hover:underline">
+        <button
+          onClick={finish}
+          disabled={!hasAccount}
+          title={!hasAccount ? t('Dodaj najpierw co najmniej jedno konto bankowe.') : undefined}
+          className="ml-auto text-xs font-medium text-slate-400 hover:text-slate-600 dark:hover:text-slate-300 hover:underline disabled:cursor-not-allowed disabled:opacity-40 disabled:hover:no-underline"
+        >
           {t('Zakończ teraz →')}
         </button>
       </div>
+      {accountsStepBlocked && (
+        <p className="text-xs text-amber-600 dark:text-amber-400">
+          {t('Dodaj co najmniej jedno konto bankowe, żeby przejść dalej.')}
+        </p>
+      )}
 
+      {step.id === 'interests' && <InterestsStep />}
       {step.id === 'accounts' && <AccountsStep />}
       {step.id === 'stocks' && <StocksStep />}
       {step.id === 'deposits' && <DepositsStep />}
@@ -103,7 +128,7 @@ export default function Onboarding() {
           >
             {t('← Wstecz')}
           </button>
-          <button onClick={next} className="btn-primary">
+          <button onClick={next} disabled={accountsStepBlocked} className="btn-primary disabled:cursor-not-allowed disabled:opacity-40">
             {t('Dalej →')}
           </button>
         </div>
@@ -119,6 +144,44 @@ function Field({ label, children }: { label: string; children: React.ReactNode }
       {t(label)}
       <div className="mt-1">{children}</div>
     </label>
+  )
+}
+
+const INTEREST_OPTIONS: { field: 'interest_stocks' | 'interest_budget' | 'interest_planning'; label: string; hint: string }[] = [
+  { field: 'interest_stocks', label: 'Giełda', hint: 'Portfel akcji, dywidendy, analiza spółek' },
+  { field: 'interest_budget', label: 'Budżet', hint: 'Notowanie przychodów i wydatków' },
+  { field: 'interest_planning', label: 'Planowanie', hint: 'Cele oszczędnościowe i planowane wydatki' },
+]
+
+function InterestsStep() {
+  const { user, refreshUser } = useAuth()
+  const { t } = useLanguage()
+
+  const mutation = useMutation({
+    mutationFn: (payload: Record<string, boolean>) => api.patch('/auth/me/', payload),
+    onSuccess: refreshUser,
+  })
+
+  return (
+    <div className="space-y-3 rounded-xl border border-slate-200 dark:border-slate-700 bg-white dark:bg-slate-800 p-4 shadow-sm">
+      <p className="text-sm text-slate-500 dark:text-slate-400">
+        {t('Z czego chcesz korzystać? Odznacz to, czego nie potrzebujesz — zawsze możesz to zmienić później w ustawieniach konta.')}
+      </p>
+      {INTEREST_OPTIONS.map((opt) => (
+        <label key={opt.field} className="flex items-start gap-3">
+          <input
+            type="checkbox"
+            className="mt-0.5"
+            checked={user?.profile[opt.field] ?? true}
+            onChange={(e) => mutation.mutate({ [opt.field]: e.target.checked })}
+          />
+          <span>
+            <span className="block text-sm font-medium text-slate-800 dark:text-slate-200">{t(opt.label)}</span>
+            <span className="block text-xs text-slate-400 dark:text-slate-500">{t(opt.hint)}</span>
+          </span>
+        </label>
+      ))}
+    </div>
   )
 }
 

@@ -44,7 +44,7 @@ export default function Timeline() {
         </div>
         <button
           onClick={() => setShowAdd((v) => !v)}
-          className="rounded-md bg-emerald-600 px-3 py-1.5 text-sm font-medium text-white hover:bg-emerald-700"
+          className="rounded-md bg-accent-600 px-3 py-1.5 text-sm font-medium text-white hover:bg-accent-700"
         >
           {t('+ Wpłata / wypłata')}
         </button>
@@ -59,15 +59,21 @@ export default function Timeline() {
           <p className="text-xs text-slate-500 dark:text-slate-400">{t('Wpłacone środki netto')}</p>
           <p className="mt-1 text-xl font-bold text-slate-900 dark:text-slate-100">{formatMoney(summary?.growth.net_contributed, base)}</p>
         </div>
-        <div className="rounded-xl border border-emerald-200 dark:border-emerald-800 bg-emerald-50 dark:bg-emerald-900/30 p-4 shadow-sm">
+        <div className="rounded-xl border border-accent-200 dark:border-accent-800 bg-accent-50 dark:bg-accent-900/30 p-4 shadow-sm">
           <p className="text-xs text-slate-500 dark:text-slate-400">{t('Realny zysk (pomnożenie)')}</p>
-          <p
-            className={`mt-1 text-xl font-bold ${
-              Number(summary?.growth.growth_amount ?? 0) >= 0 ? 'text-emerald-700 dark:text-emerald-400' : 'text-red-600 dark:text-red-400'
-            }`}
-          >
-            {formatMoney(summary?.growth.growth_amount, base)} ({formatPct(summary?.growth.growth_pct)})
-          </p>
+          {summary?.growth.growth_amount === null ? (
+            <p className="mt-1 text-xs text-slate-400 dark:text-slate-500">
+              {t('Brak danych — zarejestruj pierwszą wpłatę, aby zobaczyć realny zwrot.')}
+            </p>
+          ) : (
+            <p
+              className={`mt-1 text-xl font-bold ${
+                Number(summary?.growth.growth_amount ?? 0) >= 0 ? 'text-emerald-700 dark:text-emerald-400' : 'text-red-600 dark:text-red-400'
+              }`}
+            >
+              {formatMoney(summary?.growth.growth_amount, base)} ({formatPct(summary?.growth.growth_pct)})
+            </p>
+          )}
         </div>
       </div>
 

@@ -180,6 +180,7 @@ export interface Dividend {
   status: 'paid' | 'planned'
   auto_detected: boolean
   is_confirmed: boolean
+  after_tax_amount: string | null
 }
 
 export interface DividendSummaryRow {
@@ -217,7 +218,7 @@ export interface NetWorthSnapshot {
 export interface GrowthSummary {
   current_total: string
   net_contributed: string
-  growth_amount: string
+  growth_amount: string | null
   growth_pct: string | null
 }
 
@@ -246,7 +247,32 @@ export interface User {
   first_name: string
   last_name: string
   is_staff: boolean
-  profile: { base_currency: Currency; email_verified: boolean }
+  profile: {
+    base_currency: Currency
+    email_verified: boolean
+    login_streak: number
+    color_variant: 'light' | 'dark' | 'pink'
+    is_editor: boolean
+    language: 'pl' | 'en'
+    interest_stocks: boolean
+    interest_budget: boolean
+    interest_planning: boolean
+  }
+}
+
+export interface Invitation {
+  id: number
+  token: string
+  invite_url: string
+  created_at: string
+  accepted_by: string | null
+  accepted_at: string | null
+}
+
+export interface InvitationList {
+  results: Invitation[]
+  weekly_limit: number
+  remaining: number | null
 }
 
 export interface AdminUser {
@@ -259,10 +285,59 @@ export interface AdminUser {
   last_seen: string | null
   is_active: boolean
   is_staff: boolean
+  is_editor: boolean
+  is_archived: boolean
   email_verified: boolean
   accounts_count: number
   stock_transactions_count: number
   budget_transactions_count: number
+}
+
+export interface AdminInvitedUser {
+  username: string
+  accepted_at: string
+}
+
+export interface AdminUserArticle {
+  id: number
+  title: string
+  slug: string
+  is_published: boolean
+  published_at: string
+}
+
+export interface AdminUserActivityDay {
+  date: string
+  active: boolean
+}
+
+export interface AdminUserDetail {
+  id: number
+  username: string
+  first_name: string
+  last_name: string
+  email: string
+  date_joined: string
+  last_login: string | null
+  last_login_ip: string | null
+  last_seen: string | null
+  is_active: boolean
+  is_staff: boolean
+  is_editor: boolean
+  is_archived: boolean
+  archived_at: string | null
+  email_verified: boolean
+  color_variant: 'light' | 'dark' | 'pink'
+  language: 'pl' | 'en'
+  login_streak: number
+  accounts_count: number
+  stock_transactions_count: number
+  budget_transactions_count: number
+  invited_count: number
+  invited_users: AdminInvitedUser[]
+  articles: AdminUserArticle[]
+  activity_last_30_days: AdminUserActivityDay[]
+  total_active_days: number
 }
 
 export interface AdminActivityStats {
@@ -280,7 +355,11 @@ export interface Article {
   slug: string
   summary: string
   body: string
+  is_published: boolean
+  order: number
+  author_name: string | null
   published_at: string
+  updated_at: string
 }
 
 export interface StatementPreviewRow {

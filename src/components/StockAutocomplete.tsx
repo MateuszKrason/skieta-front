@@ -72,7 +72,7 @@ export default function StockAutocomplete({
                 key={`${r.symbol}-${r.exchange}`}
                 type="button"
                 onClick={() => handleSelect(r)}
-                className="flex w-full items-center justify-between px-3 py-2 text-left text-sm hover:bg-emerald-50"
+                className="flex w-full items-center justify-between px-3 py-2 text-left text-sm hover:bg-accent-50"
               >
                 <span>
                   <span className="font-medium">{r.symbol}</span>{' '}

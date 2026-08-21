@@ -76,7 +76,7 @@ export default function BankNameAutocomplete({
               key={name}
               type="button"
               onClick={() => handleSelect(name)}
-              className="block w-full px-3 py-2 text-left text-sm hover:bg-emerald-50 dark:hover:bg-emerald-900/30"
+              className="block w-full px-3 py-2 text-left text-sm hover:bg-accent-50 dark:hover:bg-accent-900/30"
             >
               {name}
             </button>

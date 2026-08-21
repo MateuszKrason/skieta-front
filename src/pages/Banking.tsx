@@ -122,6 +122,23 @@ export default function Banking() {
     onSuccess: invalidateAccountsRelated,
   })
 
+  function alertOnError(err: unknown) {
+    const detail = (err as { response?: { data?: { detail?: string } } }).response?.data?.detail
+    if (detail) window.alert(detail)
+  }
+
+  const deleteDeposit = useMutation({
+    mutationFn: (id: number) => api.delete(`/banking/deposits/${id}/`),
+    onSuccess: invalidateAccountsRelated,
+    onError: alertOnError,
+  })
+
+  const deleteBond = useMutation({
+    mutationFn: (id: number) => api.delete(`/bonds/${id}/`),
+    onSuccess: invalidateAccountsRelated,
+    onError: alertOnError,
+  })
+
   const reorderAccounts = useMutation({
     mutationFn: (order: number[]) => api.post('/banking/accounts/reorder/', { order }),
     onSuccess: () => queryClient.invalidateQueries({ queryKey: ['accounts'] }),
@@ -173,7 +190,7 @@ export default function Banking() {
             </button>
             <button
               onClick={() => setShowAddAccount((v) => !v)}
-              className="rounded-md bg-emerald-600 px-3 py-1.5 text-sm font-medium text-white hover:bg-emerald-700"
+              className="rounded-md bg-accent-600 px-3 py-1.5 text-sm font-medium text-white hover:bg-accent-700"
             >
               {t('+ Konto')}
             </button>
@@ -278,7 +295,7 @@ export default function Banking() {
                           </button>
                           <button
                             onClick={() => setEditingAccountId(a.id)}
-                            className="text-xs font-medium text-emerald-700 dark:text-emerald-400 hover:underline"
+                            className="text-xs font-medium text-accent-700 dark:text-accent-400 hover:underline"
                           >
                             {t('Edytuj')}
                           </button>
@@ -297,7 +314,7 @@ export default function Banking() {
                         </p>
                         <button
                           onClick={() => setQuickTxAccountId(quickTxAccountId === a.id ? null : a.id)}
-                          className="text-xs font-medium text-emerald-700 dark:text-emerald-400 hover:underline"
+                          className="text-xs font-medium text-accent-700 dark:text-accent-400 hover:underline"
                         >
                           {t('+ Przychód/Wydatek')}
                         </button>
@@ -350,7 +367,7 @@ export default function Banking() {
           <h2 className="text-2xl font-bold text-slate-900 dark:text-slate-100">{t('Lokaty')}</h2>
           <button
             onClick={() => setShowAddDeposit((v) => !v)}
-            className="rounded-md bg-emerald-600 px-3 py-1.5 text-sm font-medium text-white hover:bg-emerald-700"
+            className="rounded-md bg-accent-600 px-3 py-1.5 text-sm font-medium text-white hover:bg-accent-700"
           >
             {t('+ Lokata')}
           </button>
@@ -408,7 +425,7 @@ export default function Banking() {
                     <td className="px-4 py-2 text-right">
                       <span
                         className={`rounded-full px-2 py-0.5 text-xs ${
-                          d.status === 'active' ? 'bg-emerald-100 dark:bg-emerald-900/50 text-emerald-700 dark:text-emerald-400' : 'bg-slate-100 dark:bg-slate-700 text-slate-500 dark:text-slate-400'
+                          d.status === 'active' ? 'bg-accent-100 dark:bg-accent-900/50 text-accent-700 dark:text-accent-400' : 'bg-slate-100 dark:bg-slate-700 text-slate-500 dark:text-slate-400'
                         }`}
                       >
                         {d.status === 'active' ? t('aktywna') : t('zamknięta')}
@@ -418,7 +435,7 @@ export default function Banking() {
                       <div className="flex justify-end gap-3">
                         <button
                           onClick={() => setEditingDepositId(editingDepositId === d.id ? null : d.id)}
-                          className="text-xs font-medium text-emerald-700 dark:text-emerald-400 hover:underline"
+                          className="text-xs font-medium text-accent-700 dark:text-accent-400 hover:underline"
                         >
                           {t('Edytuj')}
                         </button>
@@ -428,6 +445,19 @@ export default function Banking() {
                             className="text-xs font-medium text-red-600 dark:text-red-400 hover:underline"
                           >
                             {t('Zerwij')}
+                          </button>
+                        )}
+                        {d.status === 'closed' && (
+                          <button
+                            onClick={() => {
+                              if (window.confirm(t('Czy na pewno chcesz usunąć tę lokatę?'))) {
+                                deleteDeposit.mutate(d.id)
+                              }
+                            }}
+                            disabled={deleteDeposit.isPending}
+                            className="text-xs font-medium text-red-600 dark:text-red-400 hover:underline disabled:opacity-50"
+                          >
+                            {t('Usuń')}
                           </button>
                         )}
                       </div>
@@ -482,7 +512,7 @@ export default function Banking() {
           <h2 className="text-2xl font-bold text-slate-900 dark:text-slate-100">{t('Obligacje skarbowe')}</h2>
           <button
             onClick={() => setShowAddBond((v) => !v)}
-            className="rounded-md bg-emerald-600 px-3 py-1.5 text-sm font-medium text-white hover:bg-emerald-700"
+            className="rounded-md bg-accent-600 px-3 py-1.5 text-sm font-medium text-white hover:bg-accent-700"
           >
             {t('+ Obligacja')}
           </button>
@@ -545,7 +575,7 @@ export default function Banking() {
                     <td className="px-4 py-2 text-right">
                       <span
                         className={`rounded-full px-2 py-0.5 text-xs ${
-                          b.status === 'active' ? 'bg-emerald-100 dark:bg-emerald-900/50 text-emerald-700 dark:text-emerald-400' : 'bg-slate-100 dark:bg-slate-700 text-slate-500 dark:text-slate-400'
+                          b.status === 'active' ? 'bg-accent-100 dark:bg-accent-900/50 text-accent-700 dark:text-accent-400' : 'bg-slate-100 dark:bg-slate-700 text-slate-500 dark:text-slate-400'
                         }`}
                       >
                         {b.status === 'active' ? t('aktywna') : t('wykupiona')}
@@ -555,7 +585,7 @@ export default function Banking() {
                       <div className="flex justify-end gap-3">
                         <button
                           onClick={() => setEditingBondId(editingBondId === b.id ? null : b.id)}
-                          className="text-xs font-medium text-emerald-700 dark:text-emerald-400 hover:underline"
+                          className="text-xs font-medium text-accent-700 dark:text-accent-400 hover:underline"
                         >
                           {t('Edytuj')}
                         </button>
@@ -565,6 +595,19 @@ export default function Banking() {
                             className="text-xs font-medium text-red-600 dark:text-red-400 hover:underline"
                           >
                             {t('Wykup wcześniej')}
+                          </button>
+                        )}
+                        {b.status === 'redeemed' && (
+                          <button
+                            onClick={() => {
+                              if (window.confirm(t('Czy na pewno chcesz usunąć tę obligację?'))) {
+                                deleteBond.mutate(b.id)
+                              }
+                            }}
+                            disabled={deleteBond.isPending}
+                            className="text-xs font-medium text-red-600 dark:text-red-400 hover:underline disabled:opacity-50"
+                          >
+                            {t('Usuń')}
                           </button>
                         )}
                       </div>
@@ -948,7 +991,7 @@ function EditDepositForm({
   }
 
   return (
-    <form onSubmit={onSubmit} className="grid grid-cols-2 gap-3 rounded-xl border border-emerald-200 dark:border-emerald-800 bg-emerald-50 dark:bg-emerald-900/20 p-4 sm:grid-cols-4">
+    <form onSubmit={onSubmit} className="grid grid-cols-2 gap-3 rounded-xl border border-accent-200 dark:border-accent-800 bg-accent-50 dark:bg-accent-900/20 p-4 sm:grid-cols-4">
       <Field label="Bank">
         <BankNameAutocomplete value={bankName} onChange={setBankName} required />
       </Field>
@@ -1235,7 +1278,7 @@ function EditBondForm({
   }
 
   return (
-    <form onSubmit={onSubmit} className="grid grid-cols-2 gap-3 rounded-xl border border-emerald-200 dark:border-emerald-800 bg-emerald-50 dark:bg-emerald-900/20 p-4 sm:grid-cols-4">
+    <form onSubmit={onSubmit} className="grid grid-cols-2 gap-3 rounded-xl border border-accent-200 dark:border-accent-800 bg-accent-50 dark:bg-accent-900/20 p-4 sm:grid-cols-4">
       <Field label="Typ obligacji">
         <select value={bondType} onChange={(e) => setBondType(e.target.value as BondType)} className="input">
           {Object.entries(BOND_TYPE_LABELS).map(([value, label]) => (

@@ -31,18 +31,24 @@ export default function Dashboard() {
     queryKey: ['dashboard'],
     queryFn: async () => (await api.get<DashboardSummary>('/networth/dashboard/')).data,
     refetchInterval: REFRESH_INTERVAL_MS,
+    // TanStack Query pauses refetchInterval while the tab is unfocused/hidden
+    // by default — but the "auto co 60s" label and the ticking seconds-ago
+    // counter below both promise it keeps happening regardless, so it must.
+    refetchIntervalInBackground: true,
   })
 
   const { data: timeline } = useQuery({
     queryKey: ['timeline'],
     queryFn: async () => (await api.get<NetWorthSnapshot[]>('/networth/timeline/')).data,
     refetchInterval: REFRESH_INTERVAL_MS,
+    refetchIntervalInBackground: true,
   })
 
   const { data: budgetSummary } = useQuery({
     queryKey: ['budget-summary'],
     queryFn: async () => (await api.get<CategoryBreakdown>('/budget/summary/')).data,
     refetchInterval: REFRESH_INTERVAL_MS,
+    refetchIntervalInBackground: true,
   })
 
   const [secondsAgo, setSecondsAgo] = useState(0)
@@ -129,7 +135,7 @@ export default function Dashboard() {
       <div className="rounded-xl border border-slate-200 dark:border-slate-700 bg-white dark:bg-slate-800 p-5 shadow-sm">
         <div className="mb-3 flex items-center justify-between">
           <h2 className="text-sm font-semibold text-slate-700 dark:text-slate-300">{t('Przychody i wydatki (ten miesiąc)')}</h2>
-          <Link to="/analiza" className="text-xs font-medium text-emerald-700 dark:text-emerald-400 hover:underline">
+          <Link to="/analiza" className="text-xs font-medium text-accent-700 dark:text-accent-400 hover:underline">
             {t('Zobacz pełną analizę →')}
           </Link>
         </div>
@@ -200,7 +206,7 @@ export default function Dashboard() {
                 </div>
                 <div className="h-2 w-full rounded-full bg-slate-100 dark:bg-slate-700">
                   <div
-                    className="h-2 rounded-full bg-emerald-500"
+                    className="h-2 rounded-full bg-accent-500"
                     style={{ width: `${(a.value / totalAlloc) * 100}%` }}
                   />
                 </div>
@@ -211,20 +217,26 @@ export default function Dashboard() {
           <div className="mt-6 border-t border-slate-100 dark:border-slate-800 pt-4">
             <div className="flex items-center justify-between">
               <h3 className="text-sm font-semibold text-slate-700 dark:text-slate-300">{t('Realny zwrot')}</h3>
-              <Link to="/timeline" className="text-xs font-medium text-emerald-700 dark:text-emerald-400 hover:underline">
+              <Link to="/timeline" className="text-xs font-medium text-accent-700 dark:text-accent-400 hover:underline">
                 {t('+ Wpłata / wypłata')}
               </Link>
             </div>
             <p className="mt-2 text-xs text-slate-500 dark:text-slate-400">{t('Wpłacone środki')}</p>
             <p className="text-sm font-medium">{formatMoney(summary?.growth.net_contributed, base)}</p>
             <p className="mt-2 text-xs text-slate-500 dark:text-slate-400">{t('Zysk / strata')}</p>
-            <p
-              className={`text-sm font-semibold ${
-                Number(summary?.growth.growth_amount ?? 0) >= 0 ? 'text-emerald-600' : 'text-red-600 dark:text-red-400'
-              }`}
-            >
-              {formatMoney(summary?.growth.growth_amount, base)} ({formatPct(summary?.growth.growth_pct)})
-            </p>
+            {summary?.growth.growth_amount === null ? (
+              <p className="text-xs text-slate-400 dark:text-slate-500">
+                {t('Brak danych — zarejestruj pierwszą wpłatę, aby zobaczyć realny zwrot.')}
+              </p>
+            ) : (
+              <p
+                className={`text-sm font-semibold ${
+                  Number(summary?.growth.growth_amount ?? 0) >= 0 ? 'text-emerald-600' : 'text-red-600 dark:text-red-400'
+                }`}
+              >
+                {formatMoney(summary?.growth.growth_amount, base)} ({formatPct(summary?.growth.growth_pct)})
+              </p>
+            )}
           </div>
 
           <div className="mt-6 border-t border-slate-100 dark:border-slate-800 pt-4">

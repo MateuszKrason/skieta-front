@@ -1,5 +1,5 @@
 import { useState, type FormEvent } from 'react'
-import { Link, useNavigate } from 'react-router-dom'
+import { Link, useNavigate, useSearchParams } from 'react-router-dom'
 import { AxiosError } from 'axios'
 import { useAuth } from '../auth/AuthContext'
 import AuthTopBar from '../components/AuthTopBar'
@@ -10,6 +10,8 @@ export default function Register() {
   const { register } = useAuth()
   const { t } = useLanguage()
   const navigate = useNavigate()
+  const [searchParams] = useSearchParams()
+  const inviteToken = searchParams.get('token') ?? ''
   const [firstName, setFirstName] = useState('')
   const [lastName, setLastName] = useState('')
   const [username, setUsername] = useState('')
@@ -24,7 +26,7 @@ export default function Register() {
     setError(null)
     setSubmitting(true)
     try {
-      await register(username, email, password, firstName, lastName, baseCurrency)
+      await register(username, email, password, firstName, lastName, baseCurrency, inviteToken)
       navigate('/onboarding')
     } catch (err) {
       if (err instanceof AxiosError && err.response?.data) {
@@ -38,11 +40,31 @@ export default function Register() {
     }
   }
 
+  if (!inviteToken) {
+    return (
+      <div className="flex min-h-screen items-center justify-center bg-slate-50 dark:bg-slate-900">
+        <AuthTopBar />
+        <div className="w-full max-w-sm rounded-xl border border-slate-200 dark:border-slate-700 bg-white dark:bg-slate-800 p-8 text-center shadow-sm">
+          <h1 className="mb-1 flex items-center justify-center gap-2 text-2xl font-bold text-accent-700 dark:text-accent-400">
+            <SockLogo className="h-8 w-8" />
+            Skieta
+          </h1>
+          <p className="mt-4 text-sm text-slate-600 dark:text-slate-300">
+            {t('Rejestracja jest dostępna tylko na zaproszenie od innego użytkownika — poproś o link lub zeskanuj kod QR.')}
+          </p>
+          <Link to="/login" className="mt-6 inline-block font-medium text-accent-700 dark:text-accent-400 hover:underline">
+            {t('Masz już konto? Zaloguj się')}
+          </Link>
+        </div>
+      </div>
+    )
+  }
+
   return (
     <div className="flex min-h-screen items-center justify-center bg-slate-50 dark:bg-slate-900">
       <AuthTopBar />
       <form onSubmit={onSubmit} className="w-full max-w-sm rounded-xl border border-slate-200 dark:border-slate-700 bg-white dark:bg-slate-800 p-8 shadow-sm">
-        <h1 className="mb-1 flex items-center gap-2 text-2xl font-bold text-emerald-700 dark:text-emerald-400">
+        <h1 className="mb-1 flex items-center gap-2 text-2xl font-bold text-accent-700 dark:text-accent-400">
           <SockLogo className="h-8 w-8" />
           Skieta
         </h1>
@@ -51,7 +73,7 @@ export default function Register() {
           <label className="block flex-1 text-sm">
             {t('Imię')}
             <input
-              className="mt-1 w-full rounded-md border border-slate-300 dark:border-slate-600 px-3 py-2 text-sm focus:border-emerald-500 focus:outline-none"
+              className="mt-1 w-full rounded-md border border-slate-300 dark:border-slate-600 px-3 py-2 text-sm focus:border-accent-500 focus:outline-none"
               value={firstName}
               onChange={(e) => setFirstName(e.target.value)}
               required
@@ -60,7 +82,7 @@ export default function Register() {
           <label className="block flex-1 text-sm">
             {t('Nazwisko')}
             <input
-              className="mt-1 w-full rounded-md border border-slate-300 dark:border-slate-600 px-3 py-2 text-sm focus:border-emerald-500 focus:outline-none"
+              className="mt-1 w-full rounded-md border border-slate-300 dark:border-slate-600 px-3 py-2 text-sm focus:border-accent-500 focus:outline-none"
               value={lastName}
               onChange={(e) => setLastName(e.target.value)}
               required
@@ -70,7 +92,7 @@ export default function Register() {
         <label className="mb-3 block text-sm">
           {t('Login')}
           <input
-            className="mt-1 w-full rounded-md border border-slate-300 dark:border-slate-600 px-3 py-2 text-sm focus:border-emerald-500 focus:outline-none"
+            className="mt-1 w-full rounded-md border border-slate-300 dark:border-slate-600 px-3 py-2 text-sm focus:border-accent-500 focus:outline-none"
             value={username}
             onChange={(e) => setUsername(e.target.value)}
             required
@@ -80,7 +102,7 @@ export default function Register() {
           Email
           <input
             type="email"
-            className="mt-1 w-full rounded-md border border-slate-300 dark:border-slate-600 px-3 py-2 text-sm focus:border-emerald-500 focus:outline-none"
+            className="mt-1 w-full rounded-md border border-slate-300 dark:border-slate-600 px-3 py-2 text-sm focus:border-accent-500 focus:outline-none"
             value={email}
             onChange={(e) => setEmail(e.target.value)}
           />
@@ -89,7 +111,7 @@ export default function Register() {
           {t('Hasło')}
           <input
             type="password"
-            className="mt-1 w-full rounded-md border border-slate-300 dark:border-slate-600 px-3 py-2 text-sm focus:border-emerald-500 focus:outline-none"
+            className="mt-1 w-full rounded-md border border-slate-300 dark:border-slate-600 px-3 py-2 text-sm focus:border-accent-500 focus:outline-none"
             value={password}
             onChange={(e) => setPassword(e.target.value)}
             required
@@ -98,7 +120,7 @@ export default function Register() {
         <label className="mb-4 block text-sm">
           {t('Domyślna waluta')}
           <select
-            className="mt-1 w-full rounded-md border border-slate-300 dark:border-slate-600 px-3 py-2 text-sm focus:border-emerald-500 focus:outline-none"
+            className="mt-1 w-full rounded-md border border-slate-300 dark:border-slate-600 px-3 py-2 text-sm focus:border-accent-500 focus:outline-none"
             value={baseCurrency}
             onChange={(e) => setBaseCurrency(e.target.value)}
           >
@@ -117,13 +139,13 @@ export default function Register() {
         <button
           type="submit"
           disabled={submitting}
-          className="w-full rounded-md bg-emerald-600 py-2 text-sm font-semibold text-white hover:bg-emerald-700 disabled:opacity-60"
+          className="w-full rounded-md bg-accent-600 py-2 text-sm font-semibold text-white hover:bg-accent-700 disabled:opacity-60"
         >
           {submitting ? t('Tworzenie konta…') : t('Zarejestruj się')}
         </button>
         <p className="mt-4 text-center text-sm text-slate-500 dark:text-slate-400">
           {t('Masz już konto?')}{' '}
-          <Link to="/login" className="font-medium text-emerald-700 dark:text-emerald-400 hover:underline">
+          <Link to="/login" className="font-medium text-accent-700 dark:text-accent-400 hover:underline">
             {t('Zaloguj się')}
           </Link>
         </p>

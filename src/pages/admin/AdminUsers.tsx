@@ -1,11 +1,12 @@
 import { useState } from 'react'
 import { useMutation, useQuery, useQueryClient } from '@tanstack/react-query'
+import { Link } from 'react-router-dom'
 import { Bar, BarChart, ResponsiveContainer, Tooltip, XAxis, YAxis } from 'recharts'
-import { api } from '../api/client'
-import { Spinner } from '../components/Loader'
-import { useLanguage } from '../i18n/LanguageContext'
-import { formatDate, formatDateTime } from '../lib/format'
-import type { AdminActivityStats, AdminUser } from '../types'
+import { api } from '../../api/client'
+import { Spinner } from '../../components/Loader'
+import { useLanguage } from '../../i18n/LanguageContext'
+import { formatDate, formatDateTime } from '../../lib/format'
+import type { AdminActivityStats, AdminUser } from '../../types'
 
 function StatCard({ label, value }: { label: string; value: string | number }) {
   return (
@@ -16,7 +17,7 @@ function StatCard({ label, value }: { label: string; value: string | number }) {
   )
 }
 
-export default function Admin() {
+export default function AdminUsers() {
   const { t } = useLanguage()
   const queryClient = useQueryClient()
   const [search, setSearch] = useState('')
@@ -51,13 +52,6 @@ export default function Admin() {
 
   return (
     <div className="space-y-6">
-      <div>
-        <h1 className="text-2xl font-bold text-slate-900 dark:text-slate-100">{t('Panel administratora')}</h1>
-        <p className="text-sm text-slate-500 dark:text-slate-400">
-          {t('Użytkownicy aplikacji i ich aktywność')}
-        </p>
-      </div>
-
       <div className="grid grid-cols-2 gap-4 sm:grid-cols-3 lg:grid-cols-5">
         <StatCard label={t('Użytkownicy łącznie')} value={stats?.total_users ?? '—'} />
         <StatCard label={t('Aktywni dzisiaj')} value={stats?.active_today ?? '—'} />
@@ -149,7 +143,12 @@ export default function Admin() {
             {(users ?? []).map((u) => (
               <tr key={u.id} className="border-b border-slate-100 dark:border-slate-800 last:border-0">
                 <td className="px-4 py-2 font-medium">
-                  {u.username} {u.is_staff && <span className="ml-1 text-xs text-emerald-600 dark:text-emerald-400">(admin)</span>}
+                  <Link to={`/admin/uzytkownicy/${u.id}`} className="hover:underline">
+                    {u.username}
+                  </Link>{' '}
+                  {u.is_staff && <span className="ml-1 text-xs text-accent-600 dark:text-accent-400">(admin)</span>}
+                  {u.is_editor && <span className="ml-1 text-xs text-accent-600 dark:text-accent-400">(redaktor)</span>}
+                  {u.is_archived && <span className="ml-1 text-xs text-slate-400 dark:text-slate-500">(zarchiwizowane)</span>}
                 </td>
                 <td className="px-4 py-2 text-slate-500 dark:text-slate-400">{u.email}</td>
                 <td className="px-4 py-2 text-xs text-slate-400 dark:text-slate-500">{formatDateTime(u.date_joined)}</td>
@@ -164,7 +163,7 @@ export default function Admin() {
                   <span
                     className={`rounded-full px-2 py-0.5 text-xs font-medium ${
                       u.email_verified
-                        ? 'bg-emerald-100 dark:bg-emerald-900/40 text-emerald-700 dark:text-emerald-400'
+                        ? 'bg-accent-100 dark:bg-accent-900/40 text-accent-700 dark:text-accent-400'
                         : 'bg-slate-100 dark:bg-slate-700 text-slate-500 dark:text-slate-400'
                     }`}
                   >
@@ -183,13 +182,21 @@ export default function Admin() {
                   </span>
                 </td>
                 <td className="px-4 py-2 text-right">
-                  <button
-                    onClick={() => toggleActive.mutate(u.id)}
-                    disabled={toggleActive.isPending}
-                    className="text-xs font-medium text-emerald-700 dark:text-emerald-400 hover:underline disabled:opacity-50"
-                  >
-                    {u.is_active ? t('Zablokuj') : t('Odblokuj')}
-                  </button>
+                  <div className="flex flex-col items-end gap-1">
+                    <Link
+                      to={`/admin/uzytkownicy/${u.id}`}
+                      className="text-xs font-medium text-accent-700 dark:text-accent-400 hover:underline"
+                    >
+                      {t('Szczegóły')}
+                    </Link>
+                    <button
+                      onClick={() => toggleActive.mutate(u.id)}
+                      disabled={toggleActive.isPending}
+                      className="text-xs font-medium text-accent-700 dark:text-accent-400 hover:underline disabled:opacity-50"
+                    >
+                      {u.is_active ? t('Zablokuj') : t('Odblokuj')}
+                    </button>
+                  </div>
                 </td>
               </tr>
             ))}

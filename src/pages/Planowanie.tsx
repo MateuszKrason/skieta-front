@@ -170,7 +170,7 @@ export default function Planowanie() {
           <h2 className="text-sm font-semibold text-slate-700 dark:text-slate-300">{t('Cele oszczędnościowe')}</h2>
           <button
             onClick={() => setShowAddGoal((v) => !v)}
-            className="rounded-md bg-emerald-600 px-3 py-1.5 text-sm font-medium text-white hover:bg-emerald-700"
+            className="rounded-md bg-accent-600 px-3 py-1.5 text-sm font-medium text-white hover:bg-accent-700"
           >
             {t('+ Cel')}
           </button>
@@ -210,7 +210,7 @@ export default function Planowanie() {
           </div>
           <button
             onClick={() => setShowAddFixed((v) => !v)}
-            className="rounded-md bg-emerald-600 px-3 py-1.5 text-sm font-medium text-white hover:bg-emerald-700"
+            className="rounded-md bg-accent-600 px-3 py-1.5 text-sm font-medium text-white hover:bg-accent-700"
           >
             {t('+ Stały koszt')}
           </button>
@@ -246,7 +246,7 @@ export default function Planowanie() {
           <h2 className="text-sm font-semibold text-slate-700 dark:text-slate-300">{t('Duże wydatki')}</h2>
           <button
             onClick={() => setShowAddExpense((v) => !v)}
-            className="rounded-md bg-emerald-600 px-3 py-1.5 text-sm font-medium text-white hover:bg-emerald-700"
+            className="rounded-md bg-accent-600 px-3 py-1.5 text-sm font-medium text-white hover:bg-accent-700"
           >
             {t('+ Wydatek')}
           </button>
@@ -288,7 +288,7 @@ export default function Planowanie() {
                   </span>
                   <button
                     onClick={() => togglePaid.mutate({ id: e.id, is_paid: !e.is_paid })}
-                    className="text-xs font-medium text-emerald-700 dark:text-emerald-400 hover:underline"
+                    className="text-xs font-medium text-accent-700 dark:text-accent-400 hover:underline"
                   >
                     {e.is_paid ? t('Cofnij') : t('Opłacone')}
                   </button>
@@ -345,7 +345,7 @@ function SalaryForm({ plan, onDone }: { plan: BudgetPlan | undefined; onDone: ()
     return (
       <button
         onClick={startEditing}
-        className="text-xs font-medium text-emerald-700 dark:text-emerald-400 hover:underline"
+        className="text-xs font-medium text-accent-700 dark:text-accent-400 hover:underline"
       >
         {plan?.payday_day
           ? t('Pensja i dzień wypłaty ({0}. dnia miesiąca) — zmień', plan.payday_day)
@@ -569,7 +569,7 @@ function GoalRow({
           )}
         </div>
         <div className="flex items-center gap-2">
-          <button onClick={() => setMode('contribute')} className="text-xs font-medium text-emerald-700 dark:text-emerald-400 hover:underline">
+          <button onClick={() => setMode('contribute')} className="text-xs font-medium text-accent-700 dark:text-accent-400 hover:underline">
             {t('Zarezerwuj z wypłaty')}
           </button>
           <button onClick={() => setMode('edit')} className="text-xs font-medium text-slate-600 dark:text-slate-400 hover:underline">
@@ -687,7 +687,7 @@ function GoalEditForm({
   }
 
   return (
-    <form onSubmit={onSubmit} className="grid grid-cols-2 gap-3 rounded-md border border-emerald-200 dark:border-emerald-800 bg-white dark:bg-slate-800 p-3 sm:grid-cols-6">
+    <form onSubmit={onSubmit} className="grid grid-cols-2 gap-3 rounded-md border border-accent-200 dark:border-accent-800 bg-white dark:bg-slate-800 p-3 sm:grid-cols-6">
       <Field label="Nazwa celu">
         <input value={name} onChange={(e) => setName(e.target.value)} required className="input" />
       </Field>
@@ -915,7 +915,7 @@ function RecurringExpenseRow({
         {expense.notes && <span className="text-slate-400 dark:text-slate-500"> — {expense.notes}</span>}
       </span>
       <span className="flex items-center gap-3">
-        <button onClick={onToggleActive} className="text-xs font-medium text-emerald-700 dark:text-emerald-400 hover:underline">
+        <button onClick={onToggleActive} className="text-xs font-medium text-accent-700 dark:text-accent-400 hover:underline">
           {expense.is_active ? t('Zatrzymaj') : t('Wznów')}
         </button>
         <button onClick={() => setEditing(true)} className="text-xs font-medium text-slate-600 dark:text-slate-400 hover:underline">
@@ -967,7 +967,7 @@ function RecurringExpenseEditForm({
   }
 
   return (
-    <form onSubmit={onSubmit} className="grid grid-cols-2 gap-3 rounded-md border border-emerald-200 dark:border-emerald-800 bg-white dark:bg-slate-800 p-3 sm:grid-cols-6">
+    <form onSubmit={onSubmit} className="grid grid-cols-2 gap-3 rounded-md border border-accent-200 dark:border-accent-800 bg-white dark:bg-slate-800 p-3 sm:grid-cols-6">
       <Field label="Nazwa kosztu">
         <input value={name} onChange={(e) => setName(e.target.value)} required className="input" />
       </Field>

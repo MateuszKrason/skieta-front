@@ -118,7 +118,7 @@ export default function Bilans() {
           </button>
           <button
             onClick={() => setShowAddTx((v) => !v)}
-            className="rounded-md bg-emerald-600 px-3 py-1.5 text-sm font-medium text-white hover:bg-emerald-700"
+            className="rounded-md bg-accent-600 px-3 py-1.5 text-sm font-medium text-white hover:bg-accent-700"
           >
             {t('+ Przychód / wydatek')}
           </button>

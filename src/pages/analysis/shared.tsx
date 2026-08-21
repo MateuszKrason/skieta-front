@@ -111,7 +111,7 @@ export function PeriodSelector({
           key={key}
           onClick={() => setPreset(key)}
           className={`rounded-full px-3 py-1 text-sm font-medium ${
-            preset === key ? 'bg-emerald-600 text-white' : 'bg-white dark:bg-slate-800 text-slate-600 dark:text-slate-400 border border-slate-200 dark:border-slate-700 hover:bg-slate-100 dark:hover:bg-slate-700'
+            preset === key ? 'bg-accent-600 text-white' : 'bg-white dark:bg-slate-800 text-slate-600 dark:text-slate-400 border border-slate-200 dark:border-slate-700 hover:bg-slate-100 dark:hover:bg-slate-700'
           }`}
         >
           {t(label)}
@@ -124,6 +124,37 @@ export function PeriodSelector({
           <input type="date" value={customTo} onChange={(e) => setCustomTo(e.target.value)} className="input w-auto" />
         </>
       )}
+    </div>
+  )
+}
+
+/** Small pie/bar toggle for charts that can reasonably render either way —
+ * reusable anywhere a chart offers more than one chart type, not just here. */
+export function ChartTypeSwitcher({
+  value,
+  onChange,
+}: {
+  value: 'pie' | 'bar'
+  onChange: (value: 'pie' | 'bar') => void
+}) {
+  const { t } = useLanguage()
+  return (
+    <div className="flex overflow-hidden rounded-md border border-slate-200 dark:border-slate-700 text-xs">
+      {(['pie', 'bar'] as const).map((type) => (
+        <button
+          key={type}
+          type="button"
+          onClick={() => onChange(type)}
+          title={type === 'pie' ? t('Wykres kołowy') : t('Wykres słupkowy')}
+          className={`px-2 py-1 ${
+            value === type
+              ? 'bg-accent-100 dark:bg-accent-900/50 text-accent-700 dark:text-accent-400'
+              : 'bg-white dark:bg-slate-800 text-slate-500 dark:text-slate-400 hover:bg-slate-100 dark:hover:bg-slate-700'
+          }`}
+        >
+          {type === 'pie' ? '◔' : '▤'}
+        </button>
+      ))}
     </div>
   )
 }
@@ -153,11 +184,15 @@ export function CategoryPieCard({
   palette?: string[]
 }) {
   const { t } = useLanguage()
+  const [chartType, setChartType] = useState<'pie' | 'bar'>('pie')
   const data = rows.map((r) => ({ id: r.category?.id ?? null, name: r.category?.name ?? t('Bez kategorii'), value: Number(r.total) }))
 
   return (
     <div className="rounded-xl border border-slate-200 dark:border-slate-700 bg-white dark:bg-slate-800 p-5 shadow-sm">
-      <h2 className="mb-3 text-sm font-semibold text-slate-700 dark:text-slate-300">{t(title)}</h2>
+      <div className="mb-3 flex items-center justify-between">
+        <h2 className="text-sm font-semibold text-slate-700 dark:text-slate-300">{t(title)}</h2>
+        <ChartTypeSwitcher value={chartType} onChange={setChartType} />
+      </div>
       {loading ? (
         <CardLoader />
       ) : data.length === 0 ? (
@@ -165,15 +200,29 @@ export function CategoryPieCard({
       ) : (
         <div className="h-64">
           <ResponsiveContainer width="100%" height="100%">
-            <PieChart>
-              <Pie data={data} dataKey="value" nameKey="name" innerRadius={55} outerRadius={90} paddingAngle={2}>
-                {data.map((_, i) => (
-                  <Cell key={i} fill={palette[i % palette.length]} />
-                ))}
-              </Pie>
-              <Tooltip formatter={(value) => formatMoney(value as number, 'PLN')} />
-              <Legend />
-            </PieChart>
+            {chartType === 'pie' ? (
+              <PieChart>
+                <Pie data={data} dataKey="value" nameKey="name" innerRadius={55} outerRadius={90} paddingAngle={2}>
+                  {data.map((_, i) => (
+                    <Cell key={i} fill={palette[i % palette.length]} />
+                  ))}
+                </Pie>
+                <Tooltip formatter={(value) => formatMoney(value as number, 'PLN')} />
+                <Legend />
+              </PieChart>
+            ) : (
+              <BarChart data={data} layout="vertical" margin={{ left: 24 }}>
+                <CartesianGrid strokeDasharray="3 3" stroke="#94a3b8" strokeOpacity={0.15} horizontal={false} />
+                <XAxis type="number" tick={{ fontSize: 11 }} stroke="#94a3b8" />
+                <YAxis type="category" dataKey="name" tick={{ fontSize: 11 }} stroke="#94a3b8" width={100} />
+                <Tooltip formatter={(value) => formatMoney(value as number, 'PLN')} />
+                <Bar dataKey="value" radius={[0, 3, 3, 0]}>
+                  {data.map((_, i) => (
+                    <Cell key={i} fill={palette[i % palette.length]} />
+                  ))}
+                </Bar>
+              </BarChart>
+            )}
           </ResponsiveContainer>
         </div>
       )}
@@ -184,7 +233,7 @@ export function CategoryPieCard({
             onClick={() => onSelectCategory?.(selectedCategoryId === (r.category?.id ?? null) ? null : r.category?.id ?? null)}
             className={`flex w-full items-center justify-between rounded-md px-1.5 py-1 text-xs transition ${
               onSelectCategory ? 'cursor-pointer hover:bg-slate-50 dark:hover:bg-slate-700' : ''
-            } ${selectedCategoryId === (r.category?.id ?? null) && onSelectCategory ? 'bg-emerald-50 dark:bg-emerald-900/30 ring-1 ring-emerald-200 dark:ring-emerald-800' : ''}`}
+            } ${selectedCategoryId === (r.category?.id ?? null) && onSelectCategory ? 'bg-accent-50 dark:bg-accent-900/30 ring-1 ring-accent-200 dark:ring-accent-800' : ''}`}
           >
             <span className="flex items-center gap-2">
               <span className="h-2 w-2 rounded-full" style={{ backgroundColor: palette[i % palette.length] }} />
@@ -278,7 +327,7 @@ export function CategoryTrendChart({
                   key={id ?? 'none'}
                   onClick={() => onSelectCategory(active ? null : id)}
                   className={`flex items-center gap-1.5 rounded-full border px-2.5 py-1 text-xs font-medium transition ${
-                    active ? 'border-emerald-400 dark:border-emerald-600 bg-emerald-50 dark:bg-emerald-900/30 text-emerald-700 dark:text-emerald-400' : 'border-slate-200 dark:border-slate-700 text-slate-600 dark:text-slate-400 hover:bg-slate-50 dark:hover:bg-slate-700'
+                    active ? 'border-accent-400 dark:border-accent-600 bg-accent-50 dark:bg-accent-900/30 text-accent-700 dark:text-accent-400' : 'border-slate-200 dark:border-slate-700 text-slate-600 dark:text-slate-400 hover:bg-slate-50 dark:hover:bg-slate-700'
                   }`}
                 >
                   <span className="h-2 w-2 rounded-full" style={{ backgroundColor: palette[i % palette.length] }} />
@@ -368,7 +417,7 @@ export function TransactionList({
                 {tx.tags_detail.map((tag) => (
                   <span
                     key={tag.id}
-                    className="ml-1 rounded-full bg-emerald-50 dark:bg-emerald-900/30 px-2 py-0.5 text-xs text-emerald-700 dark:text-emerald-400"
+                    className="ml-1 rounded-full bg-accent-50 dark:bg-accent-900/30 px-2 py-0.5 text-xs text-accent-700 dark:text-accent-400"
                   >
                     #{tag.name}
                   </span>
@@ -378,7 +427,7 @@ export function TransactionList({
                 <span className="text-slate-400 dark:text-slate-500">{formatDate(tx.date)}</span>
                 <button
                   onClick={() => setEditingId(tx.id)}
-                  className="text-xs font-medium text-emerald-700 dark:text-emerald-400 hover:underline"
+                  className="text-xs font-medium text-accent-700 dark:text-accent-400 hover:underline"
                 >
                   {t('Kategoria/sklep/tagi')}
                 </button>
@@ -442,7 +491,7 @@ function TagPicker({ selected, onToggle }: { selected: number[]; onToggle: (id: 
             onClick={() => onToggle(tag.id)}
             className={`rounded-full border px-2.5 py-1 text-xs font-medium transition ${
               selected.includes(tag.id)
-                ? 'border-emerald-400 dark:border-emerald-600 bg-emerald-50 dark:bg-emerald-900/30 text-emerald-700 dark:text-emerald-400'
+                ? 'border-accent-400 dark:border-accent-600 bg-accent-50 dark:bg-accent-900/30 text-accent-700 dark:text-accent-400'
                 : 'border-slate-200 dark:border-slate-700 text-slate-600 dark:text-slate-400 hover:bg-slate-50 dark:hover:bg-slate-700'
             }`}
           >
@@ -473,7 +522,7 @@ function TagPicker({ selected, onToggle }: { selected: number[]; onToggle: (id: 
               type="button"
               onClick={submitNewTag}
               disabled={addTag.isPending}
-              className="rounded-full bg-emerald-600 px-2.5 py-1 text-xs font-medium text-white hover:bg-emerald-700 disabled:opacity-60"
+              className="rounded-full bg-accent-600 px-2.5 py-1 text-xs font-medium text-white hover:bg-accent-700 disabled:opacity-60"
             >
               {t('Dodaj')}
             </button>
@@ -493,7 +542,7 @@ function TagPicker({ selected, onToggle }: { selected: number[]; onToggle: (id: 
           <button
             type="button"
             onClick={() => setAdding(true)}
-            className="rounded-full border border-dashed border-slate-300 dark:border-slate-600 px-2.5 py-1 text-xs font-medium text-slate-500 dark:text-slate-400 hover:border-emerald-400 dark:hover:border-emerald-600 hover:text-emerald-700 dark:hover:text-emerald-400"
+            className="rounded-full border border-dashed border-slate-300 dark:border-slate-600 px-2.5 py-1 text-xs font-medium text-slate-500 dark:text-slate-400 hover:border-accent-400 dark:hover:border-accent-600 hover:text-accent-700 dark:hover:text-accent-400"
           >
             {t('+ Dodaj tag')}
           </button>
@@ -661,7 +710,9 @@ export function CategoryManager({ type }: { type: BudgetType }) {
 
   return (
     <div className="rounded-xl border border-slate-200 dark:border-slate-700 bg-white dark:bg-slate-800 p-5 shadow-sm">
-      <h2 className="mb-3 text-sm font-semibold text-slate-700 dark:text-slate-300">{t('Kategorie')}</h2>
+      <h2 className="mb-3 text-sm font-semibold text-slate-700 dark:text-slate-300">
+        {type === 'income' ? t('Kategorie przychodów') : t('Kategorie wydatków')}
+      </h2>
       <div className="flex flex-wrap gap-2">
         {(categories ?? []).map((c) => (
           <span
@@ -936,7 +987,7 @@ export function TagManager({
               onSelectTag ? 'cursor-pointer' : ''
             } ${
               selectedTagId === tag.id
-                ? 'border-emerald-400 dark:border-emerald-600 bg-emerald-50 dark:bg-emerald-900/30 text-emerald-700 dark:text-emerald-400'
+                ? 'border-accent-400 dark:border-accent-600 bg-accent-50 dark:bg-accent-900/30 text-accent-700 dark:text-accent-400'
                 : 'border-slate-200 dark:border-slate-700 bg-slate-50 dark:bg-slate-900 text-slate-600 dark:text-slate-400'
             }`}
           >
@@ -1099,7 +1150,7 @@ export function StoreBreakdownCard({
                   key={id ?? 'none'}
                   onClick={() => onSelectStore(active ? null : id)}
                   className={`flex w-full items-center justify-between rounded-md px-1.5 py-1 text-xs transition hover:bg-slate-50 dark:hover:bg-slate-700 ${
-                    active ? 'bg-emerald-50 dark:bg-emerald-900/30 ring-1 ring-emerald-200 dark:ring-emerald-800' : ''
+                    active ? 'bg-accent-50 dark:bg-accent-900/30 ring-1 ring-accent-200 dark:ring-accent-800' : ''
                   }`}
                 >
                   <span className="flex items-center gap-2">
@@ -1182,7 +1233,7 @@ export function TagBreakdownCard({
                   key={id ?? 'none'}
                   onClick={() => onSelectTag(active ? null : id)}
                   className={`flex w-full items-center justify-between rounded-md px-1.5 py-1 text-xs transition hover:bg-slate-50 dark:hover:bg-slate-700 ${
-                    active ? 'bg-emerald-50 dark:bg-emerald-900/30 ring-1 ring-emerald-200 dark:ring-emerald-800' : ''
+                    active ? 'bg-accent-50 dark:bg-accent-900/30 ring-1 ring-accent-200 dark:ring-accent-800' : ''
                   }`}
                 >
                   <span className="flex items-center gap-2">
@@ -1251,7 +1302,7 @@ export function FlexibleTrendChart() {
                 onClick={() => setChartType(ct)}
                 className={`rounded px-2 py-1 text-xs font-medium ${
                   chartType === ct
-                    ? 'bg-emerald-600 text-white'
+                    ? 'bg-accent-600 text-white'
                     : 'text-slate-600 dark:text-slate-400 hover:bg-slate-100 dark:hover:bg-slate-700'
                 }`}
               >
@@ -1275,7 +1326,7 @@ export function FlexibleTrendChart() {
             onClick={() => toggleMetric(metric)}
             className={`flex items-center gap-1.5 rounded-full border px-2.5 py-1 text-xs font-medium transition ${
               metrics.includes(metric)
-                ? 'border-emerald-400 dark:border-emerald-600 bg-emerald-50 dark:bg-emerald-900/30 text-emerald-700 dark:text-emerald-400'
+                ? 'border-accent-400 dark:border-accent-600 bg-accent-50 dark:bg-accent-900/30 text-accent-700 dark:text-accent-400'
                 : 'border-slate-200 dark:border-slate-700 text-slate-600 dark:text-slate-400 hover:bg-slate-50 dark:hover:bg-slate-700'
             }`}
           >

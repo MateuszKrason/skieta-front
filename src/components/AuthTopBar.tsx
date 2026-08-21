@@ -20,10 +20,16 @@ export default function AuthTopBar() {
       </button>
       <button
         onClick={toggleTheme}
-        title={theme === 'dark' ? t('Przełącz na jasny motyw') : t('Przełącz na ciemny motyw')}
+        title={
+          theme === 'light'
+            ? t('Przełącz na ciemny motyw')
+            : theme === 'dark'
+              ? t('Przełącz na lawendowy motyw')
+              : t('Przełącz na jasny motyw')
+        }
         className="rounded-md border border-slate-300 dark:border-slate-600 bg-white dark:bg-slate-800 px-2.5 py-1 text-slate-600 dark:text-slate-400 hover:bg-slate-100 dark:hover:bg-slate-700"
       >
-        {theme === 'dark' ? '☀️' : '🌙'}
+        {theme === 'light' ? '🌙' : theme === 'dark' ? '🌸' : '☀️'}
       </button>
     </div>
   )

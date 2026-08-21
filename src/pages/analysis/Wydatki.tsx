@@ -7,14 +7,12 @@ import type { BankAccount, BudgetTransaction, Category, CategoryBreakdown } from
 import {
   AddCategoryForm,
   AddTransactionForm,
-  CategoryManager,
   CategoryPieCard,
   CategoryTrendChart,
   EXPENSE_PALETTE,
   PeriodSelector,
   StatCard,
   StoreBreakdownCard,
-  StoreManager,
   TransactionList,
   usePeriodRange,
 } from './shared'
@@ -111,7 +109,7 @@ export default function Wydatki() {
           </button>
           <button
             onClick={() => setShowAddTx((v) => !v)}
-            className="rounded-md bg-emerald-600 px-3 py-1.5 text-sm font-medium text-white hover:bg-emerald-700"
+            className="rounded-md bg-accent-600 px-3 py-1.5 text-sm font-medium text-white hover:bg-accent-700"
           >
             {t('+ Wydatek')}
           </button>
@@ -145,8 +143,6 @@ export default function Wydatki() {
 
       <StatCard label={t('Wydatki w okresie')} value={formatMoney(breakdown?.expense_total, 'PLN')} tone="negative" />
 
-      <CategoryManager type="expense" />
-
       <div className="grid grid-cols-1 gap-4 lg:grid-cols-2">
         <CategoryPieCard
           title="Wydatki wg kategorii"
@@ -164,8 +160,6 @@ export default function Wydatki() {
           palette={EXPENSE_PALETTE}
         />
       </div>
-
-      <StoreManager />
 
       <StoreBreakdownCard
         dateFrom={period.range.from}
