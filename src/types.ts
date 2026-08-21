@@ -57,6 +57,48 @@ export interface PortfolioSummary {
   total_unrealized_pl_after_tax_pct: string | null
 }
 
+export interface AllocationRow {
+  stock: Stock
+  value_base: string
+  pct: string
+  unrealized_pl_after_tax_base: string | null
+  unrealized_pl_pct: string | null
+}
+
+export interface MarketBreakdownRow {
+  market: Market
+  value_base: string
+  pct: string
+}
+
+export interface CurrencyBreakdownRow {
+  currency: Currency
+  value_base: string
+  pct: string
+}
+
+export interface RealizedPlYearRow {
+  year: number
+  realized_pl: string
+}
+
+export interface PortfolioAnalytics {
+  total_value_base: string
+  allocation: AllocationRow[]
+  by_market: MarketBreakdownRow[]
+  by_currency: CurrencyBreakdownRow[]
+  concentration_hhi: string | null
+  top_holding: AllocationRow | null
+  winners_count: number
+  losers_count: number
+  flat_count: number
+  best_performer: AllocationRow | null
+  worst_performer: AllocationRow | null
+  avg_days_held: number | null
+  realized_pl_total: string
+  realized_pl_by_year: RealizedPlYearRow[]
+}
+
 export type BankAccountType = 'checking' | 'savings' | 'brokerage' | 'business' | 'ike' | 'ikze' | 'crypto'
 
 export interface BankAccount {
@@ -414,6 +456,7 @@ export interface BudgetPlan {
   id: number
   monthly_salary: string
   currency: Currency
+  payday_day: number | null
   updated_at: string
 }
 
@@ -428,6 +471,17 @@ export interface SavingsGoal {
   target_date: string | null
   notes: string
   progress_pct: string | null
+  paydays_remaining: number | null
+  suggested_contribution_per_payday: string | null
+  created_at: string
+}
+
+export interface SavingsGoalContribution {
+  id: number
+  goal: number
+  amount: string
+  date: string
+  note: string
   created_at: string
 }
 
@@ -442,9 +496,23 @@ export interface PlannedExpense {
   created_at: string
 }
 
+export interface RecurringExpense {
+  id: number
+  category: number | null
+  category_detail: Category | null
+  name: string
+  amount: string
+  currency: Currency
+  billing_day: number | null
+  is_active: boolean
+  notes: string
+  created_at: string
+}
+
 export interface PlanningSummary {
   monthly_salary: string
   avg_monthly_expense: string
+  total_monthly_fixed_costs: string
   free_monthly_budget: string
   current_savings: string
   total_reserved_for_goals: string

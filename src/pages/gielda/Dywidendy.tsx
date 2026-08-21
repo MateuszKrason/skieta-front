@@ -2,6 +2,7 @@ import { useMemo, useState, type FormEvent } from 'react'
 import { useMutation, useQuery, useQueryClient } from '@tanstack/react-query'
 import { Area, AreaChart, Bar, BarChart, CartesianGrid, Cell, Legend, Pie, PieChart, ResponsiveContainer, Tooltip, XAxis, YAxis } from 'recharts'
 import { api } from '../../api/client'
+import { CardLoader, PageLoader } from '../../components/Loader'
 import { useLanguage } from '../../i18n/LanguageContext'
 import { formatAxisValue, formatDate, formatMoney, formatPct } from '../../lib/format'
 import type { Dividend, DividendSummary, Stock } from '../../types'
@@ -46,12 +47,12 @@ export default function Dywidendy() {
     },
   })
 
-  const { data: summary } = useQuery({
+  const { data: summary, isLoading: summaryLoading } = useQuery({
     queryKey: ['dividend-summary'],
     queryFn: async () => (await api.get<DividendSummary>('/dividends/summary/')).data,
   })
 
-  const { data: dividends } = useQuery({
+  const { data: dividends, isLoading: dividendsLoading } = useQuery({
     queryKey: ['dividends', stockFilter],
     queryFn: async () =>
       (await api.get<Dividend[]>('/dividends/', { params: stockFilter ? { stock: stockFilter } : {} })).data,
@@ -62,7 +63,7 @@ export default function Dywidendy() {
     queryFn: async () => (await api.get<Stock[]>('/stocks/tickers/')).data,
   })
 
-  const { data: trend } = useQuery({
+  const { data: trend, isLoading: trendLoading } = useQuery({
     queryKey: ['dividend-trend', historyMonths, stockFilter],
     queryFn: async () =>
       (
@@ -72,7 +73,7 @@ export default function Dywidendy() {
       ).data,
   })
 
-  const { data: simulation } = useQuery({
+  const { data: simulation, isLoading: simulationLoading } = useQuery({
     queryKey: ['dividend-simulation', stockFilter],
     queryFn: async () =>
       (
@@ -82,7 +83,7 @@ export default function Dywidendy() {
       ).data,
   })
 
-  const { data: yearlySimulation } = useQuery({
+  const { data: yearlySimulation, isLoading: yearlySimulationLoading } = useQuery({
     queryKey: ['dividend-simulation-yearly', forecastYears, stockFilter],
     queryFn: async () =>
       (
@@ -109,6 +110,10 @@ export default function Dywidendy() {
     const estimated = Math.max(Number(row.total) - known, 0)
     return { month: row.month, known, estimated }
   })
+
+  if (summaryLoading || dividendsLoading) {
+    return <PageLoader />
+  }
 
   return (
     <div className="space-y-6">
@@ -222,15 +227,19 @@ export default function Dywidendy() {
             </select>
           </div>
           <div className="h-64">
-            <ResponsiveContainer width="100%" height="100%">
-              <BarChart data={trend ?? []}>
-                <CartesianGrid strokeDasharray="3 3" stroke="#94a3b8" strokeOpacity={0.15} />
-                <XAxis dataKey="month" tick={{ fontSize: 12 }} stroke="#94a3b8" />
-                <YAxis tickFormatter={formatAxisValue} tick={{ fontSize: 12 }} stroke="#94a3b8" width={40} />
-                <Tooltip formatter={(value) => formatMoney(value as number, base)} />
-                <Bar dataKey="total" name={t('Dywidendy')} fill="#059669" radius={[4, 4, 0, 0]} />
-              </BarChart>
-            </ResponsiveContainer>
+            {trendLoading ? (
+              <CardLoader />
+            ) : (
+              <ResponsiveContainer width="100%" height="100%">
+                <BarChart data={trend ?? []}>
+                  <CartesianGrid strokeDasharray="3 3" stroke="#94a3b8" strokeOpacity={0.15} />
+                  <XAxis dataKey="month" tick={{ fontSize: 12 }} stroke="#94a3b8" />
+                  <YAxis tickFormatter={formatAxisValue} tick={{ fontSize: 12 }} stroke="#94a3b8" width={40} />
+                  <Tooltip formatter={(value) => formatMoney(value as number, base)} />
+                  <Bar dataKey="total" name={t('Dywidendy')} fill="#059669" radius={[4, 4, 0, 0]} />
+                </BarChart>
+              </ResponsiveContainer>
+            )}
           </div>
         </div>
         <div className="rounded-xl border border-slate-200 dark:border-slate-700 bg-white dark:bg-slate-800 p-5 shadow-sm">
@@ -260,20 +269,24 @@ export default function Dywidendy() {
           {t('Suma dywidend narastająco ({0} mies.)', historyMonths)}
         </h2>
         <div className="h-56">
-          <ResponsiveContainer width="100%" height="100%">
-            <AreaChart data={cumulative}>
-              <defs>
-                <linearGradient id="dividendCumulativeGradient" x1="0" y1="0" x2="0" y2="1">
-                  <stop offset="0%" stopColor="#059669" stopOpacity={0.35} />
-                  <stop offset="100%" stopColor="#059669" stopOpacity={0} />
-                </linearGradient>
-              </defs>
-              <XAxis dataKey="month" tick={{ fontSize: 12 }} stroke="#94a3b8" />
-              <YAxis tickFormatter={formatAxisValue} tick={{ fontSize: 12 }} stroke="#94a3b8" width={40} />
-              <Tooltip formatter={(value) => formatMoney(value as number, base)} />
-              <Area type="monotone" dataKey="cumulative" stroke="#059669" fill="url(#dividendCumulativeGradient)" strokeWidth={2} />
-            </AreaChart>
-          </ResponsiveContainer>
+          {trendLoading ? (
+            <CardLoader />
+          ) : (
+            <ResponsiveContainer width="100%" height="100%">
+              <AreaChart data={cumulative}>
+                <defs>
+                  <linearGradient id="dividendCumulativeGradient" x1="0" y1="0" x2="0" y2="1">
+                    <stop offset="0%" stopColor="#059669" stopOpacity={0.35} />
+                    <stop offset="100%" stopColor="#059669" stopOpacity={0} />
+                  </linearGradient>
+                </defs>
+                <XAxis dataKey="month" tick={{ fontSize: 12 }} stroke="#94a3b8" />
+                <YAxis tickFormatter={formatAxisValue} tick={{ fontSize: 12 }} stroke="#94a3b8" width={40} />
+                <Tooltip formatter={(value) => formatMoney(value as number, base)} />
+                <Area type="monotone" dataKey="cumulative" stroke="#059669" fill="url(#dividendCumulativeGradient)" strokeWidth={2} />
+              </AreaChart>
+            </ResponsiveContainer>
+          )}
         </div>
       </div>
 
@@ -288,7 +301,9 @@ export default function Dywidendy() {
             'Kolor oznacza pewność: najbliższa spodziewana wypłata każdej spółki (ostatnia znana kwota) vs. dalsze miesiące (uwzględniające szacowany wzrost dywidendy).',
           )}
         </p>
-        {(simulation ?? []).every((row) => Number(row.total) === 0) ? (
+        {simulationLoading ? (
+          <CardLoader />
+        ) : (simulation ?? []).every((row) => Number(row.total) === 0) ? (
           <p className="text-slate-400 dark:text-slate-500">
             {t('Za mało historii wypłat dla posiadanych spółek, żeby oszacować przyszłość.')}
           </p>
@@ -325,7 +340,9 @@ export default function Dywidendy() {
             'To samo założenie co powyżej (obecne akcje i historyczny rytm wypłat), zsumowane rok do roku na dłuższym horyzoncie.',
           )}
         </p>
-        {(yearlySimulation ?? []).every((row) => Number(row.total) === 0) ? (
+        {yearlySimulationLoading ? (
+          <CardLoader />
+        ) : (yearlySimulation ?? []).every((row) => Number(row.total) === 0) ? (
           <p className="text-slate-400 dark:text-slate-500">
             {t('Za mało historii wypłat dla posiadanych spółek, żeby oszacować przyszłość.')}
           </p>

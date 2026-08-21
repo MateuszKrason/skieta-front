@@ -3,6 +3,7 @@ import { useQuery, useQueryClient } from '@tanstack/react-query'
 import { Link } from 'react-router-dom'
 import { Area, AreaChart, ResponsiveContainer, Tooltip, XAxis, YAxis } from 'recharts'
 import { api } from '../api/client'
+import { PageLoader } from '../components/Loader'
 import { useLanguage } from '../i18n/LanguageContext'
 import { formatAxisValue, formatDate, formatMoney, formatPct } from '../lib/format'
 import type { CategoryBreakdown, DashboardSummary, NetWorthSnapshot, PeriodKey } from '../types'
@@ -60,7 +61,7 @@ export default function Dashboard() {
   const latest = summary?.latest
 
   if (isLoading) {
-    return <p className="text-slate-500 dark:text-slate-400">{t('Ładowanie…')}</p>
+    return <PageLoader />
   }
 
   const allocation = latest

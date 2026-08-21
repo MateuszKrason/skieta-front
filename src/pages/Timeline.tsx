@@ -2,6 +2,7 @@ import { useState, type FormEvent } from 'react'
 import { useMutation, useQuery, useQueryClient } from '@tanstack/react-query'
 import { Area, AreaChart, ResponsiveContainer, Tooltip, XAxis, YAxis } from 'recharts'
 import { api } from '../api/client'
+import { CardLoader, PageLoader } from '../components/Loader'
 import { useLanguage } from '../i18n/LanguageContext'
 import { formatAxisValue, formatDate, formatMoney, formatPct } from '../lib/format'
 import type { CashFlow, DashboardSummary, NetWorthSnapshot } from '../types'
@@ -11,22 +12,26 @@ export default function Timeline() {
   const { t } = useLanguage()
   const [showAdd, setShowAdd] = useState(false)
 
-  const { data: timeline } = useQuery({
+  const { data: timeline, isLoading: timelineLoading } = useQuery({
     queryKey: ['timeline'],
     queryFn: async () => (await api.get<NetWorthSnapshot[]>('/networth/timeline/')).data,
   })
 
-  const { data: cashflows } = useQuery({
+  const { data: cashflows, isLoading: cashflowsLoading } = useQuery({
     queryKey: ['cashflows'],
     queryFn: async () => (await api.get<CashFlow[]>('/networth/cashflows/')).data,
   })
 
-  const { data: summary } = useQuery({
+  const { data: summary, isLoading: summaryLoading } = useQuery({
     queryKey: ['dashboard'],
     queryFn: async () => (await api.get<DashboardSummary>('/networth/dashboard/')).data,
   })
 
   const base = summary?.base_currency ?? 'PLN'
+
+  if (summaryLoading || cashflowsLoading) {
+    return <PageLoader />
+  }
 
   return (
     <div className="space-y-6">
@@ -69,20 +74,24 @@ export default function Timeline() {
       <div className="rounded-xl border border-slate-200 dark:border-slate-700 bg-white dark:bg-slate-800 p-5 shadow-sm">
         <h2 className="mb-3 text-sm font-semibold text-slate-700 dark:text-slate-300">{t('Wartość majątku w czasie')}</h2>
         <div className="h-72">
-          <ResponsiveContainer width="100%" height="100%">
-            <AreaChart data={timeline ?? []}>
-              <defs>
-                <linearGradient id="timelineGradient" x1="0" y1="0" x2="0" y2="1">
-                  <stop offset="0%" stopColor="#059669" stopOpacity={0.35} />
-                  <stop offset="100%" stopColor="#059669" stopOpacity={0} />
-                </linearGradient>
-              </defs>
-              <XAxis dataKey="date" tickFormatter={(d) => formatDate(d)} tick={{ fontSize: 12 }} stroke="#94a3b8" />
-              <YAxis tickFormatter={formatAxisValue} tick={{ fontSize: 12 }} stroke="#94a3b8" width={40} />
-              <Tooltip formatter={(value) => formatMoney(value as number, base)} labelFormatter={(d) => formatDate(d as string)} />
-              <Area type="monotone" dataKey="total" stroke="#059669" fill="url(#timelineGradient)" strokeWidth={2} />
-            </AreaChart>
-          </ResponsiveContainer>
+          {timelineLoading ? (
+            <CardLoader />
+          ) : (
+            <ResponsiveContainer width="100%" height="100%">
+              <AreaChart data={timeline ?? []}>
+                <defs>
+                  <linearGradient id="timelineGradient" x1="0" y1="0" x2="0" y2="1">
+                    <stop offset="0%" stopColor="#059669" stopOpacity={0.35} />
+                    <stop offset="100%" stopColor="#059669" stopOpacity={0} />
+                  </linearGradient>
+                </defs>
+                <XAxis dataKey="date" tickFormatter={(d) => formatDate(d)} tick={{ fontSize: 12 }} stroke="#94a3b8" />
+                <YAxis tickFormatter={formatAxisValue} tick={{ fontSize: 12 }} stroke="#94a3b8" width={40} />
+                <Tooltip formatter={(value) => formatMoney(value as number, base)} labelFormatter={(d) => formatDate(d as string)} />
+                <Area type="monotone" dataKey="total" stroke="#059669" fill="url(#timelineGradient)" strokeWidth={2} />
+              </AreaChart>
+            </ResponsiveContainer>
+          )}
         </div>
       </div>
 

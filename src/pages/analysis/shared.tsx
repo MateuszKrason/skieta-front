@@ -18,6 +18,7 @@ import {
   YAxis,
 } from 'recharts'
 import { api } from '../../api/client'
+import { CardLoader } from '../../components/Loader'
 import { useLanguage } from '../../i18n/LanguageContext'
 import { formatAxisValue, formatDate, formatMoney, formatPct } from '../../lib/format'
 import type {
@@ -158,7 +159,7 @@ export function CategoryPieCard({
     <div className="rounded-xl border border-slate-200 dark:border-slate-700 bg-white dark:bg-slate-800 p-5 shadow-sm">
       <h2 className="mb-3 text-sm font-semibold text-slate-700 dark:text-slate-300">{t(title)}</h2>
       {loading ? (
-        <p className="text-slate-400 dark:text-slate-500">{t('Ładowanie…')}</p>
+        <CardLoader />
       ) : data.length === 0 ? (
         <p className="text-slate-400 dark:text-slate-500">{t('Brak danych w tym okresie.')}</p>
       ) : (
@@ -213,7 +214,7 @@ export function CategoryTrendChart({
   palette?: string[]
 }) {
   const { t } = useLanguage()
-  const { data } = useQuery({
+  const { data, isLoading } = useQuery({
     queryKey: ['budget-category-trend', type, months],
     queryFn: async () =>
       (
@@ -240,7 +241,9 @@ export function CategoryTrendChart({
         {t(type === 'expense' ? 'Wydatki' : 'Przychody')} {t('wg kategorii — miesiąc do miesiąca')}
       </h2>
       <p className="mb-3 text-xs text-slate-400 dark:text-slate-500">{t('Kliknij kategorię poniżej, aby zobaczyć konkretne transakcje w wybranym okresie.')}</p>
-      {rows.length === 0 ? (
+      {isLoading ? (
+        <CardLoader />
+      ) : rows.length === 0 ? (
         <p className="text-slate-400 dark:text-slate-500">{t('Brak danych.')}</p>
       ) : (
         <>
@@ -1069,7 +1072,7 @@ export function StoreBreakdownCard({
         {t('Tylko transakcje, którym przypisano sklep. Kliknij sklep, aby zobaczyć jego transakcje.')}
       </p>
       {isLoading ? (
-        <p className="text-slate-400 dark:text-slate-500">{t('Ładowanie…')}</p>
+        <CardLoader />
       ) : chartData.length === 0 ? (
         <p className="text-slate-400 dark:text-slate-500">{t('Brak wydatków przypisanych do sklepów w tym okresie.')}</p>
       ) : (
@@ -1152,7 +1155,7 @@ export function TagBreakdownCard({
         {t('Tylko transakcje z co najmniej jednym tagiem — transakcja z kilkoma tagami liczy się do każdego z nich.')}
       </p>
       {isLoading ? (
-        <p className="text-slate-400 dark:text-slate-500">{t('Ładowanie…')}</p>
+        <CardLoader />
       ) : chartData.length === 0 ? (
         <p className="text-slate-400 dark:text-slate-500">{t('Brak transakcji z tagami w tym okresie.')}</p>
       ) : (
@@ -1220,7 +1223,7 @@ export function FlexibleTrendChart() {
   const [months, setMonths] = useState(12)
   const [metrics, setMetrics] = useState<TrendMetric[]>(['income', 'expense'])
 
-  const { data: trend } = useQuery({
+  const { data: trend, isLoading } = useQuery({
     queryKey: ['budget-trend', months],
     queryFn: async () => (await api.get<MonthlyTrendRow[]>('/budget/trend/', { params: { months } })).data,
   })
@@ -1281,7 +1284,9 @@ export function FlexibleTrendChart() {
           </button>
         ))}
       </div>
-      {metrics.length === 0 ? (
+      {isLoading ? (
+        <CardLoader />
+      ) : metrics.length === 0 ? (
         <p className="text-slate-400 dark:text-slate-500">{t('Wybierz co najmniej jedną serię do wyświetlenia.')}</p>
       ) : (
         <div className="h-72">
@@ -1347,7 +1352,7 @@ export function CumulativeNetChart() {
   const { t } = useLanguage()
   const [months, setMonths] = useState(12)
 
-  const { data: trend } = useQuery({
+  const { data: trend, isLoading } = useQuery({
     queryKey: ['budget-trend', months],
     queryFn: async () => (await api.get<MonthlyTrendRow[]>('/budget/trend/', { params: { months } })).data,
   })
@@ -1374,6 +1379,9 @@ export function CumulativeNetChart() {
         {t('Suma miesięcznych bilansów narastająco — jak rósł Twój zaoszczędzony kapitał w tym okresie.')}
       </p>
       <div className="h-56">
+        {isLoading ? (
+          <CardLoader />
+        ) : (
         <ResponsiveContainer width="100%" height="100%">
           <AreaChart data={data}>
             <defs>
@@ -1388,6 +1396,7 @@ export function CumulativeNetChart() {
             <Area type="monotone" dataKey="cumulative" stroke="#0ea5e9" fill="url(#cumulativeNetGradient)" strokeWidth={2} />
           </AreaChart>
         </ResponsiveContainer>
+        )}
       </div>
     </div>
   )

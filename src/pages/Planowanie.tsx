@@ -1,9 +1,19 @@
 import { useState, type FormEvent } from 'react'
 import { useMutation, useQuery, useQueryClient } from '@tanstack/react-query'
 import { api } from '../api/client'
+import { CardLoader, PageLoader } from '../components/Loader'
 import { useLanguage } from '../i18n/LanguageContext'
 import { formatDate, formatMoney } from '../lib/format'
-import type { BudgetPlan, Category, Currency, PlannedExpense, PlanningSummary, SavingsGoal } from '../types'
+import type {
+  BudgetPlan,
+  Category,
+  Currency,
+  PlannedExpense,
+  PlanningSummary,
+  RecurringExpense,
+  SavingsGoal,
+  SavingsGoalContribution,
+} from '../types'
 
 function Field({ label, children }: { label: string; children: React.ReactNode }) {
   const { t } = useLanguage()
@@ -47,20 +57,31 @@ export default function Planowanie() {
   const queryClient = useQueryClient()
   const [showAddGoal, setShowAddGoal] = useState(false)
   const [showAddExpense, setShowAddExpense] = useState(false)
+  const [showAddFixed, setShowAddFixed] = useState(false)
 
-  const { data: summary } = useQuery({
+  const { data: summary, isLoading: summaryLoading } = useQuery({
     queryKey: ['planning-summary'],
     queryFn: async () => (await api.get<PlanningSummary>('/planning/summary/')).data,
   })
 
-  const { data: goals } = useQuery({
+  const { data: plan } = useQuery({
+    queryKey: ['planning-plan'],
+    queryFn: async () => (await api.get<BudgetPlan>('/planning/plan/')).data,
+  })
+
+  const { data: goals, isLoading: goalsLoading } = useQuery({
     queryKey: ['planning-goals'],
     queryFn: async () => (await api.get<SavingsGoal[]>('/planning/goals/')).data,
   })
 
-  const { data: expenses } = useQuery({
+  const { data: expenses, isLoading: expensesLoading } = useQuery({
     queryKey: ['planning-expenses'],
     queryFn: async () => (await api.get<PlannedExpense[]>('/planning/expenses/')).data,
+  })
+
+  const { data: fixedCosts, isLoading: fixedCostsLoading } = useQuery({
+    queryKey: ['planning-recurring'],
+    queryFn: async () => (await api.get<RecurringExpense[]>('/planning/recurring-expenses/')).data,
   })
 
   const { data: categories } = useQuery({
@@ -70,8 +91,10 @@ export default function Planowanie() {
 
   function invalidateAll() {
     queryClient.invalidateQueries({ queryKey: ['planning-summary'] })
+    queryClient.invalidateQueries({ queryKey: ['planning-plan'] })
     queryClient.invalidateQueries({ queryKey: ['planning-goals'] })
     queryClient.invalidateQueries({ queryKey: ['planning-expenses'] })
+    queryClient.invalidateQueries({ queryKey: ['planning-recurring'] })
   }
 
   const deleteGoal = useMutation({
@@ -90,9 +113,25 @@ export default function Planowanie() {
     onSuccess: invalidateAll,
   })
 
+  const deleteFixed = useMutation({
+    mutationFn: (id: number) => api.delete(`/planning/recurring-expenses/${id}/`),
+    onSuccess: invalidateAll,
+  })
+
+  const toggleFixedActive = useMutation({
+    mutationFn: ({ id, is_active }: { id: number; is_active: boolean }) =>
+      api.patch(`/planning/recurring-expenses/${id}/`, { is_active }),
+    onSuccess: invalidateAll,
+  })
+
   const base = summary?.base_currency ?? 'PLN'
   const today = new Date().toISOString().slice(0, 10)
   const sortedExpenses = [...(expenses ?? [])].sort((a, b) => a.due_date.localeCompare(b.due_date))
+  const sortedFixedCosts = [...(fixedCosts ?? [])].sort((a, b) => Number(b.is_active) - Number(a.is_active) || a.name.localeCompare(b.name))
+
+  if (summaryLoading || goalsLoading || expensesLoading || fixedCostsLoading) {
+    return <PageLoader />
+  }
 
   return (
     <div className="space-y-6">
@@ -103,19 +142,20 @@ export default function Planowanie() {
         </p>
       </div>
 
-      <SalaryForm plan={summary} onDone={invalidateAll} />
+      <SalaryForm plan={plan} onDone={invalidateAll} />
 
       <div className="grid grid-cols-1 gap-4 sm:grid-cols-2 lg:grid-cols-4">
         <StatCard label={t('Pensja miesięczna')} value={formatMoney(summary?.monthly_salary, base)} />
         <StatCard label={t('Śr. wydatki (3 mies.)')} value={formatMoney(summary?.avg_monthly_expense, base)} tone="negative" />
+        <StatCard label={t('Stałe koszty / mies.')} value={formatMoney(summary?.total_monthly_fixed_costs, base)} tone="negative" />
         <StatCard
           label={t('Wolny budżet / mies.')}
           value={formatMoney(summary?.free_monthly_budget, base)}
           tone={Number(summary?.free_monthly_budget ?? 0) >= 0 ? 'positive' : 'negative'}
         />
-        <StatCard label={t('Oszczędności (konta)')} value={formatMoney(summary?.current_savings, base)} />
       </div>
-      <div className="grid grid-cols-1 gap-4 sm:grid-cols-3">
+      <div className="grid grid-cols-1 gap-4 sm:grid-cols-2 lg:grid-cols-4">
+        <StatCard label={t('Oszczędności (konta)')} value={formatMoney(summary?.current_savings, base)} />
         <StatCard label={t('Zarezerwowano na cele')} value={formatMoney(summary?.total_reserved_for_goals, base)} />
         <StatCard label={t('Zarezerwowano na duże wydatki')} value={formatMoney(summary?.total_unpaid_planned_expenses, base)} />
         <StatCard
@@ -148,9 +188,56 @@ export default function Planowanie() {
         )}
         <div className="space-y-3">
           {(goals ?? []).map((g) => (
-            <GoalRow key={g.id} goal={g} onDelete={() => deleteGoal.mutate(g.id)} onChange={invalidateAll} />
+            <GoalRow
+              key={g.id}
+              goal={g}
+              categories={categories ?? []}
+              onDelete={() => deleteGoal.mutate(g.id)}
+              onChange={invalidateAll}
+            />
           ))}
           {goals?.length === 0 && <p className="text-slate-400 dark:text-slate-500">{t('Brak celów — dodaj pierwszy.')}</p>}
+        </div>
+      </div>
+
+      <div className="rounded-xl border border-slate-200 dark:border-slate-700 bg-white dark:bg-slate-800 p-5 shadow-sm">
+        <div className="mb-3 flex items-center justify-between">
+          <div>
+            <h2 className="text-sm font-semibold text-slate-700 dark:text-slate-300">{t('Stałe koszty')}</h2>
+            <p className="text-xs text-slate-400 dark:text-slate-500">
+              {t('Czynsz, subskrypcje, ubezpieczenia — cykliczne opłaty co miesiąc, niezależnie od tego, czy już je zapłaciłeś w tym miesiącu.')}
+            </p>
+          </div>
+          <button
+            onClick={() => setShowAddFixed((v) => !v)}
+            className="rounded-md bg-emerald-600 px-3 py-1.5 text-sm font-medium text-white hover:bg-emerald-700"
+          >
+            {t('+ Stały koszt')}
+          </button>
+        </div>
+        {showAddFixed && (
+          <div className="mb-4">
+            <AddRecurringExpenseForm
+              categories={categories ?? []}
+              onDone={() => {
+                setShowAddFixed(false)
+                invalidateAll()
+              }}
+            />
+          </div>
+        )}
+        <div className="space-y-2">
+          {sortedFixedCosts.map((f) => (
+            <RecurringExpenseRow
+              key={f.id}
+              expense={f}
+              categories={categories ?? []}
+              onDelete={() => deleteFixed.mutate(f.id)}
+              onToggleActive={() => toggleFixedActive.mutate({ id: f.id, is_active: !f.is_active })}
+              onChange={invalidateAll}
+            />
+          ))}
+          {sortedFixedCosts.length === 0 && <p className="text-slate-400 dark:text-slate-500">{t('Brak stałych kosztów — dodaj pierwszy.')}</p>}
         </div>
       </div>
 
@@ -222,14 +309,20 @@ export default function Planowanie() {
   )
 }
 
-function SalaryForm({ plan, onDone }: { plan: PlanningSummary | undefined; onDone: () => void }) {
+function SalaryForm({ plan, onDone }: { plan: BudgetPlan | undefined; onDone: () => void }) {
   const { t } = useLanguage()
   const [editing, setEditing] = useState(false)
   const [salary, setSalary] = useState('')
   const [currency, setCurrency] = useState<Currency>('PLN')
+  const [paydayDay, setPaydayDay] = useState('')
 
   const mutation = useMutation({
-    mutationFn: () => api.patch<BudgetPlan>('/planning/plan/', { monthly_salary: salary, currency }),
+    mutationFn: () =>
+      api.patch<BudgetPlan>('/planning/plan/', {
+        monthly_salary: salary,
+        currency,
+        payday_day: paydayDay ? Number(paydayDay) : null,
+      }),
     onSuccess: () => {
       setEditing(false)
       onDone()
@@ -238,7 +331,8 @@ function SalaryForm({ plan, onDone }: { plan: PlanningSummary | undefined; onDon
 
   function startEditing() {
     setSalary(plan?.monthly_salary ?? '')
-    setCurrency((plan?.base_currency as Currency) ?? 'PLN')
+    setCurrency(plan?.currency ?? 'PLN')
+    setPaydayDay(plan?.payday_day ? String(plan.payday_day) : '')
     setEditing(true)
   }
 
@@ -253,13 +347,15 @@ function SalaryForm({ plan, onDone }: { plan: PlanningSummary | undefined; onDon
         onClick={startEditing}
         className="text-xs font-medium text-emerald-700 dark:text-emerald-400 hover:underline"
       >
-        {t('Ustaw / zmień pensję miesięczną')}
+        {plan?.payday_day
+          ? t('Pensja i dzień wypłaty ({0}. dnia miesiąca) — zmień', plan.payday_day)
+          : t('Ustaw pensję miesięczną i dzień wypłaty')}
       </button>
     )
   }
 
   return (
-    <form onSubmit={onSubmit} className="grid grid-cols-2 gap-3 rounded-xl border border-slate-200 dark:border-slate-700 bg-white dark:bg-slate-800 p-4 shadow-sm sm:grid-cols-4">
+    <form onSubmit={onSubmit} className="grid grid-cols-2 gap-3 rounded-xl border border-slate-200 dark:border-slate-700 bg-white dark:bg-slate-800 p-4 shadow-sm sm:grid-cols-5">
       <Field label="Pensja miesięczna (netto)">
         <input type="number" step="0.01" value={salary} onChange={(e) => setSalary(e.target.value)} required className="input" />
       </Field>
@@ -273,6 +369,17 @@ function SalaryForm({ plan, onDone }: { plan: PlanningSummary | undefined; onDon
           <option value="GBP">GBP</option>
         </select>
       </Field>
+      <Field label="Dzień wypłaty w miesiącu (opcjonalnie)">
+        <input
+          type="number"
+          min={1}
+          max={31}
+          placeholder="np. 10"
+          value={paydayDay}
+          onChange={(e) => setPaydayDay(e.target.value)}
+          className="input"
+        />
+      </Field>
       <div className="col-span-2 flex items-end gap-2 sm:col-span-2">
         <button type="submit" className="btn-primary" disabled={mutation.isPending}>
           {t('Zapisz')}
@@ -285,6 +392,9 @@ function SalaryForm({ plan, onDone }: { plan: PlanningSummary | undefined; onDon
           {t('Anuluj')}
         </button>
       </div>
+      <p className="col-span-2 text-xs text-slate-400 dark:text-slate-500 sm:col-span-5">
+        {t('Dzień wypłaty pozwala policzyć, ile wypłat zostało do terminu każdego celu oszczędnościowego.')}
+      </p>
     </form>
   )
 }
@@ -364,21 +474,50 @@ function AddGoalForm({ onDone, categories }: { onDone: () => void; categories: C
   )
 }
 
-function GoalRow({ goal, onDelete, onChange }: { goal: SavingsGoal; onDelete: () => void; onChange: () => void }) {
+function GoalRow({
+  goal,
+  categories,
+  onDelete,
+  onChange,
+}: {
+  goal: SavingsGoal
+  categories: Category[]
+  onDelete: () => void
+  onChange: () => void
+}) {
   const { t } = useLanguage()
-  const [adding, setAdding] = useState(false)
+  const queryClient = useQueryClient()
+  const [mode, setMode] = useState<'view' | 'edit' | 'contribute'>('view')
+  const [showHistory, setShowHistory] = useState(false)
   const [amount, setAmount] = useState('')
+  const [contribDate, setContribDate] = useState(() => new Date().toISOString().slice(0, 10))
+  const [note, setNote] = useState('')
   const progress = goal.progress_pct !== null ? Number(goal.progress_pct) : 0
   const achieved = Number(goal.current_amount) >= Number(goal.target_amount)
+  const remaining = Math.max(Number(goal.target_amount) - Number(goal.current_amount), 0)
+
+  const { data: contributions, isLoading: contributionsLoading } = useQuery({
+    queryKey: ['goal-contributions', goal.id],
+    queryFn: async () =>
+      (await api.get<SavingsGoalContribution[]>('/planning/goal-contributions/', { params: { goal: goal.id } })).data,
+    enabled: showHistory,
+  })
 
   const contribute = useMutation({
-    mutationFn: () =>
-      api.patch(`/planning/goals/${goal.id}/`, {
-        current_amount: (Number(goal.current_amount) + Number(amount || 0)).toFixed(2),
-      }),
+    mutationFn: () => api.post('/planning/goal-contributions/', { goal: goal.id, amount, date: contribDate, note }),
     onSuccess: () => {
       setAmount('')
-      setAdding(false)
+      setNote('')
+      setMode('view')
+      queryClient.invalidateQueries({ queryKey: ['goal-contributions', goal.id] })
+      onChange()
+    },
+  })
+
+  const deleteContribution = useMutation({
+    mutationFn: (id: number) => api.delete(`/planning/goal-contributions/${id}/`),
+    onSuccess: () => {
+      queryClient.invalidateQueries({ queryKey: ['goal-contributions', goal.id] })
       onChange()
     },
   })
@@ -387,6 +526,20 @@ function GoalRow({ goal, onDelete, onChange }: { goal: SavingsGoal; onDelete: ()
     e.preventDefault()
     if (!amount) return
     contribute.mutate()
+  }
+
+  if (mode === 'edit') {
+    return (
+      <GoalEditForm
+        goal={goal}
+        categories={categories}
+        onDone={() => {
+          setMode('view')
+          onChange()
+        }}
+        onCancel={() => setMode('view')}
+      />
+    )
   }
 
   return (
@@ -405,10 +558,25 @@ function GoalRow({ goal, onDelete, onChange }: { goal: SavingsGoal; onDelete: ()
             {formatMoney(goal.current_amount, goal.currency)} / {formatMoney(goal.target_amount, goal.currency)}
             {goal.target_date && <> · {t('do')} {formatDate(goal.target_date)}</>}
           </p>
+          {!achieved && goal.target_date && (
+            <p className="mt-0.5 text-xs text-emerald-700 dark:text-emerald-400">
+              {goal.paydays_remaining !== null
+                ? goal.paydays_remaining > 0
+                  ? t('Zostało {0} wypłat — odkładaj ~{1} z każdej, żeby zdążyć', goal.paydays_remaining, formatMoney(goal.suggested_contribution_per_payday, goal.currency))
+                  : t('Termin wypłaty minął przed celem — dodaj więcej lub przesuń termin')
+                : t('Ustaw dzień wypłaty (u góry strony), żeby zobaczyć ile wypłat zostało do celu')}
+            </p>
+          )}
         </div>
         <div className="flex items-center gap-2">
-          <button onClick={() => setAdding((v) => !v)} className="text-xs font-medium text-emerald-700 dark:text-emerald-400 hover:underline">
-            {t('Dołóż')}
+          <button onClick={() => setMode('contribute')} className="text-xs font-medium text-emerald-700 dark:text-emerald-400 hover:underline">
+            {t('Zarezerwuj z wypłaty')}
+          </button>
+          <button onClick={() => setMode('edit')} className="text-xs font-medium text-slate-600 dark:text-slate-400 hover:underline">
+            {t('Edytuj')}
+          </button>
+          <button onClick={() => setShowHistory((v) => !v)} className="text-xs font-medium text-slate-600 dark:text-slate-400 hover:underline">
+            {showHistory ? t('Ukryj historię') : t('Historia')}
           </button>
           <button onClick={onDelete} className="text-xs font-medium text-red-600 dark:text-red-400 hover:underline">
             {t('Usuń')}
@@ -421,17 +589,153 @@ function GoalRow({ goal, onDelete, onChange }: { goal: SavingsGoal; onDelete: ()
           style={{ width: `${Math.min(progress, 100)}%` }}
         />
       </div>
-      {adding && (
-        <form onSubmit={onSubmit} className="mt-2 flex items-end gap-2">
-          <Field label="Kwota do dołożenia">
-            <input type="number" step="0.01" value={amount} onChange={(e) => setAmount(e.target.value)} required className="input" />
+      {mode === 'contribute' && (
+        <form onSubmit={onSubmit} className="mt-3 grid grid-cols-2 gap-2 sm:grid-cols-4">
+          <Field label="Kwota z wypłaty">
+            <input
+              type="number"
+              step="0.01"
+              max={remaining || undefined}
+              value={amount}
+              onChange={(e) => setAmount(e.target.value)}
+              required
+              className="input"
+            />
           </Field>
-          <button type="submit" className="btn-primary" disabled={contribute.isPending}>
-            {t('Zapisz')}
-          </button>
+          <Field label="Data wypłaty">
+            <input type="date" value={contribDate} onChange={(e) => setContribDate(e.target.value)} required className="input" />
+          </Field>
+          <Field label="Notatka (opcjonalnie)">
+            <input value={note} onChange={(e) => setNote(e.target.value)} className="input" />
+          </Field>
+          <div className="flex items-end gap-2">
+            <button type="submit" className="btn-primary" disabled={contribute.isPending}>
+              {t('Zapisz')}
+            </button>
+            <button
+              type="button"
+              onClick={() => setMode('view')}
+              className="rounded-md border border-slate-300 dark:border-slate-600 px-3 py-1.5 text-sm font-medium text-slate-600 dark:text-slate-400 hover:bg-slate-100 dark:hover:bg-slate-700"
+            >
+              {t('Anuluj')}
+            </button>
+          </div>
         </form>
       )}
+      {showHistory && (
+        <div className="mt-3 space-y-1 border-t border-slate-200 dark:border-slate-800 pt-2">
+          {contributionsLoading && <CardLoader />}
+          {(contributions ?? []).map((c) => (
+            <div key={c.id} className="flex items-center justify-between text-xs text-slate-500 dark:text-slate-400">
+              <span>
+                + {formatMoney(c.amount, goal.currency)} · {formatDate(c.date)} {c.note && `— ${c.note}`}
+              </span>
+              <button
+                onClick={() => deleteContribution.mutate(c.id)}
+                className="font-medium text-red-600 dark:text-red-400 hover:underline"
+              >
+                {t('Usuń')}
+              </button>
+            </div>
+          ))}
+          {!contributionsLoading && contributions?.length === 0 && (
+            <p className="text-xs text-slate-400 dark:text-slate-500">{t('Brak zarezerwowanych wypłat.')}</p>
+          )}
+        </div>
+      )}
     </div>
+  )
+}
+
+function GoalEditForm({
+  goal,
+  categories,
+  onDone,
+  onCancel,
+}: {
+  goal: SavingsGoal
+  categories: Category[]
+  onDone: () => void
+  onCancel: () => void
+}) {
+  const { t } = useLanguage()
+  const [name, setName] = useState(goal.name)
+  const [targetAmount, setTargetAmount] = useState(goal.target_amount)
+  const [currentAmount, setCurrentAmount] = useState(goal.current_amount)
+  const [currency, setCurrency] = useState<Currency>(goal.currency)
+  const [targetDate, setTargetDate] = useState(goal.target_date ?? '')
+  const [notes, setNotes] = useState(goal.notes)
+  const [category, setCategory] = useState<number | ''>(goal.category ?? '')
+
+  const mutation = useMutation({
+    mutationFn: () =>
+      api.patch(`/planning/goals/${goal.id}/`, {
+        name,
+        target_amount: targetAmount,
+        current_amount: currentAmount,
+        currency,
+        target_date: targetDate || null,
+        notes,
+        category: category || null,
+      }),
+    onSuccess: onDone,
+  })
+
+  function onSubmit(e: FormEvent) {
+    e.preventDefault()
+    mutation.mutate()
+  }
+
+  return (
+    <form onSubmit={onSubmit} className="grid grid-cols-2 gap-3 rounded-md border border-emerald-200 dark:border-emerald-800 bg-white dark:bg-slate-800 p-3 sm:grid-cols-6">
+      <Field label="Nazwa celu">
+        <input value={name} onChange={(e) => setName(e.target.value)} required className="input" />
+      </Field>
+      <Field label="Kwota docelowa">
+        <input type="number" step="0.01" value={targetAmount} onChange={(e) => setTargetAmount(e.target.value)} required className="input" />
+      </Field>
+      <Field label="Już odłożono">
+        <input type="number" step="0.01" value={currentAmount} onChange={(e) => setCurrentAmount(e.target.value)} className="input" />
+      </Field>
+      <Field label="Waluta">
+        <select value={currency} onChange={(e) => setCurrency(e.target.value as Currency)} className="input">
+          <option value="PLN">PLN</option>
+          <option value="USD">USD</option>
+          <option value="EUR">EUR</option>
+          <option value="NOK">NOK</option>
+          <option value="DKK">DKK</option>
+          <option value="GBP">GBP</option>
+        </select>
+      </Field>
+      <Field label="Data docelowa (opcjonalnie)">
+        <input type="date" value={targetDate} onChange={(e) => setTargetDate(e.target.value)} className="input" />
+      </Field>
+      <Field label="Kategoria (opcjonalnie)">
+        <select value={category} onChange={(e) => setCategory(e.target.value ? Number(e.target.value) : '')} className="input">
+          <option value="">{t('bez kategorii')}</option>
+          {categories.map((c) => (
+            <option key={c.id} value={c.id}>
+              {c.name}
+            </option>
+          ))}
+        </select>
+      </Field>
+      <Field label="Notatka (opcjonalnie)">
+        <input value={notes} onChange={(e) => setNotes(e.target.value)} className="input" />
+      </Field>
+      <div className="col-span-2 flex items-end gap-2 sm:col-span-6">
+        <button type="submit" className="btn-primary" disabled={mutation.isPending}>
+          {t('Zapisz zmiany')}
+        </button>
+        <button
+          type="button"
+          onClick={onCancel}
+          className="rounded-md border border-slate-300 dark:border-slate-600 px-4 py-1.5 text-sm font-medium text-slate-600 dark:text-slate-400 hover:bg-slate-100 dark:hover:bg-slate-700"
+        >
+          {t('Anuluj')}
+        </button>
+      </div>
+    </form>
   )
 }
 
@@ -487,6 +791,225 @@ function AddExpenseForm({ onDone }: { onDone: () => void }) {
       <div className="col-span-2 flex items-end sm:col-span-5">
         <button type="submit" className="btn-primary" disabled={mutation.isPending}>
           {t('Dodaj wydatek')}
+        </button>
+      </div>
+    </form>
+  )
+}
+
+function AddRecurringExpenseForm({ onDone, categories }: { onDone: () => void; categories: Category[] }) {
+  const { t } = useLanguage()
+  const [name, setName] = useState('')
+  const [amount, setAmount] = useState('')
+  const [currency, setCurrency] = useState<Currency>('PLN')
+  const [billingDay, setBillingDay] = useState('')
+  const [category, setCategory] = useState<number | ''>('')
+  const [notes, setNotes] = useState('')
+
+  const mutation = useMutation({
+    mutationFn: () =>
+      api.post('/planning/recurring-expenses/', {
+        name,
+        amount,
+        currency,
+        billing_day: billingDay ? Number(billingDay) : null,
+        category: category || null,
+        notes,
+      }),
+    onSuccess: onDone,
+  })
+
+  function onSubmit(e: FormEvent) {
+    e.preventDefault()
+    mutation.mutate()
+  }
+
+  return (
+    <form onSubmit={onSubmit} className="grid grid-cols-2 gap-3 rounded-lg border border-slate-200 dark:border-slate-700 bg-slate-50 dark:bg-slate-900 p-4 sm:grid-cols-6">
+      <Field label="Nazwa kosztu">
+        <input value={name} onChange={(e) => setName(e.target.value)} required placeholder="np. Czynsz" className="input" />
+      </Field>
+      <Field label="Kwota miesięcznie">
+        <input type="number" step="0.01" value={amount} onChange={(e) => setAmount(e.target.value)} required className="input" />
+      </Field>
+      <Field label="Waluta">
+        <select value={currency} onChange={(e) => setCurrency(e.target.value as Currency)} className="input">
+          <option value="PLN">PLN</option>
+          <option value="USD">USD</option>
+          <option value="EUR">EUR</option>
+          <option value="NOK">NOK</option>
+          <option value="DKK">DKK</option>
+          <option value="GBP">GBP</option>
+        </select>
+      </Field>
+      <Field label="Dzień płatności (opcjonalnie)">
+        <input type="number" min={1} max={31} placeholder="np. 15" value={billingDay} onChange={(e) => setBillingDay(e.target.value)} className="input" />
+      </Field>
+      <Field label="Kategoria (opcjonalnie)">
+        <select value={category} onChange={(e) => setCategory(e.target.value ? Number(e.target.value) : '')} className="input">
+          <option value="">{t('bez kategorii')}</option>
+          {categories.map((c) => (
+            <option key={c.id} value={c.id}>
+              {c.name}
+            </option>
+          ))}
+        </select>
+      </Field>
+      <Field label="Notatka (opcjonalnie)">
+        <input value={notes} onChange={(e) => setNotes(e.target.value)} className="input" />
+      </Field>
+      <div className="col-span-2 flex items-end sm:col-span-6">
+        <button type="submit" className="btn-primary" disabled={mutation.isPending}>
+          {t('Dodaj stały koszt')}
+        </button>
+      </div>
+    </form>
+  )
+}
+
+function RecurringExpenseRow({
+  expense,
+  categories,
+  onDelete,
+  onToggleActive,
+  onChange,
+}: {
+  expense: RecurringExpense
+  categories: Category[]
+  onDelete: () => void
+  onToggleActive: () => void
+  onChange: () => void
+}) {
+  const { t } = useLanguage()
+  const [editing, setEditing] = useState(false)
+
+  if (editing) {
+    return (
+      <RecurringExpenseEditForm
+        expense={expense}
+        categories={categories}
+        onDone={() => {
+          setEditing(false)
+          onChange()
+        }}
+        onCancel={() => setEditing(false)}
+      />
+    )
+  }
+
+  return (
+    <div className={`flex items-center justify-between rounded-md px-3 py-2 text-sm ${expense.is_active ? 'bg-slate-50 dark:bg-slate-900' : 'bg-slate-50 dark:bg-slate-900 opacity-50'}`}>
+      <span>
+        <span className={expense.is_active ? 'font-medium text-slate-700 dark:text-slate-300' : 'text-slate-400 dark:text-slate-500 line-through'}>
+          {expense.name}
+        </span>{' '}
+        <span className="text-slate-500 dark:text-slate-400">{formatMoney(expense.amount, expense.currency)}/mies.</span>
+        {expense.billing_day && (
+          <span className="text-slate-400 dark:text-slate-500"> · {t('{0}. dnia miesiąca', expense.billing_day)}</span>
+        )}
+        {expense.category_detail && (
+          <span className="ml-1.5 rounded-full bg-slate-200 dark:bg-slate-700 px-1.5 py-0.5 text-[10px] text-slate-500 dark:text-slate-400">
+            {expense.category_detail.name}
+          </span>
+        )}
+        {expense.notes && <span className="text-slate-400 dark:text-slate-500"> — {expense.notes}</span>}
+      </span>
+      <span className="flex items-center gap-3">
+        <button onClick={onToggleActive} className="text-xs font-medium text-emerald-700 dark:text-emerald-400 hover:underline">
+          {expense.is_active ? t('Zatrzymaj') : t('Wznów')}
+        </button>
+        <button onClick={() => setEditing(true)} className="text-xs font-medium text-slate-600 dark:text-slate-400 hover:underline">
+          {t('Edytuj')}
+        </button>
+        <button onClick={onDelete} className="text-xs font-medium text-red-600 dark:text-red-400 hover:underline">
+          {t('Usuń')}
+        </button>
+      </span>
+    </div>
+  )
+}
+
+function RecurringExpenseEditForm({
+  expense,
+  categories,
+  onDone,
+  onCancel,
+}: {
+  expense: RecurringExpense
+  categories: Category[]
+  onDone: () => void
+  onCancel: () => void
+}) {
+  const { t } = useLanguage()
+  const [name, setName] = useState(expense.name)
+  const [amount, setAmount] = useState(expense.amount)
+  const [currency, setCurrency] = useState<Currency>(expense.currency)
+  const [billingDay, setBillingDay] = useState(expense.billing_day ? String(expense.billing_day) : '')
+  const [category, setCategory] = useState<number | ''>(expense.category ?? '')
+  const [notes, setNotes] = useState(expense.notes)
+
+  const mutation = useMutation({
+    mutationFn: () =>
+      api.patch(`/planning/recurring-expenses/${expense.id}/`, {
+        name,
+        amount,
+        currency,
+        billing_day: billingDay ? Number(billingDay) : null,
+        category: category || null,
+        notes,
+      }),
+    onSuccess: onDone,
+  })
+
+  function onSubmit(e: FormEvent) {
+    e.preventDefault()
+    mutation.mutate()
+  }
+
+  return (
+    <form onSubmit={onSubmit} className="grid grid-cols-2 gap-3 rounded-md border border-emerald-200 dark:border-emerald-800 bg-white dark:bg-slate-800 p-3 sm:grid-cols-6">
+      <Field label="Nazwa kosztu">
+        <input value={name} onChange={(e) => setName(e.target.value)} required className="input" />
+      </Field>
+      <Field label="Kwota miesięcznie">
+        <input type="number" step="0.01" value={amount} onChange={(e) => setAmount(e.target.value)} required className="input" />
+      </Field>
+      <Field label="Waluta">
+        <select value={currency} onChange={(e) => setCurrency(e.target.value as Currency)} className="input">
+          <option value="PLN">PLN</option>
+          <option value="USD">USD</option>
+          <option value="EUR">EUR</option>
+          <option value="NOK">NOK</option>
+          <option value="DKK">DKK</option>
+          <option value="GBP">GBP</option>
+        </select>
+      </Field>
+      <Field label="Dzień płatności (opcjonalnie)">
+        <input type="number" min={1} max={31} value={billingDay} onChange={(e) => setBillingDay(e.target.value)} className="input" />
+      </Field>
+      <Field label="Kategoria (opcjonalnie)">
+        <select value={category} onChange={(e) => setCategory(e.target.value ? Number(e.target.value) : '')} className="input">
+          <option value="">{t('bez kategorii')}</option>
+          {categories.map((c) => (
+            <option key={c.id} value={c.id}>
+              {c.name}
+            </option>
+          ))}
+        </select>
+      </Field>
+      <Field label="Notatka (opcjonalnie)">
+        <input value={notes} onChange={(e) => setNotes(e.target.value)} className="input" />
+      </Field>
+      <div className="col-span-2 flex items-end gap-2 sm:col-span-6">
+        <button type="submit" className="btn-primary" disabled={mutation.isPending}>
+          {t('Zapisz zmiany')}
+        </button>
+        <button
+          type="button"
+          onClick={onCancel}
+          className="rounded-md border border-slate-300 dark:border-slate-600 px-4 py-1.5 text-sm font-medium text-slate-600 dark:text-slate-400 hover:bg-slate-100 dark:hover:bg-slate-700"
+        >
+          {t('Anuluj')}
         </button>
       </div>
     </form>

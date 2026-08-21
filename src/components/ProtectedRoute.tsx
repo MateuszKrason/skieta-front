@@ -1,14 +1,13 @@
 import { Navigate, Outlet, useLocation } from 'react-router-dom'
 import { useAuth } from '../auth/AuthContext'
-import { useLanguage } from '../i18n/LanguageContext'
+import { PageLoader } from './Loader'
 
 export default function ProtectedRoute() {
   const { user, loading } = useAuth()
-  const { t } = useLanguage()
   const location = useLocation()
 
   if (loading) {
-    return <div className="flex min-h-screen items-center justify-center text-slate-400 dark:text-slate-500">{t('Ładowanie…')}</div>
+    return <PageLoader />
   }
 
   if (!user) {

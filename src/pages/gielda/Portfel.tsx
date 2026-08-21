@@ -1,6 +1,7 @@
 import { Fragment, useState, type FormEvent } from 'react'
 import { useMutation, useQuery, useQueryClient } from '@tanstack/react-query'
 import { api } from '../../api/client'
+import { PageLoader, Spinner } from '../../components/Loader'
 import ReinvestmentThreads from '../../components/ReinvestmentThreads'
 import StockAutocomplete from '../../components/StockAutocomplete'
 import { useLanguage } from '../../i18n/LanguageContext'
@@ -14,7 +15,7 @@ export default function Portfel() {
   const [showAddTx, setShowAddTx] = useState(false)
   const [sellingStockId, setSellingStockId] = useState<number | null>(null)
 
-  const { data: holdings, isFetching } = useQuery({
+  const { data: holdings, isLoading: holdingsLoading, isFetching } = useQuery({
     queryKey: ['holdings'],
     queryFn: async () => (await api.get<Holding[]>('/stocks/holdings/')).data,
     refetchInterval: 60_000,
@@ -58,14 +59,22 @@ export default function Portfel() {
     },
   })
 
+  if (holdingsLoading) {
+    return <PageLoader />
+  }
+
   return (
     <div className="space-y-6">
       <div className="flex items-center justify-between">
         <div>
           <h1 className="text-2xl font-bold text-slate-900 dark:text-slate-100">{t('Portfel akcji')}</h1>
-          <p className="text-sm text-slate-500 dark:text-slate-400">
-            {t('Kursy aktualizowane automatycznie 2x dziennie — kliknij "Odśwież kursy" po bieżącą cenę')}{' '}
-            {(isFetching || refreshPrices.isPending) && t('(odświeżanie…)')}
+          <p className="flex items-center gap-1.5 text-sm text-slate-500 dark:text-slate-400">
+            {t('Kursy aktualizowane automatycznie 2x dziennie — kliknij "Odśwież kursy" po bieżącą cenę')}
+            {(isFetching || refreshPrices.isPending) && (
+              <span className="inline-flex items-center gap-1">
+                <Spinner size="sm" /> {t('odświeżanie…')}
+              </span>
+            )}
           </p>
         </div>
         <div className="flex gap-2">

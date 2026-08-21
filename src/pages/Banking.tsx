@@ -3,6 +3,7 @@ import { useMutation, useQuery, useQueryClient } from '@tanstack/react-query'
 import { api } from '../api/client'
 import { useAuth } from '../auth/AuthContext'
 import BankNameAutocomplete from '../components/BankNameAutocomplete'
+import { PageLoader } from '../components/Loader'
 import StatementImportPanel from '../components/StatementImportPanel'
 import { useLanguage } from '../i18n/LanguageContext'
 import { accountTypeLabel, formatDate, formatMoney, formatNumber } from '../lib/format'
@@ -63,7 +64,7 @@ export default function Banking() {
     })
   }
 
-  const { data: accounts } = useQuery({
+  const { data: accounts, isLoading: accountsLoading } = useQuery({
     queryKey: ['accounts'],
     queryFn: async () => (await api.get<BankAccount[]>('/banking/accounts/')).data,
   })
@@ -138,6 +139,10 @@ export default function Banking() {
     if (window.confirm(t('Usunąć konto "{0}" ({1})? Tej operacji nie można cofnąć.', account.name, account.bank_name))) {
       deleteAccount.mutate(account.id)
     }
+  }
+
+  if (accountsLoading) {
+    return <PageLoader />
   }
 
   return (

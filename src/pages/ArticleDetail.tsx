@@ -2,6 +2,7 @@ import { useEffect } from 'react'
 import { useQuery } from '@tanstack/react-query'
 import { Link, useParams } from 'react-router-dom'
 import { api } from '../api/client'
+import { PageLoader } from '../components/Loader'
 import SockLogo from '../components/SockLogo'
 import { useLanguage } from '../i18n/LanguageContext'
 import { formatDate } from '../lib/format'
@@ -59,7 +60,7 @@ export default function ArticleDetail() {
           {t('← Wszystkie artykuły')}
         </Link>
 
-        {isLoading && <p className="mt-6 text-slate-400 dark:text-slate-500">{t('Ładowanie…')}</p>}
+        {isLoading && <PageLoader />}
 
         {!isLoading && !article && (
           <p className="mt-6 text-slate-400 dark:text-slate-500">{t('Nie znaleziono artykułu.')}</p>

@@ -2,6 +2,7 @@ import { useState } from 'react'
 import { useMutation, useQuery, useQueryClient } from '@tanstack/react-query'
 import { Bar, BarChart, ResponsiveContainer, Tooltip, XAxis, YAxis } from 'recharts'
 import { api } from '../api/client'
+import { Spinner } from '../components/Loader'
 import { useLanguage } from '../i18n/LanguageContext'
 import { formatDate, formatDateTime } from '../lib/format'
 import type { AdminActivityStats, AdminUser } from '../types'
@@ -192,6 +193,15 @@ export default function Admin() {
                 </td>
               </tr>
             ))}
+            {isLoading && (
+              <tr>
+                <td colSpan={11} className="px-4 py-6 text-center">
+                  <div className="flex items-center justify-center gap-2 text-slate-400 dark:text-slate-500">
+                    <Spinner size="sm" /> {t('Ładowanie…')}
+                  </div>
+                </td>
+              </tr>
+            )}
             {!isLoading && users?.length === 0 && (
               <tr>
                 <td colSpan={11} className="px-4 py-6 text-center text-slate-400 dark:text-slate-500">
