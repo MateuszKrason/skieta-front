@@ -12,6 +12,7 @@ import type {
   BankAccountType,
   BondType,
   Currency,
+  Market,
   Stock,
   StockSearchResult,
   StockTransaction,
@@ -147,10 +148,15 @@ function Field({ label, children }: { label: string; children: React.ReactNode }
   )
 }
 
-const INTEREST_OPTIONS: { field: 'interest_stocks' | 'interest_budget' | 'interest_planning'; label: string; hint: string }[] = [
+const INTEREST_OPTIONS: {
+  field: 'interest_stocks' | 'interest_budget' | 'interest_planning' | 'interest_analysis'
+  label: string
+  hint: string
+}[] = [
   { field: 'interest_stocks', label: 'Giełda', hint: 'Portfel akcji, dywidendy, analiza spółek' },
   { field: 'interest_budget', label: 'Budżet', hint: 'Notowanie przychodów i wydatków' },
   { field: 'interest_planning', label: 'Planowanie', hint: 'Cele oszczędnościowe i planowane wydatki' },
+  { field: 'interest_analysis', label: 'Analiza', hint: 'Kalkulator inwestycyjny - obligacje, lokaty, giełda' },
 ]
 
 function InterestsStep() {
@@ -292,7 +298,7 @@ function StocksStep() {
   })
 
   const [ticker, setTicker] = useState('')
-  const [market, setMarket] = useState<'GPW' | 'US'>('GPW')
+  const [market, setMarket] = useState<Market>('GPW')
   const [name, setName] = useState('')
   const [currency, setCurrency] = useState<Currency>('PLN')
   const [stockId, setStockId] = useState<number | ''>('')
@@ -379,9 +385,10 @@ function StocksStep() {
             <input value={ticker} onChange={(e) => setTicker(e.target.value.toUpperCase())} required className="input" />
           </Field>
           <Field label="Rynek">
-            <select value={market} onChange={(e) => setMarket(e.target.value as 'GPW' | 'US')} className="input">
+            <select value={market} onChange={(e) => setMarket(e.target.value as Market)} className="input">
               <option value="GPW">GPW</option>
               <option value="US">USA</option>
+              <option value="EU">{t('Europa')}</option>
             </select>
           </Field>
           <Field label="Ilość">

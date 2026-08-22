@@ -50,10 +50,14 @@ export default function Account() {
   )
 }
 
-const INTEREST_OPTIONS: { field: 'interest_stocks' | 'interest_budget' | 'interest_planning'; label: string }[] = [
+const INTEREST_OPTIONS: {
+  field: 'interest_stocks' | 'interest_budget' | 'interest_planning' | 'interest_analysis'
+  label: string
+}[] = [
   { field: 'interest_stocks', label: 'Giełda' },
   { field: 'interest_budget', label: 'Budżet' },
   { field: 'interest_planning', label: 'Planowanie' },
+  { field: 'interest_analysis', label: 'Analiza' },
 ]
 
 function InterestsForm() {
@@ -477,7 +481,7 @@ function InviteFriends() {
   const [copiedId, setCopiedId] = useState<number | null>(null)
   const [qrId, setQrId] = useState<number | null>(null)
   const [email, setEmail] = useState('')
-  const [tab, setTab] = useState<'pending' | 'accepted'>('pending')
+  const [tab, setTab] = useState<'pending' | 'expired' | 'accepted' | 'emails'>('pending')
 
   const { data } = useQuery({
     queryKey: ['invitations'],
@@ -551,8 +555,8 @@ function InviteFriends() {
       )}
       {errorDetail && <p className="text-sm text-red-600 dark:text-red-400">{errorDetail}</p>}
 
-      <div className="flex gap-1 border-b border-slate-200 dark:border-slate-700 pt-2">
-        {(['pending', 'accepted'] as const).map((key) => (
+      <div className="flex flex-wrap gap-1 border-b border-slate-200 dark:border-slate-700 pt-2">
+        {(['pending', 'expired', 'accepted', 'emails'] as const).map((key) => (
           <button
             key={key}
             onClick={() => setTab(key)}
@@ -562,19 +566,72 @@ function InviteFriends() {
                 : 'border-transparent text-slate-500 dark:text-slate-400 hover:text-slate-700 dark:hover:text-slate-200'
             }`}
           >
-            {key === 'pending' ? t('Oczekujące zaproszenia') : t('Przyjęte zaproszenia')}
-            {' '}({(data?.results ?? []).filter((inv) => (key === 'accepted') === !!inv.accepted_by).length})
+            {key === 'pending' && t('Oczekujące zaproszenia')}
+            {key === 'expired' && t('Wygasłe zaproszenia')}
+            {key === 'accepted' && t('Przyjęte zaproszenia')}
+            {key === 'emails' && t('Wysłane e-maile')}
+            {' '}(
+            {
+              (data?.results ?? []).filter((inv) => {
+                if (key === 'pending') return !inv.accepted_by && !inv.is_expired
+                if (key === 'expired') return !inv.accepted_by && inv.is_expired
+                if (key === 'accepted') return !!inv.accepted_by
+                return !!inv.email
+              }).length
+            }
+            )
           </button>
         ))}
       </div>
 
       {(() => {
-        const filtered = (data?.results ?? []).filter((inv) => (tab === 'accepted') === !!inv.accepted_by)
+        const filtered = (data?.results ?? []).filter((inv) => {
+          if (tab === 'pending') return !inv.accepted_by && !inv.is_expired
+          if (tab === 'expired') return !inv.accepted_by && inv.is_expired
+          if (tab === 'accepted') return !!inv.accepted_by
+          return !!inv.email
+        })
         if (filtered.length === 0) {
           return (
             <p className="pt-1 text-sm text-slate-400 dark:text-slate-500">
-              {tab === 'pending' ? t('Brak oczekujących zaproszeń.') : t('Brak przyjętych zaproszeń.')}
+              {tab === 'pending' && t('Brak oczekujących zaproszeń.')}
+              {tab === 'expired' && t('Brak wygasłych zaproszeń.')}
+              {tab === 'accepted' && t('Brak przyjętych zaproszeń.')}
+              {tab === 'emails' && t('Nie wysłano jeszcze żadnych zaproszeń mailem.')}
             </p>
+          )
+        }
+        if (tab === 'emails') {
+          return (
+            <ul className="space-y-2 pt-2">
+              {filtered.map((inv) => (
+                <li key={inv.id} className="rounded-md bg-slate-50 dark:bg-slate-900 px-3 py-2 text-sm">
+                  <div className="flex flex-wrap items-center justify-between gap-2">
+                    <span className="font-medium text-slate-700 dark:text-slate-200">{inv.email}</span>
+                    <span
+                      className={`rounded-full px-2 py-0.5 text-xs font-medium ${
+                        inv.accepted_by
+                          ? 'bg-emerald-100 text-emerald-700 dark:bg-emerald-900/40 dark:text-emerald-300'
+                          : inv.is_expired
+                            ? 'bg-slate-200 text-slate-600 dark:bg-slate-700 dark:text-slate-300'
+                            : 'bg-amber-100 text-amber-700 dark:bg-amber-900/40 dark:text-amber-300'
+                      }`}
+                    >
+                      {inv.accepted_by
+                        ? t('Przyjęte')
+                        : inv.is_expired
+                          ? t('Wygasłe')
+                          : t('Oczekuje')}
+                    </span>
+                  </div>
+                  <p className="mt-1 text-xs text-slate-400 dark:text-slate-500">
+                    {inv.accepted_by
+                      ? t('Zaakceptowane przez {0} ({1})', inv.accepted_by, formatDateTime(inv.accepted_at))
+                      : t('Wysłano {0}', formatDateTime(inv.created_at))}
+                  </p>
+                </li>
+              ))}
+            </ul>
           )
         }
         return (

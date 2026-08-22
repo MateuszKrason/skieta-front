@@ -32,7 +32,7 @@ export default function ArticleDetail() {
     if (!article) return
     const previousTitle = document.title
     const previousDescription = document.querySelector('meta[name="description"]')?.getAttribute('content') ?? ''
-    document.title = `${article.title} – skieta`
+    document.title = `${article.title} - skieta`
     setMetaDescription(article.summary)
     return () => {
       document.title = previousTitle

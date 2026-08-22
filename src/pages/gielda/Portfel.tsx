@@ -6,7 +6,9 @@ import ReinvestmentThreads from '../../components/ReinvestmentThreads'
 import StockAutocomplete from '../../components/StockAutocomplete'
 import { useLanguage } from '../../i18n/LanguageContext'
 import { accountTypeLabel, formatDateTime, formatMoney, formatNumber, formatPct, formatShareQuantity } from '../../lib/format'
-import type { BankAccount, Currency, Holding, PortfolioSummary, Stock, StockSearchResult, StockTransaction } from '../../types'
+import type { BankAccount, Currency, Holding, Market, PortfolioSummary, Stock, StockSearchResult, StockTransaction } from '../../types'
+
+const CURRENCY_OPTIONS: Currency[] = ['PLN', 'USD', 'EUR', 'NOK', 'DKK', 'GBP', 'SEK', 'CHF']
 
 type HoldingSortKey =
   | 'ticker'
@@ -375,7 +377,7 @@ export default function Portfel() {
 function AddStockForm({ onDone }: { onDone: () => void }) {
   const { t } = useLanguage()
   const [ticker, setTicker] = useState('')
-  const [market, setMarket] = useState<'GPW' | 'US'>('GPW')
+  const [market, setMarket] = useState<Market>('GPW')
   const [name, setName] = useState('')
   const [currency, setCurrency] = useState<Currency>('PLN')
 
@@ -406,9 +408,10 @@ function AddStockForm({ onDone }: { onDone: () => void }) {
           <input value={ticker} onChange={(e) => setTicker(e.target.value.toUpperCase())} required className="input" />
         </Field>
         <Field label="Rynek">
-          <select value={market} onChange={(e) => setMarket(e.target.value as 'GPW' | 'US')} className="input">
+          <select value={market} onChange={(e) => setMarket(e.target.value as Market)} className="input">
             <option value="GPW">GPW</option>
             <option value="US">USA</option>
+            <option value="EU">{t('Europa')}</option>
           </select>
         </Field>
         <Field label="Nazwa">
@@ -416,12 +419,11 @@ function AddStockForm({ onDone }: { onDone: () => void }) {
         </Field>
         <Field label="Waluta">
           <select value={currency} onChange={(e) => setCurrency(e.target.value as Currency)} className="input">
-            <option value="PLN">PLN</option>
-            <option value="USD">USD</option>
-            <option value="EUR">EUR</option>
-            <option value="NOK">NOK</option>
-            <option value="DKK">DKK</option>
-            <option value="GBP">GBP</option>
+            {CURRENCY_OPTIONS.map((c) => (
+              <option key={c} value={c}>
+                {c}
+              </option>
+            ))}
           </select>
         </Field>
         <div className="flex items-end">
@@ -556,7 +558,7 @@ function StockManager({ stocks, onChange }: { stocks: Stock[]; onChange: () => v
 function EditStockRow({ stock, onDone, onCancel }: { stock: Stock; onDone: () => void; onCancel: () => void }) {
   const { t } = useLanguage()
   const [ticker, setTicker] = useState(stock.ticker)
-  const [market, setMarket] = useState<'GPW' | 'US'>(stock.market)
+  const [market, setMarket] = useState<Market>(stock.market)
   const [name, setName] = useState(stock.name)
   const [currency, setCurrency] = useState<Currency>(stock.currency)
   const [error, setError] = useState<string | null>(null)
@@ -589,9 +591,10 @@ function EditStockRow({ stock, onDone, onCancel }: { stock: Stock; onDone: () =>
         <input value={ticker} onChange={(e) => setTicker(e.target.value.toUpperCase())} required className="input" />
       </Field>
       <Field label="Rynek">
-        <select value={market} onChange={(e) => setMarket(e.target.value as 'GPW' | 'US')} className="input">
+        <select value={market} onChange={(e) => setMarket(e.target.value as Market)} className="input">
           <option value="GPW">GPW</option>
           <option value="US">USA</option>
+          <option value="EU">{t('Europa')}</option>
         </select>
       </Field>
       <Field label="Nazwa">
@@ -599,12 +602,11 @@ function EditStockRow({ stock, onDone, onCancel }: { stock: Stock; onDone: () =>
       </Field>
       <Field label="Waluta">
         <select value={currency} onChange={(e) => setCurrency(e.target.value as Currency)} className="input">
-          <option value="PLN">PLN</option>
-          <option value="USD">USD</option>
-          <option value="EUR">EUR</option>
-          <option value="NOK">NOK</option>
-          <option value="DKK">DKK</option>
-          <option value="GBP">GBP</option>
+          {CURRENCY_OPTIONS.map((c) => (
+            <option key={c} value={c}>
+              {c}
+            </option>
+          ))}
         </select>
       </Field>
       <div className="flex items-end gap-2">

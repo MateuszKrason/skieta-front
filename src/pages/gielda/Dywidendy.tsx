@@ -168,11 +168,17 @@ export default function Dywidendy() {
         <div className="rounded-xl border border-slate-200 dark:border-slate-700 bg-white dark:bg-slate-800 p-4 shadow-sm">
           <p className="text-xs text-slate-500 dark:text-slate-400">{t('Suma dywidend (wszystkie czasy)')}</p>
           <p className="mt-1 text-xl font-bold text-slate-900 dark:text-slate-100">{formatMoney(summary?.total_all_time, base)}</p>
+          <p className="text-xs text-slate-400 dark:text-slate-500">
+            {formatMoney(summary?.total_all_time_after_tax, base)} {t('po Belce')}
+          </p>
         </div>
         <div className="rounded-xl border border-slate-200 dark:border-slate-700 bg-white dark:bg-slate-800 p-4 shadow-sm">
           <p className="text-xs text-slate-500 dark:text-slate-400">{t('Projekcja rocznego dochodu (12 mies.)')}</p>
           <p className="mt-1 text-xl font-bold text-emerald-700 dark:text-emerald-400">
             {formatMoney(summary?.projected_annual_income, base)}
+          </p>
+          <p className="text-xs text-slate-400 dark:text-slate-500">
+            {formatMoney(summary?.projected_annual_income_after_tax, base)} {t('po Belce')}
           </p>
         </div>
       </div>
@@ -385,8 +391,18 @@ export default function Dywidendy() {
             {(summary?.rows ?? []).map((row) => (
               <tr key={row.stock.id} className="border-b border-slate-100 dark:border-slate-800 last:border-0">
                 <td className="px-4 py-2 font-medium">{row.stock.ticker}</td>
-                <td className="px-4 py-2 text-right">{formatMoney(row.total_received, base)}</td>
-                <td className="px-4 py-2 text-right">{formatMoney(row.last_12m_received, base)}</td>
+                <td className="px-4 py-2 text-right">
+                  {formatMoney(row.total_received, base)}
+                  <span className="block text-xs text-slate-400 dark:text-slate-500">
+                    {formatMoney(row.total_received_after_tax, base)} {t('po Belce')}
+                  </span>
+                </td>
+                <td className="px-4 py-2 text-right">
+                  {formatMoney(row.last_12m_received, base)}
+                  <span className="block text-xs text-slate-400 dark:text-slate-500">
+                    {formatMoney(row.last_12m_received_after_tax, base)} {t('po Belce')}
+                  </span>
+                </td>
                 <td className="px-4 py-2 text-right font-semibold text-emerald-700 dark:text-emerald-400">
                   {formatPct(row.yield_on_cost_pct)}
                 </td>

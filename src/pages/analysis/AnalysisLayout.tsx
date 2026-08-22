@@ -8,10 +8,10 @@ export default function AnalysisLayout() {
     <div>
       <SubTabs
         tabs={[
-          { to: '/analiza/bilans', label: t('Bilans') },
-          { to: '/analiza/przychody', label: t('Przychody') },
-          { to: '/analiza/wydatki', label: t('Wydatki') },
-          { to: '/analiza/kategorie', label: t('Kategorie') },
+          { to: '/budzet/bilans', label: t('Bilans') },
+          { to: '/budzet/przychody', label: t('Przychody') },
+          { to: '/budzet/wydatki', label: t('Wydatki') },
+          { to: '/budzet/kategorie', label: t('Kategorie') },
         ]}
       />
       <Outlet />

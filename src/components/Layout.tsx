@@ -20,8 +20,9 @@ const baseLinks = [
   { to: '/dashboard', label: 'Dashboard', end: true },
   { to: '/gielda', label: 'Giełda', interest: 'interest_stocks' as const },
   { to: '/konta', label: 'Konta i lokaty' },
-  { to: '/analiza', label: 'Budżet', interest: 'interest_budget' as const },
+  { to: '/budzet', label: 'Budżet', interest: 'interest_budget' as const },
   { to: '/planowanie', label: 'Planowanie', interest: 'interest_planning' as const },
+  { to: '/analiza', label: 'Analiza', interest: 'interest_analysis' as const },
 ]
 
 function getNavLinks(profile: User['profile'] | undefined, isStaff: boolean | undefined) {
@@ -205,6 +206,9 @@ export default function Layout() {
             skieta
           </span>
           <div className="flex items-center gap-4">
+            <Link to="/" className="hover:text-accent-700 dark:hover:text-accent-400 hover:underline">
+              {t('Strona główna')}
+            </Link>
             <Link to="/polityka-prywatnosci" className="hover:text-accent-700 dark:hover:text-accent-400 hover:underline">
               {t('Polityka prywatności')}
             </Link>

@@ -11,22 +11,51 @@
       gtag('config', 'G-DR3VD4VYNT');
     </script>
     <meta charset="UTF-8" />
+    <!-- Favicon set: SVG first (modern browsers use it, crisp at any size),
+         then the classic .ico and PNG fallbacks for browsers/crawlers that
+         don't support SVG icons, plus the platform-specific ones. See
+         robots.txt - these files must stay crawlable or Google won't display
+         the icon in search results. -->
     <link rel="icon" type="image/svg+xml" href="/favicon.svg" />
+    <link rel="icon" href="/favicon.ico" sizes="48x48" />
+    <link rel="icon" type="image/png" sizes="16x16" href="/favicon-16x16.png" />
+    <link rel="icon" type="image/png" sizes="32x32" href="/favicon-32x32.png" />
+    <link rel="icon" type="image/png" sizes="48x48" href="/favicon-48x48.png" />
+    <link rel="apple-touch-icon" sizes="180x180" href="/apple-touch-icon.png" />
+    <link rel="manifest" href="/site.webmanifest" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <meta name="theme-color" content="#059669" />
-    <meta name="description" content="skieta — osobisty tracker finansowy: konta bankowe, akcje, obligacje, lokaty, budżet i dywidendy w jednym miejscu, plus artykuły o finansach osobistych." />
+    <meta name="description" content="skieta - osobisty tracker finansowy: konta bankowe, akcje, obligacje, lokaty, budżet i dywidendy w jednym miejscu, plus artykuły o finansach osobistych." />
     <!-- The app itself (behind login) stays private, but the landing page and
          its articles at / and /artykuly/* are genuinely public marketing/
-         educational content — index those. Logged-in-only routes have no
+         educational content - index those. Logged-in-only routes have no
          separate server-rendered URLs a crawler could reach anyway. -->
     <meta name="robots" content="index, follow" />
     <link rel="canonical" href="https://skieta.com/" />
-    <meta property="og:title" content="skieta — panuj nad swoimi finansami" />
-    <meta property="og:description" content="Osobisty tracker finansowy — konta, akcje, obligacje, lokaty, budżet i dywidendy w jednym miejscu, plus artykuły o finansach osobistych." />
+    <meta property="og:site_name" content="skieta" />
+    <meta property="og:title" content="skieta - panuj nad swoimi finansami" />
+    <meta property="og:description" content="Osobisty tracker finansowy - konta, akcje, obligacje, lokaty, budżet i dywidendy w jednym miejscu, plus artykuły o finansach osobistych." />
     <meta property="og:type" content="website" />
-    <meta property="og:image" content="/favicon.svg" />
-    <meta name="twitter:card" content="summary" />
-    <title>skieta — panuj nad swoimi finansami</title>
+    <meta property="og:url" content="https://skieta.com/" />
+    <meta property="og:image" content="https://skieta.com/og-image.png" />
+    <meta property="og:image:width" content="1200" />
+    <meta property="og:image:height" content="630" />
+    <meta property="og:locale" content="pl_PL" />
+    <meta name="twitter:card" content="summary_large_image" />
+    <meta name="twitter:title" content="skieta - panuj nad swoimi finansami" />
+    <meta name="twitter:description" content="Osobisty tracker finansowy - konta, akcje, obligacje, lokaty, budżet i dywidendy w jednym miejscu." />
+    <meta name="twitter:image" content="https://skieta.com/og-image.png" />
+    <script type="application/ld+json">
+      {
+        "@context": "https://schema.org",
+        "@type": "WebSite",
+        "name": "skieta",
+        "url": "https://skieta.com/",
+        "description": "Osobisty tracker finansowy - konta bankowe, akcje, obligacje, lokaty, budżet i dywidendy w jednym miejscu.",
+        "image": "https://skieta.com/og-image.png"
+      }
+    </script>
+    <title>skieta - panuj nad swoimi finansami</title>
   </head>
   <body>
     <div id="root"></div>

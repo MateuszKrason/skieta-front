@@ -1,5 +1,5 @@
-export type Market = 'GPW' | 'US'
-export type Currency = 'PLN' | 'USD' | 'EUR' | 'NOK' | 'DKK' | 'GBP'
+export type Market = 'GPW' | 'US' | 'EU'
+export type Currency = 'PLN' | 'USD' | 'EUR' | 'NOK' | 'DKK' | 'GBP' | 'SEK' | 'CHF'
 
 export interface Stock {
   id: number
@@ -99,7 +99,18 @@ export interface PortfolioAnalytics {
   realized_pl_by_year: RealizedPlYearRow[]
   belka_tax_liability: string
   dividends_ytd: string
+  dividends_ytd_after_tax: string
   dividends_all_time: string
+  dividends_all_time_after_tax: string
+  by_account: AccountBreakdownRow[]
+}
+
+export interface AccountBreakdownRow {
+  account_id: number
+  account_label: string
+  invested_base: string
+  value_base: string
+  pct: string
 }
 
 export type BankAccountType = 'checking' | 'savings' | 'brokerage' | 'business' | 'ike' | 'ikze' | 'crypto'
@@ -142,8 +153,11 @@ export interface TermDeposit {
   status: 'active' | 'closed'
   closed_at: string | null
   accrued_interest: string
+  accrued_interest_after_tax: string
   projected_interest_at_maturity: string
+  projected_interest_at_maturity_after_tax: string
   projected_total: string
+  projected_total_after_tax: string
   created_at: string
 }
 
@@ -164,9 +178,13 @@ export interface TreasuryBond {
   status: 'active' | 'redeemed'
   closed_at: string | null
   accrued_interest: string
+  accrued_interest_after_tax: string
   current_value: string
+  current_value_after_tax: string
   projected_interest_at_maturity: string
+  projected_interest_at_maturity_after_tax: string
   projected_total: string
+  projected_total_after_tax: string
   created_at: string
 }
 
@@ -189,7 +207,9 @@ export interface Dividend {
 export interface DividendSummaryRow {
   stock: Stock
   total_received: string
+  total_received_after_tax: string
   last_12m_received: string
+  last_12m_received_after_tax: string
   cost_basis: string | null
   yield_on_cost_pct: string | null
 }
@@ -197,7 +217,9 @@ export interface DividendSummaryRow {
 export interface DividendSummary {
   rows: DividendSummaryRow[]
   total_all_time: string
+  total_all_time_after_tax: string
   projected_annual_income: string
+  projected_annual_income_after_tax: string
   upcoming: Dividend[]
 }
 
@@ -270,6 +292,7 @@ export interface User {
     interest_stocks: boolean
     interest_budget: boolean
     interest_planning: boolean
+    interest_analysis: boolean
     permissions: string[]
     username_changed_at: string | null
   }
@@ -278,7 +301,19 @@ export interface User {
 export interface Invitation {
   id: number
   token: string
+  email: string | null
   invite_url: string
+  created_at: string
+  accepted_by: string | null
+  accepted_at: string | null
+  is_expired: boolean
+}
+
+export interface AdminInvitedEmail {
+  id: number
+  email: string
+  inviter: string
+  inviter_id: number
   created_at: string
   accepted_by: string | null
   accepted_at: string | null
@@ -322,6 +357,7 @@ export interface RoleAssignment {
 export interface AdminAppStats {
   invitations_sent: number
   invitations_accepted: number
+  invitation_emails_sent: number
   editor_count: number
   archived_count: number
   color_variant_counts: Record<string, number>

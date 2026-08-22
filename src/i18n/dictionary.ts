@@ -639,6 +639,7 @@ export const en: Record<string, string> = {
   'Portfel akcji, dywidendy, analiza spółek': 'Stock portfolio, dividends, company analysis',
   'Notowanie przychodów i wydatków': 'Tracking income and expenses',
   'Cele oszczędnościowe i planowane wydatki': 'Savings goals and planned expenses',
+  'Kalkulator inwestycyjny - obligacje, lokaty, giełda': 'Investment calculator - bonds, deposits, stock market',
   'Z czego korzystasz': 'What you use',
   'Odznaczone opcje znikają z górnego menu — możesz je włączyć z powrotem w każdej chwili.':
     'Unchecked options disappear from the top menu — you can turn them back on any time.',
@@ -662,6 +663,10 @@ export const en: Record<string, string> = {
   'Na później': 'Later',
   'Brak zgłoszeń spełniających kryteria.': 'No submissions match these criteria.',
   'Oznacz jako: {0}': 'Mark as: {0}',
+  'Tylko ważne': 'Important only',
+  'Ważne': 'Important',
+  'Oznacz jako ważne': 'Mark as important',
+  'Odznacz ważne': 'Unmark important',
 
   // Invite by email
   'Wygeneruj link i kod QR, albo od razu podaj e-mail znajomego, żeby wysłać mu zaproszenie.':
@@ -727,6 +732,8 @@ export const en: Record<string, string> = {
     "How much tax you'd owe if you sold every winning position today.",
   'Dywidendy w tym roku': 'Dividends this year',
   'Łącznie od zawsze: {0}': 'All-time total: {0}',
+  'Dywidendy w tym roku (po Belce)': 'Dividends this year (after tax)',
+  'Brutto: {0} · Łącznie od zawsze: {1} ({2} po Belce)': 'Gross: {0} · All-time total: {1} ({2} after tax)',
 
   // Stock reordering (drag & drop)
   'Przeciągnij, aby zmienić kolejność': 'Drag to reorder',
@@ -735,12 +742,25 @@ export const en: Record<string, string> = {
   'Statystyki': 'Statistics',
   'Zaproszenia wysłane': 'Invitations sent',
   'Zaproszenia przyjęte': 'Invitations accepted',
+  'Zaproszenia mailem': 'Email invitations',
   'Redaktorzy': 'Editors',
   'Zarchiwizowane konta': 'Archived accounts',
   'Transakcje budżetowe': 'Budget transactions',
   'Transakcje giełdowe': 'Stock transactions',
   'Role niestandardowe': 'Custom roles',
   'Wariant kolorystyczny użytkowników': "Users' color variant",
+  'Zaproszenia wysłane mailem': 'Invitations sent by email',
+  'Brak zaproszeń wysłanych mailem.': 'No invitations sent by email.',
+  'Zapraszający': 'Inviter',
+  'Wysłano': 'Sent',
+  'Przyjęte przez {0}': 'Accepted by {0}',
+  'Wygasłe': 'Expired',
+  'Oczekuje': 'Pending',
+  'Wygasłe zaproszenia': 'Expired invitations',
+  'Wysłane e-maile': 'Sent emails',
+  'Brak wygasłych zaproszeń.': 'No expired invitations.',
+  'Nie wysłano jeszcze żadnych zaproszeń mailem.': 'No invitations sent by email yet.',
+  'Przyjęte': 'Accepted',
 
   // Admin: role/permission management
   'Nazwa roli': 'Role name',
@@ -792,6 +812,8 @@ export const en: Record<string, string> = {
   'Kwota z oszczędności': 'Amount from savings',
 
   // Privacy policy
+  'Strona główna': 'Home',
+  'Europa': 'Europe',
   'Polityka prywatności': 'Privacy policy',
   '← Powrót na stronę główną': '← Back to home',
   'Kim jesteśmy': 'Who we are',
@@ -952,6 +974,8 @@ export const en: Record<string, string> = {
   'Podgląd wyciągu': 'Statement preview',
   'Podział wg rynku': 'Breakdown by market',
   'Podział wg waluty': 'Breakdown by currency',
+  'Podział wg konta maklerskiego': 'Breakdown by brokerage account',
+  'Zainwestowano': 'Invested',
   'Pozostałe ({0})': 'Other ({0})',
   'Przy każdym logowaniu zapisujemy adres IP oraz podstawowe informacje o przeglądarce/systemie (User-Agent) — to podstawa historii logowań widocznej w Twoim koncie oraz ochrony przed nieautoryzowanym dostępem. Zapisujemy też, w które dni byłeś/aś aktywny(a) (do serii logowań i statystyk).':
     'On every login we record the IP address and basic browser/system info (User-Agent) — this powers the login history in your account and helps protect against unauthorized access. We also record which days you were active (for streaks and statistics).',
@@ -990,6 +1014,9 @@ export const en: Record<string, string> = {
   'Zacznij zarządzać swoimi finansami →': 'Start managing your finances →',
   'Zaimportowano {0} transakcji, pominięto {1}.': 'Imported {0} transactions, skipped {1}.',
   'Zaloguj się do aplikacji': 'Log in to the app',
+  'Wejdź do aplikacji': 'Enter the app',
+  'Wróć do swojego majątku': 'Come back to your finances',
+  'Kontynuuj tam, gdzie skończyłeś/aś — Twój dashboard czeka.': 'Pick up right where you left off — your dashboard is waiting.',
   'Zarezerwowano na duże wydatki': 'Reserved for large expenses',
   'Zarezerwuj z wypłaty': 'Reserve from paycheck',
   'Zatrzymaj': 'Pause',
@@ -1035,4 +1062,53 @@ export const en: Record<string, string> = {
   'Śr. czas trzymania (ważony wartością)': 'Avg. holding period (value-weighted)',
   '← Wszystkie artykuły': '← All articles',
   '⇪ Importuj wyciąg': '⇪ Import statement',
+
+  // Investment calculator (Analiza tab)
+  'Kalkulator inwestycyjny': 'Investment calculator',
+  'Podaj kwotę i horyzont czasowy, żeby zobaczyć orientacyjny wynik dla różnych instrumentów, po podatku Belki (19%). Stawki obligacji skarbowych są pobierane na bieżąco, pozostałe oprocentowania możesz dowolnie zmienić.':
+    "Enter an amount and time horizon to see an approximate result for different instruments, after Belka tax (19%). Treasury bond rates are fetched live, the other rates can be freely changed.",
+  'To nie jest porada inwestycyjna ani rekomendacja - to tylko symulacja na podstawie oprocentowań, które sam(a) wybierasz lub które są historyczne. Realne wyniki mogą się różnić, szczególnie dla giełdy.':
+    "This isn't investment advice or a recommendation - it's just a simulation based on rates you choose or historical ones. Real results can differ, especially for stocks.",
+  'Kwota do zainwestowania': 'Amount to invest',
+  'Horyzont (lata)': 'Horizon (years)',
+  'Wynik po {0} {1} (po podatku Belki)': 'Result after {0} {1} (after Belka tax)',
+  'roku': 'year',
+  'latach': 'years',
+  'Wartość końcowa': 'Final value',
+  'Wartość końcowa po podatku': 'Final value after tax',
+  'Ostatnia znana stawka - nie udało się pobrać bieżącej oferty.': 'Last known rate - could not fetch the current offer.',
+  'Aktualne oprocentowanie z pierwszego okresu odsetkowego (obligacjeskarbowe.pl).':
+    'Current first-period interest rate (obligacjeskarbowe.pl).',
+  'Oprocentowanie stałe przez cały okres trwania obligacji - nie zmienia się.':
+    "Fixed rate for the whole term of the bond - it doesn't change.",
+  'Oprocentowanie zmienne, oparte o stawkę WIBOR - resetowane co okres odsetkowy. Pokazana stawka dotyczy tylko pierwszego okresu, kolejne mogą być inne.':
+    'Variable rate based on WIBOR - reset every interest period. The rate shown is for the first period only, later ones may differ.',
+  'Pierwszy rok: stałe oprocentowanie. Kolejne lata: inflacja + marża. Pokazana stawka to tylko pierwszy okres - wynik w kolejnych latach zależy od przyszłej inflacji.':
+    'First year: fixed rate. Later years: inflation + margin. The rate shown is only the first period - later years depend on future inflation.',
+  'Lokata bankowa': 'Bank term deposit',
+  'Przykładowe oprocentowanie roczne - zmień na stawkę z oferty swojego banku. Środki chronione gwarancją BFG do 100 000 EUR.':
+    "Example annual rate - change it to your own bank's offer. Funds are protected by the BFG guarantee up to EUR 100,000.",
+  'Konto oszczędnościowe': 'Savings account',
+  'Przykładowe oprocentowanie - zwykle zmienne, bank może je zmienić w dowolnym momencie. Też objęte gwarancją BFG.':
+    'Example rate - usually variable, the bank can change it at any time. Also covered by the BFG guarantee.',
+  'Giełda (średnio, szeroki rynek)': 'Stock market (broad market average)',
+  'Średnia z 5 głównych indeksów (rozbicie i źródła niżej) - historyczna, nie gwarantowana. Realny wynik pojedynczego roku może być mocno na plusie albo na minusie.':
+    "Average of 5 major indices (breakdown and sources below) - historical, not guaranteed. A single year's real result can be well into the positive or negative.",
+  'Instrument': 'Instrument',
+  'Ryzyko': 'Risk',
+  'Bardzo niskie': 'Very low',
+  'Niskie': 'Low',
+  'Wysokie': 'High',
+  'Zysk (brutto)': 'Profit (gross)',
+  'Zysk po podatku Belki': 'Profit after Belka tax',
+  'Skąd wzięło się założenie dla giełdy ({0}% rocznie)?': "Where did the {0}%/year stock market assumption come from?",
+  'To średnia z historycznych, średniorocznych stóp zwrotu 5 głównych indeksów akcyjnych (z reinwestowanymi dywidendami, gdzie dostępne) - nie prognoza, tylko punkt odniesienia.':
+    "It's an average of the historical, average annual returns of 5 major stock indices (with dividends reinvested where available) - not a forecast, just a reference point.",
+  'Indeks': 'Index',
+  'Okres': 'Period',
+  'Średniorocznie': 'Annualized',
+  'Źródło': 'Source',
+  'Średnia z powyższych': 'Average of the above',
+  'WIG20 i mWIG40 to indeksy warszawskiej giełdy (duże i średnie spółki), S&P 500 i Nasdaq to główne indeksy amerykańskie, a MSCI World / FTSE All-World obejmuje akcje z całego świata. Powyższe okresy to najdłuższe, dla których znalazłem wiarygodne, publicznie dostępne dane - dla WIG20/mWIG40 to karty funduszy śledzących te indeksy. Historyczne wyniki nie gwarantują przyszłych - pojedyncze lata potrafią być mocno ujemne.':
+    "WIG20 and mWIG40 are Warsaw Stock Exchange indices (large and mid-cap companies), S&P 500 and Nasdaq are the main US indices, and MSCI World / FTSE All-World covers stocks worldwide. The periods above are the longest ones I found reliable, public data for - for WIG20/mWIG40 that's the factsheets of funds tracking those indices. Historical results don't guarantee future ones - single years can be sharply negative.",
 }

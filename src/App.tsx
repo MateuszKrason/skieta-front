@@ -37,6 +37,7 @@ import Bilans from './pages/analysis/Bilans'
 import Przychody from './pages/analysis/Przychody'
 import Wydatki from './pages/analysis/Wydatki'
 import Kategorie from './pages/analysis/Kategorie'
+import InvestmentCalculator from './pages/InvestmentCalculator'
 
 const PAGE_TITLES: [string, string][] = [
   ['/polityka-prywatnosci', 'Polityka prywatności'],
@@ -60,11 +61,12 @@ const PAGE_TITLES: [string, string][] = [
   ['/gielda/dywidendy', 'Dywidendy'],
   ['/gielda/analiza-spolek', 'Analiza spółek'],
   ['/gielda', 'Giełda'],
-  ['/analiza/bilans', 'Bilans'],
-  ['/analiza/przychody', 'Przychody'],
-  ['/analiza/wydatki', 'Wydatki'],
-  ['/analiza/kategorie', 'Kategorie'],
-  ['/analiza', 'Budżet'],
+  ['/budzet/bilans', 'Bilans'],
+  ['/budzet/przychody', 'Przychody'],
+  ['/budzet/wydatki', 'Wydatki'],
+  ['/budzet/kategorie', 'Kategorie'],
+  ['/budzet', 'Budżet'],
+  ['/analiza', 'Analiza'],
   ['/dashboard', 'Dashboard'],
 ]
 
@@ -80,7 +82,7 @@ function useDocumentTitle() {
   const { t } = useLanguage()
   useEffect(() => {
     const match = PAGE_TITLES.find(([path]) => (path === '/' ? location.pathname === '/' : location.pathname.startsWith(path)))
-    document.title = match ? `${t(match[1])} – skieta` : 'skieta'
+    document.title = match ? `${t(match[1])} - skieta` : 'skieta'
   }, [location.pathname, t])
 }
 
@@ -151,13 +153,21 @@ export default function App() {
             <Route path="analiza-spolek" element={<AnalizaSpolek />} />
           </Route>
 
-          <Route path="/analiza" element={<AnalysisLayout />}>
+          <Route path="/budzet" element={<AnalysisLayout />}>
             <Route index element={<Navigate to="bilans" replace />} />
             <Route path="bilans" element={<Bilans />} />
             <Route path="przychody" element={<Przychody />} />
             <Route path="wydatki" element={<Wydatki />} />
             <Route path="kategorie" element={<Kategorie />} />
           </Route>
+
+          <Route path="/analiza" element={<InvestmentCalculator />} />
+          {/* Old budget-analysis URLs, kept working under their new /budzet
+              path now that /analiza means the investment calculator instead. */}
+          <Route path="/analiza/bilans" element={<Navigate to="/budzet/bilans" replace />} />
+          <Route path="/analiza/przychody" element={<Navigate to="/budzet/przychody" replace />} />
+          <Route path="/analiza/wydatki" element={<Navigate to="/budzet/wydatki" replace />} />
+          <Route path="/analiza/kategorie" element={<Navigate to="/budzet/kategorie" replace />} />
         </Route>
       </Route>
     </Routes>

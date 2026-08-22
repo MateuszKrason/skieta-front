@@ -1,4 +1,4 @@
-import { Fragment, useState, type FormEvent } from 'react'
+import { Fragment, useEffect, useState, type FormEvent } from 'react'
 import { useMutation, useQuery, useQueryClient } from '@tanstack/react-query'
 import { api } from '../api/client'
 import { useAuth } from '../auth/AuthContext'
@@ -6,6 +6,7 @@ import BankNameAutocomplete from '../components/BankNameAutocomplete'
 import { PageLoader } from '../components/Loader'
 import StatementImportPanel from '../components/StatementImportPanel'
 import { useLanguage } from '../i18n/LanguageContext'
+import { addMonths, type CurrentBondOffer } from '../lib/bonds'
 import { accountTypeLabel, formatDate, formatMoney, formatNumber } from '../lib/format'
 import { AddTransactionForm } from './analysis/shared'
 import type {
@@ -420,8 +421,16 @@ export default function Banking() {
                     <td className="px-4 py-2 text-right">{formatDate(d.end_date)}</td>
                     <td className="px-4 py-2 text-right font-medium text-emerald-700 dark:text-emerald-400">
                       {formatMoney(d.accrued_interest, d.currency)}
+                      <span className="block text-xs font-normal text-slate-400 dark:text-slate-500">
+                        {formatMoney(d.accrued_interest_after_tax, d.currency)} {t('po Belce')}
+                      </span>
                     </td>
-                    <td className="px-4 py-2 text-right font-medium">{formatMoney(d.projected_total, d.currency)}</td>
+                    <td className="px-4 py-2 text-right font-medium">
+                      {formatMoney(d.projected_total, d.currency)}
+                      <span className="block text-xs font-normal text-slate-400 dark:text-slate-500">
+                        {formatMoney(d.projected_total_after_tax, d.currency)} {t('po Belce')}
+                      </span>
+                    </td>
                     <td className="px-4 py-2 text-right">
                       <span
                         className={`rounded-full px-2 py-0.5 text-xs ${
@@ -569,9 +578,22 @@ export default function Banking() {
                     <td className="px-4 py-2 text-right">{formatDate(b.maturity_date)}</td>
                     <td className="px-4 py-2 text-right font-medium text-emerald-700 dark:text-emerald-400">
                       {formatMoney(b.accrued_interest, b.currency)}
+                      <span className="block text-xs font-normal text-slate-400 dark:text-slate-500">
+                        {formatMoney(b.accrued_interest_after_tax, b.currency)} {t('po Belce')}
+                      </span>
                     </td>
-                    <td className="px-4 py-2 text-right font-medium">{formatMoney(b.current_value, b.currency)}</td>
-                    <td className="px-4 py-2 text-right font-medium">{formatMoney(b.projected_total, b.currency)}</td>
+                    <td className="px-4 py-2 text-right font-medium">
+                      {formatMoney(b.current_value, b.currency)}
+                      <span className="block text-xs font-normal text-slate-400 dark:text-slate-500">
+                        {formatMoney(b.current_value_after_tax, b.currency)} {t('po Belce')}
+                      </span>
+                    </td>
+                    <td className="px-4 py-2 text-right font-medium">
+                      {formatMoney(b.projected_total, b.currency)}
+                      <span className="block text-xs font-normal text-slate-400 dark:text-slate-500">
+                        {formatMoney(b.projected_total_after_tax, b.currency)} {t('po Belce')}
+                      </span>
+                    </td>
                     <td className="px-4 py-2 text-right">
                       <span
                         className={`rounded-full px-2 py-0.5 text-xs ${
@@ -1142,6 +1164,28 @@ function AddBondForm({ accounts, onDone }: { accounts: BankAccount[]; onDone: ()
   const [rate, setRate] = useState('')
   const [purchaseDate, setPurchaseDate] = useState(() => new Date().toISOString().slice(0, 10))
   const [maturityDate, setMaturityDate] = useState('')
+  // Whether each field still holds an auto-filled value (true) or the user
+  // has typed their own (false) — auto-fill only ever overwrites fields the
+  // user hasn't touched yet, so picking a different bond type after manually
+  // editing the rate/date doesn't clobber it.
+  const [seriesAuto, setSeriesAuto] = useState(true)
+  const [rateAuto, setRateAuto] = useState(true)
+  const [maturityAuto, setMaturityAuto] = useState(true)
+
+  const { data: offer } = useQuery({
+    queryKey: ['bonds-current-offer'],
+    queryFn: async () => (await api.get<CurrentBondOffer>('/bonds/current-offer/')).data,
+    staleTime: 60 * 60 * 1000,
+  })
+
+  useEffect(() => {
+    const entry = offer?.[bondType]
+    if (!entry) return
+    if (seriesAuto && entry.series) setSeries(entry.series)
+    if (rateAuto && entry.rate) setRate(entry.rate)
+    if (maturityAuto && purchaseDate) setMaturityDate(addMonths(purchaseDate, entry.tenor_months))
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [bondType, purchaseDate, offer])
 
   const mutation = useMutation({
     mutationFn: () =>
@@ -1177,7 +1221,15 @@ function AddBondForm({ accounts, onDone }: { accounts: BankAccount[]; onDone: ()
         </select>
       </Field>
       <Field label="Seria (opcjonalnie)">
-        <input value={series} onChange={(e) => setSeries(e.target.value)} placeholder="np. EDO0435" className="input" />
+        <input
+          value={series}
+          onChange={(e) => {
+            setSeriesAuto(false)
+            setSeries(e.target.value)
+          }}
+          placeholder="np. EDO0435"
+          className="input"
+        />
       </Field>
       <Field label="Środki z konta">
         <select value={account} onChange={(e) => setAccount(e.target.value ? Number(e.target.value) : '')} className="input">
@@ -1203,13 +1255,32 @@ function AddBondForm({ accounts, onDone }: { accounts: BankAccount[]; onDone: ()
         </select>
       </Field>
       <Field label="Bieżące oprocentowanie (%)">
-        <input type="number" step="0.01" value={rate} onChange={(e) => setRate(e.target.value)} required className="input" />
+        <input
+          type="number"
+          step="0.01"
+          value={rate}
+          onChange={(e) => {
+            setRateAuto(false)
+            setRate(e.target.value)
+          }}
+          required
+          className="input"
+        />
       </Field>
       <Field label="Data zakupu">
         <input type="date" value={purchaseDate} onChange={(e) => setPurchaseDate(e.target.value)} required className="input" />
       </Field>
       <Field label="Data wykupu">
-        <input type="date" value={maturityDate} onChange={(e) => setMaturityDate(e.target.value)} required className="input" />
+        <input
+          type="date"
+          value={maturityDate}
+          onChange={(e) => {
+            setMaturityAuto(false)
+            setMaturityDate(e.target.value)
+          }}
+          required
+          className="input"
+        />
       </Field>
       <div className="flex items-end">
         <button type="submit" className="btn-primary w-full" disabled={mutation.isPending}>

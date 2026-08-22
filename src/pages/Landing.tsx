@@ -1,6 +1,6 @@
 import { useState, type FormEvent } from 'react'
 import { useMutation, useQuery } from '@tanstack/react-query'
-import { Link, Navigate } from 'react-router-dom'
+import { Link } from 'react-router-dom'
 import { api } from '../api/client'
 import { useAuth } from '../auth/AuthContext'
 import SockLogo from '../components/SockLogo'
@@ -175,12 +175,11 @@ export default function Landing() {
     queryFn: async () => (await api.get<Article[]>('/content/articles/')).data,
   })
 
-  // Someone already signed in landing on the marketing homepage (e.g. from a
-  // bookmark, or an email CTA that just points at the bare domain) should go
-  // straight to the app instead of seeing the pitch for it.
-  if (user) {
-    return <Navigate to="/dashboard" replace />
-  }
+  // A signed-in visitor still sees the landing page (e.g. clicking the logo
+  // from inside the app) — the CTAs below just point into the app instead of
+  // to the login form.
+  const ctaHref = user ? '/dashboard' : '/logowanie'
+  const ctaLabel = user ? t('Wejdź do aplikacji') : t('Zaloguj się')
 
   return (
     <div className="min-h-screen overflow-x-hidden bg-slate-50 dark:bg-slate-950">
@@ -191,10 +190,10 @@ export default function Landing() {
             skieta
           </Link>
           <Link
-            to="/logowanie"
+            to={ctaHref}
             className="rounded-full bg-accent-600 px-5 py-2 text-sm font-semibold text-white shadow-sm shadow-accent-600/30 transition hover:bg-accent-700 hover:shadow-md"
           >
-            {t('Zaloguj się do aplikacji')}
+            {user ? ctaLabel : t('Zaloguj się do aplikacji')}
           </Link>
         </div>
       </header>
@@ -223,15 +222,17 @@ export default function Landing() {
             </p>
             <div className="mt-8 flex flex-wrap items-center gap-4">
               <Link
-                to="/logowanie"
+                to={ctaHref}
                 className="rounded-full bg-accent-600 px-7 py-3 text-base font-semibold text-white shadow-lg shadow-accent-600/30 transition hover:-translate-y-0.5 hover:bg-accent-700 hover:shadow-xl"
               >
-                {t('Zaloguj się')}
+                {ctaLabel}
               </Link>
             </div>
-            <div className="mt-4">
-              <RequestAccessForm />
-            </div>
+            {!user && (
+              <div className="mt-4">
+                <RequestAccessForm />
+              </div>
+            )}
           </div>
           <div className="relative mx-auto w-full max-w-sm lg:max-w-none">
             <MockDashboardCard />
@@ -318,15 +319,19 @@ export default function Landing() {
             aria-hidden="true"
             className="pointer-events-none absolute -left-10 -top-10 h-56 w-56 rounded-full bg-white/10 blur-3xl"
           />
-          <h2 className="text-2xl font-bold text-white sm:text-3xl">{t('Masz już zaproszenie?')}</h2>
+          <h2 className="text-2xl font-bold text-white sm:text-3xl">
+            {user ? t('Wróć do swojego majątku') : t('Masz już zaproszenie?')}
+          </h2>
           <p className="mx-auto mt-2 max-w-md text-accent-50/90">
-            {t('Zaloguj się i zobacz cały swój majątek w jednym miejscu — od razu po pierwszym dodaniu konta.')}
+            {user
+              ? t('Kontynuuj tam, gdzie skończyłeś/aś — Twój dashboard czeka.')
+              : t('Zaloguj się i zobacz cały swój majątek w jednym miejscu — od razu po pierwszym dodaniu konta.')}
           </p>
           <Link
-            to="/logowanie"
+            to={ctaHref}
             className="mt-6 inline-block rounded-full bg-white px-7 py-3 text-base font-semibold text-accent-700 shadow-lg transition hover:-translate-y-0.5 hover:shadow-xl"
           >
-            {t('Zaloguj się')}
+            {ctaLabel}
           </Link>
         </div>
       </section>

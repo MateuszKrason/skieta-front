@@ -9,7 +9,7 @@ import { formatDateTime, formatMoney, formatPct } from '../../lib/format'
 import type { AllocationRow, CompanyNews, PortfolioAnalytics, Stock } from '../../types'
 
 const PALETTE = ['#059669', '#0ea5e9', '#f59e0b', '#ef4444', '#8b5cf6', '#ec4899', '#14b8a6', '#84cc16', '#f97316', '#6366f1']
-const MARKET_COLORS: Record<string, string> = { GPW: '#0ea5e9', US: '#059669' }
+const MARKET_COLORS: Record<string, string> = { GPW: '#0ea5e9', US: '#059669', EU: '#f59e0b' }
 const MAX_PIE_SLICES = 7
 
 function formatHoldingPeriod(days: number | null, t: (s: string, ...a: (string | number)[]) => string): string {
@@ -120,9 +120,14 @@ function PortfolioAnalyticsBody({ data }: { data: PortfolioAnalytics }) {
             hint={t('Ile fiskus zabrałby, gdybyś dziś sprzedał(a) wszystko na plusie.')}
           />
           <MiniStat
-            label={t('Dywidendy w tym roku')}
-            value={formatMoney(data.dividends_ytd, base)}
-            hint={t('Łącznie od zawsze: {0}', formatMoney(data.dividends_all_time, base))}
+            label={t('Dywidendy w tym roku (po Belce)')}
+            value={formatMoney(data.dividends_ytd_after_tax, base)}
+            hint={t(
+              'Brutto: {0} · Łącznie od zawsze: {1} ({2} po Belce)',
+              formatMoney(data.dividends_ytd, base),
+              formatMoney(data.dividends_all_time, base),
+              formatMoney(data.dividends_all_time_after_tax, base),
+            )}
           />
         </div>
       </div>
@@ -141,6 +146,38 @@ function PortfolioAnalyticsBody({ data }: { data: PortfolioAnalytics }) {
           ))}
         </div>
       </div>
+
+      {data.by_account.length > 0 && (
+        <div className="rounded-lg border border-slate-100 dark:border-slate-800 p-3">
+          <p className="mb-2 text-xs font-semibold text-slate-600 dark:text-slate-400">
+            {t('Podział wg konta maklerskiego')}
+          </p>
+          <div className="h-52">
+            <ResponsiveContainer width="100%" height="100%">
+              <BarChart data={data.by_account.map((r) => ({
+                label: r.account_label,
+                invested: Number(r.invested_base),
+                value: Number(r.value_base),
+              }))}
+              >
+                <Tooltip {...tooltipStyle} formatter={(value) => formatMoney(value as number, base)} />
+                <Bar dataKey="invested" name={t('Zainwestowano')} fill="#94a3b8" radius={[4, 4, 0, 0]} />
+                <Bar dataKey="value" name={t('Wartość obecna')} fill="#059669" radius={[4, 4, 0, 0]} />
+              </BarChart>
+            </ResponsiveContainer>
+          </div>
+          <div className="mt-2 space-y-1">
+            {data.by_account.map((row) => (
+              <div key={row.account_id} className="flex items-center justify-between text-xs text-slate-500 dark:text-slate-400">
+                <span className="truncate">{row.account_label}</span>
+                <span className="tabular-nums">
+                  {formatMoney(row.value_base, base)} ({formatPct(row.pct)})
+                </span>
+              </div>
+            ))}
+          </div>
+        </div>
+      )}
 
       <div className="grid grid-cols-1 gap-4 sm:grid-cols-3">
         <div className="rounded-lg border border-slate-100 dark:border-slate-800 p-3 text-center">

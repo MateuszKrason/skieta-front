@@ -121,7 +121,7 @@ export default function Dashboard() {
       <div className="rounded-xl border border-slate-200 dark:border-slate-700 bg-white dark:bg-slate-800 p-5 shadow-sm">
         <div className="mb-3 flex items-center justify-between">
           <h2 className="text-sm font-semibold text-slate-700 dark:text-slate-300">{t('Przychody i wydatki (ten miesiąc)')}</h2>
-          <Link to="/analiza" className="text-xs font-medium text-accent-700 dark:text-accent-400 hover:underline">
+          <Link to="/budzet" className="text-xs font-medium text-accent-700 dark:text-accent-400 hover:underline">
             {t('Zobacz pełną analizę →')}
           </Link>
         </div>
