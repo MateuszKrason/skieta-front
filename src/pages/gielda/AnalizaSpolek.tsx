@@ -1,12 +1,12 @@
 import { useState } from 'react'
 import { useMutation, useQuery, useQueryClient } from '@tanstack/react-query'
-import { Bar, BarChart, Cell, Pie, PieChart, ResponsiveContainer, Tooltip } from 'recharts'
+import { Bar, BarChart, Cell, Pie, PieChart, ResponsiveContainer, Tooltip, XAxis } from 'recharts'
 import { api } from '../../api/client'
 import { CardLoader } from '../../components/Loader'
 import { useLanguage } from '../../i18n/LanguageContext'
 import { useTooltipStyle } from '../../lib/chartTooltip'
 import { formatDateTime, formatMoney, formatPct } from '../../lib/format'
-import type { AllocationRow, CompanyNews, PortfolioAnalytics, Stock } from '../../types'
+import type { AccountBreakdownRow, AllocationRow, CompanyNews, PortfolioAnalytics, Stock } from '../../types'
 
 const PALETTE = ['#059669', '#0ea5e9', '#f59e0b', '#ef4444', '#8b5cf6', '#ec4899', '#14b8a6', '#84cc16', '#f97316', '#6366f1']
 const MARKET_COLORS: Record<string, string> = { GPW: '#0ea5e9', US: '#059669', EU: '#f59e0b' }
@@ -152,28 +152,38 @@ function PortfolioAnalyticsBody({ data }: { data: PortfolioAnalytics }) {
           <p className="mb-2 text-xs font-semibold text-slate-600 dark:text-slate-400">
             {t('Podział wg konta maklerskiego')}
           </p>
-          <div className="h-52">
+          <p className="mb-2 text-xs text-slate-400 dark:text-slate-500">
+            {t('Udział wartości portfela trzymanej na każdym koncie maklerskim. Zysk to zmiana wartości względem wpłaconego kapitału.')}
+          </p>
+          <div className="h-72">
             <ResponsiveContainer width="100%" height="100%">
-              <BarChart data={data.by_account.map((r) => ({
-                label: r.account_label,
-                invested: Number(r.invested_base),
-                value: Number(r.value_base),
-              }))}
-              >
+              <PieChart>
+                <Pie
+                  data={data.by_account.map((r) => ({ name: r.account_label, value: Number(r.value_base) }))}
+                  dataKey="value"
+                  nameKey="name"
+                  innerRadius={65}
+                  outerRadius={105}
+                  paddingAngle={2}
+                >
+                  {data.by_account.map((_, i) => (
+                    <Cell key={i} fill={PALETTE[i % PALETTE.length]} />
+                  ))}
+                </Pie>
                 <Tooltip {...tooltipStyle} formatter={(value) => formatMoney(value as number, base)} />
-                <Bar dataKey="invested" name={t('Zainwestowano')} fill="#94a3b8" radius={[4, 4, 0, 0]} />
-                <Bar dataKey="value" name={t('Wartość obecna')} fill="#059669" radius={[4, 4, 0, 0]} />
-              </BarChart>
+              </PieChart>
             </ResponsiveContainer>
           </div>
-          <div className="mt-2 space-y-1">
-            {data.by_account.map((row) => (
-              <div key={row.account_id} className="flex items-center justify-between text-xs text-slate-500 dark:text-slate-400">
-                <span className="truncate">{row.account_label}</span>
-                <span className="tabular-nums">
-                  {formatMoney(row.value_base, base)} ({formatPct(row.pct)})
-                </span>
-              </div>
+          <div className="mt-2 flex items-center justify-between px-1.5 text-[11px] font-medium uppercase tracking-wide text-slate-400 dark:text-slate-500">
+            <span>{t('Konto')}</span>
+            <span className="flex items-center gap-2">
+              <span className="min-w-[56px] text-right">{t('Udział')}</span>
+              <span className="min-w-[56px] text-right">{t('Zysk')}</span>
+            </span>
+          </div>
+          <div className="space-y-1">
+            {data.by_account.map((row, i) => (
+              <AccountLine key={row.account_id} row={row} color={PALETTE[i % PALETTE.length]} />
             ))}
           </div>
         </div>
@@ -202,6 +212,7 @@ function PortfolioAnalyticsBody({ data }: { data: PortfolioAnalytics }) {
           <div className="h-40">
             <ResponsiveContainer width="100%" height="100%">
               <BarChart data={data.realized_pl_by_year.map((r) => ({ year: r.year, value: Number(r.realized_pl) }))}>
+                <XAxis dataKey="year" tick={{ fontSize: 11 }} stroke="#94a3b8" axisLine={false} tickLine={false} />
                 <Tooltip {...tooltipStyle} formatter={(value) => formatMoney(value as number, base)} labelFormatter={(y) => String(y)} />
                 <Bar dataKey="value" radius={[4, 4, 0, 0]}>
                   {data.realized_pl_by_year.map((r, i) => (
@@ -240,6 +251,34 @@ function AllocationLine({ row, color }: { row: AllocationRow; color: string }) {
           title={t('Zysk/strata (niezrealizowane) na tej pozycji')}
         >
           {plPct !== null ? formatPct(row.unrealized_pl_pct) : '—'}
+        </span>
+      </span>
+    </div>
+  )
+}
+
+function AccountLine({ row, color }: { row: AccountBreakdownRow; color: string }) {
+  const { t } = useLanguage()
+  const invested = Number(row.invested_base)
+  const value = Number(row.value_base)
+  const gainPct = invested ? (value / invested - 1) * 100 : null
+  return (
+    <div className="flex items-center justify-between rounded-md px-1.5 py-1 text-xs">
+      <span className="flex min-w-0 items-center gap-2">
+        <span className="h-2 w-2 shrink-0 rounded-full" style={{ backgroundColor: color }} />
+        <span className="truncate">{row.account_label}</span>
+      </span>
+      <span className="flex shrink-0 items-center gap-2 text-slate-500 dark:text-slate-400 tabular-nums">
+        <span className="min-w-[56px] text-right" title={t('Udział tego konta w wartości całego portfela')}>
+          {formatPct(row.pct)}
+        </span>
+        <span
+          className={`min-w-[56px] text-right ${
+            gainPct === null ? '' : gainPct >= 0 ? 'text-emerald-600 dark:text-emerald-400' : 'text-red-600 dark:text-red-400'
+          }`}
+          title={t('Zmiana wartości względem wpłaconego kapitału na tym koncie')}
+        >
+          {gainPct !== null ? `${gainPct >= 0 ? '+' : ''}${gainPct.toFixed(2)}%` : '—'}
         </span>
       </span>
     </div>

@@ -975,6 +975,10 @@ export const en: Record<string, string> = {
   'Podział wg rynku': 'Breakdown by market',
   'Podział wg waluty': 'Breakdown by currency',
   'Podział wg konta maklerskiego': 'Breakdown by brokerage account',
+  'Udział wartości portfela trzymanej na każdym koncie maklerskim. Zysk to zmiana wartości względem wpłaconego kapitału.':
+    'Share of portfolio value held in each brokerage account. Profit is the change in value relative to invested capital.',
+  'Udział tego konta w wartości całego portfela': "This account's share of the total portfolio value",
+  'Zmiana wartości względem wpłaconego kapitału na tym koncie': 'Value change relative to capital invested in this account',
   'Zainwestowano': 'Invested',
   'Pozostałe ({0})': 'Other ({0})',
   'Przy każdym logowaniu zapisujemy adres IP oraz podstawowe informacje o przeglądarce/systemie (User-Agent) — to podstawa historii logowań widocznej w Twoim koncie oraz ochrony przed nieautoryzowanym dostępem. Zapisujemy też, w które dni byłeś/aś aktywny(a) (do serii logowań i statystyk).':
