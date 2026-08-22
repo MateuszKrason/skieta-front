@@ -31,10 +31,12 @@ export default function ArticleDetail() {
   useEffect(() => {
     if (!article) return
     const previousTitle = document.title
-    document.title = `${article.title} – Skieta`
+    const previousDescription = document.querySelector('meta[name="description"]')?.getAttribute('content') ?? ''
+    document.title = `${article.title} – skieta`
     setMetaDescription(article.summary)
     return () => {
       document.title = previousTitle
+      setMetaDescription(previousDescription)
     }
   }, [article])
 
@@ -42,12 +44,12 @@ export default function ArticleDetail() {
     <div className="min-h-screen bg-slate-50 dark:bg-slate-900">
       <header className="border-b border-slate-200 dark:border-slate-700 bg-white dark:bg-slate-800">
         <div className="mx-auto flex max-w-3xl items-center justify-between px-4 py-4">
-          <Link to="/witaj" className="flex items-center gap-2 text-lg font-bold text-accent-700 dark:text-accent-400">
+          <Link to="/" className="flex items-center gap-2 text-lg font-bold text-accent-700 dark:text-accent-400">
             <SockLogo className="h-7 w-7" />
-            Skieta
+            skieta
           </Link>
           <Link
-            to="/login"
+            to="/logowanie"
             className="rounded-md bg-accent-600 px-4 py-2 text-sm font-semibold text-white hover:bg-accent-700"
           >
             {t('Zaloguj się do aplikacji')}
@@ -56,7 +58,7 @@ export default function ArticleDetail() {
       </header>
 
       <article className="mx-auto max-w-3xl px-4 py-12">
-        <Link to="/witaj" className="text-sm font-medium text-accent-700 dark:text-accent-400 hover:underline">
+        <Link to="/" className="text-sm font-medium text-accent-700 dark:text-accent-400 hover:underline">
           {t('← Wszystkie artykuły')}
         </Link>
 
@@ -83,7 +85,7 @@ export default function ArticleDetail() {
               ))}
             </div>
             <Link
-              to="/login"
+              to="/logowanie"
               className="mt-10 inline-block rounded-md bg-accent-600 px-6 py-3 text-base font-semibold text-white hover:bg-accent-700"
             >
               {t('Zacznij zarządzać swoimi finansami →')}

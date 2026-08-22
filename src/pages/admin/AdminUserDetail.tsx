@@ -4,8 +4,9 @@ import { Bar, BarChart, ResponsiveContainer, Tooltip, XAxis, YAxis } from 'recha
 import { api } from '../../api/client'
 import { PageLoader } from '../../components/Loader'
 import { useLanguage } from '../../i18n/LanguageContext'
+import { useTooltipStyle } from '../../lib/chartTooltip'
 import { formatDate, formatDateTime } from '../../lib/format'
-import type { AdminUserDetail as AdminUserDetailType } from '../../types'
+import type { AdminUserDetail as AdminUserDetailType, Role } from '../../types'
 
 const VARIANT_LABELS: Record<string, string> = {
   light: 'Jasny',
@@ -31,6 +32,7 @@ export default function AdminUserDetail() {
   const { id } = useParams<{ id: string }>()
   const navigate = useNavigate()
   const { t } = useLanguage()
+  const tooltipStyle = useTooltipStyle()
   const queryClient = useQueryClient()
 
   const { data: user, isLoading } = useQuery({
@@ -67,6 +69,27 @@ export default function AdminUserDetail() {
       if (detail) window.alert(detail)
     },
   })
+
+  const { data: allRoles } = useQuery({
+    queryKey: ['admin-roles'],
+    queryFn: async () => (await api.get<Role[]>('/auth/admin/roles/')).data,
+  })
+  const setRoles = useMutation({
+    mutationFn: (roleIds: number[]) => api.post(`/auth/admin/users/${id}/set-roles/`, { role_ids: roleIds }),
+    onSuccess: invalidate,
+  })
+
+  function toggleRole(roleId: number) {
+    // "Currently offered" = anything not revoked — pending offers still
+    // count, since clicking again should withdraw the offer, not silently
+    // leave it dangling for the user to accept later.
+    const current = new Set(
+      (user?.role_assignments ?? []).filter((a) => a.status !== 'declined').map((a) => a.role.id),
+    )
+    if (current.has(roleId)) current.delete(roleId)
+    else current.add(roleId)
+    setRoles.mutate([...current])
+  }
 
   if (isLoading) return <PageLoader />
   if (!user) {
@@ -170,6 +193,54 @@ export default function AdminUserDetail() {
       </div>
 
       <div className="rounded-xl border border-slate-200 dark:border-slate-700 bg-white dark:bg-slate-800 p-5 shadow-sm">
+        <h2 className="text-sm font-semibold text-slate-700 dark:text-slate-300">{t('Role niestandardowe')}</h2>
+        <p className="mb-3 mt-1 text-xs text-slate-400 dark:text-slate-500">
+          {t('Kliknięcie oferuje rolę — zaczyna obowiązywać dopiero, gdy użytkownik ją zaakceptuje.')}
+        </p>
+        <div className="flex flex-wrap gap-2">
+          {(allRoles ?? []).map((role) => {
+            const assignment = user.role_assignments.find((a) => a.role.id === role.id)
+            const isPending = assignment?.status === 'pending'
+            const isAccepted = assignment?.status === 'accepted'
+            return (
+              <button
+                key={role.id}
+                onClick={() => toggleRole(role.id)}
+                disabled={setRoles.isPending}
+                title={
+                  isPending
+                    ? t('Oczekuje na akceptację użytkownika — kliknij, aby wycofać ofertę')
+                    : isAccepted
+                      ? t('Zaakceptowana — kliknij, aby odebrać')
+                      : t('Kliknij, aby zaoferować tę rolę')
+                }
+                className={`flex items-center gap-1.5 rounded-full border px-2.5 py-1 text-xs font-medium transition disabled:opacity-50 ${
+                  isAccepted
+                    ? 'border-transparent text-white'
+                    : isPending
+                      ? 'border-dashed text-slate-600 dark:text-slate-300'
+                      : 'border-slate-300 dark:border-slate-600 text-slate-500 dark:text-slate-400 hover:bg-slate-100 dark:hover:bg-slate-700'
+                }`}
+                style={isAccepted ? { backgroundColor: role.color } : isPending ? { borderColor: role.color } : undefined}
+              >
+                <span
+                  className="h-2 w-2 rounded-full"
+                  style={{ backgroundColor: isAccepted ? 'rgba(255,255,255,0.7)' : role.color }}
+                />
+                {role.name}
+                {isPending && <span className="text-[10px]">{t('(oczekuje)')}</span>}
+              </button>
+            )
+          })}
+          {(allRoles ?? []).length === 0 && (
+            <p className="text-sm text-slate-400 dark:text-slate-500">
+              {t('Brak ról — utwórz je w zakładce "Role".')}
+            </p>
+          )}
+        </div>
+      </div>
+
+      <div className="rounded-xl border border-slate-200 dark:border-slate-700 bg-white dark:bg-slate-800 p-5 shadow-sm">
         <h2 className="mb-3 text-sm font-semibold text-slate-700 dark:text-slate-300">
           {t('Zaproszeni użytkownicy')} ({user.invited_count})
         </h2>
@@ -233,6 +304,7 @@ export default function AdminUserDetail() {
               />
               <YAxis hide domain={[0, 1]} />
               <Tooltip
+                {...tooltipStyle}
                 labelFormatter={(d) => formatDate(d as string)}
                 formatter={(value) => [value === 1 ? t('aktywny') : t('nieaktywny'), '']}
               />

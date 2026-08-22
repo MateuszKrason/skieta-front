@@ -56,7 +56,7 @@ export default function Onboarding() {
   }
   function finish() {
     queryClient.invalidateQueries()
-    navigate('/')
+    navigate('/dashboard')
   }
 
   return (

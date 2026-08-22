@@ -8,12 +8,54 @@ import { useLanguage } from '../../i18n/LanguageContext'
 import { accountTypeLabel, formatDateTime, formatMoney, formatNumber, formatPct, formatShareQuantity } from '../../lib/format'
 import type { BankAccount, Currency, Holding, PortfolioSummary, Stock, StockSearchResult, StockTransaction } from '../../types'
 
+type HoldingSortKey =
+  | 'ticker'
+  | 'quantity'
+  | 'avg_cost'
+  | 'current_price'
+  | 'market_value'
+  | 'unrealized_pl'
+  | 'unrealized_pl_after_tax'
+  | 'price_fetched_at'
+
+function holdingSortValue(h: Holding, key: HoldingSortKey): number | string {
+  switch (key) {
+    case 'ticker':
+      return h.stock.ticker
+    case 'quantity':
+      return Number(h.quantity)
+    case 'avg_cost':
+      return Number(h.avg_cost)
+    case 'current_price':
+      return h.current_price !== null ? Number(h.current_price) : -Infinity
+    case 'market_value':
+      return h.market_value !== null ? Number(h.market_value) : -Infinity
+    case 'unrealized_pl':
+      return h.unrealized_pl !== null ? Number(h.unrealized_pl) : -Infinity
+    case 'unrealized_pl_after_tax':
+      return h.unrealized_pl_after_tax !== null ? Number(h.unrealized_pl_after_tax) : -Infinity
+    case 'price_fetched_at':
+      return h.price_fetched_at ? new Date(h.price_fetched_at).getTime() : -Infinity
+  }
+}
+
 export default function Portfel() {
   const queryClient = useQueryClient()
   const { t } = useLanguage()
   const [showAddStock, setShowAddStock] = useState(false)
   const [showAddTx, setShowAddTx] = useState(false)
   const [sellingStockId, setSellingStockId] = useState<number | null>(null)
+  const [sortKey, setSortKey] = useState<HoldingSortKey>('ticker')
+  const [sortDir, setSortDir] = useState<'asc' | 'desc'>('asc')
+
+  function toggleSort(key: HoldingSortKey) {
+    if (sortKey === key) {
+      setSortDir((d) => (d === 'asc' ? 'desc' : 'asc'))
+    } else {
+      setSortKey(key)
+      setSortDir('asc')
+    }
+  }
 
   const { data: holdings, isLoading: holdingsLoading, isFetching } = useQuery({
     queryKey: ['holdings'],
@@ -180,25 +222,61 @@ export default function Portfel() {
         </div>
       )}
 
-      <div className="overflow-x-auto rounded-xl border border-slate-200 dark:border-slate-700 bg-white dark:bg-slate-800 shadow-sm">
-        <table className="w-full text-sm">
-          <thead className="border-b border-slate-200 dark:border-slate-700 bg-slate-50 dark:bg-slate-900 text-left text-xs uppercase text-slate-500 dark:text-slate-400">
-            <tr>
-              <th className="px-4 py-2">{t('Spółka')}</th>
-              <th className="px-4 py-2 text-right">{t('Ilość')}</th>
-              <th className="px-4 py-2 text-right">{t('Śr. cena zakupu')}</th>
-              <th className="px-4 py-2 text-right">{t('Cena bieżąca')}</th>
-              <th className="px-4 py-2 text-right">{t('Wartość')}</th>
-              <th className="px-4 py-2 text-right">{t('Zysk/strata')}</th>
-              <th className="px-4 py-2 text-right" title={t('Po podatku od zysków kapitałowych (19%)')}>
-                {t('Zysk/strata po Belce')}
-              </th>
-              <th className="px-4 py-2 text-right">{t('Aktualizacja')}</th>
-              <th className="px-4 py-2 text-right">{t('Operacje')}</th>
-            </tr>
-          </thead>
-          <tbody>
-            {(holdings ?? []).map((h) => (
+      {(() => {
+        const sortedHoldings = [...(holdings ?? [])].sort((a, b) => {
+          const va = holdingSortValue(a, sortKey)
+          const vb = holdingSortValue(b, sortKey)
+          const cmp = typeof va === 'string' && typeof vb === 'string' ? va.localeCompare(vb) : (va as number) - (vb as number)
+          return sortDir === 'asc' ? cmp : -cmp
+        })
+
+        function SortTh({
+          column,
+          align = 'right',
+          title: thTitle,
+          children,
+        }: {
+          column: HoldingSortKey
+          align?: 'left' | 'right'
+          title?: string
+          children: React.ReactNode
+        }) {
+          return (
+            <th
+              onClick={() => toggleSort(column)}
+              title={thTitle}
+              className={`cursor-pointer select-none px-4 py-2 hover:text-slate-700 dark:hover:text-slate-200 ${
+                align === 'right' ? 'text-right' : 'text-left'
+              }`}
+            >
+              {children}
+              {sortKey === column && <span className="ml-1">{sortDir === 'asc' ? '▲' : '▼'}</span>}
+            </th>
+          )
+        }
+
+        return (
+          <div className="overflow-x-auto rounded-xl border border-slate-200 dark:border-slate-700 bg-white dark:bg-slate-800 shadow-sm">
+            <table className="w-full text-sm">
+              <thead className="border-b border-slate-200 dark:border-slate-700 bg-slate-50 dark:bg-slate-900 text-left text-xs uppercase text-slate-500 dark:text-slate-400">
+                <tr>
+                  <SortTh column="ticker" align="left">
+                    {t('Spółka')}
+                  </SortTh>
+                  <SortTh column="quantity">{t('Ilość')}</SortTh>
+                  <SortTh column="avg_cost">{t('Śr. cena zakupu')}</SortTh>
+                  <SortTh column="current_price">{t('Cena bieżąca')}</SortTh>
+                  <SortTh column="market_value">{t('Wartość')}</SortTh>
+                  <SortTh column="unrealized_pl">{t('Zysk/strata')}</SortTh>
+                  <SortTh column="unrealized_pl_after_tax" title={t('Po podatku od zysków kapitałowych (19%)')}>
+                    {t('Zysk/strata po Belce')}
+                  </SortTh>
+                  <SortTh column="price_fetched_at">{t('Aktualizacja')}</SortTh>
+                  <th className="px-4 py-2 text-right">{t('Operacje')}</th>
+                </tr>
+              </thead>
+              <tbody>
+                {sortedHoldings.map((h) => (
               <Fragment key={h.stock.id}>
                 <tr className="border-b border-slate-100 dark:border-slate-800 last:border-0">
                   <td className="px-4 py-2">
@@ -252,16 +330,18 @@ export default function Portfel() {
                 )}
               </Fragment>
             ))}
-            {holdings?.length === 0 && (
-              <tr>
-                <td colSpan={9} className="px-4 py-6 text-center text-slate-400 dark:text-slate-500">
-                  {t('Brak pozycji — dodaj pierwszą transakcję.')}
-                </td>
-              </tr>
-            )}
-          </tbody>
-        </table>
-      </div>
+                {holdings?.length === 0 && (
+                  <tr>
+                    <td colSpan={9} className="px-4 py-6 text-center text-slate-400 dark:text-slate-500">
+                      {t('Brak pozycji — dodaj pierwszą transakcję.')}
+                    </td>
+                  </tr>
+                )}
+              </tbody>
+            </table>
+          </div>
+        )
+      })()}
 
       <div className="rounded-xl border border-slate-200 dark:border-slate-700 bg-white dark:bg-slate-800 p-5 shadow-sm">
         <h2 className="mb-3 text-sm font-semibold text-slate-700 dark:text-slate-300">{t('Historia transakcji')}</h2>
@@ -357,6 +437,8 @@ function AddStockForm({ onDone }: { onDone: () => void }) {
 function StockManager({ stocks, onChange }: { stocks: Stock[]; onChange: () => void }) {
   const { t } = useLanguage()
   const [editingId, setEditingId] = useState<number | null>(null)
+  const [dragId, setDragId] = useState<number | null>(null)
+  const [dragOverId, setDragOverId] = useState<number | null>(null)
   const sorted = [...stocks].sort((a, b) => a.display_order - b.display_order)
 
   const deleteMutation = useMutation({
@@ -375,12 +457,19 @@ function StockManager({ stocks, onChange }: { stocks: Stock[]; onChange: () => v
     onSuccess: onChange,
   })
 
-  function move(index: number, direction: -1 | 1) {
-    const target = index + direction
-    if (target < 0 || target >= sorted.length) return
+  function handleDrop(targetId: number) {
+    setDragOverId(null)
+    if (dragId === null || dragId === targetId) {
+      setDragId(null)
+      return
+    }
     const ids = sorted.map((s) => s.id)
-    ;[ids[index], ids[target]] = [ids[target], ids[index]]
+    const fromIndex = ids.indexOf(dragId)
+    const toIndex = ids.indexOf(targetId)
+    ids.splice(fromIndex, 1)
+    ids.splice(toIndex, 0, dragId)
     reorderMutation.mutate(ids)
+    setDragId(null)
   }
 
   function onDelete(stock: Stock) {
@@ -393,7 +482,7 @@ function StockManager({ stocks, onChange }: { stocks: Stock[]; onChange: () => v
     <div className="rounded-xl border border-slate-200 dark:border-slate-700 bg-white dark:bg-slate-800 p-4 shadow-sm">
       <h3 className="mb-2 text-sm font-semibold text-slate-700 dark:text-slate-300">{t('Zarządzaj spółkami')}</h3>
       <div className="space-y-1">
-        {sorted.map((s, i) =>
+        {sorted.map((s) =>
           editingId === s.id ? (
             <EditStockRow
               key={s.id}
@@ -407,31 +496,40 @@ function StockManager({ stocks, onChange }: { stocks: Stock[]; onChange: () => v
           ) : (
             <div
               key={s.id}
-              className="flex items-center justify-between gap-2 rounded-md bg-slate-50 dark:bg-slate-900 px-3 py-1.5 text-sm"
+              onDragOver={(e) => {
+                e.preventDefault()
+                if (dragId !== null && dragId !== s.id) setDragOverId(s.id)
+              }}
+              onDragLeave={() => setDragOverId((prev) => (prev === s.id ? null : prev))}
+              onDrop={(e) => {
+                e.preventDefault()
+                handleDrop(s.id)
+              }}
+              className={`flex items-center justify-between gap-2 rounded-md bg-slate-50 dark:bg-slate-900 px-3 py-1.5 text-sm transition ${
+                dragOverId === s.id ? 'ring-2 ring-accent-400' : ''
+              } ${dragId === s.id ? 'opacity-40' : ''}`}
             >
-              <span>
-                <span className="font-medium">{s.ticker}</span>{' '}
-                <span className="text-xs text-slate-400 dark:text-slate-500">
-                  ({s.market}, {s.currency}) {s.name}
+              <span className="flex items-center gap-2">
+                <span
+                  draggable
+                  onDragStart={() => setDragId(s.id)}
+                  onDragEnd={() => {
+                    setDragId(null)
+                    setDragOverId(null)
+                  }}
+                  title={t('Przeciągnij, aby zmienić kolejność')}
+                  className="cursor-grab select-none text-slate-300 hover:text-slate-500 dark:text-slate-600 dark:hover:text-slate-400 active:cursor-grabbing"
+                >
+                  ⠿
+                </span>
+                <span>
+                  <span className="font-medium">{s.ticker}</span>{' '}
+                  <span className="text-xs text-slate-400 dark:text-slate-500">
+                    ({s.market}, {s.currency}) {s.name}
+                  </span>
                 </span>
               </span>
               <div className="flex items-center gap-1">
-                <button
-                  onClick={() => move(i, -1)}
-                  disabled={i === 0 || reorderMutation.isPending}
-                  title={t('Przesuń w górę')}
-                  className="rounded px-1.5 py-0.5 text-slate-400 hover:text-slate-700 dark:hover:text-slate-200 disabled:opacity-30"
-                >
-                  ↑
-                </button>
-                <button
-                  onClick={() => move(i, 1)}
-                  disabled={i === sorted.length - 1 || reorderMutation.isPending}
-                  title={t('Przesuń w dół')}
-                  className="rounded px-1.5 py-0.5 text-slate-400 hover:text-slate-700 dark:hover:text-slate-200 disabled:opacity-30"
-                >
-                  ↓
-                </button>
                 <button
                   onClick={() => setEditingId(s.id)}
                   className="text-xs font-medium text-accent-700 dark:text-accent-400 hover:underline"

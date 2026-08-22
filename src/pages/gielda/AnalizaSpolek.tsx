@@ -4,6 +4,7 @@ import { Bar, BarChart, Cell, Pie, PieChart, ResponsiveContainer, Tooltip } from
 import { api } from '../../api/client'
 import { CardLoader } from '../../components/Loader'
 import { useLanguage } from '../../i18n/LanguageContext'
+import { useTooltipStyle } from '../../lib/chartTooltip'
 import { formatDateTime, formatMoney, formatPct } from '../../lib/format'
 import type { AllocationRow, CompanyNews, PortfolioAnalytics, Stock } from '../../types'
 
@@ -47,6 +48,7 @@ function PortfolioAnalyticsSection() {
 
 function PortfolioAnalyticsBody({ data }: { data: PortfolioAnalytics }) {
   const { t } = useLanguage()
+  const tooltipStyle = useTooltipStyle()
   const base = 'PLN'
 
   const topRows = data.allocation.slice(0, MAX_PIE_SLICES)
@@ -78,11 +80,18 @@ function PortfolioAnalyticsBody({ data }: { data: PortfolioAnalytics }) {
                     <Cell key={i} fill={i < topRows.length ? PALETTE[i % PALETTE.length] : '#94a3b8'} />
                   ))}
                 </Pie>
-                <Tooltip formatter={(value) => formatMoney(value as number, base)} />
+                <Tooltip {...tooltipStyle} formatter={(value) => formatMoney(value as number, base)} />
               </PieChart>
             </ResponsiveContainer>
           </div>
-          <div className="mt-2 space-y-1">
+          <div className="mt-2 flex items-center justify-between px-1.5 text-[11px] font-medium uppercase tracking-wide text-slate-400 dark:text-slate-500">
+            <span>{t('Spółka')}</span>
+            <span className="flex items-center gap-2">
+              <span className="min-w-[56px] text-right">{t('Udział')}</span>
+              <span className="min-w-[56px] text-right">{t('Zysk')}</span>
+            </span>
+          </div>
+          <div className="space-y-1">
             {data.allocation.map((r, i) => (
               <AllocationLine key={r.stock.id} row={r} color={i < MAX_PIE_SLICES ? PALETTE[i % PALETTE.length] : '#94a3b8'} />
             ))}
@@ -104,6 +113,16 @@ function PortfolioAnalyticsBody({ data }: { data: PortfolioAnalytics }) {
           <MiniStat
             label={t('Śr. czas trzymania (ważony wartością)')}
             value={formatHoldingPeriod(data.avg_days_held, t)}
+          />
+          <MiniStat
+            label={t('Podatek Belki przy sprzedaży dziś')}
+            value={formatMoney(data.belka_tax_liability, base)}
+            hint={t('Ile fiskus zabrałby, gdybyś dziś sprzedał(a) wszystko na plusie.')}
+          />
+          <MiniStat
+            label={t('Dywidendy w tym roku')}
+            value={formatMoney(data.dividends_ytd, base)}
+            hint={t('Łącznie od zawsze: {0}', formatMoney(data.dividends_all_time, base))}
           />
         </div>
       </div>
@@ -146,7 +165,7 @@ function PortfolioAnalyticsBody({ data }: { data: PortfolioAnalytics }) {
           <div className="h-40">
             <ResponsiveContainer width="100%" height="100%">
               <BarChart data={data.realized_pl_by_year.map((r) => ({ year: r.year, value: Number(r.realized_pl) }))}>
-                <Tooltip formatter={(value) => formatMoney(value as number, base)} labelFormatter={(y) => String(y)} />
+                <Tooltip {...tooltipStyle} formatter={(value) => formatMoney(value as number, base)} labelFormatter={(y) => String(y)} />
                 <Bar dataKey="value" radius={[4, 4, 0, 0]}>
                   {data.realized_pl_by_year.map((r, i) => (
                     <Cell key={i} fill={Number(r.realized_pl) >= 0 ? '#059669' : '#ef4444'} />
@@ -173,16 +192,18 @@ function AllocationLine({ row, color }: { row: AllocationRow; color: string }) {
         <span className="h-2 w-2 rounded-full" style={{ backgroundColor: color }} />
         {row.stock.ticker}
       </span>
-      <span className="flex items-center gap-2 text-slate-500 dark:text-slate-400">
-        <span title={t('Udział tej spółki w wartości całego portfela')}>{formatPct(row.pct)}</span>
-        {plPct !== null && (
-          <span
-            title={t('Zysk/strata (niezrealizowane) na tej pozycji')}
-            className={plPct >= 0 ? 'text-emerald-600 dark:text-emerald-400' : 'text-red-600 dark:text-red-400'}
-          >
-            {formatPct(row.unrealized_pl_pct)}
-          </span>
-        )}
+      <span className="flex items-center gap-2 text-slate-500 dark:text-slate-400 tabular-nums">
+        <span className="min-w-[56px] text-right" title={t('Udział tej spółki w wartości całego portfela')}>
+          {formatPct(row.pct)}
+        </span>
+        <span
+          className={`min-w-[56px] text-right ${
+            plPct === null ? '' : plPct >= 0 ? 'text-emerald-600 dark:text-emerald-400' : 'text-red-600 dark:text-red-400'
+          }`}
+          title={t('Zysk/strata (niezrealizowane) na tej pozycji')}
+        >
+          {plPct !== null ? formatPct(row.unrealized_pl_pct) : '—'}
+        </span>
       </span>
     </div>
   )

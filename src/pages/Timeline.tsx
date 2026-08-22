@@ -4,12 +4,14 @@ import { Area, AreaChart, ResponsiveContainer, Tooltip, XAxis, YAxis } from 'rec
 import { api } from '../api/client'
 import { CardLoader, PageLoader } from '../components/Loader'
 import { useLanguage } from '../i18n/LanguageContext'
+import { useTooltipStyle } from '../lib/chartTooltip'
 import { formatAxisValue, formatDate, formatMoney, formatPct } from '../lib/format'
 import type { CashFlow, DashboardSummary, NetWorthSnapshot } from '../types'
 
 export default function Timeline() {
   const queryClient = useQueryClient()
   const { t } = useLanguage()
+  const tooltipStyle = useTooltipStyle()
   const [showAdd, setShowAdd] = useState(false)
 
   const { data: timeline, isLoading: timelineLoading } = useQuery({
@@ -93,7 +95,7 @@ export default function Timeline() {
                 </defs>
                 <XAxis dataKey="date" tickFormatter={(d) => formatDate(d)} tick={{ fontSize: 12 }} stroke="#94a3b8" />
                 <YAxis tickFormatter={formatAxisValue} tick={{ fontSize: 12 }} stroke="#94a3b8" width={40} />
-                <Tooltip formatter={(value) => formatMoney(value as number, base)} labelFormatter={(d) => formatDate(d as string)} />
+                <Tooltip {...tooltipStyle} formatter={(value) => formatMoney(value as number, base)} labelFormatter={(d) => formatDate(d as string)} />
                 <Area type="monotone" dataKey="total" stroke="#059669" fill="url(#timelineGradient)" strokeWidth={2} />
               </AreaChart>
             </ResponsiveContainer>

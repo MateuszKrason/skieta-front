@@ -487,11 +487,14 @@ function GoalRow({
 }) {
   const { t } = useLanguage()
   const queryClient = useQueryClient()
-  const [mode, setMode] = useState<'view' | 'edit' | 'contribute'>('view')
+  const today = new Date().toISOString().slice(0, 10)
+  const [mode, setMode] = useState<'view' | 'edit' | 'contribute-payday' | 'contribute-savings'>('view')
   const [showHistory, setShowHistory] = useState(false)
-  const [amount, setAmount] = useState('')
-  const [contribDate, setContribDate] = useState(() => new Date().toISOString().slice(0, 10))
-  const [note, setNote] = useState('')
+  const [paydayRows, setPaydayRows] = useState<{ amount: string; date: string }[]>([{ amount: '', date: today }])
+  const [paydayNote, setPaydayNote] = useState('')
+  const [savingsAmount, setSavingsAmount] = useState('')
+  const [savingsDate, setSavingsDate] = useState(today)
+  const [savingsNote, setSavingsNote] = useState('')
   const progress = goal.progress_pct !== null ? Number(goal.progress_pct) : 0
   const achieved = Number(goal.current_amount) >= Number(goal.target_amount)
   const remaining = Math.max(Number(goal.target_amount) - Number(goal.current_amount), 0)
@@ -503,11 +506,18 @@ function GoalRow({
     enabled: showHistory,
   })
 
-  const contribute = useMutation({
-    mutationFn: () => api.post('/planning/goal-contributions/', { goal: goal.id, amount, date: contribDate, note }),
+  const contributeBatch = useMutation({
+    mutationFn: async (rows: { amount: string; date: string; note: string }[]) => {
+      await Promise.all(
+        rows.map((r) => api.post('/planning/goal-contributions/', { goal: goal.id, amount: r.amount, date: r.date, note: r.note })),
+      )
+    },
     onSuccess: () => {
-      setAmount('')
-      setNote('')
+      setPaydayRows([{ amount: '', date: today }])
+      setPaydayNote('')
+      setSavingsAmount('')
+      setSavingsDate(today)
+      setSavingsNote('')
       setMode('view')
       queryClient.invalidateQueries({ queryKey: ['goal-contributions', goal.id] })
       onChange()
@@ -522,10 +532,32 @@ function GoalRow({
     },
   })
 
-  function onSubmit(e: FormEvent) {
+  function addPaydayRow() {
+    const last = paydayRows[paydayRows.length - 1]
+    const nextDate = new Date(last?.date || today)
+    nextDate.setMonth(nextDate.getMonth() + 1)
+    setPaydayRows([...paydayRows, { amount: '', date: nextDate.toISOString().slice(0, 10) }])
+  }
+
+  function updatePaydayRow(index: number, field: 'amount' | 'date', value: string) {
+    setPaydayRows(paydayRows.map((r, i) => (i === index ? { ...r, [field]: value } : r)))
+  }
+
+  function removePaydayRow(index: number) {
+    setPaydayRows(paydayRows.filter((_, i) => i !== index))
+  }
+
+  function onSubmitPayday(e: FormEvent) {
     e.preventDefault()
-    if (!amount) return
-    contribute.mutate()
+    const rows = paydayRows.filter((r) => r.amount).map((r) => ({ ...r, note: paydayNote }))
+    if (rows.length === 0) return
+    contributeBatch.mutate(rows)
+  }
+
+  function onSubmitSavings(e: FormEvent) {
+    e.preventDefault()
+    if (!savingsAmount) return
+    contributeBatch.mutate([{ amount: savingsAmount, date: savingsDate, note: savingsNote }])
   }
 
   if (mode === 'edit') {
@@ -569,8 +601,11 @@ function GoalRow({
           )}
         </div>
         <div className="flex items-center gap-2">
-          <button onClick={() => setMode('contribute')} className="text-xs font-medium text-accent-700 dark:text-accent-400 hover:underline">
+          <button onClick={() => setMode('contribute-payday')} className="text-xs font-medium text-accent-700 dark:text-accent-400 hover:underline">
             {t('Zarezerwuj z wypłaty')}
+          </button>
+          <button onClick={() => setMode('contribute-savings')} className="text-xs font-medium text-accent-700 dark:text-accent-400 hover:underline">
+            {t('Zarezerwuj z oszczędności')}
           </button>
           <button onClick={() => setMode('edit')} className="text-xs font-medium text-slate-600 dark:text-slate-400 hover:underline">
             {t('Edytuj')}
@@ -589,27 +624,92 @@ function GoalRow({
           style={{ width: `${Math.min(progress, 100)}%` }}
         />
       </div>
-      {mode === 'contribute' && (
-        <form onSubmit={onSubmit} className="mt-3 grid grid-cols-2 gap-2 sm:grid-cols-4">
-          <Field label="Kwota z wypłaty">
+      {mode === 'contribute-payday' && (
+        <form onSubmit={onSubmitPayday} className="mt-3 space-y-2">
+          <p className="text-xs text-slate-400 dark:text-slate-500">
+            {t('Zarezerwuj część pensji z jednego lub kilku konkretnych miesięcy naraz.')}
+          </p>
+          {paydayRows.map((row, i) => (
+            <div key={i} className="grid grid-cols-2 gap-2 sm:grid-cols-[1fr_1fr_auto]">
+              <Field label="Kwota z wypłaty">
+                <input
+                  type="number"
+                  step="0.01"
+                  max={remaining || undefined}
+                  value={row.amount}
+                  onChange={(e) => updatePaydayRow(i, 'amount', e.target.value)}
+                  required
+                  className="input"
+                />
+              </Field>
+              <Field label="Miesiąc wypłaty">
+                <input
+                  type="date"
+                  value={row.date}
+                  onChange={(e) => updatePaydayRow(i, 'date', e.target.value)}
+                  required
+                  className="input"
+                />
+              </Field>
+              <div className="flex items-end">
+                <button
+                  type="button"
+                  onClick={() => removePaydayRow(i)}
+                  disabled={paydayRows.length === 1}
+                  className="rounded-md border border-slate-300 dark:border-slate-600 px-3 py-1.5 text-sm font-medium text-slate-500 dark:text-slate-400 hover:bg-slate-100 dark:hover:bg-slate-700 disabled:opacity-30"
+                >
+                  ✕
+                </button>
+              </div>
+            </div>
+          ))}
+          <button
+            type="button"
+            onClick={addPaydayRow}
+            className="text-xs font-medium text-accent-700 dark:text-accent-400 hover:underline"
+          >
+            {t('+ Dodaj kolejny miesiąc')}
+          </button>
+          <div className="grid grid-cols-2 gap-2 sm:grid-cols-4">
+            <Field label="Notatka (opcjonalnie)">
+              <input value={paydayNote} onChange={(e) => setPaydayNote(e.target.value)} className="input" />
+            </Field>
+            <div className="flex items-end gap-2">
+              <button type="submit" className="btn-primary" disabled={contributeBatch.isPending}>
+                {t('Zapisz')}
+              </button>
+              <button
+                type="button"
+                onClick={() => setMode('view')}
+                className="rounded-md border border-slate-300 dark:border-slate-600 px-3 py-1.5 text-sm font-medium text-slate-600 dark:text-slate-400 hover:bg-slate-100 dark:hover:bg-slate-700"
+              >
+                {t('Anuluj')}
+              </button>
+            </div>
+          </div>
+        </form>
+      )}
+      {mode === 'contribute-savings' && (
+        <form onSubmit={onSubmitSavings} className="mt-3 grid grid-cols-2 gap-2 sm:grid-cols-4">
+          <Field label="Kwota z oszczędności">
             <input
               type="number"
               step="0.01"
               max={remaining || undefined}
-              value={amount}
-              onChange={(e) => setAmount(e.target.value)}
+              value={savingsAmount}
+              onChange={(e) => setSavingsAmount(e.target.value)}
               required
               className="input"
             />
           </Field>
-          <Field label="Data wypłaty">
-            <input type="date" value={contribDate} onChange={(e) => setContribDate(e.target.value)} required className="input" />
+          <Field label="Data">
+            <input type="date" value={savingsDate} onChange={(e) => setSavingsDate(e.target.value)} required className="input" />
           </Field>
           <Field label="Notatka (opcjonalnie)">
-            <input value={note} onChange={(e) => setNote(e.target.value)} className="input" />
+            <input value={savingsNote} onChange={(e) => setSavingsNote(e.target.value)} className="input" />
           </Field>
           <div className="flex items-end gap-2">
-            <button type="submit" className="btn-primary" disabled={contribute.isPending}>
+            <button type="submit" className="btn-primary" disabled={contributeBatch.isPending}>
               {t('Zapisz')}
             </button>
             <button

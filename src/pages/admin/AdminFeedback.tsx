@@ -29,7 +29,7 @@ const STATUS_STYLES: Record<Feedback['status'], string> = {
 export default function AdminFeedback() {
   const { t } = useLanguage()
   const queryClient = useQueryClient()
-  const [statusFilter, setStatusFilter] = useState('')
+  const [statusFilter, setStatusFilter] = useState<string>('new')
 
   const { data: items, isLoading } = useQuery({
     queryKey: ['admin-feedback', statusFilter],

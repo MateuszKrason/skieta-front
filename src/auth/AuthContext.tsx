@@ -19,6 +19,7 @@ interface AuthContextValue {
   ) => Promise<void>
   logout: () => void
   refreshUser: () => Promise<void>
+  updateProfile: (patch: Partial<User['profile']>) => void
 }
 
 const AuthContext = createContext<AuthContextValue | undefined>(undefined)
@@ -97,8 +98,21 @@ export function AuthProvider({ children }: { children: ReactNode }) {
     hasSyncedPreferences.current = false
   }
 
+  // Applies a known profile change (e.g. a color/language toggle) straight
+  // to local state instead of waiting on a PATCH-then-refetch round trip.
+  // Quick-toggle buttons used to re-fetch `/auth/me/` after saving, but two
+  // clicks close together fire two independent request pairs with no
+  // guaranteed resolution order — whichever GET happens to land last "wins",
+  // which isn't necessarily the last thing the user actually clicked. Since
+  // the caller already knows the exact value it just asked the server to
+  // save, applying it locally (via the functional setState form, so rapid
+  // calls still apply in the order they were made) can't go stale like that.
+  function updateProfile(patch: Partial<User['profile']>) {
+    setUser((prev) => (prev ? { ...prev, profile: { ...prev.profile, ...patch } } : prev))
+  }
+
   return (
-    <AuthContext.Provider value={{ user, loading, login, register, logout, refreshUser: fetchMe }}>
+    <AuthContext.Provider value={{ user, loading, login, register, logout, refreshUser: fetchMe, updateProfile }}>
       {children}
     </AuthContext.Provider>
   )

@@ -97,6 +97,9 @@ export interface PortfolioAnalytics {
   avg_days_held: number | null
   realized_pl_total: string
   realized_pl_by_year: RealizedPlYearRow[]
+  belka_tax_liability: string
+  dividends_ytd: string
+  dividends_all_time: string
 }
 
 export type BankAccountType = 'checking' | 'savings' | 'brokerage' | 'business' | 'ike' | 'ikze' | 'crypto'
@@ -222,11 +225,19 @@ export interface GrowthSummary {
   growth_pct: string | null
 }
 
+export interface PeriodReturnBreakdown {
+  stocks_value: string
+  bank_balance: string
+  deposits_value: string
+  bonds_value: string
+}
+
 export interface PeriodReturn {
   from_date: string
   from_total: string
   change_amount: string
   change_pct: string | null
+  breakdown: PeriodReturnBreakdown
 }
 
 export type PeriodKey = '1d' | '1w' | '1m' | 'ytd' | '1y' | '5y'
@@ -238,6 +249,8 @@ export interface DashboardSummary {
   period_returns: Record<PeriodKey, PeriodReturn | null>
   deposits_interest_earned: string
   bonds_interest_earned: string
+  deposits_interest_earned_after_tax: string
+  bonds_interest_earned_after_tax: string
 }
 
 export interface User {
@@ -257,6 +270,8 @@ export interface User {
     interest_stocks: boolean
     interest_budget: boolean
     interest_planning: boolean
+    permissions: string[]
+    username_changed_at: string | null
   }
 }
 
@@ -267,6 +282,72 @@ export interface Invitation {
   created_at: string
   accepted_by: string | null
   accepted_at: string | null
+  is_expired: boolean
+}
+
+export interface AccessRequest {
+  id: number
+  email: string
+  status: 'pending' | 'accepted' | 'rejected'
+  created_at: string
+  decided_at: string | null
+  decided_by: string | null
+}
+
+export interface Permission {
+  id: number
+  codename: string
+  label: string
+  category: string
+}
+
+export interface Role {
+  id: number
+  name: string
+  color: string
+  permissions: Permission[]
+  member_count: number
+  created_at: string
+}
+
+export interface RoleAssignment {
+  id: number
+  role: Role
+  status: 'pending' | 'accepted' | 'declined'
+  assigned_by: string | null
+  created_at: string
+  decided_at: string | null
+}
+
+export interface AdminAppStats {
+  invitations_sent: number
+  invitations_accepted: number
+  editor_count: number
+  archived_count: number
+  color_variant_counts: Record<string, number>
+  budget_transaction_count: number
+  stock_transaction_count: number
+  bank_account_count: number
+  role_count: number
+}
+
+export interface LoginHistoryEntry {
+  id: number
+  ip: string | null
+  device: string
+  created_at: string
+}
+
+export interface LoginHistoryStats {
+  total_logins: number
+  current_streak: number
+  longest_streak: number
+  peak_hour: number | null
+}
+
+export interface LoginHistoryResponse {
+  results: LoginHistoryEntry[]
+  stats: LoginHistoryStats
 }
 
 export interface InvitationList {
@@ -338,6 +419,7 @@ export interface AdminUserDetail {
   articles: AdminUserArticle[]
   activity_last_30_days: AdminUserActivityDay[]
   total_active_days: number
+  role_assignments: RoleAssignment[]
 }
 
 export interface AdminActivityStats {

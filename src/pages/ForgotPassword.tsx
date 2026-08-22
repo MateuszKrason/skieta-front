@@ -30,7 +30,7 @@ export default function ForgotPassword() {
       <form onSubmit={onSubmit} className="w-full max-w-sm rounded-xl border border-slate-200 dark:border-slate-700 bg-white dark:bg-slate-800 p-8 shadow-sm">
         <h1 className="mb-1 flex items-center gap-2 text-2xl font-bold text-accent-700 dark:text-accent-400">
           <SockLogo className="h-8 w-8" />
-          Skieta
+          skieta
         </h1>
         <p className="mb-6 text-sm text-slate-500 dark:text-slate-400">{t('Podaj adres e-mail przypisany do konta — wyślemy link do resetu hasła.')}</p>
         {message ? (
@@ -57,7 +57,7 @@ export default function ForgotPassword() {
           </>
         )}
         <p className="mt-4 text-center text-sm text-slate-500 dark:text-slate-400">
-          <Link to="/login" className="font-medium text-accent-700 dark:text-accent-400 hover:underline">
+          <Link to="/logowanie" className="font-medium text-accent-700 dark:text-accent-400 hover:underline">
             {t('← Powrót do logowania')}
           </Link>
         </p>

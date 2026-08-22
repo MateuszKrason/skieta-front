@@ -5,6 +5,7 @@ import { Bar, BarChart, ResponsiveContainer, Tooltip, XAxis, YAxis } from 'recha
 import { api } from '../../api/client'
 import { Spinner } from '../../components/Loader'
 import { useLanguage } from '../../i18n/LanguageContext'
+import { useTooltipStyle } from '../../lib/chartTooltip'
 import { formatDate, formatDateTime } from '../../lib/format'
 import type { AdminActivityStats, AdminUser } from '../../types'
 
@@ -19,6 +20,7 @@ function StatCard({ label, value }: { label: string; value: string | number }) {
 
 export default function AdminUsers() {
   const { t } = useLanguage()
+  const tooltipStyle = useTooltipStyle()
   const queryClient = useQueryClient()
   const [search, setSearch] = useState('')
   const [isActiveFilter, setIsActiveFilter] = useState('')
@@ -75,7 +77,7 @@ export default function AdminUsers() {
                 interval="preserveStartEnd"
               />
               <YAxis allowDecimals={false} tick={{ fontSize: 12 }} stroke="#94a3b8" width={30} />
-              <Tooltip labelFormatter={(d) => formatDate(d as string)} formatter={(value) => [value, t('Aktywni')]} />
+              <Tooltip {...tooltipStyle} labelFormatter={(d) => formatDate(d as string)} formatter={(value) => [value, t('Aktywni')]} />
               <Bar dataKey="count" fill="#059669" radius={[3, 3, 0, 0]} />
             </BarChart>
           </ResponsiveContainer>

@@ -61,7 +61,7 @@ api.interceptors.response.use(
         original.headers.Authorization = `Bearer ${newAccess}`
         return api(original)
       }
-      window.location.href = '/login'
+      window.location.href = '/logowanie'
     }
     return Promise.reject(error)
   },

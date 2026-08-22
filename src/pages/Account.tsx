@@ -7,7 +7,7 @@ import { useAuth } from '../auth/AuthContext'
 import { useLanguage } from '../i18n/LanguageContext'
 import { formatDateTime } from '../lib/format'
 import { useTheme, type Theme } from '../theme/ThemeContext'
-import type { InvitationList } from '../types'
+import type { InvitationList, LoginHistoryResponse, RoleAssignment } from '../types'
 
 export default function Account() {
   const { user } = useAuth()
@@ -28,6 +28,7 @@ export default function Account() {
       </div>
 
       <EmailVerificationStatus />
+      <PendingRoleOffers />
       {(user?.is_staff || user?.profile.is_editor) && (
         <div className="rounded-xl border border-slate-200 dark:border-slate-700 bg-white dark:bg-slate-800 p-5 shadow-sm">
           <h2 className="text-sm font-semibold text-slate-700 dark:text-slate-300">{t('Redakcja')}</h2>
@@ -44,6 +45,7 @@ export default function Account() {
       <InterestsForm />
       <PasswordForm />
       <InviteFriends />
+      <LoginHistorySection />
     </div>
   )
 }
@@ -59,9 +61,16 @@ function InterestsForm() {
   const { t } = useLanguage()
 
   const mutation = useMutation({
-    mutationFn: (payload: Record<string, boolean>) => api.patch('/auth/me/', payload),
-    onSuccess: refreshUser,
+    mutationFn: async (payload: Record<string, boolean>) => {
+      await api.patch('/auth/me/', payload)
+      await refreshUser()
+    },
   })
+
+  // A single shared mutation handles all three checkboxes — track which
+  // field's PATCH is actually in flight so only that one checkbox shows the
+  // spinner, not all three at once.
+  const pendingField = mutation.isPending ? Object.keys(mutation.variables ?? {})[0] : null
 
   return (
     <div className="space-y-3 rounded-xl border border-slate-200 dark:border-slate-700 bg-white dark:bg-slate-800 p-5 shadow-sm">
@@ -70,16 +79,30 @@ function InterestsForm() {
         {t('Odznaczone opcje znikają z górnego menu — możesz je włączyć z powrotem w każdej chwili.')}
       </p>
       <div className="flex flex-wrap gap-4">
-        {INTEREST_OPTIONS.map((opt) => (
-          <label key={opt.field} className="flex items-center gap-2 text-sm text-slate-700 dark:text-slate-300">
-            <input
-              type="checkbox"
-              checked={user?.profile[opt.field] ?? true}
-              onChange={(e) => mutation.mutate({ [opt.field]: e.target.checked })}
-            />
-            {t(opt.label)}
-          </label>
-        ))}
+        {INTEREST_OPTIONS.map((opt) => {
+          const isPending = pendingField === opt.field
+          return (
+            <label
+              key={opt.field}
+              className={`flex items-center gap-2 text-sm text-slate-700 dark:text-slate-300 ${isPending ? 'opacity-70' : ''}`}
+            >
+              {isPending ? (
+                <span
+                  className="inline-block h-4 w-4 shrink-0 animate-spin rounded-full border-2 border-slate-300 border-t-accent-600 dark:border-slate-600"
+                  aria-hidden="true"
+                />
+              ) : (
+                <input
+                  type="checkbox"
+                  checked={user?.profile[opt.field] ?? true}
+                  disabled={mutation.isPending}
+                  onChange={(e) => mutation.mutate({ [opt.field]: e.target.checked })}
+                />
+              )}
+              {t(opt.label)}
+            </label>
+          )
+        })}
       </div>
     </div>
   )
@@ -97,26 +120,26 @@ const LANGUAGE_LABELS: Record<'pl' | 'en', string> = {
 }
 
 function AppearanceForm() {
-  const { user, refreshUser } = useAuth()
+  const { user, updateProfile } = useAuth()
   const { setTheme } = useTheme()
   const { language, setLanguage, t } = useLanguage()
   const [success, setSuccess] = useState(false)
 
   const themeMutation = useMutation({
     mutationFn: (variant: Theme) => api.patch('/auth/me/', { color_variant: variant }),
-    onSuccess: async (_, variant) => {
+    onSuccess: (_, variant) => {
       setTheme(variant)
+      updateProfile({ color_variant: variant })
       setSuccess(true)
-      await refreshUser()
     },
   })
 
   const languageMutation = useMutation({
     mutationFn: (lang: 'pl' | 'en') => api.patch('/auth/me/', { language: lang }),
-    onSuccess: async (_, lang) => {
+    onSuccess: (_, lang) => {
       setLanguage(lang)
+      updateProfile({ language: lang })
       setSuccess(true)
-      await refreshUser()
     },
   })
 
@@ -201,6 +224,77 @@ function EmailVerificationStatus() {
   )
 }
 
+function PendingRoleOffers() {
+  const { t } = useLanguage()
+  const { refreshUser } = useAuth()
+  const queryClient = useQueryClient()
+
+  const { data: assignments } = useQuery({
+    queryKey: ['role-assignments'],
+    queryFn: async () => (await api.get<RoleAssignment[]>('/auth/role-assignments/')).data,
+  })
+
+  const pending = (assignments ?? []).filter((a) => a.status === 'pending')
+
+  const accept = useMutation({
+    mutationFn: (id: number) => api.post(`/auth/role-assignments/${id}/accept/`),
+    onSuccess: async () => {
+      queryClient.invalidateQueries({ queryKey: ['role-assignments'] })
+      await refreshUser()
+    },
+  })
+
+  const decline = useMutation({
+    mutationFn: (id: number) => api.post(`/auth/role-assignments/${id}/decline/`),
+    onSuccess: () => queryClient.invalidateQueries({ queryKey: ['role-assignments'] }),
+  })
+
+  if (pending.length === 0) return null
+
+  return (
+    <div className="rounded-xl border border-accent-200 dark:border-accent-800 bg-accent-50 dark:bg-accent-950/30 p-5 shadow-sm">
+      <h2 className="text-sm font-semibold text-slate-700 dark:text-slate-300">{t('Nowe role do zaakceptowania')}</h2>
+      <p className="mt-1 text-xs text-slate-500 dark:text-slate-400">
+        {t('Administrator zaproponował Ci nowe uprawnienia — nie zaczną obowiązywać, dopóki ich nie zaakceptujesz.')}
+      </p>
+      <ul className="mt-3 space-y-2">
+        {pending.map((a) => (
+          <li
+            key={a.id}
+            className="flex flex-wrap items-center justify-between gap-2 rounded-md bg-white dark:bg-slate-800 px-3 py-2 text-sm"
+          >
+            <span className="flex items-center gap-2">
+              <span className="h-2.5 w-2.5 rounded-full" style={{ backgroundColor: a.role.color }} />
+              <span className="font-medium text-slate-700 dark:text-slate-300">{a.role.name}</span>
+              {a.assigned_by && (
+                <span className="text-xs text-slate-400 dark:text-slate-500">{t('od {0}', a.assigned_by)}</span>
+              )}
+            </span>
+            <div className="flex gap-2">
+              <button
+                onClick={() => accept.mutate(a.id)}
+                disabled={accept.isPending || decline.isPending}
+                className="rounded-md border border-emerald-300 dark:border-emerald-700 px-3 py-1 text-xs font-medium text-emerald-700 dark:text-emerald-400 hover:bg-emerald-50 dark:hover:bg-emerald-900/30 disabled:opacity-50"
+              >
+                {t('Akceptuj')}
+              </button>
+              <button
+                onClick={() => decline.mutate(a.id)}
+                disabled={accept.isPending || decline.isPending}
+                className="rounded-md border border-slate-300 dark:border-slate-600 px-3 py-1 text-xs font-medium text-slate-600 dark:text-slate-400 hover:bg-slate-100 dark:hover:bg-slate-700 disabled:opacity-50"
+              >
+                {t('Odrzuć')}
+              </button>
+            </div>
+          </li>
+        ))}
+      </ul>
+    </div>
+  )
+}
+
+const USERNAME_CHANGE_COOLDOWN_DAYS = 30
+
 function ProfileForm() {
   const { user, refreshUser } = useAuth()
   const { t } = useLanguage()
@@ -210,6 +304,13 @@ function ProfileForm() {
   const [email, setEmail] = useState(user?.email ?? '')
   const [error, setError] = useState<string | null>(null)
   const [success, setSuccess] = useState(false)
+
+  let usernameLockedUntil: Date | null = null
+  if (user?.profile.username_changed_at) {
+    const changedAt = new Date(user.profile.username_changed_at)
+    const unlockAt = new Date(changedAt.getTime() + USERNAME_CHANGE_COOLDOWN_DAYS * 24 * 60 * 60 * 1000)
+    if (unlockAt.getTime() > Date.now()) usernameLockedUntil = unlockAt
+  }
 
   const mutation = useMutation({
     mutationFn: () =>
@@ -256,8 +357,21 @@ function ProfileForm() {
         </label>
       </div>
       <label className="block text-xs font-medium text-slate-500 dark:text-slate-400">
-        {t('Nazwa użytkownika')}
-        <input value={username} onChange={(e) => setUsername(e.target.value)} required className="input mt-1" />
+        <span className="flex flex-wrap items-baseline justify-between gap-x-3 gap-y-0.5">
+          {t('Nazwa użytkownika')}
+          {usernameLockedUntil && (
+            <span className="text-[11px] font-normal italic text-slate-400 dark:text-slate-500">
+              {t('Można zmienić od {0}', usernameLockedUntil.toLocaleDateString('pl-PL'))}
+            </span>
+          )}
+        </span>
+        <input
+          value={username}
+          onChange={(e) => setUsername(e.target.value)}
+          required
+          disabled={!!usernameLockedUntil}
+          className="input mt-1 disabled:cursor-not-allowed disabled:bg-slate-100 disabled:text-slate-400 dark:disabled:bg-slate-900 dark:disabled:text-slate-500"
+        />
       </label>
       <label className="block text-xs font-medium text-slate-500 dark:text-slate-400">
         {t('E-mail')}
@@ -363,6 +477,7 @@ function InviteFriends() {
   const [copiedId, setCopiedId] = useState<number | null>(null)
   const [qrId, setQrId] = useState<number | null>(null)
   const [email, setEmail] = useState('')
+  const [tab, setTab] = useState<'pending' | 'accepted'>('pending')
 
   const { data } = useQuery({
     queryKey: ['invitations'],
@@ -376,6 +491,17 @@ function InviteFriends() {
       queryClient.invalidateQueries({ queryKey: ['invitations'] })
     },
   })
+
+  const deleteMutation = useMutation({
+    mutationFn: (id: number) => api.delete(`/auth/invitations/${id}/`),
+    onSuccess: () => queryClient.invalidateQueries({ queryKey: ['invitations'] }),
+  })
+
+  function onDelete(id: number) {
+    if (window.confirm(t('Usunąć ten link z zaproszeniem?'))) {
+      deleteMutation.mutate(id)
+    }
+  }
 
   function copyLink(id: number, url: string) {
     navigator.clipboard.writeText(url)
@@ -425,40 +551,195 @@ function InviteFriends() {
       )}
       {errorDetail && <p className="text-sm text-red-600 dark:text-red-400">{errorDetail}</p>}
 
-      {(data?.results.length ?? 0) > 0 && (
-        <ul className="space-y-2 pt-2">
-          {data!.results.map((inv) => (
-            <li key={inv.id} className="rounded-md bg-slate-50 dark:bg-slate-900 px-3 py-2 text-sm">
-              <div className="flex flex-wrap items-center justify-between gap-2">
-                <span className="truncate text-xs text-slate-500 dark:text-slate-400">{inv.invite_url}</span>
-                <div className="flex shrink-0 gap-2">
-                  <button
-                    onClick={() => copyLink(inv.id, inv.invite_url)}
-                    className="rounded-md border border-slate-300 dark:border-slate-600 px-2 py-1 text-xs font-medium text-slate-600 dark:text-slate-300 hover:bg-slate-100 dark:hover:bg-slate-700"
-                  >
-                    {copiedId === inv.id ? t('Skopiowano!') : t('Kopiuj link')}
-                  </button>
-                  <button
-                    onClick={() => setQrId((prev) => (prev === inv.id ? null : inv.id))}
-                    className="rounded-md border border-slate-300 dark:border-slate-600 px-2 py-1 text-xs font-medium text-slate-600 dark:text-slate-300 hover:bg-slate-100 dark:hover:bg-slate-700"
-                  >
-                    {qrId === inv.id ? t('Ukryj QR') : t('Pokaż QR')}
-                  </button>
+      <div className="flex gap-1 border-b border-slate-200 dark:border-slate-700 pt-2">
+        {(['pending', 'accepted'] as const).map((key) => (
+          <button
+            key={key}
+            onClick={() => setTab(key)}
+            className={`-mb-px border-b-2 px-3 py-1.5 text-xs font-medium transition ${
+              tab === key
+                ? 'border-accent-600 text-accent-700 dark:text-accent-400'
+                : 'border-transparent text-slate-500 dark:text-slate-400 hover:text-slate-700 dark:hover:text-slate-200'
+            }`}
+          >
+            {key === 'pending' ? t('Oczekujące zaproszenia') : t('Przyjęte zaproszenia')}
+            {' '}({(data?.results ?? []).filter((inv) => (key === 'accepted') === !!inv.accepted_by).length})
+          </button>
+        ))}
+      </div>
+
+      {(() => {
+        const filtered = (data?.results ?? []).filter((inv) => (tab === 'accepted') === !!inv.accepted_by)
+        if (filtered.length === 0) {
+          return (
+            <p className="pt-1 text-sm text-slate-400 dark:text-slate-500">
+              {tab === 'pending' ? t('Brak oczekujących zaproszeń.') : t('Brak przyjętych zaproszeń.')}
+            </p>
+          )
+        }
+        return (
+          <ul className="space-y-2 pt-2">
+            {filtered.map((inv) => (
+              <li key={inv.id} className="rounded-md bg-slate-50 dark:bg-slate-900 px-3 py-2 text-sm">
+                <div className="flex flex-wrap items-center justify-between gap-2">
+                  <span className="truncate text-xs text-slate-500 dark:text-slate-400">{inv.invite_url}</span>
+                  <div className="flex shrink-0 gap-2">
+                    {!inv.accepted_by && (
+                      <>
+                        <button
+                          onClick={() => copyLink(inv.id, inv.invite_url)}
+                          className="rounded-md border border-slate-300 dark:border-slate-600 px-2 py-1 text-xs font-medium text-slate-600 dark:text-slate-300 hover:bg-slate-100 dark:hover:bg-slate-700"
+                        >
+                          {copiedId === inv.id ? t('Skopiowano!') : t('Kopiuj link')}
+                        </button>
+                        <button
+                          onClick={() => setQrId((prev) => (prev === inv.id ? null : inv.id))}
+                          className="rounded-md border border-slate-300 dark:border-slate-600 px-2 py-1 text-xs font-medium text-slate-600 dark:text-slate-300 hover:bg-slate-100 dark:hover:bg-slate-700"
+                        >
+                          {qrId === inv.id ? t('Ukryj QR') : t('Pokaż QR')}
+                        </button>
+                      </>
+                    )}
+                    <button
+                      onClick={() => onDelete(inv.id)}
+                      disabled={deleteMutation.isPending}
+                      className="rounded-md border border-red-300 dark:border-red-700 px-2 py-1 text-xs font-medium text-red-600 dark:text-red-400 hover:bg-red-50 dark:hover:bg-red-900/30 disabled:opacity-50"
+                    >
+                      {t('Usuń')}
+                    </button>
+                  </div>
                 </div>
-              </div>
-              {qrId === inv.id && (
-                <div className="mt-2 flex justify-center rounded-md bg-white p-3">
-                  <QRCodeSVG value={inv.invite_url} size={160} />
-                </div>
-              )}
-              <p className="mt-1 text-xs text-slate-400 dark:text-slate-500">
-                {inv.accepted_by
-                  ? t('Zaakceptowane przez {0} ({1})', inv.accepted_by, formatDateTime(inv.accepted_at))
-                  : t('Oczekuje — wygenerowano {0}', formatDateTime(inv.created_at))}
-              </p>
-            </li>
-          ))}
-        </ul>
+                {qrId === inv.id && (
+                  <div className="mt-2 flex justify-center rounded-md bg-white p-3">
+                    <QRCodeSVG value={inv.invite_url} size={160} />
+                  </div>
+                )}
+                <p className="mt-1 text-xs text-slate-400 dark:text-slate-500">
+                  {inv.accepted_by
+                    ? t('Zaakceptowane przez {0} ({1})', inv.accepted_by, formatDateTime(inv.accepted_at))
+                    : inv.is_expired
+                      ? t('Wygasło — wygenerowano {0}', formatDateTime(inv.created_at))
+                      : t('Oczekuje — wygenerowano {0}, wygasa po 48h', formatDateTime(inv.created_at))}
+                </p>
+              </li>
+            ))}
+          </ul>
+        )
+      })()}
+    </div>
+  )
+}
+
+const HEATMAP_WEEKS = 26
+
+function LoginHeatmap({ dates }: { dates: string[] }) {
+  const { t } = useLanguage()
+  const counts = new Map<string, number>()
+  for (const d of dates) counts.set(d, (counts.get(d) ?? 0) + 1)
+
+  const today = new Date()
+  today.setHours(0, 0, 0, 0)
+  // Start on a Monday, HEATMAP_WEEKS weeks back, so the grid ends on the
+  // current week — same layout convention as GitHub's contribution graph.
+  const start = new Date(today)
+  const daysSinceMonday = (start.getDay() + 6) % 7
+  start.setDate(start.getDate() - daysSinceMonday - (HEATMAP_WEEKS - 1) * 7)
+
+  const weeks: { date: Date; key: string; count: number }[][] = []
+  const cursor = new Date(start)
+  for (let w = 0; w < HEATMAP_WEEKS; w++) {
+    const week: { date: Date; key: string; count: number }[] = []
+    for (let d = 0; d < 7; d++) {
+      const key = cursor.toISOString().slice(0, 10)
+      week.push({ date: new Date(cursor), key, count: counts.get(key) ?? 0 })
+      cursor.setDate(cursor.getDate() + 1)
+    }
+    weeks.push(week)
+  }
+
+  function shade(count: number) {
+    if (count === 0) return 'bg-slate-100 dark:bg-slate-800'
+    if (count === 1) return 'bg-accent-200 dark:bg-accent-900'
+    if (count === 2) return 'bg-accent-400 dark:bg-accent-700'
+    return 'bg-accent-600 dark:bg-accent-500'
+  }
+
+  return (
+    <div className="overflow-x-auto">
+      <div className="inline-flex gap-1">
+        {weeks.map((week, i) => (
+          <div key={i} className="flex flex-col gap-1">
+            {week.map((cell) => (
+              <div
+                key={cell.key}
+                title={`${cell.key}: ${t('{0} logowań', String(cell.count))}`}
+                className={`h-2.5 w-2.5 rounded-sm ${cell.date > today ? 'opacity-0' : shade(cell.count)}`}
+              />
+            ))}
+          </div>
+        ))}
+      </div>
+    </div>
+  )
+}
+
+function LoginHistorySection() {
+  const { t } = useLanguage()
+
+  const { data } = useQuery({
+    queryKey: ['login-history'],
+    queryFn: async () => (await api.get<LoginHistoryResponse>('/auth/login-history/')).data,
+  })
+
+  const peakHourLabel = data?.stats.peak_hour !== null && data?.stats.peak_hour !== undefined
+    ? `${String(data.stats.peak_hour).padStart(2, '0')}:00`
+    : '—'
+
+  return (
+    <div className="space-y-3 rounded-xl border border-slate-200 dark:border-slate-700 bg-white dark:bg-slate-800 p-5 shadow-sm">
+      <h2 className="text-sm font-semibold text-slate-700 dark:text-slate-300">{t('Historia logowań')}</h2>
+
+      <div className="grid grid-cols-2 gap-3 sm:grid-cols-4">
+        <div className="rounded-lg border border-slate-100 dark:border-slate-800 p-3">
+          <p className="text-xs text-slate-500 dark:text-slate-400">{t('Logowania ogółem')}</p>
+          <p className="mt-1 text-lg font-bold text-slate-900 dark:text-slate-100">{data?.stats.total_logins ?? '—'}</p>
+        </div>
+        <div className="rounded-lg border border-slate-100 dark:border-slate-800 p-3">
+          <p className="text-xs text-slate-500 dark:text-slate-400">{t('Aktualna passa')}</p>
+          <p className="mt-1 text-lg font-bold text-slate-900 dark:text-slate-100">
+            {data ? t('{0} dni', String(data.stats.current_streak)) : '—'}
+          </p>
+        </div>
+        <div className="rounded-lg border border-slate-100 dark:border-slate-800 p-3">
+          <p className="text-xs text-slate-500 dark:text-slate-400">{t('Najdłuższa passa')}</p>
+          <p className="mt-1 text-lg font-bold text-slate-900 dark:text-slate-100">
+            {data ? t('{0} dni', String(data.stats.longest_streak)) : '—'}
+          </p>
+        </div>
+        <div className="rounded-lg border border-slate-100 dark:border-slate-800 p-3">
+          <p className="text-xs text-slate-500 dark:text-slate-400">{t('Najczęstsza godzina')}</p>
+          <p className="mt-1 text-lg font-bold text-slate-900 dark:text-slate-100">{peakHourLabel}</p>
+        </div>
+      </div>
+
+      {data && data.results.length > 0 && (
+        <>
+          <LoginHeatmap dates={data.results.map((r) => r.created_at.slice(0, 10))} />
+
+          <ul className="space-y-1 pt-2">
+            {data.results.slice(0, 10).map((entry) => (
+              <li
+                key={entry.id}
+                className="flex flex-wrap items-center justify-between gap-2 rounded-md bg-slate-50 dark:bg-slate-900 px-3 py-1.5 text-xs"
+              >
+                <span className="text-slate-600 dark:text-slate-300">{entry.device}</span>
+                <span className="text-slate-400 dark:text-slate-500">
+                  {entry.ip ?? '—'} · {formatDateTime(entry.created_at)}
+                </span>
+              </li>
+            ))}
+          </ul>
+        </>
       )}
     </div>
   )

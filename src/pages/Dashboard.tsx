@@ -5,6 +5,7 @@ import { Area, AreaChart, ResponsiveContainer, Tooltip, XAxis, YAxis } from 'rec
 import { api } from '../api/client'
 import { PageLoader } from '../components/Loader'
 import { useLanguage } from '../i18n/LanguageContext'
+import { useTooltipStyle } from '../lib/chartTooltip'
 import { formatAxisValue, formatDate, formatMoney, formatPct } from '../lib/format'
 import type { CategoryBreakdown, DashboardSummary, NetWorthSnapshot, PeriodKey } from '../types'
 
@@ -22,6 +23,7 @@ const REFRESH_INTERVAL_MS = 60_000
 export default function Dashboard() {
   const queryClient = useQueryClient()
   const { t } = useLanguage()
+  const tooltipStyle = useTooltipStyle()
 
   const {
     data: summary,
@@ -110,25 +112,9 @@ export default function Dashboard() {
       <div className="rounded-xl border border-slate-200 dark:border-slate-700 bg-white dark:bg-slate-800 p-5 shadow-sm">
         <h2 className="mb-3 text-sm font-semibold text-slate-700 dark:text-slate-300">{t('Zmiana wartości majątku')}</h2>
         <div className="grid grid-cols-2 gap-3 sm:grid-cols-3 lg:grid-cols-6">
-          {periods.map((key) => {
-            const pr = summary?.period_returns?.[key]
-            const positive = pr ? Number(pr.change_amount) >= 0 : true
-            return (
-              <div key={key} className="rounded-lg border border-slate-100 dark:border-slate-800 bg-slate-50 dark:bg-slate-900 p-3">
-                <p className="text-xs text-slate-500 dark:text-slate-400">{t(PERIOD_LABELS[key])}</p>
-                {pr ? (
-                  <>
-                    <p className={`mt-1 text-sm font-semibold ${positive ? 'text-emerald-600' : 'text-red-600 dark:text-red-400'}`}>
-                      {formatPct(pr.change_pct)}
-                    </p>
-                    <p className="text-xs text-slate-400 dark:text-slate-500">{formatMoney(pr.change_amount, base)}</p>
-                  </>
-                ) : (
-                  <p className="mt-1 text-sm text-slate-300 dark:text-slate-600">{t('brak danych')}</p>
-                )}
-              </div>
-            )
-          })}
+          {periods.map((key) => (
+            <PeriodChangeCard key={key} label={t(PERIOD_LABELS[key])} pr={summary?.period_returns?.[key] ?? null} base={base} />
+          ))}
         </div>
       </div>
 
@@ -175,6 +161,7 @@ export default function Dashboard() {
                   width={40}
                 />
                 <Tooltip
+                  {...tooltipStyle}
                   formatter={(value) => formatMoney(value as number, base)}
                   labelFormatter={(d) => formatDate(d as string)}
                 />
@@ -221,30 +208,38 @@ export default function Dashboard() {
                 {t('+ Wpłata / wypłata')}
               </Link>
             </div>
-            <p className="mt-2 text-xs text-slate-500 dark:text-slate-400">{t('Wpłacone środki')}</p>
+            <p className="mt-2 text-xs text-slate-500 dark:text-slate-400" title={t('To, co włożyłeś: majątek na starcie + przychody + wpłaty własne.')}>
+              {t('Wpłacona kasa')}
+            </p>
             <p className="text-sm font-medium">{formatMoney(summary?.growth.net_contributed, base)}</p>
-            <p className="mt-2 text-xs text-slate-500 dark:text-slate-400">{t('Zysk / strata')}</p>
-            {summary?.growth.growth_amount === null ? (
-              <p className="text-xs text-slate-400 dark:text-slate-500">
-                {t('Brak danych — zarejestruj pierwszą wpłatę, aby zobaczyć realny zwrot.')}
-              </p>
-            ) : (
-              <p
-                className={`text-sm font-semibold ${
-                  Number(summary?.growth.growth_amount ?? 0) >= 0 ? 'text-emerald-600' : 'text-red-600 dark:text-red-400'
-                }`}
-              >
-                {formatMoney(summary?.growth.growth_amount, base)} ({formatPct(summary?.growth.growth_pct)})
-              </p>
-            )}
+            <p className="mt-2 text-xs text-slate-500 dark:text-slate-400" title={t('To, co zarobiłeś: odsetki na lokatach i obligacjach, zysk na akcjach oraz dywidendy (po podatku Belki).')}>
+              {t('Zysk')}
+            </p>
+            <p
+              className={`text-sm font-semibold ${
+                Number(summary?.growth.growth_amount ?? 0) >= 0 ? 'text-emerald-600' : 'text-red-600 dark:text-red-400'
+              }`}
+            >
+              {formatMoney(summary?.growth.growth_amount, base)} ({formatPct(summary?.growth.growth_pct)})
+            </p>
           </div>
 
           <div className="mt-6 border-t border-slate-100 dark:border-slate-800 pt-4">
             <h3 className="text-sm font-semibold text-slate-700 dark:text-slate-300">{t('Zarobione odsetki')}</h3>
             <p className="mt-2 text-xs text-slate-500 dark:text-slate-400">{t('Na lokatach')}</p>
-            <p className="text-sm font-semibold text-emerald-600">{formatMoney(summary?.deposits_interest_earned, base)}</p>
+            <p className="text-sm font-semibold text-emerald-600">
+              {formatMoney(summary?.deposits_interest_earned, base)}{' '}
+              <span className="text-xs font-normal text-slate-400 dark:text-slate-500">
+                ({formatMoney(summary?.deposits_interest_earned_after_tax, base)} {t('po podatku Belki')})
+              </span>
+            </p>
             <p className="mt-2 text-xs text-slate-500 dark:text-slate-400">{t('Na obligacjach')}</p>
-            <p className="text-sm font-semibold text-emerald-600">{formatMoney(summary?.bonds_interest_earned, base)}</p>
+            <p className="text-sm font-semibold text-emerald-600">
+              {formatMoney(summary?.bonds_interest_earned, base)}{' '}
+              <span className="text-xs font-normal text-slate-400 dark:text-slate-500">
+                ({formatMoney(summary?.bonds_interest_earned_after_tax, base)} {t('po podatku Belki')})
+              </span>
+            </p>
           </div>
         </div>
       </div>
@@ -280,5 +275,74 @@ function StatCard({
         {value}
       </p>
     </div>
+  )
+}
+
+const BREAKDOWN_LABELS: Record<keyof import('../types').PeriodReturnBreakdown, string> = {
+  stocks_value: 'Akcje',
+  bank_balance: 'Gotówka',
+  deposits_value: 'Lokaty',
+  bonds_value: 'Obligacje',
+}
+
+function PeriodChangeCard({
+  label,
+  pr,
+  base,
+}: {
+  label: string
+  pr: import('../types').PeriodReturn | null
+  base: import('../types').Currency
+}) {
+  const { t } = useLanguage()
+  const [expanded, setExpanded] = useState(false)
+  const positive = pr ? Number(pr.change_amount) >= 0 : true
+
+  if (!pr) {
+    return (
+      <div className="rounded-lg border border-slate-100 dark:border-slate-800 bg-slate-50 dark:bg-slate-900 p-3">
+        <p className="text-xs text-slate-500 dark:text-slate-400">{label}</p>
+        <p className="mt-1 text-sm text-slate-300 dark:text-slate-600">{t('brak danych')}</p>
+      </div>
+    )
+  }
+
+  const breakdownEntries = (Object.keys(BREAKDOWN_LABELS) as Array<keyof typeof BREAKDOWN_LABELS>)
+    .map((k) => ({ key: k, value: Number(pr.breakdown[k]) }))
+    .filter((row) => Math.abs(row.value) > 0.005)
+    .sort((a, b) => Math.abs(b.value) - Math.abs(a.value))
+
+  return (
+    <button
+      type="button"
+      onClick={() => setExpanded((v) => !v)}
+      className="rounded-lg border border-slate-100 dark:border-slate-800 bg-slate-50 dark:bg-slate-900 p-3 text-left transition hover:border-slate-200 dark:hover:border-slate-700"
+      title={t('Kliknij, aby zobaczyć podział zmiany na akcje, lokaty, obligacje i gotówkę')}
+    >
+      <p className="flex items-center justify-between text-xs text-slate-500 dark:text-slate-400">
+        {label}
+        <span className="text-slate-300 dark:text-slate-600">{expanded ? '▲' : '▼'}</span>
+      </p>
+      <p className={`mt-1 text-sm font-semibold ${positive ? 'text-emerald-600' : 'text-red-600 dark:text-red-400'}`}>
+        {formatPct(pr.change_pct)}
+      </p>
+      <p className="text-xs text-slate-400 dark:text-slate-500">{formatMoney(pr.change_amount, base)}</p>
+      {expanded && (
+        <div className="mt-2 space-y-1 border-t border-slate-200 dark:border-slate-700 pt-2">
+          {breakdownEntries.length === 0 ? (
+            <p className="text-xs text-slate-400 dark:text-slate-500">{t('Brak zmian w poszczególnych składnikach.')}</p>
+          ) : (
+            breakdownEntries.map((row) => (
+              <div key={row.key} className="flex items-center justify-between text-xs">
+                <span className="text-slate-500 dark:text-slate-400">{t(BREAKDOWN_LABELS[row.key])}</span>
+                <span className={row.value >= 0 ? 'text-emerald-600 dark:text-emerald-400' : 'text-red-600 dark:text-red-400'}>
+                  {formatMoney(row.value, base)}
+                </span>
+              </div>
+            ))
+          )}
+        </div>
+      )}
+    </button>
   )
 }

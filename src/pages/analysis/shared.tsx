@@ -20,6 +20,7 @@ import {
 import { api } from '../../api/client'
 import { CardLoader } from '../../components/Loader'
 import { useLanguage } from '../../i18n/LanguageContext'
+import { useTooltipStyle } from '../../lib/chartTooltip'
 import { formatAxisValue, formatDate, formatMoney, formatPct } from '../../lib/format'
 import type {
   BankAccount,
@@ -184,6 +185,7 @@ export function CategoryPieCard({
   palette?: string[]
 }) {
   const { t } = useLanguage()
+  const tooltipStyle = useTooltipStyle()
   const [chartType, setChartType] = useState<'pie' | 'bar'>('pie')
   const data = rows.map((r) => ({ id: r.category?.id ?? null, name: r.category?.name ?? t('Bez kategorii'), value: Number(r.total) }))
 
@@ -207,7 +209,7 @@ export function CategoryPieCard({
                     <Cell key={i} fill={palette[i % palette.length]} />
                   ))}
                 </Pie>
-                <Tooltip formatter={(value) => formatMoney(value as number, 'PLN')} />
+                <Tooltip {...tooltipStyle} formatter={(value) => formatMoney(value as number, 'PLN')} />
                 <Legend />
               </PieChart>
             ) : (
@@ -215,7 +217,7 @@ export function CategoryPieCard({
                 <CartesianGrid strokeDasharray="3 3" stroke="#94a3b8" strokeOpacity={0.15} horizontal={false} />
                 <XAxis type="number" tick={{ fontSize: 11 }} stroke="#94a3b8" />
                 <YAxis type="category" dataKey="name" tick={{ fontSize: 11 }} stroke="#94a3b8" width={100} />
-                <Tooltip formatter={(value) => formatMoney(value as number, 'PLN')} />
+                <Tooltip {...tooltipStyle} formatter={(value) => formatMoney(value as number, 'PLN')} />
                 <Bar dataKey="value" radius={[0, 3, 3, 0]}>
                   {data.map((_, i) => (
                     <Cell key={i} fill={palette[i % palette.length]} />
@@ -263,6 +265,7 @@ export function CategoryTrendChart({
   palette?: string[]
 }) {
   const { t } = useLanguage()
+  const tooltipStyle = useTooltipStyle()
   const { data, isLoading } = useQuery({
     queryKey: ['budget-category-trend', type, months],
     queryFn: async () =>
@@ -302,7 +305,7 @@ export function CategoryTrendChart({
                 <CartesianGrid strokeDasharray="3 3" stroke="#94a3b8" strokeOpacity={0.15} />
                 <XAxis dataKey="month" tick={{ fontSize: 12 }} stroke="#94a3b8" />
                 <YAxis tickFormatter={formatAxisValue} tick={{ fontSize: 12 }} stroke="#94a3b8" width={40} />
-                <Tooltip formatter={(value) => formatMoney(value as number, 'PLN')} />
+                <Tooltip {...tooltipStyle} formatter={(value) => formatMoney(value as number, 'PLN')} />
                 {rows.map((row, i) => {
                   const key = row.category ? `cat_${row.category.id}` : 'cat_none'
                   return (
@@ -1103,6 +1106,7 @@ export function StoreBreakdownCard({
   palette?: string[]
 }) {
   const { t } = useLanguage()
+  const tooltipStyle = useTooltipStyle()
   const { data, isLoading } = useQuery({
     queryKey: ['budget-store-breakdown', dateFrom, dateTo, type],
     queryFn: async () =>
@@ -1136,7 +1140,7 @@ export function StoreBreakdownCard({
                     <Cell key={i} fill={palette[i % palette.length]} />
                   ))}
                 </Pie>
-                <Tooltip formatter={(value) => formatMoney(value as number, 'PLN')} />
+                <Tooltip {...tooltipStyle} formatter={(value) => formatMoney(value as number, 'PLN')} />
                 <Legend />
               </PieChart>
             </ResponsiveContainer>
@@ -1184,6 +1188,7 @@ export function TagBreakdownCard({
   selectedTagId: number | null
 }) {
   const { t } = useLanguage()
+  const tooltipStyle = useTooltipStyle()
   const { data, isLoading } = useQuery({
     queryKey: ['budget-tag-breakdown', dateFrom, dateTo, type],
     queryFn: async () =>
@@ -1219,7 +1224,7 @@ export function TagBreakdownCard({
                     <Cell key={i} fill={PALETTE[i % PALETTE.length]} />
                   ))}
                 </Pie>
-                <Tooltip formatter={(value) => formatMoney(value as number, 'PLN')} />
+                <Tooltip {...tooltipStyle} formatter={(value) => formatMoney(value as number, 'PLN')} />
                 <Legend />
               </PieChart>
             </ResponsiveContainer>
@@ -1270,6 +1275,7 @@ const TREND_MONTH_OPTIONS = [3, 6, 12, 24, 36]
 
 export function FlexibleTrendChart() {
   const { t } = useLanguage()
+  const tooltipStyle = useTooltipStyle()
   const [chartType, setChartType] = useState<TrendChartType>('bar')
   const [months, setMonths] = useState(12)
   const [metrics, setMetrics] = useState<TrendMetric[]>(['income', 'expense'])
@@ -1347,7 +1353,7 @@ export function FlexibleTrendChart() {
                 <CartesianGrid strokeDasharray="3 3" stroke="#94a3b8" strokeOpacity={0.15} />
                 <XAxis dataKey="month" tick={{ fontSize: 12 }} stroke="#94a3b8" />
                 <YAxis tickFormatter={formatAxisValue} tick={{ fontSize: 12 }} stroke="#94a3b8" width={40} />
-                <Tooltip formatter={(value) => formatMoney(value as number, 'PLN')} />
+                <Tooltip {...tooltipStyle} formatter={(value) => formatMoney(value as number, 'PLN')} />
                 <Legend />
                 {metrics.map((m) => (
                   <Bar key={m} dataKey={m} name={t(TREND_METRIC_LABELS[m])} fill={TREND_METRIC_COLORS[m]} radius={[4, 4, 0, 0]} />
@@ -1358,7 +1364,7 @@ export function FlexibleTrendChart() {
                 <CartesianGrid strokeDasharray="3 3" stroke="#94a3b8" strokeOpacity={0.15} />
                 <XAxis dataKey="month" tick={{ fontSize: 12 }} stroke="#94a3b8" />
                 <YAxis tickFormatter={formatAxisValue} tick={{ fontSize: 12 }} stroke="#94a3b8" width={40} />
-                <Tooltip formatter={(value) => formatMoney(value as number, 'PLN')} />
+                <Tooltip {...tooltipStyle} formatter={(value) => formatMoney(value as number, 'PLN')} />
                 <Legend />
                 {metrics.map((m) => (
                   <Line
@@ -1377,7 +1383,7 @@ export function FlexibleTrendChart() {
                 <CartesianGrid strokeDasharray="3 3" stroke="#94a3b8" strokeOpacity={0.15} />
                 <XAxis dataKey="month" tick={{ fontSize: 12 }} stroke="#94a3b8" />
                 <YAxis tickFormatter={formatAxisValue} tick={{ fontSize: 12 }} stroke="#94a3b8" width={40} />
-                <Tooltip formatter={(value) => formatMoney(value as number, 'PLN')} />
+                <Tooltip {...tooltipStyle} formatter={(value) => formatMoney(value as number, 'PLN')} />
                 <Legend />
                 {metrics.map((m) => (
                   <Area
@@ -1401,6 +1407,7 @@ export function FlexibleTrendChart() {
 
 export function CumulativeNetChart() {
   const { t } = useLanguage()
+  const tooltipStyle = useTooltipStyle()
   const [months, setMonths] = useState(12)
 
   const { data: trend, isLoading } = useQuery({
@@ -1443,7 +1450,7 @@ export function CumulativeNetChart() {
             </defs>
             <XAxis dataKey="month" tick={{ fontSize: 12 }} stroke="#94a3b8" />
             <YAxis tickFormatter={formatAxisValue} tick={{ fontSize: 12 }} stroke="#94a3b8" width={40} />
-            <Tooltip formatter={(value) => formatMoney(value as number, 'PLN')} />
+            <Tooltip {...tooltipStyle} formatter={(value) => formatMoney(value as number, 'PLN')} />
             <Area type="monotone" dataKey="cumulative" stroke="#0ea5e9" fill="url(#cumulativeNetGradient)" strokeWidth={2} />
           </AreaChart>
         </ResponsiveContainer>

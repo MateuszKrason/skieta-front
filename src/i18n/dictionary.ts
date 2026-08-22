@@ -705,4 +705,334 @@ export const en: Record<string, string> = {
   'Aktywność w ostatnich 30 dniach': 'Activity over the last 30 days',
   'aktywny': 'active',
   'nieaktywny': 'inactive',
+
+  // Realny zwrot redesign, Belka tax parenthetical
+  'Wpłacona kasa': 'Contributed capital',
+  'Zysk': 'Profit',
+  'po podatku Belki': 'after capital gains tax',
+  'To, co włożyłeś: majątek na starcie + przychody + wpłaty własne.':
+    "What you put in: starting net worth + income + your own deposits.",
+  'To, co zarobiłeś: odsetki na lokatach i obligacjach, zysk na akcjach oraz dywidendy (po podatku Belki).':
+    'What you earned: interest on deposits and bonds, stock gains, and dividends (after capital gains tax).',
+
+  // Zmiana wartości majątku — expandable breakdown
+  'Kliknij, aby zobaczyć podział zmiany na akcje, lokaty, obligacje i gotówkę':
+    'Click to see the change broken down by stocks, deposits, bonds and cash',
+  'Brak zmian w poszczególnych składnikach.': 'No change in any individual component.',
+
+  // Portfolio allocation legend + new analytics cards
+  'Udział': 'Share',
+  'Podatek Belki przy sprzedaży dziś': 'Capital gains tax if sold today',
+  'Ile fiskus zabrałby, gdybyś dziś sprzedał(a) wszystko na plusie.':
+    "How much tax you'd owe if you sold every winning position today.",
+  'Dywidendy w tym roku': 'Dividends this year',
+  'Łącznie od zawsze: {0}': 'All-time total: {0}',
+
+  // Stock reordering (drag & drop)
+  'Przeciągnij, aby zmienić kolejność': 'Drag to reorder',
+
+  // Admin: Statystyki tab
+  'Statystyki': 'Statistics',
+  'Zaproszenia wysłane': 'Invitations sent',
+  'Zaproszenia przyjęte': 'Invitations accepted',
+  'Redaktorzy': 'Editors',
+  'Zarchiwizowane konta': 'Archived accounts',
+  'Transakcje budżetowe': 'Budget transactions',
+  'Transakcje giełdowe': 'Stock transactions',
+  'Role niestandardowe': 'Custom roles',
+  'Wariant kolorystyczny użytkowników': "Users' color variant",
+
+  // Admin: role/permission management
+  'Nazwa roli': 'Role name',
+  'Kolor roli': 'Role color',
+  'Utwórz rolę': 'Create role',
+  '+ Nowa rola': '+ New role',
+  'Twórz role z wybranym zestawem uprawnień i nadawaj je użytkownikom w ich profilu — niezależnie od statusu administratora/redaktora.':
+    "Create roles with a chosen set of permissions and grant them to users from their profile — independent of admin/editor status.",
+  '{0} uprawnień, {1} użytkowników': '{0} permissions, {1} users',
+  'Usunąć rolę {0}? Zostanie odebrana wszystkim {1} przypisanym użytkownikom.':
+    'Delete role {0}? It will be removed from all {1} users it is assigned to.',
+  'Brak ról.': 'No roles yet.',
+  'Brak ról — utwórz je w zakładce "Role".': 'No roles yet — create them in the "Roles" tab.',
+  'Podgląd statystyk aplikacji': 'View app statistics',
+  'Podgląd listy użytkowników': 'View user list',
+  'Zarządzanie użytkownikami (aktywacja, archiwizacja)': 'Manage users (activate, archive)',
+  'Tworzenie i edycja artykułów': 'Create and edit articles',
+  'Publikowanie artykułów': 'Publish articles',
+  'Zarządzanie zgłoszeniami feedbacku': 'Manage feedback submissions',
+  'Tworzenie i edycja ról': 'Create and edit roles',
+
+  // Invite friends — delete, sub-tabs, expiry
+  'Oczekujące zaproszenia': 'Pending invitations',
+  'Przyjęte zaproszenia': 'Accepted invitations',
+  'Brak oczekujących zaproszeń.': 'No pending invitations.',
+  'Brak przyjętych zaproszeń.': 'No accepted invitations.',
+  'Usunąć ten link z zaproszeniem?': 'Delete this invitation link?',
+  'Wygasło — wygenerowano {0}': 'Expired — generated {0}',
+  'Oczekuje — wygenerowano {0}, wygasa po 48h': 'Pending — generated {0}, expires after 48h',
+
+  // Login history
+  'Historia logowań': 'Login history',
+  'Logowania ogółem': 'Total logins',
+  'Aktualna passa': 'Current streak',
+  'Najdłuższa passa': 'Longest streak',
+  'Najczęstsza godzina': 'Most common hour',
+  '{0} dni': '{0} days',
+  '{0} logowań': '{0} logins',
+
+  // Username change lock
+  'Można zmienić od {0}': 'Can be changed again from {0}',
+
+  // Savings goals — reserve from savings, multi-month payday reservations
+  'Zarezerwuj z oszczędności': 'Reserve from savings',
+  'Zarezerwuj część pensji z jednego lub kilku konkretnych miesięcy naraz.':
+    'Reserve part of your salary from one or several specific months at once.',
+  'Miesiąc wypłaty': 'Payday month',
+  '+ Dodaj kolejny miesiąc': '+ Add another month',
+  'Kwota z oszczędności': 'Amount from savings',
+
+  // Privacy policy
+  'Polityka prywatności': 'Privacy policy',
+  '← Powrót na stronę główną': '← Back to home',
+  'Kim jesteśmy': 'Who we are',
+  'Jakie dane zbieramy': 'What data we collect',
+  'Dane finansowe, które sam(a) wprowadzasz': 'Financial data you enter yourself',
+  'Dane techniczne i bezpieczeństwa': 'Technical and security data',
+  'Zgłoszenia i zaproszenia': 'Feedback and invitations',
+  'Ciasteczka i local storage': 'Cookies and local storage',
+  'Komu udostępniamy dane': 'Who we share data with',
+  'Jak długo przechowujemy dane': 'How long we keep data',
+  'Twoje prawa': 'Your rights',
+  'Bezpieczeństwo': 'Security',
+  'Zmiany tej polityki': 'Changes to this policy',
+  'Kontakt': 'Contact',
+
+  // Landing page
+  'Dostępne wyłącznie na zaproszenie': 'Invite-only access',
+  'Panuj nad': 'Take control of',
+  'swoimi finansami': 'your finances',
+  'Zbudowane, żeby faktycznie z tego korzystać': 'Built to actually get used',
+  'Nie kolejny arkusz kalkulacyjny — narzędzie, które samo liczy to, co dla Ciebie ważne.':
+    "Not another spreadsheet — a tool that does the math on what matters to you.",
+  'Wszystko w jednym miejscu': 'Everything in one place',
+  'Konta bankowe, akcje, obligacje i lokaty — jeden widok na cały Twój majątek, bez przełączania się między aplikacjami banków i domów maklerskich.':
+    'Bank accounts, stocks, bonds and deposits — one view of your entire net worth, no switching between bank and broker apps.',
+  'Realny zwrot z inwestycji': 'Real investment return',
+  'Zysk liczony osobno od wpłaconego kapitału — zobaczysz dokładnie, ile realnie zarobiłeś na lokatach, obligacjach i akcjach, po podatku Belki.':
+    "Profit tracked separately from contributed capital — see exactly what you've earned on deposits, bonds and stocks, after capital gains tax.",
+  'Budżet pod kontrolą': 'Budget under control',
+  'Automatyczny import wyciągów, kategorie, sklepy i tagi — analiza przychodów i wydatków, która sama się aktualizuje.':
+    'Automatic statement import, categories, stores and tags — income/expense analysis that updates itself.',
+  'Ustaw cel, rezerwuj kwoty z konkretnych wypłat lub z bieżących oszczędności i śledź postęp na żywo.':
+    'Set a goal, reserve amounts from specific paychecks or your current savings, and track progress live.',
+  'Dywidendy i podatki': 'Dividends and taxes',
+  'Historia i prognoza wypłat dywidend, szacowany podatek Belki do zapłaty — żadnych niespodzianek przy rozliczeniu.':
+    'Dividend history and forecast, estimated capital gains tax owed — no surprises at tax time.',
+  'Twoje dane, Twoja kontrola': 'Your data, your control',
+  'Dostęp wyłącznie na zaproszenie, bez reklam i bez śledzenia. Historia logowań pokazuje dokładnie, kto i kiedy wchodził na Twoje konto.':
+    'Invite-only access, no ads, no tracking. Login history shows exactly who accessed your account and when.',
+  'Jak to działa': 'How it works',
+  'Dostajesz zaproszenie': 'You get an invite',
+  'Rejestracja jest możliwa tylko na zaproszenie od kogoś, kto już korzysta ze skieta.':
+    'Registration is only possible with an invite from someone already using skieta.',
+  'Dodajesz swoje konta': 'You add your accounts',
+  'Kilka minut wystarczy, żeby dodać konta bankowe, portfel akcji, lokaty i obligacje.':
+    "A few minutes is enough to add bank accounts, your stock portfolio, deposits and bonds.",
+  'Widzisz cały obraz': 'You see the full picture',
+  'Dashboard aktualizuje się na bieżąco — majątek, zwrot z inwestycji i budżet w jednym miejscu.':
+    'The dashboard updates live — net worth, investment return and budget in one place.',
+  'Masz już zaproszenie?': 'Already have an invite?',
+  'Zaloguj się i zobacz cały swój majątek w jednym miejscu — od razu po pierwszym dodaniu konta.':
+    'Log in and see your entire net worth in one place — right after adding your first account.',
+
+  // Request access — landing page form + admin review
+  'Nie masz zaproszenia? Poproś o dostęp →': "Don't have an invite? Request access →",
+  'Twój adres e-mail': 'Your email address',
+  'Poproś o dostęp': 'Request access',
+  'Dziękujemy! Sprawdź skrzynkę e-mail — napiszemy, gdy administrator rozpatrzy Twoją prośbę.':
+    "Thanks! Check your inbox — we'll email you once an administrator reviews your request.",
+  'Prośby o dostęp': 'Access requests',
+  'Oczekujące': 'Pending',
+  'Zaakceptowane': 'Accepted',
+  'Zaakceptowano': 'Accepted',
+  'Odrzucono': 'Rejected',
+  'Zaakceptuj losowy procent oczekujących': 'Accept a random percentage of pending requests',
+  'Przydatne przy stopniowym otwieraniu dostępu — zamiast rozpatrywać każdą prośbę osobno.':
+    'Useful for a staged rollout — instead of reviewing every request one by one.',
+  'Zaakceptuj': 'Accept',
+  'Zaakceptowano {0} z {1} oczekujących próśb.': 'Accepted {0} of {1} pending requests.',
+  'Brak próśb w tej kategorii.': 'No requests in this category.',
+  'Otrzymano {0}': 'Received {0}',
+  '{0} przez {1}, {2}': '{0} by {1}, {2}',
+  'Akceptuj': 'Accept',
+  'Odrzuć': 'Reject',
+
+  // Role acceptance workflow
+  'Kliknięcie oferuje rolę — zaczyna obowiązywać dopiero, gdy użytkownik ją zaakceptuje.':
+    "Clicking offers the role — it doesn't take effect until the user accepts it.",
+  'Oczekuje na akceptację użytkownika — kliknij, aby wycofać ofertę': 'Awaiting the user’s acceptance — click to withdraw the offer',
+  'Zaakceptowana — kliknij, aby odebrać': 'Accepted — click to revoke',
+  'Kliknij, aby zaoferować tę rolę': 'Click to offer this role',
+  '(oczekuje)': '(pending)',
+  'Nowe role do zaakceptowania': 'New roles to accept',
+  'Administrator zaproponował Ci nowe uprawnienia — nie zaczną obowiązywać, dopóki ich nie zaakceptujesz.':
+    "An administrator has offered you new permissions — they won't take effect until you accept them.",
+  'od {0}': 'from {0}',
+
+  // Login back-link, updated budget feature card
+  '← Strona główna': '← Homepage',
+  'Przychody, wydatki i budżet': 'Income, expenses and budget',
+  'Zarządzaj przychodami i wydatkami, monitoruj budżet miesiąc po miesiącu i sprawdzaj bilans — automatyczny import wyciągów, kategorie, sklepy i tagi robią to za Ciebie.':
+    'Manage your income and expenses, track your budget month to month, and check your balance — automatic statement import, categories, stores and tags do the work for you.',
+
+  // Translation coverage sweep — everything a distinct-strings audit found
+  // with no English entry yet, across Planowanie, AdminUsers, AnalizaSpolek,
+  // StatementImportPanel, PrivacyPolicy, Landing, and assorted small labels.
+  '+ Przychód/Wydatek': '+ Income/Expense',
+  '+ Stały koszt': '+ Fixed cost',
+  'Administratorzy': 'Administrators',
+  'Aktywni': 'Active',
+  'Aktywni dzisiaj': 'Active today',
+  'Aktywni użytkownicy dziennie (30 dni)': 'Daily active users (30 days)',
+  'Artykuły o finansach osobistych': 'Personal finance articles',
+  'Brak stałych kosztów — dodaj pierwszy.': 'No fixed costs yet — add your first one.',
+  'Brak użytkowników spełniających kryteria.': 'No users match the filters.',
+  'Brak wycenionych pozycji w portfelu.': 'No valued positions in the portfolio.',
+  'Brak zarezerwowanych wypłat.': 'No reserved paychecks yet.',
+  'Czynsz, subskrypcje, ubezpieczenia — cykliczne opłaty co miesiąc, niezależnie od tego, czy już je zapłaciłeś w tym miesiącu.':
+    "Rent, subscriptions, insurance — recurring monthly charges, whether or not you've already paid them this month.",
+  'Czytaj więcej →': 'Read more →',
+  'Dane konta przechowujemy tak długo, jak konto jest aktywne. Administrator może zarchiwizować konto (dezaktywacja z zachowaniem danych) zamiast je usuwać. Obecnie usunięcie danych na stałe odbywa się na indywidualną prośbę, wysłaną administratorowi — w aplikacji nie ma jeszcze samoobsługowego przycisku "usuń konto".':
+    'We keep account data for as long as the account is active. An administrator can archive an account (deactivating it while keeping its data) instead of deleting it. Right now, permanent deletion happens on individual request to the administrator — there\'s no self-service "delete account" button yet.',
+  'Danych nie sprzedajemy i nie udostępniamy w celach marketingowych. Współpracujemy wyłącznie z dostawcami niezbędnymi do działania serwisu:':
+    'We never sell your data or share it for marketing purposes. We only work with providers needed to run the service:',
+  'Dashboard': 'Dashboard',
+  'Dodaj': 'Add',
+  'Dodaj stały koszt': 'Add fixed cost',
+  'Domyślna waluta': 'Default currency',
+  'Dołączył(a)': 'Joined',
+  'Dzień wypłaty pozwala policzyć, ile wypłat zostało do terminu każdego celu oszczędnościowego.':
+    'The payday setting lets us calculate how many paychecks are left before each savings goal\'s deadline.',
+  'Google Analytics — statystyki odwiedzin strony (patrz sekcja wyżej),': 'Google Analytics — site visit statistics (see the section above),',
+  'Hasła są haszowane, komunikacja z aplikacją odbywa się przez HTTPS, a dostęp do panelu administratora mają wyłącznie konta z uprawnieniami administratora lub odpowiednią rolą — i nawet ten panel nie pokazuje treści Twoich transakcji ani sald, tylko zbiorcze statystyki. Treść danych finansowych nie jest też dostępna przez wbudowany panel Django — do bazy danych dociera się wyłącznie bezpośrednim, świadomym dostępem administracyjnym do infrastruktury, nie jednym kliknięciem w aplikacji.':
+    "Passwords are hashed, communication with the app runs over HTTPS, and only accounts with admin rights or an appropriate role can reach the admin panel — and even that panel never shows the content of your transactions or balances, only aggregate statistics. Financial data isn't reachable through Django's built-in admin site either — the database is only reachable through deliberate, direct administrative access to the infrastructure, not a single click in the app.",
+  'Historia': 'History',
+  'Importuj wyciąg z konta': 'Import account statement',
+  'Kategoria widoczna tylko dla tego konta': 'Category visible only for this account',
+  'Koncentracja portfela': 'Portfolio concentration',
+  'Konta bankowe i ich salda, transakcje budżetowe, kategorie/sklepy/tagi, posiadane akcje i transakcje giełdowe, lokaty, obligacje, dywidendy, cele oszczędnościowe i plany budżetowe — czyli wszystko, co wpisujesz, żeby aplikacja mogła śledzić Twój majątek. Te dane widzisz tylko Ty — inni użytkownicy nie mają do nich dostępu, a panel administratora pokazuje wyłącznie zbiorcze liczby i aktywność konta (np. liczbę transakcji), nigdy treść Twoich transakcji czy sald.':
+    "Bank accounts and their balances, budget transactions, categories/stores/tags, the stocks and stock trades you hold, deposits, bonds, dividends, savings goals and budget plans — basically everything you enter so the app can track your net worth. Only you see this data — other users have no access to it, and the admin panel only ever shows aggregate counts and account activity (e.g. a transaction count), never the content of your transactions or balances.",
+  'Konta w innej walucie będą oznaczone jako walutowe — to tylko etykieta, nie wpływa na przeliczenia.':
+    "Accounts in a different currency get labeled as foreign-currency — that's just a label, it doesn't affect conversions.",
+  'Logowanie działa w oparciu o tokeny JWT przechowywane w local storage przeglądarki — to samo miejsce przechowuje wybrany motyw kolorystyczny i język, zanim zostaną zapisane na koncie. Nie ma żadnych skryptów reklamowych ani śledzących w celach marketingowych.':
+    "Logging in relies on JWT tokens kept in the browser's local storage — the same place stores your chosen theme and language before they're saved to your account. There are no advertising or marketing-tracking scripts.",
+  'Masz prawo do wglądu w swoje dane, ich poprawienia (większość — bezpośrednio w ustawieniach konta) oraz do żądania ich usunięcia. W tym celu napisz do nas na adres podany niżej albo skorzystaj z widgetu "Zostaw feedback" w aplikacji.':
+    'You have the right to view your data, correct it (mostly directly in your account settings), and request its deletion. To do so, email us at the address below or use the "Leave feedback" widget in the app.',
+  'Na plusie / na minusie / bez zmian': 'Winning / losing / unchanged',
+  'Najgorsza pozycja': 'Worst position',
+  'Najlepsza pozycja': 'Best position',
+  'Największa pozycja': 'Largest position',
+  'Nazwa użytkownika, imię i nazwisko, adres e-mail (jeśli podany) i hasło (przechowywane wyłącznie w postaci zahaszowanej, nigdy jawnym tekstem). Przy rejestracji zapisujemy też, z czyjego zaproszenia założono konto.':
+    "Username, first and last name, email address (if provided), and password (stored only hashed, never in plain text). At registration we also record whose invitation the account was created from.",
+  'Nie udało się dodać tagu.': "Couldn't add the tag.",
+  'Nie udało się przetworzyć pliku.': "Couldn't process the file.",
+  'Nie udało się zaimportować transakcji — spróbuj wgrać plik ponownie.': "Couldn't import the transactions — try uploading the file again.",
+  'Nie znaleziono artykułu.': 'Article not found.',
+  'Nowi w tym tygodniu': 'New this week',
+  'Odblokuj': 'Unblock',
+  'Odznacz wszystkie': 'Deselect all',
+  'Opis': 'Description',
+  'Ostatnia aktualizacja: 22 sierpnia 2026': 'Last updated: August 22, 2026',
+  'Ostatnia aktywność': 'Last activity',
+  'Ostatnie IP': 'Last IP',
+  'Ostatnie logowanie': 'Last login',
+  'Panel administratora': 'Admin panel',
+  'Pensja i dzień wypłaty ({0}. dnia miesiąca) — zmień': 'Salary and payday (the {0} of the month) — change',
+  'Plik PDF': 'PDF file',
+  'Podgląd wyciągu': 'Statement preview',
+  'Podział wg rynku': 'Breakdown by market',
+  'Podział wg waluty': 'Breakdown by currency',
+  'Pozostałe ({0})': 'Other ({0})',
+  'Przy każdym logowaniu zapisujemy adres IP oraz podstawowe informacje o przeglądarce/systemie (User-Agent) — to podstawa historii logowań widocznej w Twoim koncie oraz ochrony przed nieautoryzowanym dostępem. Zapisujemy też, w które dni byłeś/aś aktywny(a) (do serii logowań i statystyk).':
+    'On every login we record the IP address and basic browser/system info (User-Agent) — this powers the login history in your account and helps protect against unauthorized access. We also record which days you were active (for streaks and statistics).',
+  'Rola': 'Role',
+  'Skład, koncentracja i wyniki Twoich pozycji — przeliczone do jednej waluty, żeby dało się je sensownie porównać.':
+    'The composition, concentration and performance of your positions — converted to one currency so they can be meaningfully compared.',
+  'Statystyki portfela': 'Portfolio statistics',
+  'Stałe koszty': 'Fixed costs',
+  'Stałe koszty / mies.': 'Fixed costs / mo.',
+  'Suma': 'Total',
+  'Szukaj': 'Search',
+  'Termin wypłaty minął przed celem — dodaj więcej lub przesuń termin': 'The payday deadline is before the goal — add more, or push the deadline back',
+  'Transakcje akcji': 'Stock transactions',
+  'Transakcje budżetu': 'Budget transactions',
+  'Treść zgłoszeń wysłanych przez widget "Zostaw feedback" oraz historia wysłanych zaproszeń (komu, kiedy, czy zostało przyjęte).':
+    'The content of feedback sent through the "Leave feedback" widget, and the history of invitations you\'ve sent (to whom, when, whether accepted).',
+  'Ukryj historię': 'Hide history',
+  'Ustaw dzień wypłaty (u góry strony), żeby zobaczyć ile wypłat zostało do celu': 'Set your payday (at the top of the page) to see how many paychecks are left until the goal',
+  'Ustaw pensję miesięczną i dzień wypłaty': 'Set your monthly salary and payday',
+  'Uwagi': 'Notes',
+  'Użytkownicy aplikacji i ich aktywność': 'App users and their activity',
+  'Użytkownicy łącznie': 'Users total',
+  'Używamy Google Analytics do liczenia odwiedzin i podstawowej analityki ruchu na stronie — Google ustawia w tym celu własne ciasteczka i przetwarza dane takie jak adres IP, rodzaj urządzenia i przeglądarki oraz odwiedzane podstrony. Więcej o tym, jak Google przetwarza te dane, znajdziesz w polityce prywatności Google.':
+    "We use Google Analytics to count visits and get basic traffic analytics — Google sets its own cookies for this and processes data such as IP address, device and browser type, and pages visited. You can read more about how Google processes this data in Google's own privacy policy.",
+  'W miarę rozwoju aplikacji ta strona będzie aktualizowana, a data ostatniej zmiany widoczna jest na górze strony.':
+    "As the app evolves, this page will be updated, and the date of the last change is shown at the top of the page.",
+  'W sprawach dotyczących danych osobowych napisz na: rejestracja@skieta.com': 'For anything related to personal data, email: rejestracja@skieta.com',
+  'Waluta inna niż domyślna ({0})': 'Currency other than the default ({0})',
+  'Wczytywanie…': 'Loading…',
+  'Wgraj i pokaż podgląd': 'Upload and preview',
+  'Wgraj wyciąg w formacie PDF (obecnie obsługiwane: PKO Bank Polski). Zanim cokolwiek zapiszemy, pokażemy podgląd transakcji do zatwierdzenia — i sprawdzimy, czy już ich kiedyś nie zaimportowano.':
+    "Upload a statement in PDF format (currently supported: PKO Bank Polski). Before we save anything, we'll show you a preview of the transactions to confirm — and check whether they've already been imported before.",
+  'Wkrótce pojawią się tu pierwsze artykuły.': 'The first articles will appear here soon.',
+  'Wznów': 'Resume',
+  'Zablokuj': 'Block',
+  'Zacznij zarządzać swoimi finansami →': 'Start managing your finances →',
+  'Zaimportowano {0} transakcji, pominięto {1}.': 'Imported {0} transactions, skipped {1}.',
+  'Zaloguj się do aplikacji': 'Log in to the app',
+  'Zarezerwowano na duże wydatki': 'Reserved for large expenses',
+  'Zarezerwuj z wypłaty': 'Reserve from paycheck',
+  'Zatrzymaj': 'Pause',
+  'Zatwierdź import ({0})': 'Confirm import ({0})',
+  'Zaznacz wszystkie': 'Select all',
+  'Zaznaczono {0} z {1} transakcji do importu.': 'Selected {0} of {1} transactions to import.',
+  'Zostaje po rezerwacjach i odkładaniu': 'Left after reservations and savings',
+  'Zostało {0} wypłat — odkładaj ~{1} z każdej, żeby zdążyć': '{0} paydays left — set aside ~{1} from each to make it',
+  'Zrealizowany zysk/strata wg roku (po podatku Belki)': 'Realized profit/loss by year (after capital gains tax)',
+  'Zweryfikowany e-mail': 'Verified email',
+  'administratorzy': 'administrators',
+  'aktywne': 'active',
+  'bardzo rozproszony': 'very diversified',
+  'dostawca poczty e-mail — do wysyłki e-maili weryfikacyjnych, resetu hasła i zaproszeń,': 'email provider — for sending verification, password reset and invitation emails,',
+  'hosting aplikacji i baza danych (Microsoft Azure),': 'app hosting and database (Microsoft Azure),',
+  'już zaimportowano': 'already imported',
+  'login lub e-mail': 'username or email',
+  'mocno skoncentrowany': 'heavily concentrated',
+  'możliwy duplikat': 'possible duplicate',
+  'niezweryfikowany': 'unverified',
+  'nigdy': 'never',
+  'np. mBank': 'e.g. mBank',
+  'np. wakacje': 'e.g. vacation',
+  'odświeżanie…': 'refreshing…',
+  'publiczne źródła danych rynkowych (np. Stooq, Yahoo Finance) — zapytania dotyczą wyłącznie tickerów giełdowych i kursów walut, nigdy Twoich danych osobowych.':
+    'public market data sources (e.g. Stooq, Yahoo Finance) — these queries only ever involve stock tickers and exchange rates, never your personal data.',
+  'skieta to osobisty tracker finansowy — aplikacja dostępna wyłącznie na zaproszenie, bez reklam i bez sprzedaży danych osobom trzecim. Administratorem danych jest osoba prowadząca serwis skieta, z którą można się skontaktować pod adresem podanym na dole tej strony.':
+    'skieta is a personal finance tracker — an invite-only app, with no ads and no selling data to third parties. The data controller is the person running skieta, reachable at the address given at the bottom of this page.',
+  'skieta łączy konta bankowe, inwestycje, lokaty i obligacje w jednym miejscu — zobacz, jak naprawdę rośnie Twój majątek, bez arkusza kalkulacyjnego i bez zgadywania.':
+    "skieta brings bank accounts, investments, deposits and bonds together in one place — see how your net worth is really growing, no spreadsheet and no guessing.",
+  'sprawdź — może to transfer własny': "check — might be a transfer between your own accounts",
+  'umiarkowanie skoncentrowany': 'moderately concentrated',
+  'walutowe': 'foreign-currency',
+  'wszyscy': 'everyone',
+  'wszystkie': 'all',
+  'wszystkie konta': 'all accounts',
+  'zablokowane': 'blocked',
+  'zdywersyfikowany': 'diversified',
+  'zweryfikowany': 'verified',
+  'zwykli użytkownicy': 'regular users',
+  '{0} lat {1} mies.': '{0}y {1}mo',
+  '{0}. dnia miesiąca': 'the {0} of the month',
+  'Śr. czas trzymania (ważony wartością)': 'Avg. holding period (value-weighted)',
+  '← Wszystkie artykuły': '← All articles',
+  '⇪ Importuj wyciąg': '⇪ Import statement',
 }

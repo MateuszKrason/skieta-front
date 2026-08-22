@@ -4,6 +4,7 @@ import { Area, AreaChart, Bar, BarChart, CartesianGrid, Cell, Legend, Pie, PieCh
 import { api } from '../../api/client'
 import { CardLoader, PageLoader } from '../../components/Loader'
 import { useLanguage } from '../../i18n/LanguageContext'
+import { useTooltipStyle } from '../../lib/chartTooltip'
 import { formatAxisValue, formatDate, formatMoney, formatPct } from '../../lib/format'
 import type { Dividend, DividendSummary, Stock } from '../../types'
 
@@ -31,6 +32,7 @@ const FORECAST_YEARS_OPTIONS = [5, 10, 15, 20]
 export default function Dywidendy() {
   const queryClient = useQueryClient()
   const { t } = useLanguage()
+  const tooltipStyle = useTooltipStyle()
   const [showAdd, setShowAdd] = useState(false)
   const [stockFilter, setStockFilter] = useState<number | ''>('')
   const [historyMonths, setHistoryMonths] = useState(12)
@@ -243,7 +245,7 @@ export default function Dywidendy() {
                   <CartesianGrid strokeDasharray="3 3" stroke="#94a3b8" strokeOpacity={0.15} />
                   <XAxis dataKey="month" tick={{ fontSize: 12 }} stroke="#94a3b8" />
                   <YAxis tickFormatter={formatAxisValue} tick={{ fontSize: 12 }} stroke="#94a3b8" width={40} />
-                  <Tooltip formatter={(value) => formatMoney(value as number, base)} />
+                  <Tooltip {...tooltipStyle} formatter={(value) => formatMoney(value as number, base)} />
                   <Bar dataKey="total" name={t('Dywidendy')} fill="#059669" radius={[4, 4, 0, 0]} />
                 </BarChart>
               </ResponsiveContainer>
@@ -263,7 +265,7 @@ export default function Dywidendy() {
                       <Cell key={i} fill={PALETTE[i % PALETTE.length]} />
                     ))}
                   </Pie>
-                  <Tooltip formatter={(value) => formatMoney(value as number, base)} />
+                  <Tooltip {...tooltipStyle} formatter={(value) => formatMoney(value as number, base)} />
                   <Legend />
                 </PieChart>
               </ResponsiveContainer>
@@ -290,7 +292,7 @@ export default function Dywidendy() {
                 </defs>
                 <XAxis dataKey="month" tick={{ fontSize: 12 }} stroke="#94a3b8" />
                 <YAxis tickFormatter={formatAxisValue} tick={{ fontSize: 12 }} stroke="#94a3b8" width={40} />
-                <Tooltip formatter={(value) => formatMoney(value as number, base)} />
+                <Tooltip {...tooltipStyle} formatter={(value) => formatMoney(value as number, base)} />
                 <Area type="monotone" dataKey="cumulative" stroke="#059669" fill="url(#dividendCumulativeGradient)" strokeWidth={2} />
               </AreaChart>
             </ResponsiveContainer>
@@ -322,7 +324,7 @@ export default function Dywidendy() {
                 <CartesianGrid strokeDasharray="3 3" stroke="#94a3b8" strokeOpacity={0.15} />
                 <XAxis dataKey="month" tick={{ fontSize: 12 }} stroke="#94a3b8" />
                 <YAxis tickFormatter={formatAxisValue} tick={{ fontSize: 12 }} stroke="#94a3b8" width={40} />
-                <Tooltip formatter={(value) => formatMoney(value as number, base)} />
+                <Tooltip {...tooltipStyle} formatter={(value) => formatMoney(value as number, base)} />
                 <Legend />
                 <Bar dataKey="known" name={t('Najbliższa wypłata (znana kwota)')} stackId="sim" fill="#8b5cf6" radius={[0, 0, 0, 0]} />
                 <Bar dataKey="estimated" name={t('Dalsza prognoza (szac. wzrost)')} stackId="sim" fill="#c4b5fd" radius={[4, 4, 0, 0]} />
@@ -361,7 +363,7 @@ export default function Dywidendy() {
                 <CartesianGrid strokeDasharray="3 3" stroke="#94a3b8" strokeOpacity={0.15} />
                 <XAxis dataKey="year" tick={{ fontSize: 12 }} stroke="#94a3b8" />
                 <YAxis tickFormatter={formatAxisValue} tick={{ fontSize: 12 }} stroke="#94a3b8" width={40} />
-                <Tooltip formatter={(value) => formatMoney(value as number, base)} />
+                <Tooltip {...tooltipStyle} formatter={(value) => formatMoney(value as number, base)} />
                 <Bar dataKey="total" name={t('Szac. dywidendy')} fill="#0ea5e9" radius={[4, 4, 0, 0]} />
               </BarChart>
             </ResponsiveContainer>

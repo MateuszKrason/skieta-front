@@ -24,6 +24,7 @@
   --color-accent-700: var(--color-emerald-700);
   --color-accent-800: var(--color-emerald-800);
   --color-accent-900: var(--color-emerald-900);
+  --color-accent-950: var(--color-emerald-950);
 }
 
 :root {
@@ -48,6 +49,7 @@
   --color-accent-700: var(--color-violet-700);
   --color-accent-800: var(--color-violet-800);
   --color-accent-900: var(--color-violet-900);
+  --color-accent-950: var(--color-violet-950);
 }
 
 body {

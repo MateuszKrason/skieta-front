@@ -47,12 +47,12 @@ export default function Register() {
         <div className="w-full max-w-sm rounded-xl border border-slate-200 dark:border-slate-700 bg-white dark:bg-slate-800 p-8 text-center shadow-sm">
           <h1 className="mb-1 flex items-center justify-center gap-2 text-2xl font-bold text-accent-700 dark:text-accent-400">
             <SockLogo className="h-8 w-8" />
-            Skieta
+            skieta
           </h1>
           <p className="mt-4 text-sm text-slate-600 dark:text-slate-300">
             {t('Rejestracja jest dostępna tylko na zaproszenie od innego użytkownika — poproś o link lub zeskanuj kod QR.')}
           </p>
-          <Link to="/login" className="mt-6 inline-block font-medium text-accent-700 dark:text-accent-400 hover:underline">
+          <Link to="/logowanie" className="mt-6 inline-block font-medium text-accent-700 dark:text-accent-400 hover:underline">
             {t('Masz już konto? Zaloguj się')}
           </Link>
         </div>
@@ -66,7 +66,7 @@ export default function Register() {
       <form onSubmit={onSubmit} className="w-full max-w-sm rounded-xl border border-slate-200 dark:border-slate-700 bg-white dark:bg-slate-800 p-8 shadow-sm">
         <h1 className="mb-1 flex items-center gap-2 text-2xl font-bold text-accent-700 dark:text-accent-400">
           <SockLogo className="h-8 w-8" />
-          Skieta
+          skieta
         </h1>
         <p className="mb-6 text-sm text-slate-500 dark:text-slate-400">{t('Załóż konto i zacznij śledzić swój majątek')}</p>
         <div className="mb-3 flex gap-3">
@@ -145,7 +145,7 @@ export default function Register() {
         </button>
         <p className="mt-4 text-center text-sm text-slate-500 dark:text-slate-400">
           {t('Masz już konto?')}{' '}
-          <Link to="/login" className="font-medium text-accent-700 dark:text-accent-400 hover:underline">
+          <Link to="/logowanie" className="font-medium text-accent-700 dark:text-accent-400 hover:underline">
             {t('Zaloguj się')}
           </Link>
         </p>

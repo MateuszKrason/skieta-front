@@ -24,7 +24,7 @@ export default function ResetPassword() {
     try {
       await api.post('/auth/password-reset-confirm/', { uid, token, new_password: newPassword })
       setSuccess(true)
-      setTimeout(() => navigate('/login'), 2500)
+      setTimeout(() => navigate('/logowanie'), 2500)
     } catch (err) {
       if (err instanceof AxiosError && err.response?.data) {
         const data = err.response.data as Record<string, string[] | string>
@@ -43,7 +43,7 @@ export default function ResetPassword() {
       <div className="w-full max-w-sm rounded-xl border border-slate-200 dark:border-slate-700 bg-white dark:bg-slate-800 p-8 shadow-sm">
         <h1 className="mb-1 flex items-center gap-2 text-2xl font-bold text-accent-700 dark:text-accent-400">
           <SockLogo className="h-8 w-8" />
-          Skieta
+          skieta
         </h1>
         {!uid || !token ? (
           <p className="mt-4 text-sm text-red-600 dark:text-red-400">{t('Link resetu hasła jest niepełny — otwórz go bezpośrednio z wiadomości e-mail.')}</p>
@@ -75,7 +75,7 @@ export default function ResetPassword() {
           </form>
         )}
         <p className="mt-4 text-center text-sm text-slate-500 dark:text-slate-400">
-          <Link to="/login" className="font-medium text-accent-700 dark:text-accent-400 hover:underline">
+          <Link to="/logowanie" className="font-medium text-accent-700 dark:text-accent-400 hover:underline">
             {t('← Powrót do logowania')}
           </Link>
         </p>

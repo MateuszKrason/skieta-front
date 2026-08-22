@@ -5,7 +5,8 @@
 # have the young skieta.com domain (and its subdomains) flagged by reputation.
 # Same-origin means no CORS preflight either.
 # Order matters here: first match wins, so this must precede the SPA fallback.
-/api/*    https://api.skieta.com/api/:splat    200
+/api/*         https://api.skieta.com/api/:splat    200
+/sitemap.xml   https://api.skieta.com/sitemap.xml   200
 
 # SPA fallback — every other path is handled by the client-side router.
 /*        /index.html                          200

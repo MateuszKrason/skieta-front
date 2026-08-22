@@ -3,6 +3,7 @@ import { useMutation, useQuery, useQueryClient } from '@tanstack/react-query'
 import { ResponsiveContainer, Sankey, Tooltip } from 'recharts'
 import { api } from '../api/client'
 import { useLanguage } from '../i18n/LanguageContext'
+import { useTooltipStyle } from '../lib/chartTooltip'
 import { formatDate, formatMoney, formatNumber } from '../lib/format'
 import type { Currency, MoneyThread, StockTransaction, ThreadEdgeOrigin, ThreadNode } from '../types'
 
@@ -115,6 +116,7 @@ function SankeyNodeShape({ x, y, width, height, payload }: any) {
 
 function ThreadSankey({ thread }: { thread: MoneyThread }) {
   const { t } = useLanguage()
+  const tooltipStyle = useTooltipStyle()
   const { nodes, links } = buildSankeyData(thread, t)
   if (links.length === 0) return null
 
@@ -129,7 +131,7 @@ function ThreadSankey({ thread }: { thread: MoneyThread }) {
           node={SankeyNodeShape}
           link={{ stroke: '#059669', strokeOpacity: 0.25, fill: '#059669', fillOpacity: 0.2 }}
         >
-          <Tooltip formatter={(value) => formatMoney(value as number, thread.currency)} />
+          <Tooltip {...tooltipStyle} formatter={(value) => formatMoney(value as number, thread.currency)} />
         </Sankey>
       </ResponsiveContainer>
     </div>
