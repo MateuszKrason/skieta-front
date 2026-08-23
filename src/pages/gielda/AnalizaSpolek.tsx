@@ -46,10 +46,35 @@ function PortfolioAnalyticsSection() {
   )
 }
 
+type AllocSortKey = 'ticker' | 'pct' | 'unrealized_pl_pct'
+
+function sortAllocation(rows: AllocationRow[], key: AllocSortKey, dir: 'asc' | 'desc'): AllocationRow[] {
+  const factor = dir === 'asc' ? 1 : -1
+  return [...rows].sort((a, b) => {
+    if (key === 'ticker') return a.stock.ticker.localeCompare(b.stock.ticker) * factor
+    const av = a[key] !== null ? Number(a[key]) : -Infinity
+    const bv = b[key] !== null ? Number(b[key]) : -Infinity
+    return (av - bv) * factor
+  })
+}
+
 function PortfolioAnalyticsBody({ data }: { data: PortfolioAnalytics }) {
   const { t } = useLanguage()
   const tooltipStyle = useTooltipStyle()
   const base = 'PLN'
+  const [allocSortKey, setAllocSortKey] = useState<AllocSortKey>('pct')
+  const [allocSortDir, setAllocSortDir] = useState<'asc' | 'desc'>('desc')
+
+  function toggleAllocSort(key: AllocSortKey) {
+    if (allocSortKey === key) {
+      setAllocSortDir((d) => (d === 'asc' ? 'desc' : 'asc'))
+    } else {
+      setAllocSortKey(key)
+      setAllocSortDir('desc')
+    }
+  }
+
+  const sortedAllocation = sortAllocation(data.allocation, allocSortKey, allocSortDir)
 
   const topRows = data.allocation.slice(0, MAX_PIE_SLICES)
   const restRows = data.allocation.slice(MAX_PIE_SLICES)
@@ -85,16 +110,29 @@ function PortfolioAnalyticsBody({ data }: { data: PortfolioAnalytics }) {
             </ResponsiveContainer>
           </div>
           <div className="mt-2 flex items-center justify-between px-1.5 text-[11px] font-medium uppercase tracking-wide text-slate-400 dark:text-slate-500">
-            <span>{t('Spółka')}</span>
+            <button onClick={() => toggleAllocSort('ticker')} className="hover:text-slate-600 dark:hover:text-slate-300">
+              {t('Spółka')}{allocSortKey === 'ticker' && (allocSortDir === 'asc' ? ' ▲' : ' ▼')}
+            </button>
             <span className="flex items-center gap-2">
-              <span className="min-w-[56px] text-right">{t('Udział')}</span>
-              <span className="min-w-[56px] text-right">{t('Zysk')}</span>
+              <button
+                onClick={() => toggleAllocSort('pct')}
+                className="min-w-[56px] text-right hover:text-slate-600 dark:hover:text-slate-300"
+              >
+                {t('Udział')}{allocSortKey === 'pct' && (allocSortDir === 'asc' ? ' ▲' : ' ▼')}
+              </button>
+              <button
+                onClick={() => toggleAllocSort('unrealized_pl_pct')}
+                className="min-w-[56px] text-right hover:text-slate-600 dark:hover:text-slate-300"
+              >
+                {t('Zysk')}{allocSortKey === 'unrealized_pl_pct' && (allocSortDir === 'asc' ? ' ▲' : ' ▼')}
+              </button>
             </span>
           </div>
           <div className="space-y-1">
-            {data.allocation.map((r, i) => (
-              <AllocationLine key={r.stock.id} row={r} color={i < MAX_PIE_SLICES ? PALETTE[i % PALETTE.length] : '#94a3b8'} />
-            ))}
+            {sortedAllocation.map((r) => {
+              const rank = topRows.findIndex((tr) => tr.stock.id === r.stock.id)
+              return <AllocationLine key={r.stock.id} row={r} color={rank >= 0 ? PALETTE[rank % PALETTE.length] : '#94a3b8'} />
+            })}
           </div>
         </div>
 
@@ -236,9 +274,17 @@ function AllocationLine({ row, color }: { row: AllocationRow; color: string }) {
   const plPct = row.unrealized_pl_pct !== null ? Number(row.unrealized_pl_pct) : null
   return (
     <div className="flex items-center justify-between rounded-md px-1.5 py-1 text-xs">
-      <span className="flex items-center gap-2">
-        <span className="h-2 w-2 rounded-full" style={{ backgroundColor: color }} />
-        {row.stock.ticker}
+      <span className="flex min-w-0 items-center gap-2">
+        <span className="h-2 w-2 shrink-0 rounded-full" style={{ backgroundColor: color }} />
+        <span className="truncate">
+          {row.stock.ticker}
+          {row.stock.instrument_type === 'ETF' && (
+            <span className="ml-1 rounded-full bg-sky-100 dark:bg-sky-900/40 px-1.5 py-0.5 text-[10px] font-semibold text-sky-700 dark:text-sky-400">
+              ETF
+            </span>
+          )}
+          {row.stock.name && <span className="text-slate-400 dark:text-slate-500"> {row.stock.name}</span>}
+        </span>
       </span>
       <span className="flex items-center gap-2 text-slate-500 dark:text-slate-400 tabular-nums">
         <span className="min-w-[56px] text-right" title={t('Udział tej spółki w wartości całego portfela')}>
@@ -392,7 +438,7 @@ export default function AnalizaSpolek() {
           <option value="">{t('Wszystkie spółki')}</option>
           {(stocks ?? []).map((s) => (
             <option key={s.id} value={s.id}>
-              {s.ticker} ({s.market})
+              {s.ticker} ({s.market}){s.name && ` - ${s.name}`}
             </option>
           ))}
         </select>

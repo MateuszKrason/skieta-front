@@ -1,12 +1,15 @@
 export type Market = 'GPW' | 'US' | 'EU'
 export type Currency = 'PLN' | 'USD' | 'EUR' | 'NOK' | 'DKK' | 'GBP' | 'SEK' | 'CHF'
 
+export type InstrumentType = 'STOCK' | 'ETF'
+
 export interface Stock {
   id: number
   ticker: string
   market: Market
   name: string
   currency: Currency
+  instrument_type: InstrumentType
   display_order: number
 }
 
@@ -16,6 +19,7 @@ export interface StockSearchResult {
   exchange: string
   market: Market
   currency: Currency
+  instrument_type: InstrumentType
 }
 
 export interface StockTransaction {
@@ -32,6 +36,7 @@ export interface StockTransaction {
   currency: Currency
   executed_at: string
   notes: string
+  exchange_rate_at_purchase: string | null
 }
 
 export interface Holding {
@@ -46,6 +51,14 @@ export interface Holding {
   unrealized_pl_pct: string | null
   unrealized_pl_after_tax: string | null
   unrealized_pl_after_tax_pct: string | null
+  cost_basis_base: string | null
+  market_value_base: string | null
+  unrealized_pl_base: string | null
+  unrealized_pl_after_tax_base: string | null
+  avg_fx_rate_paid: string | null
+  current_fx_rate: string | null
+  price_effect_base: string | null
+  fx_effect_base: string | null
 }
 
 export interface PortfolioSummary {
@@ -307,6 +320,7 @@ export interface Invitation {
   accepted_by: string | null
   accepted_at: string | null
   is_expired: boolean
+  expires_at: string
 }
 
 export interface InviteBatchRedemption {

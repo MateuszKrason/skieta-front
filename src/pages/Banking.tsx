@@ -3,7 +3,7 @@ import { useMutation, useQuery, useQueryClient } from '@tanstack/react-query'
 import { api } from '../api/client'
 import { useAuth } from '../auth/AuthContext'
 import BankNameAutocomplete from '../components/BankNameAutocomplete'
-import { PageLoader } from '../components/Loader'
+import { PageLoader, Spinner } from '../components/Loader'
 import StatementImportPanel from '../components/StatementImportPanel'
 import { useLanguage } from '../i18n/LanguageContext'
 import { addMonths, type CurrentBondOffer } from '../lib/bonds'
@@ -77,12 +77,12 @@ export default function Banking() {
 
   const [quickTxAccountId, setQuickTxAccountId] = useState<number | null>(null)
 
-  const { data: deposits } = useQuery({
+  const { data: deposits, isLoading: depositsLoading } = useQuery({
     queryKey: ['deposits'],
     queryFn: async () => (await api.get<TermDeposit[]>('/banking/deposits/')).data,
   })
 
-  const { data: bonds } = useQuery({
+  const { data: bonds, isLoading: bondsLoading } = useQuery({
     queryKey: ['bonds'],
     queryFn: async () => (await api.get<TreasuryBond[]>('/bonds/')).data,
   })
@@ -504,12 +504,20 @@ export default function Banking() {
                   )}
                 </Fragment>
               ))}
-              {deposits?.length === 0 && (
+              {depositsLoading ? (
                 <tr>
-                  <td colSpan={8} className="px-4 py-6 text-center text-slate-400 dark:text-slate-500">
-                    {t('Brak lokat.')}
+                  <td colSpan={8} className="px-4 py-6 text-center">
+                    <Spinner size="md" className="mx-auto" />
                   </td>
                 </tr>
+              ) : (
+                deposits?.length === 0 && (
+                  <tr>
+                    <td colSpan={8} className="px-4 py-6 text-center text-slate-400 dark:text-slate-500">
+                      {t('Brak lokat.')}
+                    </td>
+                  </tr>
+                )
               )}
             </tbody>
           </table>
@@ -667,12 +675,20 @@ export default function Banking() {
                   )}
                 </Fragment>
               ))}
-              {bonds?.length === 0 && (
+              {bondsLoading ? (
                 <tr>
-                  <td colSpan={9} className="px-4 py-6 text-center text-slate-400 dark:text-slate-500">
-                    {t('Brak obligacji.')}
+                  <td colSpan={9} className="px-4 py-6 text-center">
+                    <Spinner size="md" className="mx-auto" />
                   </td>
                 </tr>
+              ) : (
+                bonds?.length === 0 && (
+                  <tr>
+                    <td colSpan={9} className="px-4 py-6 text-center text-slate-400 dark:text-slate-500">
+                      {t('Brak obligacji.')}
+                    </td>
+                  </tr>
+                )
               )}
             </tbody>
           </table>

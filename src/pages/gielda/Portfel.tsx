@@ -6,7 +6,17 @@ import ReinvestmentThreads from '../../components/ReinvestmentThreads'
 import StockAutocomplete from '../../components/StockAutocomplete'
 import { useLanguage } from '../../i18n/LanguageContext'
 import { accountTypeLabel, formatDateTime, formatMoney, formatNumber, formatPct, formatShareQuantity } from '../../lib/format'
-import type { BankAccount, Currency, Holding, Market, PortfolioSummary, Stock, StockSearchResult, StockTransaction } from '../../types'
+import type {
+  BankAccount,
+  Currency,
+  Holding,
+  InstrumentType,
+  Market,
+  PortfolioSummary,
+  Stock,
+  StockSearchResult,
+  StockTransaction,
+} from '../../types'
 
 const CURRENCY_OPTIONS: Currency[] = ['PLN', 'USD', 'EUR', 'NOK', 'DKK', 'GBP', 'SEK', 'CHF']
 
@@ -31,11 +41,13 @@ function holdingSortValue(h: Holding, key: HoldingSortKey): number | string {
     case 'current_price':
       return h.current_price !== null ? Number(h.current_price) : -Infinity
     case 'market_value':
-      return h.market_value !== null ? Number(h.market_value) : -Infinity
+      // PLN-converted, not the native-currency figure - a USD position's
+      // market value isn't directly comparable to a PLN one without FX.
+      return h.market_value_base !== null ? Number(h.market_value_base) : -Infinity
     case 'unrealized_pl':
-      return h.unrealized_pl !== null ? Number(h.unrealized_pl) : -Infinity
+      return h.unrealized_pl_base !== null ? Number(h.unrealized_pl_base) : -Infinity
     case 'unrealized_pl_after_tax':
-      return h.unrealized_pl_after_tax !== null ? Number(h.unrealized_pl_after_tax) : -Infinity
+      return h.unrealized_pl_after_tax_base !== null ? Number(h.unrealized_pl_after_tax_base) : -Infinity
     case 'price_fetched_at':
       return h.price_fetched_at ? new Date(h.price_fetched_at).getTime() : -Infinity
   }
@@ -115,7 +127,7 @@ export default function Portfel() {
     <div className="space-y-6">
       <div className="flex items-center justify-between">
         <div>
-          <h1 className="text-2xl font-bold text-slate-900 dark:text-slate-100">{t('Portfel akcji')}</h1>
+          <h1 className="text-2xl font-bold text-slate-900 dark:text-slate-100">{t('Portfel akcji i ETF-ów')}</h1>
           <p className="flex items-center gap-1.5 text-sm text-slate-500 dark:text-slate-400">
             {t('Kursy aktualizowane automatycznie 2x dziennie — kliknij "Odśwież kursy" po bieżącą cenę')}
             {(isFetching || refreshPrices.isPending) && (
@@ -283,7 +295,14 @@ export default function Portfel() {
                 <tr className="border-b border-slate-100 dark:border-slate-800 last:border-0">
                   <td className="px-4 py-2">
                     <span className="font-medium">{h.stock.ticker}</span>{' '}
-                    <span className="text-xs text-slate-400 dark:text-slate-500">({h.stock.market})</span>
+                    {h.stock.instrument_type === 'ETF' && (
+                      <span className="rounded-full bg-sky-100 dark:bg-sky-900/40 px-1.5 py-0.5 text-[10px] font-semibold text-sky-700 dark:text-sky-400">
+                        ETF
+                      </span>
+                    )}{' '}
+                    <span className="text-xs text-slate-400 dark:text-slate-500">
+                      ({h.stock.market}){h.stock.name && ` ${h.stock.name}`}
+                    </span>
                   </td>
                   <td className="px-4 py-2 text-right">{formatShareQuantity(h.quantity)}</td>
                   <td className="px-4 py-2 text-right">{formatMoney(h.avg_cost, h.stock.currency)}</td>
@@ -295,6 +314,12 @@ export default function Portfel() {
                     }`}
                   >
                     {formatMoney(h.unrealized_pl, h.stock.currency)} ({formatPct(h.unrealized_pl_pct)})
+                    {h.fx_effect_base !== null && (
+                      <div className="text-xs font-normal text-slate-400 dark:text-slate-500">
+                        {t('z tego kurs waluty')}: {Number(h.fx_effect_base) >= 0 ? '+' : ''}
+                        {formatMoney(h.fx_effect_base, 'PLN')}
+                      </div>
+                    )}
                   </td>
                   <td
                     className={`px-4 py-2 text-right font-medium ${
@@ -356,6 +381,12 @@ export default function Portfel() {
                 </span>{' '}
                 {formatNumber(tx.quantity, 4)}x {tx.stock_detail.ticker} @{' '}
                 {formatMoney(tx.price_per_share, tx.currency)}
+                {tx.exchange_rate_at_purchase && (
+                  <span className="text-xs text-slate-400 dark:text-slate-500">
+                    {' '}
+                    ({t('kurs')} {formatNumber(tx.exchange_rate_at_purchase, 4)} PLN/{tx.currency})
+                  </span>
+                )}
                 {tx.account_detail && (
                   <span className="ml-2 rounded-full bg-slate-100 dark:bg-slate-700 px-2 py-0.5 text-xs text-slate-500 dark:text-slate-400">
                     {tx.account_detail.name}
@@ -380,9 +411,10 @@ function AddStockForm({ onDone }: { onDone: () => void }) {
   const [market, setMarket] = useState<Market>('GPW')
   const [name, setName] = useState('')
   const [currency, setCurrency] = useState<Currency>('PLN')
+  const [instrumentType, setInstrumentType] = useState<InstrumentType>('STOCK')
 
   const mutation = useMutation({
-    mutationFn: () => api.post('/stocks/tickers/', { ticker, market, name, currency }),
+    mutationFn: () => api.post('/stocks/tickers/', { ticker, market, name, currency, instrument_type: instrumentType }),
     onSuccess: onDone,
   })
 
@@ -396,6 +428,7 @@ function AddStockForm({ onDone }: { onDone: () => void }) {
     setMarket(result.market)
     setName(result.name)
     setCurrency(result.currency)
+    setInstrumentType(result.instrument_type)
   }
 
   return (
@@ -403,7 +436,7 @@ function AddStockForm({ onDone }: { onDone: () => void }) {
       <Field label="Wyszukaj spółkę">
         <StockAutocomplete onSelect={onPick} />
       </Field>
-      <form onSubmit={onSubmit} className="grid grid-cols-2 gap-3 sm:grid-cols-5">
+      <form onSubmit={onSubmit} className="grid grid-cols-2 gap-3 sm:grid-cols-6">
         <Field label="Ticker">
           <input value={ticker} onChange={(e) => setTicker(e.target.value.toUpperCase())} required className="input" />
         </Field>
@@ -424,6 +457,12 @@ function AddStockForm({ onDone }: { onDone: () => void }) {
                 {c}
               </option>
             ))}
+          </select>
+        </Field>
+        <Field label="Typ">
+          <select value={instrumentType} onChange={(e) => setInstrumentType(e.target.value as InstrumentType)} className="input">
+            <option value="STOCK">{t('Akcja')}</option>
+            <option value="ETF">ETF</option>
           </select>
         </Field>
         <div className="flex items-end">
@@ -526,6 +565,11 @@ function StockManager({ stocks, onChange }: { stocks: Stock[]; onChange: () => v
                 </span>
                 <span>
                   <span className="font-medium">{s.ticker}</span>{' '}
+                  {s.instrument_type === 'ETF' && (
+                    <span className="rounded-full bg-sky-100 dark:bg-sky-900/40 px-1.5 py-0.5 text-[10px] font-semibold text-sky-700 dark:text-sky-400">
+                      ETF
+                    </span>
+                  )}{' '}
                   <span className="text-xs text-slate-400 dark:text-slate-500">
                     ({s.market}, {s.currency}) {s.name}
                   </span>
@@ -561,10 +605,12 @@ function EditStockRow({ stock, onDone, onCancel }: { stock: Stock; onDone: () =>
   const [market, setMarket] = useState<Market>(stock.market)
   const [name, setName] = useState(stock.name)
   const [currency, setCurrency] = useState<Currency>(stock.currency)
+  const [instrumentType, setInstrumentType] = useState<InstrumentType>(stock.instrument_type)
   const [error, setError] = useState<string | null>(null)
 
   const mutation = useMutation({
-    mutationFn: () => api.patch(`/stocks/tickers/${stock.id}/`, { ticker, market, name, currency }),
+    mutationFn: () =>
+      api.patch(`/stocks/tickers/${stock.id}/`, { ticker, market, name, currency, instrument_type: instrumentType }),
     onSuccess: onDone,
     onError: (err: unknown) => {
       const data = (err as { response?: { data?: unknown } }).response?.data
@@ -585,7 +631,7 @@ function EditStockRow({ stock, onDone, onCancel }: { stock: Stock; onDone: () =>
   return (
     <form
       onSubmit={onSubmit}
-      className="grid grid-cols-2 gap-2 rounded-md border border-accent-200 dark:border-accent-800 bg-accent-50 dark:bg-accent-900/20 px-3 py-2 sm:grid-cols-5"
+      className="grid grid-cols-2 gap-2 rounded-md border border-accent-200 dark:border-accent-800 bg-accent-50 dark:bg-accent-900/20 px-3 py-2 sm:grid-cols-6"
     >
       <Field label="Ticker">
         <input value={ticker} onChange={(e) => setTicker(e.target.value.toUpperCase())} required className="input" />
@@ -607,6 +653,12 @@ function EditStockRow({ stock, onDone, onCancel }: { stock: Stock; onDone: () =>
               {c}
             </option>
           ))}
+        </select>
+      </Field>
+      <Field label="Typ">
+        <select value={instrumentType} onChange={(e) => setInstrumentType(e.target.value as InstrumentType)} className="input">
+          <option value="STOCK">{t('Akcja')}</option>
+          <option value="ETF">ETF</option>
         </select>
       </Field>
       <div className="flex items-end gap-2">

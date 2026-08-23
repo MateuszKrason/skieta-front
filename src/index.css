@@ -70,6 +70,19 @@ body {
   @apply bg-violet-100;
 }
 
+/* Recharts manages focus internally on click (its root <svg> has
+   tabindex="0", but clicking a Bar can also shift focus onto other internal
+   layers depending on the chart type/version) - a plain mouse click on our
+   clickable dividend-forecast bars was leaving the browser's default focus
+   ring sitting around the whole plot area. Rather than chase the exact
+   internal element, suppress it for any focused descendant of a chart -
+   harmless on non-clickable charts too, since they can still be tabbed to
+   and don't rely on a visible ring. */
+.recharts-wrapper :focus,
+.recharts-wrapper :focus-visible {
+  outline: none !important;
+}
+
 @layer components {
   .input {
     @apply w-full rounded-md border border-slate-300 px-2.5 py-1.5 text-sm text-slate-900 focus:border-accent-500 focus:outline-none dark:border-slate-600 dark:bg-slate-800 dark:text-slate-100;

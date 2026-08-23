@@ -266,7 +266,7 @@ export const en: Record<string, string> = {
 
   // Portfel
   'Anuluj': 'Cancel',
-  'Portfel akcji': 'Stock portfolio',
+  'Portfel akcji i ETF-ów': 'Stock & ETF portfolio',
   'Suma wartości akcji': 'Total stock value',
   'Łączny zysk/strata': 'Total profit/loss',
   'Kursy aktualizowane automatycznie 2x dziennie — kliknij "Odśwież kursy" po bieżącą cenę':

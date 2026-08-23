@@ -5,6 +5,14 @@ export function formatMoney(value: string | number | null | undefined, currency 
   return new Intl.NumberFormat('pl-PL', { style: 'currency', currency }).format(num)
 }
 
+// Client-side mirror of the backend's flat 19% capital-gains tax
+// (stocks.services.after_belka_tax) - losses pass through untaxed, same rule.
+export const BELKA_TAX_RATE = 0.19
+
+export function afterBelkaTax(value: number): number {
+  return value > 0 ? value - value * BELKA_TAX_RATE : value
+}
+
 export function formatPct(value: string | number | null | undefined): string {
   if (value === null || value === undefined) return '—'
   const num = typeof value === 'string' ? Number(value) : value

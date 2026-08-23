@@ -675,8 +675,8 @@ function InviteFriends() {
                   {inv.accepted_by
                     ? t('Zaakceptowane przez {0} ({1})', inv.accepted_by, formatDateTime(inv.accepted_at))
                     : inv.is_expired
-                      ? t('Wygasło — wygenerowano {0}', formatDateTime(inv.created_at))
-                      : t('Oczekuje — wygenerowano {0}, wygasa po 48h', formatDateTime(inv.created_at))}
+                      ? t('Wygasło - wygenerowano {0}', formatDateTime(inv.created_at))
+                      : t('Oczekuje - wygenerowano {0}, wygasa {1}', formatDateTime(inv.created_at), formatDateTime(inv.expires_at))}
                 </p>
               </li>
             ))}

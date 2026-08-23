@@ -1,6 +1,6 @@
 import { useMemo, useState } from 'react'
 import { useQuery } from '@tanstack/react-query'
-import { Bar, BarChart, ResponsiveContainer, Tooltip, XAxis, YAxis } from 'recharts'
+import { Bar, BarChart, LabelList, ResponsiveContainer, Tooltip, XAxis, YAxis } from 'recharts'
 import { api } from '../api/client'
 import { CardLoader } from '../components/Loader'
 import { useLanguage } from '../i18n/LanguageContext'
@@ -11,7 +11,7 @@ import { useAuth } from '../auth/AuthContext'
 
 const BELKA_TAX_RATE = 0.19
 
-type Risk = 'bardzo-niskie' | 'niskie' | 'wysokie'
+type Risk = 'bardzo-niskie' | 'niskie' | 'srednie' | 'wysokie'
 type BondNature = 'fixed' | 'variable' | 'inflation'
 
 const RISK_META: Record<Risk, { label: string; className: string }> = {
@@ -23,9 +23,13 @@ const RISK_META: Record<Risk, { label: string; className: string }> = {
     label: 'Niskie',
     className: 'bg-sky-100 text-sky-700 dark:bg-sky-900/40 dark:text-sky-300',
   },
+  srednie: {
+    label: 'Średnie',
+    className: 'bg-amber-100 text-amber-700 dark:bg-amber-900/40 dark:text-amber-300',
+  },
   wysokie: {
     label: 'Wysokie',
-    className: 'bg-amber-100 text-amber-700 dark:bg-amber-900/40 dark:text-amber-300',
+    className: 'bg-red-100 text-red-700 dark:bg-red-900/40 dark:text-red-300',
   },
 }
 
@@ -67,33 +71,38 @@ function bondNatureHint(nature: BondNature | undefined, t: (s: string, ...a: (st
 // return (dividends reinvested) where available. Checked 2026-08-23; these
 // are historical figures, not a forecast, and are shown to the user broken
 // down exactly like this so the assumption isn't a black box.
-const STOCK_INDEX_SOURCES: { name: string; period: string; cagr: number; note: string }[] = [
+const STOCK_INDEX_SOURCES: { key: string; name: string; period: string; cagr: number; note: string }[] = [
   {
-    name: 'WIG20TR (GPW, polskie blue chipy)',
+    key: 'wig20tr',
+    name: 'Beta ETF WIG20TR (GPW, polskie blue chipy)',
     period: '10 lat',
     cagr: 8.7,
     note: 'Karta funduszu Beta ETF WIG20TR, styczeń 2026: +130,45% w 10 lat.',
   },
   {
-    name: 'mWIG40TR (GPW, polskie średnie spółki)',
+    key: 'mwig40tr',
+    name: 'Beta ETF mWIG40TR (GPW, polskie średnie spółki)',
     period: '10 lat',
     cagr: 12.0,
     note: 'Karta funduszu Beta ETF mWIG40TR, styczeń 2026: +211,43% w 10 lat.',
   },
   {
-    name: 'S&P 500 (USA)',
+    key: 'sp500',
+    name: 'ETF na S&P 500 (USA)',
     period: '20 lat',
     cagr: 11.2,
     note: 'Dane rynkowe, sierpień 2026 (z reinwestowanymi dywidendami).',
   },
   {
-    name: 'Nasdaq Composite (USA)',
+    key: 'nasdaq',
+    name: 'ETF na Nasdaq Composite (USA)',
     period: '10 lat',
     cagr: 12.4,
     note: 'Dane rynkowe, lipiec 2026.',
   },
   {
-    name: 'MSCI World / FTSE All-World (cały świat)',
+    key: 'msciworld',
+    name: 'ETF na MSCI World / FTSE All-World (cały świat)',
     period: '~22 lata',
     cagr: 8.5,
     note: 'Analiza porównawcza indeksów, maj 2026 - obie metodologie dały wynik identyczny.',
@@ -126,11 +135,32 @@ const STATIC_INSTRUMENTS: StaticInstrument[] = [
     hint: 'Przykładowe oprocentowanie - zwykle zmienne, bank może je zmienić w dowolnym momencie. Też objęte gwarancją BFG.',
   },
   {
+    key: 'obligacje-korporacyjne',
+    label: 'PZU Dłużny Korporacyjny',
+    defaultRate: 6.8,
+    risk: 'srednie',
+    hint: 'PZU Dłużny Korporacyjny był jednym z 3 najlepszych polskich funduszy obligacji korporacyjnych w rankingu Analizy.pl za 2025 (obok Ipopema Obligacji Korporacyjnych i Generali Obligacji Krótkoterminowy). Pokazana stawka to średnia całej kategorii w 2025 - 6,81% (Analizy.pl), nie zweryfikowany wynik akurat tego funduszu. Wyższy potencjalny zysk niż obligacje skarbowe, ale dochodzi ryzyko kredytowe - emitent (firma) może nie spłacić długu, czego Skarb Państwa praktycznie nie ryzykuje. Kupisz go bezpośrednio na inPZU (in.pzu.pl - własna platforma TFI PZU, min. wpłata 100 zł), przez Biuro Maklerskie Pekao, albo w supermarketach funduszy typu KupFundusz.pl.',
+  },
+  {
+    key: 'fundusz-zrownowazony',
+    label: 'Investor Zrównoważony',
+    defaultRate: 7.0,
+    risk: 'srednie',
+    hint: 'Realny, 25-letni fundusz Investors TFI (ok. 55% akcje/45% obligacje) - najlepszy polski fundusz zrównoważony w 20-letnim zestawieniu Analizy.pl, ze wzrostem wartości niemal 4-krotnym w 20 lat (~7% średniorocznie). Mniej zmienny niż czysto akcyjny portfel dzięki stałej części obligacyjnej, ale wciąż może stracić na wartości w słabym roku dla akcji - 2021-2022 było dla niego wyraźnie słabszym okresem. Kupisz go bezpośrednio przez Investors TFI (investors.pl - platforma funduszy, placówki, doradcy regionalni), przez Biuro Maklerskie Pekao, albo w supermarketach funduszy typu F-Trust czy KupFundusz.pl.',
+  },
+  {
+    key: 'zloto',
+    label: 'Złoto (np. Xetra-Gold ETC)',
+    defaultRate: 12.0,
+    risk: 'srednie',
+    hint: 'Xetra-Gold to realny, notowany ETC fizycznie zabezpieczony złotem 1:1 (dostępny też polskim inwestorom), więc jego zwrot odpowiada bezpośrednio cenie złota. Średnioroczna stopa zwrotu złota w PLN za ostatnie 20 lat: ok. 13% (dealfin.pl/atlasETF) - zaokrąglone tu w dół dla ostrożności, bo ostatnie 5 lat (~23% rocznie) to jeden z najlepszych okresów w historii i nie powinien być traktowany jako typowy. Nie generuje odsetek ani dywidendy - zysk to wyłącznie zmiana ceny kruszcu, a TER ok. 0,36% rocznie to dodatkowy koszt nieuwzględniony tutaj.',
+  },
+  {
     key: 'gielda',
     label: 'Giełda (średnio, szeroki rynek)',
     defaultRate: STOCK_AVERAGE_RATE,
     risk: 'wysokie',
-    hint: 'Średnia z 5 głównych indeksów (rozbicie i źródła niżej) - historyczna, nie gwarantowana. Realny wynik pojedynczego roku może być mocno na plusie albo na minusie.',
+    hint: 'Średnia z 5 ETF-ów/indeksów pokazanych osobno niżej w tej tabeli - historyczna, nie gwarantowana. Realny wynik pojedynczego roku może być mocno na plusie albo na minusie.',
   },
 ]
 
@@ -150,6 +180,7 @@ export default function InvestmentCalculator() {
   const [amount, setAmount] = useState('10000')
   const [years, setYears] = useState(5)
   const [rateOverrides, setRateOverrides] = useState<Record<string, string>>({})
+  const [openHintKey, setOpenHintKey] = useState<string | null>(null)
 
   const { data: bondOffer, isLoading: bondsLoading } = useQuery({
     queryKey: ['bonds-current-offer'],
@@ -179,7 +210,17 @@ export default function InvestmentCalculator() {
       risk: i.risk,
       hint: t(i.hint),
     }))
-    return [...bondRows, ...staticRows]
+    // The 5 ETFs/indices behind the blended "Giełda" row above, shown
+    // individually too so they're directly comparable/editable instead of
+    // being buried in a separate explainer table.
+    const indexRows = STOCK_INDEX_SOURCES.map((s) => ({
+      key: `index-${s.key}`,
+      label: s.name,
+      defaultRate: s.cagr,
+      risk: 'wysokie' as Risk,
+      hint: t('Średnioroczna stopa zwrotu z ostatnich {0} ({1} rocznie) - {2}', s.period, `${formatNumber(s.cagr, 1)}%`, t(s.note)),
+    }))
+    return [...bondRows, ...staticRows, ...indexRows]
   }, [bondOffer, t])
 
   const rows = useMemo(() => {
@@ -244,13 +285,27 @@ export default function InvestmentCalculator() {
             <p className="mb-3 text-sm font-semibold text-slate-700 dark:text-slate-300">
               {t('Wynik po {0} {1} (po podatku Belki)', years, years === 1 ? t('roku') : t('latach'))}
             </p>
-            <div className="h-64">
+            <div style={{ height: Math.max(256, rows.length * 34) }}>
               <ResponsiveContainer width="100%" height="100%">
-                <BarChart data={rows} layout="vertical" margin={{ left: 8, right: 16 }}>
+                <BarChart data={rows} layout="vertical" margin={{ left: 8, right: 90 }}>
                   <XAxis type="number" hide />
-                  <YAxis type="category" dataKey="label" width={170} tick={{ fontSize: 11 }} />
+                  <YAxis type="category" dataKey="label" width={170} tick={{ fontSize: 11 }} interval={0} />
                   <Tooltip {...tooltipStyle} formatter={(value) => formatMoney(value as number, base)} />
-                  <Bar dataKey="finalValueAfterTax" name={t('Wartość końcowa po podatku')} fill="#059669" radius={[0, 4, 4, 0]} />
+                  <Bar
+                    dataKey="finalValueAfterTax"
+                    name={t('Wartość końcowa po podatku')}
+                    fill="#059669"
+                    radius={[0, 4, 4, 0]}
+                    isAnimationActive={false}
+                  >
+                    <LabelList
+                      dataKey="finalValueAfterTax"
+                      position="right"
+                      formatter={(value: unknown) => formatMoney(value as number, base)}
+                      style={{ fontSize: 11, fill: 'currentColor' }}
+                      className="fill-slate-700 dark:fill-slate-200"
+                    />
+                  </Bar>
                 </BarChart>
               </ResponsiveContainer>
             </div>
@@ -272,8 +327,24 @@ export default function InvestmentCalculator() {
                 {rows.map((row) => (
                   <tr key={row.key} className="border-t border-slate-100 dark:border-slate-700 align-top">
                     <td className="py-2 pr-3 text-slate-700 dark:text-slate-200">
-                      {row.label}
-                      <p className="max-w-xs text-xs font-normal text-slate-400 dark:text-slate-500">{row.hint}</p>
+                      <span className="inline-flex items-center gap-1.5">
+                        {row.label}
+                        <button
+                          type="button"
+                          title={row.hint}
+                          onClick={() => setOpenHintKey((prev) => (prev === row.key ? null : row.key))}
+                          className={`flex h-4 w-4 shrink-0 items-center justify-center rounded-full border text-[10px] font-bold ${
+                            openHintKey === row.key
+                              ? 'border-accent-500 text-accent-600 dark:text-accent-400'
+                              : 'border-slate-300 dark:border-slate-600 text-slate-400 hover:border-accent-500 hover:text-accent-600 dark:text-slate-500 dark:hover:text-accent-400'
+                          }`}
+                        >
+                          i
+                        </button>
+                      </span>
+                      {openHintKey === row.key && (
+                        <p className="mt-1 max-w-xs text-xs font-normal text-slate-400 dark:text-slate-500">{row.hint}</p>
+                      )}
                     </td>
                     <td className="py-2 pr-3">
                       <span className={`rounded-full px-2 py-0.5 text-xs font-medium ${RISK_META[row.risk].className}`}>
@@ -311,7 +382,7 @@ export default function InvestmentCalculator() {
             </h2>
             <p className="mt-1 text-xs text-slate-500 dark:text-slate-400">
               {t(
-                'To średnia z historycznych, średniorocznych stóp zwrotu 5 głównych indeksów akcyjnych (z reinwestowanymi dywidendami, gdzie dostępne) - nie prognoza, tylko punkt odniesienia.',
+                'To średnia z historycznych, średniorocznych stóp zwrotu 5 głównych indeksów akcyjnych (z reinwestowanymi dywidendami, gdzie dostępne) - nie prognoza, tylko punkt odniesienia. Te same 5 pozycji jest też pokazanych osobno w tabeli powyżej.',
               )}
             </p>
             <div className="mt-3 overflow-x-auto">
@@ -326,7 +397,7 @@ export default function InvestmentCalculator() {
                 </thead>
                 <tbody>
                   {STOCK_INDEX_SOURCES.map((s) => (
-                    <tr key={s.name} className="border-t border-slate-100 dark:border-slate-700">
+                    <tr key={s.key} className="border-t border-slate-100 dark:border-slate-700">
                       <td className="py-1.5 pr-3 text-slate-700 dark:text-slate-200">{s.name}</td>
                       <td className="py-1.5 pr-3 text-slate-500 dark:text-slate-400">{s.period}</td>
                       <td className="py-1.5 pr-3 tabular-nums text-slate-700 dark:text-slate-200">

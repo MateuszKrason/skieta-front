@@ -5,29 +5,157 @@ import { api } from '../../api/client'
 import { CardLoader, PageLoader } from '../../components/Loader'
 import { useLanguage } from '../../i18n/LanguageContext'
 import { useTooltipStyle } from '../../lib/chartTooltip'
-import { formatAxisValue, formatDate, formatMoney, formatPct } from '../../lib/format'
+import { afterBelkaTax, formatAxisValue, formatDate, formatMoney, formatNumber, formatPct } from '../../lib/format'
 import type { Dividend, DividendSummary, Stock } from '../../types'
 
 const PALETTE = ['#059669', '#0ea5e9', '#f59e0b', '#ef4444', '#8b5cf6', '#ec4899', '#14b8a6', '#84cc16', '#f97316', '#6366f1']
 
+interface DividendTrendStockAmount {
+  stock_id: number
+  ticker: string
+  name: string
+  amount: string
+}
+
+interface DividendSimulationStockAmount extends DividendTrendStockAmount {
+  shares: string
+}
+
 interface DividendTrendRow {
   month: string
   total: string
+  by_stock: DividendTrendStockAmount[]
 }
 
 interface DividendSimulationRow {
   month: string
   total: string
   known: string
+  by_stock: DividendSimulationStockAmount[]
 }
 
 interface DividendYearlyRow {
   year: string
   total: string
+  by_stock: DividendSimulationStockAmount[]
 }
 
 const HISTORY_MONTHS_OPTIONS = [6, 12, 24, 36, 60]
 const FORECAST_YEARS_OPTIONS = [5, 10, 15, 20]
+
+// Custom tooltip content (instead of the default `formatter`) so a hover can
+// list every company's contribution for that month, with full names - not
+// just the combined total.
+function MonthBreakdownTooltip({
+  active,
+  payload,
+  label,
+  tooltipStyle,
+  base,
+  t,
+}: {
+  active?: boolean
+  // Recharts' own TooltipProps payload typing is awkward to match exactly
+  // (readonly, generic value/name types) - narrow it ourselves instead.
+  payload?: readonly { payload?: unknown }[]
+  label?: string | number
+  tooltipStyle: ReturnType<typeof useTooltipStyle>
+  base: string
+  t: (s: string, ...a: (string | number)[]) => string
+}) {
+  if (!active || !payload || payload.length === 0 || !payload[0].payload) return null
+  const row = payload[0].payload as DividendTrendRow & { cumulative?: number }
+  const byStock = [...row.by_stock].sort((a, b) => Number(b.amount) - Number(a.amount))
+  const monthTotal = Number(row.total)
+  const isCumulative = row.cumulative !== undefined
+
+  return (
+    <div style={tooltipStyle.contentStyle} className="px-3 py-2">
+      <p style={tooltipStyle.labelStyle}>{label}</p>
+      {byStock.length === 0 ? (
+        <p style={tooltipStyle.itemStyle}>{t('Brak wypłat w tym miesiącu.')}</p>
+      ) : (
+        byStock.map((s) => (
+          <p key={s.stock_id} style={tooltipStyle.itemStyle}>
+            {s.ticker}
+            {s.name && ` ${s.name}`}: {formatMoney(s.amount, base)}
+          </p>
+        ))
+      )}
+      <p style={{ ...tooltipStyle.itemStyle, ...tooltipStyle.labelStyle, marginTop: 4, marginBottom: 0 }}>
+        {t('Ten miesiąc: {0} ({1} po Belce)', formatMoney(monthTotal, base), formatMoney(afterBelkaTax(monthTotal), base))}
+      </p>
+      {isCumulative && (
+        <p style={{ ...tooltipStyle.itemStyle, marginTop: 2, marginBottom: 0 }}>
+          {t('Suma narastająco: {0}', formatMoney(row.cumulative as number, base))}
+        </p>
+      )}
+    </div>
+  )
+}
+
+// A persistent (click-to-open, not hover) breakdown panel shown below a
+// chart once the user clicks a bar - same per-company data as the hover
+// tooltips above, just in a form that stays visible while comparing numbers
+// instead of disappearing the moment the mouse moves.
+function StockBreakdownPanel({
+  label,
+  total,
+  byStock,
+  base,
+  t,
+  onClose,
+}: {
+  label: string
+  total: number
+  byStock: DividendSimulationStockAmount[]
+  base: string
+  t: (s: string, ...a: (string | number)[]) => string
+  onClose: () => void
+}) {
+  const sorted = [...byStock].sort((a, b) => Number(b.amount) - Number(a.amount))
+  return (
+    <div className="mt-3 rounded-lg border border-slate-200 dark:border-slate-700 bg-slate-50 dark:bg-slate-900 p-3">
+      <div className="mb-2 flex items-center justify-between">
+        <p className="text-sm font-semibold text-slate-700 dark:text-slate-300">
+          {t('Rozbicie na spółki - {0}', label)}
+        </p>
+        <button
+          onClick={onClose}
+          className="text-xs font-medium text-slate-400 hover:text-slate-600 dark:hover:text-slate-200"
+        >
+          {t('Zamknij ✕')}
+        </button>
+      </div>
+      {sorted.length === 0 ? (
+        <p className="text-xs text-slate-400 dark:text-slate-500">{t('Brak wypłat w tym okresie.')}</p>
+      ) : (
+        <ul className="space-y-1.5">
+          {sorted.map((s) => (
+            <li key={s.stock_id} className="flex items-center justify-between text-xs">
+              <span className="text-slate-600 dark:text-slate-300">
+                {s.ticker}
+                {s.name && ` ${s.name}`}
+                <span className="ml-1.5 text-slate-400 dark:text-slate-500">
+                  ({t('założone {0} akcji', formatNumber(s.shares, 0))})
+                </span>
+              </span>
+              <span className="text-right tabular-nums text-slate-700 dark:text-slate-200">
+                {formatMoney(s.amount, base)}
+                <span className="block text-[11px] font-normal text-slate-400 dark:text-slate-500">
+                  {formatMoney(afterBelkaTax(Number(s.amount)), base)} {t('po Belce')}
+                </span>
+              </span>
+            </li>
+          ))}
+        </ul>
+      )}
+      <p className="mt-2 border-t border-slate-200 dark:border-slate-700 pt-2 text-xs font-medium text-slate-500 dark:text-slate-400">
+        {t('Razem: {0} ({1} po Belce)', formatMoney(total, base), formatMoney(afterBelkaTax(total), base))}
+      </p>
+    </div>
+  )
+}
 
 export default function Dywidendy() {
   const queryClient = useQueryClient()
@@ -37,6 +165,8 @@ export default function Dywidendy() {
   const [stockFilter, setStockFilter] = useState<number | ''>('')
   const [historyMonths, setHistoryMonths] = useState(12)
   const [forecastYears, setForecastYears] = useState(10)
+  const [selectedSimMonth, setSelectedSimMonth] = useState<string | null>(null)
+  const [selectedYear, setSelectedYear] = useState<string | null>(null)
 
   const sync = useMutation({
     mutationFn: () => api.post('/dividends/sync/'),
@@ -97,21 +227,29 @@ export default function Dywidendy() {
 
   const base = 'PLN'
 
+  function moneyTooltip(value: number) {
+    return t('{0} ({1} po Belce)', formatMoney(value, base), formatMoney(afterBelkaTax(value), base))
+  }
+
   const cumulative = useMemo(() => {
     let running = 0
     return (trend ?? []).map((row) => {
       running += Number(row.total)
-      return { month: row.month, cumulative: running }
+      return { ...row, cumulative: running }
     })
   }, [trend])
 
   const pieData = (summary?.rows ?? []).map((row) => ({ name: row.stock.ticker, value: Number(row.total_received) }))
+  const stockFullNameByTicker = new Map((summary?.rows ?? []).map((row) => [row.stock.ticker, row.stock.name ? `${row.stock.ticker} ${row.stock.name}` : row.stock.ticker]))
 
   const simulationChartData = (simulation ?? []).map((row) => {
     const known = Number(row.known)
     const estimated = Math.max(Number(row.total) - known, 0)
-    return { month: row.month, known, estimated }
+    return { month: row.month, known, estimated, total: Number(row.total), by_stock: row.by_stock }
   })
+
+  const selectedSimRow = simulationChartData.find((r) => r.month === selectedSimMonth)
+  const selectedYearRow = (yearlySimulation ?? []).find((r) => r.year === selectedYear)
 
   if (summaryLoading || dividendsLoading) {
     return <PageLoader />
@@ -157,7 +295,7 @@ export default function Dywidendy() {
             <option value="">{t('Wszystkie spółki')}</option>
             {(stocks ?? []).map((s) => (
               <option key={s.id} value={s.id}>
-                {s.ticker} ({s.market})
+                {s.ticker} ({s.market}){s.name && ` - ${s.name}`}
               </option>
             ))}
           </select>
@@ -207,7 +345,8 @@ export default function Dywidendy() {
             {(summary?.upcoming ?? []).map((d) => (
               <div key={d.id} className="flex justify-between border-b border-amber-100 py-1.5 text-sm last:border-0">
                 <span>
-                  {d.stock_detail.ticker} — {d.is_confirmed ? '' : `${t('ok.')} `}
+                  {d.stock_detail.ticker}
+                  {d.stock_detail.name && ` ${d.stock_detail.name}`} - {d.is_confirmed ? '' : `${t('ok.')} `}
                   {formatMoney(d.total_amount, d.currency)}
                   {d.after_tax_amount !== null && (
                     <span
@@ -251,8 +390,8 @@ export default function Dywidendy() {
                   <CartesianGrid strokeDasharray="3 3" stroke="#94a3b8" strokeOpacity={0.15} />
                   <XAxis dataKey="month" tick={{ fontSize: 12 }} stroke="#94a3b8" />
                   <YAxis tickFormatter={formatAxisValue} tick={{ fontSize: 12 }} stroke="#94a3b8" width={40} />
-                  <Tooltip {...tooltipStyle} formatter={(value) => formatMoney(value as number, base)} />
-                  <Bar dataKey="total" name={t('Dywidendy')} fill="#059669" radius={[4, 4, 0, 0]} />
+                  <Tooltip content={(props) => <MonthBreakdownTooltip {...props} tooltipStyle={tooltipStyle} base={base} t={t} />} />
+                  <Bar dataKey="total" name={t('Dywidendy')} fill="#059669" radius={[4, 4, 0, 0]} isAnimationActive={false} />
                 </BarChart>
               </ResponsiveContainer>
             )}
@@ -271,7 +410,10 @@ export default function Dywidendy() {
                       <Cell key={i} fill={PALETTE[i % PALETTE.length]} />
                     ))}
                   </Pie>
-                  <Tooltip {...tooltipStyle} formatter={(value) => formatMoney(value as number, base)} />
+                  <Tooltip
+                    {...tooltipStyle}
+                    formatter={(value, name) => [moneyTooltip(value as number), stockFullNameByTicker.get(name as string) ?? name]}
+                  />
                   <Legend />
                 </PieChart>
               </ResponsiveContainer>
@@ -298,7 +440,7 @@ export default function Dywidendy() {
                 </defs>
                 <XAxis dataKey="month" tick={{ fontSize: 12 }} stroke="#94a3b8" />
                 <YAxis tickFormatter={formatAxisValue} tick={{ fontSize: 12 }} stroke="#94a3b8" width={40} />
-                <Tooltip {...tooltipStyle} formatter={(value) => formatMoney(value as number, base)} />
+                <Tooltip content={(props) => <MonthBreakdownTooltip {...props} tooltipStyle={tooltipStyle} base={base} t={t} />} />
                 <Area type="monotone" dataKey="cumulative" stroke="#059669" fill="url(#dividendCumulativeGradient)" strokeWidth={2} />
               </AreaChart>
             </ResponsiveContainer>
@@ -330,13 +472,45 @@ export default function Dywidendy() {
                 <CartesianGrid strokeDasharray="3 3" stroke="#94a3b8" strokeOpacity={0.15} />
                 <XAxis dataKey="month" tick={{ fontSize: 12 }} stroke="#94a3b8" />
                 <YAxis tickFormatter={formatAxisValue} tick={{ fontSize: 12 }} stroke="#94a3b8" width={40} />
-                <Tooltip {...tooltipStyle} formatter={(value) => formatMoney(value as number, base)} />
+                <Tooltip {...tooltipStyle} formatter={(value) => moneyTooltip(value as number)} />
                 <Legend />
-                <Bar dataKey="known" name={t('Najbliższa wypłata (znana kwota)')} stackId="sim" fill="#8b5cf6" radius={[0, 0, 0, 0]} />
-                <Bar dataKey="estimated" name={t('Dalsza prognoza (szac. wzrost)')} stackId="sim" fill="#c4b5fd" radius={[4, 4, 0, 0]} />
+                <Bar
+                  dataKey="known"
+                  name={t('Najbliższa wypłata (znana kwota)')}
+                  stackId="sim"
+                  fill="#8b5cf6"
+                  radius={[0, 0, 0, 0]}
+                  cursor="pointer"
+                  isAnimationActive={false}
+                  onClick={(data: { payload?: { month: string } }) =>
+                    setSelectedSimMonth((prev) => (prev === data.payload?.month ? null : (data.payload?.month ?? null)))
+                  }
+                />
+                <Bar
+                  dataKey="estimated"
+                  name={t('Dalsza prognoza (szac. wzrost)')}
+                  stackId="sim"
+                  fill="#c4b5fd"
+                  radius={[4, 4, 0, 0]}
+                  cursor="pointer"
+                  isAnimationActive={false}
+                  onClick={(data: { payload?: { month: string } }) =>
+                    setSelectedSimMonth((prev) => (prev === data.payload?.month ? null : (data.payload?.month ?? null)))
+                  }
+                />
               </BarChart>
             </ResponsiveContainer>
           </div>
+        )}
+        {selectedSimRow && (
+          <StockBreakdownPanel
+            label={selectedSimRow.month}
+            total={selectedSimRow.total}
+            byStock={selectedSimRow.by_stock}
+            base={base}
+            t={t}
+            onClose={() => setSelectedSimMonth(null)}
+          />
         )}
       </div>
 
@@ -369,11 +543,31 @@ export default function Dywidendy() {
                 <CartesianGrid strokeDasharray="3 3" stroke="#94a3b8" strokeOpacity={0.15} />
                 <XAxis dataKey="year" tick={{ fontSize: 12 }} stroke="#94a3b8" />
                 <YAxis tickFormatter={formatAxisValue} tick={{ fontSize: 12 }} stroke="#94a3b8" width={40} />
-                <Tooltip {...tooltipStyle} formatter={(value) => formatMoney(value as number, base)} />
-                <Bar dataKey="total" name={t('Szac. dywidendy')} fill="#0ea5e9" radius={[4, 4, 0, 0]} />
+                <Tooltip {...tooltipStyle} formatter={(value) => moneyTooltip(value as number)} />
+                <Bar
+                  dataKey="total"
+                  name={t('Szac. dywidendy')}
+                  fill="#0ea5e9"
+                  radius={[4, 4, 0, 0]}
+                  cursor="pointer"
+                  isAnimationActive={false}
+                  onClick={(data: { payload?: { year: string } }) =>
+                    setSelectedYear((prev) => (prev === data.payload?.year ? null : (data.payload?.year ?? null)))
+                  }
+                />
               </BarChart>
             </ResponsiveContainer>
           </div>
+        )}
+        {selectedYearRow && (
+          <StockBreakdownPanel
+            label={selectedYearRow.year}
+            total={Number(selectedYearRow.total)}
+            byStock={selectedYearRow.by_stock}
+            base={base}
+            t={t}
+            onClose={() => setSelectedYear(null)}
+          />
         )}
       </div>
 
@@ -427,7 +621,8 @@ export default function Dywidendy() {
             .map((d) => (
               <div key={d.id} className="flex justify-between border-b border-slate-100 dark:border-slate-800 py-1.5 text-sm last:border-0">
                 <span>
-                  {d.stock_detail.ticker} — {formatMoney(d.total_amount, d.currency)}
+                  {d.stock_detail.ticker}
+                  {d.stock_detail.name && ` ${d.stock_detail.name}`} - {formatMoney(d.total_amount, d.currency)}
                   {d.auto_detected && (
                     <span className="ml-2 rounded-full bg-slate-100 dark:bg-slate-700 px-2 py-0.5 text-xs text-slate-500 dark:text-slate-400">
                       {t('wykryta automatycznie')}
