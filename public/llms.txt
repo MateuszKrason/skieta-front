@@ -1,0 +1,14 @@
+# skieta
+
+> Osobisty tracker finansowy: konta bankowe, akcje, obligacje, lokaty, budżet i dywidendy w jednym miejscu. Dostępny wyłącznie na zaproszenie od innego użytkownika — rejestracja nie jest otwarta publicznie.
+
+Aplikacja (dashboard, portfel, budżet, planowanie) jest prywatna i wymaga zalogowania. Publicznie dostępne są tylko poniższe strony.
+
+## Strony publiczne
+
+- [Strona główna](https://skieta.com/): opis produktu i wejście do logowania/rejestracji.
+- [Artykuły o finansach osobistych](https://skieta.com/sitemap.xml): pełna, aktualna lista w mapie witryny.
+- [Logowanie](https://skieta.com/logowanie)
+- [Rejestracja](https://skieta.com/register): wymaga ważnego linku z zaproszeniem.
+- [Polityka prywatności](https://skieta.com/polityka-prywatnosci)
+- [Regulamin](https://skieta.com/regulamin)

@@ -907,15 +907,19 @@ function LoginHeatmap({ dates }: { dates: string[] }) {
     weeks.push(week)
   }
 
+  // The card itself is bg-white / dark:bg-slate-800 - the zero-count shade
+  // must not match that or the grid's "empty" cells vanish into the card
+  // background, leaving only the active days floating with no visible grid
+  // around them (exactly what looked like stray dots before this fix).
   function shade(count: number) {
-    if (count === 0) return 'bg-slate-100 dark:bg-slate-800'
-    if (count === 1) return 'bg-accent-200 dark:bg-accent-900'
-    if (count === 2) return 'bg-accent-400 dark:bg-accent-700'
-    return 'bg-accent-600 dark:bg-accent-500'
+    if (count === 0) return 'bg-slate-200 dark:bg-slate-600'
+    if (count === 1) return 'bg-accent-300 dark:bg-accent-700'
+    if (count === 2) return 'bg-accent-500 dark:bg-accent-500'
+    return 'bg-accent-700 dark:bg-accent-400'
   }
 
   return (
-    <div className="overflow-x-auto">
+    <div className="flex justify-center overflow-x-auto">
       <div className="inline-flex gap-1">
         {weeks.map((week, i) => (
           <div key={i} className="flex flex-col gap-1">
@@ -923,7 +927,7 @@ function LoginHeatmap({ dates }: { dates: string[] }) {
               <div
                 key={cell.key}
                 title={`${cell.key}: ${t('{0} logowań', String(cell.count))}`}
-                className={`h-2.5 w-2.5 rounded-sm ${cell.date > today ? 'opacity-0' : shade(cell.count)}`}
+                className={`h-3 w-3 rounded-sm ${cell.date > today ? 'opacity-0' : shade(cell.count)}`}
               />
             ))}
           </div>

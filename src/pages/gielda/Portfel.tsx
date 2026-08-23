@@ -314,12 +314,20 @@ export default function Portfel() {
                     }`}
                   >
                     {formatMoney(h.unrealized_pl, h.stock.currency)} ({formatPct(h.unrealized_pl_pct)})
-                    {h.fx_effect_base !== null && (
-                      <div className="text-xs font-normal text-slate-400 dark:text-slate-500">
-                        {t('z tego kurs waluty')}: {Number(h.fx_effect_base) >= 0 ? '+' : ''}
-                        {formatMoney(h.fx_effect_base, 'PLN')}
-                      </div>
-                    )}
+                    {/* Always render this line, even blank, so PLN-only rows
+                        (with nothing to show here) stay the same height as
+                        foreign-currency rows instead of the table's row
+                        heights becoming uneven. */}
+                    <div className="text-xs font-normal text-slate-400 dark:text-slate-500">
+                      {h.fx_effect_base !== null ? (
+                        <>
+                          {t('z tego kurs waluty')}: {Number(h.fx_effect_base) >= 0 ? '+' : ''}
+                          {formatMoney(h.fx_effect_base, 'PLN')}
+                        </>
+                      ) : (
+                        ' '
+                      )}
+                    </div>
                   </td>
                   <td
                     className={`px-4 py-2 text-right font-medium ${

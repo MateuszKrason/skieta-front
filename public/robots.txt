@@ -17,6 +17,7 @@ Allow: /site.webmanifest
 Allow: /og-image.png
 Allow: /icons.svg
 Allow: /sitemap.xml
+Allow: /llms.txt
 Disallow: /
 
 Sitemap: https://skieta.com/sitemap.xml

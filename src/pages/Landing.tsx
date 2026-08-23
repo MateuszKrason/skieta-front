@@ -68,7 +68,7 @@ function MockDashboardCard() {
   return (
     <div className="relative rounded-2xl border border-slate-200/80 dark:border-slate-700/80 bg-white/90 dark:bg-slate-800/90 p-5 shadow-2xl shadow-slate-900/10 backdrop-blur">
       <div className="flex items-center justify-between">
-        <p className="text-xs font-medium text-slate-400 dark:text-slate-500">Wartość majątku</p>
+        <p className="text-xs font-medium text-slate-500 dark:text-slate-400">Wartość majątku</p>
         <span className="rounded-full bg-emerald-100 dark:bg-emerald-900/40 px-2 py-0.5 text-[10px] font-semibold text-emerald-700 dark:text-emerald-400">
           +4.5%
         </span>
@@ -82,11 +82,11 @@ function MockDashboardCard() {
       </div>
       <div className="mt-5 grid grid-cols-2 gap-3">
         <div className="rounded-lg bg-slate-50 dark:bg-slate-900 p-3">
-          <p className="text-[10px] font-medium text-slate-400 dark:text-slate-500">Zysk</p>
+          <p className="text-[10px] font-medium text-slate-500 dark:text-slate-400">Zysk</p>
           <p className="mt-0.5 text-sm font-semibold text-emerald-600 dark:text-emerald-400">+6 150 zł</p>
         </div>
         <div className="rounded-lg bg-slate-50 dark:bg-slate-900 p-3">
-          <p className="text-[10px] font-medium text-slate-400 dark:text-slate-500">Dywidendy YTD</p>
+          <p className="text-[10px] font-medium text-slate-500 dark:text-slate-400">Dywidendy YTD</p>
           <p className="mt-0.5 text-sm font-semibold text-slate-700 dark:text-slate-200">3 200 zł</p>
         </div>
       </div>
@@ -129,7 +129,7 @@ function RequestAccessForm() {
 
   if (!open) {
     return (
-      <p className="text-sm text-slate-400 dark:text-slate-500">
+      <p className="text-sm text-slate-500 dark:text-slate-400">
         {t('Rejestracja jest dostępna tylko na zaproszenie od innego użytkownika.')}{' '}
         <button
           type="button"
@@ -191,13 +191,14 @@ export default function Landing() {
           </Link>
           <Link
             to={ctaHref}
-            className="rounded-full bg-accent-600 px-5 py-2 text-sm font-semibold text-white shadow-sm shadow-accent-600/30 transition hover:bg-accent-700 hover:shadow-md"
+            className="rounded-full bg-accent-700 px-5 py-2 text-sm font-semibold text-white shadow-sm shadow-accent-600/30 transition hover:bg-accent-800 hover:shadow-md"
           >
             {user ? ctaLabel : t('Zaloguj się do aplikacji')}
           </Link>
         </div>
       </header>
 
+      <main>
       {/* Hero */}
       <section className="relative">
         <div
@@ -215,7 +216,7 @@ export default function Landing() {
               {t('Panuj nad')}{' '}
               <span className="bg-gradient-to-r from-accent-600 to-accent-400 bg-clip-text text-transparent">{t('swoimi finansami')}</span>
             </h1>
-            <p className="mt-3 text-base font-medium italic text-accent-600 dark:text-accent-400">
+            <p className="mt-3 text-base font-medium italic text-accent-700 dark:text-accent-400">
               {t('skieta - Twoja wirtualna skarpeta z oszczędnościami.')}
             </p>
             <p className="mt-5 max-w-xl text-lg text-slate-600 dark:text-slate-400">
@@ -226,7 +227,7 @@ export default function Landing() {
             <div className="mt-8 flex flex-wrap items-center gap-4">
               <Link
                 to={ctaHref}
-                className="rounded-full bg-accent-600 px-7 py-3 text-base font-semibold text-white shadow-lg shadow-accent-600/30 transition hover:-translate-y-0.5 hover:bg-accent-700 hover:shadow-xl"
+                className="rounded-full bg-accent-700 px-7 py-3 text-base font-semibold text-white shadow-lg shadow-accent-600/30 transition hover:-translate-y-0.5 hover:bg-accent-800 hover:shadow-xl"
               >
                 {ctaLabel}
               </Link>
@@ -275,7 +276,7 @@ export default function Landing() {
             <div aria-hidden="true" className="absolute left-0 right-0 top-6 hidden h-px bg-slate-200 dark:bg-slate-700 sm:block" />
             {STEPS.map((s) => (
               <div key={s.n} className="relative text-center sm:text-left">
-                <span className="relative z-10 inline-flex h-12 w-12 items-center justify-center rounded-full bg-accent-600 text-lg font-bold text-white ring-4 ring-white dark:ring-slate-900">
+                <span className="relative z-10 inline-flex h-12 w-12 items-center justify-center rounded-full bg-accent-700 text-lg font-bold text-white ring-4 ring-white dark:ring-slate-900">
                   {s.n}
                 </span>
                 <h3 className="mt-4 text-base font-semibold text-slate-900 dark:text-slate-100">{t(s.title)}</h3>
@@ -290,7 +291,7 @@ export default function Landing() {
       <section className="mx-auto max-w-6xl px-4 py-16 sm:py-20">
         <h2 className="mb-6 text-2xl font-bold text-slate-900 dark:text-slate-100">{t('Artykuły o finansach osobistych')}</h2>
         {!articles?.length ? (
-          <p className="text-slate-400 dark:text-slate-500">{t('Wkrótce pojawią się tu pierwsze artykuły.')}</p>
+          <p className="text-slate-500 dark:text-slate-400">{t('Wkrótce pojawią się tu pierwsze artykuły.')}</p>
         ) : (
           <div className="grid grid-cols-1 gap-4 sm:grid-cols-2 lg:grid-cols-3">
             {articles.map((a) => (
@@ -299,7 +300,7 @@ export default function Landing() {
                 to={`/artykuly/${a.slug}`}
                 className="block rounded-xl border border-slate-200 dark:border-slate-800 bg-white dark:bg-slate-900 p-5 shadow-sm transition hover:-translate-y-1 hover:border-accent-300 dark:hover:border-accent-700 hover:shadow-md"
               >
-                <time dateTime={a.published_at} className="text-xs text-slate-400 dark:text-slate-500">
+                <time dateTime={a.published_at} className="text-xs text-slate-500 dark:text-slate-400">
                   {a.author_name
                     ? t('Autor: {0} • {1}', a.author_name, formatDateTime(a.published_at))
                     : formatDateTime(a.published_at)}
@@ -338,9 +339,10 @@ export default function Landing() {
           </Link>
         </div>
       </section>
+      </main>
 
       <footer className="border-t border-slate-200 dark:border-slate-800">
-        <div className="mx-auto flex max-w-6xl flex-col items-center justify-between gap-3 px-4 py-8 text-sm text-slate-400 dark:text-slate-500 sm:flex-row">
+        <div className="mx-auto flex max-w-6xl flex-col items-center justify-between gap-3 px-4 py-8 text-sm text-slate-500 dark:text-slate-400 sm:flex-row">
           <span className="flex items-center gap-2 font-semibold text-slate-500 dark:text-slate-400">
             <SockLogo className="h-5 w-5" />
             skieta

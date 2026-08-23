@@ -1,4 +1,4 @@
-import { useEffect } from 'react'
+import { lazy, Suspense, useEffect } from 'react'
 import { Navigate, Route, Routes, useLocation } from 'react-router-dom'
 import Layout from './components/Layout'
 import { useAuth } from './auth/AuthContext'
@@ -6,6 +6,7 @@ import { useLanguage } from './i18n/LanguageContext'
 import AdminRoute from './components/AdminRoute'
 import EditorRoute from './components/EditorRoute'
 import ProtectedRoute from './components/ProtectedRoute'
+import { PageLoader } from './components/Loader'
 import ArticleDetail from './pages/ArticleDetail'
 import Landing from './pages/Landing'
 import PrivacyPolicy from './pages/PrivacyPolicy'
@@ -15,31 +16,36 @@ import Register from './pages/Register'
 import ForgotPassword from './pages/ForgotPassword'
 import ResetPassword from './pages/ResetPassword'
 import VerifyEmail from './pages/VerifyEmail'
-import Onboarding from './pages/Onboarding'
-import Dashboard from './pages/Dashboard'
-import Banking from './pages/Banking'
-import Planowanie from './pages/Planowanie'
-import Timeline from './pages/Timeline'
-import Account from './pages/Account'
-import AdminLayout from './pages/admin/AdminLayout'
-import AdminUsers from './pages/admin/AdminUsers'
-import AdminUserDetail from './pages/admin/AdminUserDetail'
-import AdminFeedback from './pages/admin/AdminFeedback'
-import AdminStatystyki from './pages/admin/AdminStatystyki'
-import AdminRole from './pages/admin/AdminRole'
-import AdminAccessRequests from './pages/admin/AdminAccessRequests'
-import AdminGroupInvites from './pages/admin/AdminGroupInvites'
-import Redakcja from './pages/Redakcja'
-import GieldaLayout from './pages/gielda/GieldaLayout'
-import Portfel from './pages/gielda/Portfel'
-import Dywidendy from './pages/gielda/Dywidendy'
-import AnalizaSpolek from './pages/gielda/AnalizaSpolek'
-import AnalysisLayout from './pages/analysis/AnalysisLayout'
-import Bilans from './pages/analysis/Bilans'
-import Przychody from './pages/analysis/Przychody'
-import Wydatki from './pages/analysis/Wydatki'
-import Kategorie from './pages/analysis/Kategorie'
-import InvestmentCalculator from './pages/InvestmentCalculator'
+
+// Lazy-loaded: everything below only renders behind a login, so none of it
+// needs to ship in the bundle a first-time (logged-out) visitor downloads —
+// PageSpeed flagged ~224 KiB of this chunk as unused on the public landing
+// page before this split.
+const Onboarding = lazy(() => import('./pages/Onboarding'))
+const Dashboard = lazy(() => import('./pages/Dashboard'))
+const Banking = lazy(() => import('./pages/Banking'))
+const Planowanie = lazy(() => import('./pages/Planowanie'))
+const Timeline = lazy(() => import('./pages/Timeline'))
+const Account = lazy(() => import('./pages/Account'))
+const AdminLayout = lazy(() => import('./pages/admin/AdminLayout'))
+const AdminUsers = lazy(() => import('./pages/admin/AdminUsers'))
+const AdminUserDetail = lazy(() => import('./pages/admin/AdminUserDetail'))
+const AdminFeedback = lazy(() => import('./pages/admin/AdminFeedback'))
+const AdminStatystyki = lazy(() => import('./pages/admin/AdminStatystyki'))
+const AdminRole = lazy(() => import('./pages/admin/AdminRole'))
+const AdminAccessRequests = lazy(() => import('./pages/admin/AdminAccessRequests'))
+const AdminGroupInvites = lazy(() => import('./pages/admin/AdminGroupInvites'))
+const Redakcja = lazy(() => import('./pages/Redakcja'))
+const GieldaLayout = lazy(() => import('./pages/gielda/GieldaLayout'))
+const Portfel = lazy(() => import('./pages/gielda/Portfel'))
+const Dywidendy = lazy(() => import('./pages/gielda/Dywidendy'))
+const AnalizaSpolek = lazy(() => import('./pages/gielda/AnalizaSpolek'))
+const AnalysisLayout = lazy(() => import('./pages/analysis/AnalysisLayout'))
+const Bilans = lazy(() => import('./pages/analysis/Bilans'))
+const Przychody = lazy(() => import('./pages/analysis/Przychody'))
+const Wydatki = lazy(() => import('./pages/analysis/Wydatki'))
+const Kategorie = lazy(() => import('./pages/analysis/Kategorie'))
+const InvestmentCalculator = lazy(() => import('./pages/InvestmentCalculator'))
 
 const PAGE_TITLES: [string, string][] = [
   ['/polityka-prywatnosci', 'Polityka prywatności'],
@@ -116,6 +122,7 @@ export default function App() {
   useDocumentTitle()
   useCanonicalLink()
   return (
+    <Suspense fallback={<PageLoader />}>
     <Routes>
       <Route path="/" element={<Landing />} />
       <Route path="/witaj" element={<Navigate to="/" replace />} />
@@ -177,5 +184,6 @@ export default function App() {
         </Route>
       </Route>
     </Routes>
+    </Suspense>
   )
 }
