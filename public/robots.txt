@@ -15,6 +15,7 @@ Allow: /android-chrome-512x512.png
 Allow: /site.webmanifest
 Allow: /og-image.png
 Allow: /icons.svg
+Allow: /sitemap.xml
 Disallow: /
 
 Sitemap: https://skieta.com/sitemap.xml
