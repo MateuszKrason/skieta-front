@@ -137,7 +137,12 @@ export default function PrivacyPolicy() {
         </Section>
 
         <Section title="Kontakt">
-          <p>{t('W sprawach dotyczących danych osobowych napisz na: rejestracja@skieta.com')}</p>
+          <p>
+            {t('W sprawach dotyczących danych osobowych napisz na:')}{' '}
+            <a href="mailto:rejestracja@skieta.com" className="text-accent-700 dark:text-accent-400 hover:underline">
+              rejestracja@skieta.com
+            </a>
+          </p>
         </Section>
       </div>
     </div>

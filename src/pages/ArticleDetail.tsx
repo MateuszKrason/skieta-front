@@ -6,6 +6,7 @@ import { PageLoader } from '../components/Loader'
 import SockLogo from '../components/SockLogo'
 import { useLanguage } from '../i18n/LanguageContext'
 import { formatDateTime } from '../lib/format'
+import { useNoindex } from '../lib/useNoindex'
 import type { Article } from '../types'
 
 function setMetaDescription(content: string) {
@@ -27,6 +28,8 @@ export default function ArticleDetail() {
     queryFn: async () => (await api.get<Article>(`/content/articles/${slug}/`)).data,
     enabled: Boolean(slug),
   })
+
+  useNoindex(!isLoading && !article)
 
   useEffect(() => {
     if (!article) return
@@ -62,10 +65,24 @@ export default function ArticleDetail() {
           {t('← Wszystkie artykuły')}
         </Link>
 
-        {isLoading && <PageLoader />}
+        {/* A real <h1> in every branch, not just the loaded-article one - a
+            crawler that snapshots before the fetch resolves (or never runs
+            JS at all) used to see a heading-less page while loading or on a
+            bad slug. */}
+        {isLoading && (
+          <>
+            <h1 className="sr-only">{t('Ładowanie artykułu…')}</h1>
+            <PageLoader />
+          </>
+        )}
 
         {!isLoading && !article && (
-          <p className="mt-6 text-slate-400 dark:text-slate-500">{t('Nie znaleziono artykułu.')}</p>
+          <>
+            <h1 className="mt-6 text-2xl font-bold text-slate-900 dark:text-slate-100">{t('Nie znaleziono artykułu.')}</h1>
+            <p className="mt-2 text-slate-400 dark:text-slate-500">
+              {t('Może został usunięty albo link jest nieprawidłowy.')}
+            </p>
+          </>
         )}
 
         {article && (

@@ -1006,7 +1006,7 @@ export const en: Record<string, string> = {
     "We use Google Analytics to count visits and get basic traffic analytics — Google sets its own cookies for this and processes data such as IP address, device and browser type, and pages visited. You can read more about how Google processes this data in Google's own privacy policy.",
   'W miarę rozwoju aplikacji ta strona będzie aktualizowana, a data ostatniej zmiany widoczna jest na górze strony.':
     "As the app evolves, this page will be updated, and the date of the last change is shown at the top of the page.",
-  'W sprawach dotyczących danych osobowych napisz na: rejestracja@skieta.com': 'For anything related to personal data, email: rejestracja@skieta.com',
+  'W sprawach dotyczących danych osobowych napisz na:': 'For anything related to personal data, email:',
   'Waluta inna niż domyślna ({0})': 'Currency other than the default ({0})',
   'Wczytywanie…': 'Loading…',
   'Wgraj i pokaż podgląd': 'Upload and preview',

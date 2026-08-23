@@ -16,6 +16,7 @@ import Register from './pages/Register'
 import ForgotPassword from './pages/ForgotPassword'
 import ResetPassword from './pages/ResetPassword'
 import VerifyEmail from './pages/VerifyEmail'
+import NotFound from './pages/NotFound'
 
 // Lazy-loaded: everything below only renders behind a login, so none of it
 // needs to ship in the bundle a first-time (logged-out) visitor downloads —
@@ -183,6 +184,7 @@ export default function App() {
           <Route path="/analiza/kategorie" element={<Navigate to="/budzet/kategorie" replace />} />
         </Route>
       </Route>
+      <Route path="*" element={<NotFound />} />
     </Routes>
     </Suspense>
   )

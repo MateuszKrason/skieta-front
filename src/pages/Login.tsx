@@ -32,10 +32,12 @@ export default function Login() {
     <div className="flex min-h-screen items-center justify-center bg-slate-50 dark:bg-slate-900">
       <AuthTopBar />
       <form onSubmit={onSubmit} className="w-full max-w-sm rounded-xl border border-slate-200 dark:border-slate-700 bg-white dark:bg-slate-800 p-8 shadow-sm">
-        <Link to="/" className="mb-1 flex items-center gap-2 text-2xl font-bold text-accent-700 dark:text-accent-400">
-          <SockLogo className="h-8 w-8" />
-          skieta
-        </Link>
+        <h1 className="mb-1 text-2xl font-bold text-accent-700 dark:text-accent-400">
+          <Link to="/" className="flex items-center gap-2">
+            <SockLogo className="h-8 w-8" />
+            skieta
+          </Link>
+        </h1>
         <p className="mb-6 text-sm text-slate-500 dark:text-slate-400">{t('Zaloguj się do swojego portfela finansowego')}</p>
         <label className="mb-3 block text-sm">
           {t('Login lub e-mail')}
