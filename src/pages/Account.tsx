@@ -7,7 +7,7 @@ import { useAuth } from '../auth/AuthContext'
 import { useLanguage } from '../i18n/LanguageContext'
 import { formatDateTime } from '../lib/format'
 import { useTheme, type Theme } from '../theme/ThemeContext'
-import type { InvitationList, LoginHistoryResponse, RoleAssignment } from '../types'
+import type { Invitation, InvitationList, LoginHistoryResponse, RoleAssignment } from '../types'
 
 export default function Account() {
   const { user } = useAuth()
@@ -496,6 +496,20 @@ function InviteFriends() {
     },
   })
 
+  // "Show someone right now" flow: generate a bare link invite and jump
+  // straight to its QR, skipping the extra "find the new row, click Pokaż
+  // QR" step. If it's never scanned, it disappears on its own - the backend
+  // already auto-deletes expired, unaccepted, link-only invites on the next
+  // list fetch (see InvitationsView.get), so nothing lingers in history.
+  const quickQrMutation = useMutation({
+    mutationFn: async () => (await api.post<Invitation>('/auth/invitations/', {})).data,
+    onSuccess: (invitation) => {
+      queryClient.invalidateQueries({ queryKey: ['invitations'] })
+      setTab('pending')
+      setQrId(invitation.id)
+    },
+  })
+
   const deleteMutation = useMutation({
     mutationFn: (id: number) => api.delete(`/auth/invitations/${id}/`),
     onSuccess: () => queryClient.invalidateQueries({ queryKey: ['invitations'] }),
@@ -547,10 +561,18 @@ function InviteFriends() {
         >
           {email.trim() ? t('+ Wyślij zaproszenie mailem') : t('+ Wygeneruj zaproszenie')}
         </button>
+        <button
+          onClick={() => quickQrMutation.mutate()}
+          disabled={quickQrMutation.isPending || !canInvite}
+          title={t('Od razu pokaże kod QR - jeśli nikt z niego nie skorzysta, link zniknie sam po wygaśnięciu.')}
+          className="rounded-md border border-slate-300 dark:border-slate-600 px-4 py-1.5 text-sm font-medium text-slate-700 dark:text-slate-300 hover:bg-slate-100 dark:hover:bg-slate-700 disabled:opacity-60"
+        >
+          {t('📱 Pokaż komuś QR')}
+        </button>
       </div>
       {!canInvite && (
         <p className="text-sm text-amber-600 dark:text-amber-400">
-          {t('Wykorzystano limit zaproszeń na ten tydzień — odnawia się na bieżąco, 7 dni po każdym zaproszeniu.')}
+          {t('Wykorzystano limit zaproszeń na ten tydzień - odnawia się na bieżąco, 7 dni po każdym zaproszeniu.')}
         </p>
       )}
       {errorDetail && <p className="text-sm text-red-600 dark:text-red-400">{errorDetail}</p>}
@@ -573,10 +595,21 @@ function InviteFriends() {
             {' '}(
             {
               (data?.results ?? []).filter((inv) => {
+                // Invites sent to an email live in the "Wysłane e-maile" tab
+                // (which already shows their own status/email address) -
+                // without this, a pending emailed invite showed up twice:
+                // once here (as a bare link, not even showing which email it
+                // went to) and once in that tab.
+                if (key === 'emails') return !!inv.email
+                // Expired link-only invites are auto-deleted by the backend
+                // the moment they're fetched (see InvitationsView.get), so
+                // this tab would always be empty for them - only emailed
+                // invites actually persist in an expired state, so this tab
+                // is email-only instead of the usual link-only split.
+                if (key === 'expired') return !!inv.email && !inv.accepted_by && inv.is_expired
+                if (inv.email) return false
                 if (key === 'pending') return !inv.accepted_by && !inv.is_expired
-                if (key === 'expired') return !inv.accepted_by && inv.is_expired
-                if (key === 'accepted') return !!inv.accepted_by
-                return !!inv.email
+                return !!inv.accepted_by
               }).length
             }
             )
@@ -586,10 +619,11 @@ function InviteFriends() {
 
       {(() => {
         const filtered = (data?.results ?? []).filter((inv) => {
+          if (tab === 'emails') return !!inv.email
+          if (tab === 'expired') return !!inv.email && !inv.accepted_by && inv.is_expired
+          if (inv.email) return false
           if (tab === 'pending') return !inv.accepted_by && !inv.is_expired
-          if (tab === 'expired') return !inv.accepted_by && inv.is_expired
-          if (tab === 'accepted') return !!inv.accepted_by
-          return !!inv.email
+          return !!inv.accepted_by
         })
         if (filtered.length === 0) {
           return (
@@ -601,7 +635,12 @@ function InviteFriends() {
             </p>
           )
         }
-        if (tab === 'emails') {
+        if (tab === 'emails' || tab === 'expired') {
+          // 'expired' only ever contains emailed invites now (see the filter
+          // above) - same row style as 'emails' so the recipient address is
+          // actually visible, instead of the link-style row meant for the
+          // bare-link invites this tab used to (and structurally can't
+          // meaningfully) hold.
           return (
             <ul className="space-y-2 pt-2">
               {filtered.map((inv) => (

@@ -215,6 +215,9 @@ export default function Landing() {
               {t('Panuj nad')}{' '}
               <span className="bg-gradient-to-r from-accent-600 to-accent-400 bg-clip-text text-transparent">{t('swoimi finansami')}</span>
             </h1>
+            <p className="mt-3 text-base font-medium italic text-accent-600 dark:text-accent-400">
+              {t('skieta - Twoja wirtualna skarpeta z oszczędnościami.')}
+            </p>
             <p className="mt-5 max-w-xl text-lg text-slate-600 dark:text-slate-400">
               {t(
                 'skieta łączy konta bankowe, inwestycje, lokaty i obligacje w jednym miejscu — zobacz, jak naprawdę rośnie Twój majątek, bez arkusza kalkulacyjnego i bez zgadywania.',

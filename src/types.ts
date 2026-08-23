@@ -485,6 +485,7 @@ export interface AdminUserDetail {
   stock_transactions_count: number
   budget_transactions_count: number
   invited_count: number
+  invitations_generated_count: number
   invited_users: AdminInvitedUser[]
   articles: AdminUserArticle[]
   activity_last_30_days: AdminUserActivityDay[]

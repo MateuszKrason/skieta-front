@@ -241,9 +241,17 @@ export default function AdminUserDetail() {
       </div>
 
       <div className="rounded-xl border border-slate-200 dark:border-slate-700 bg-white dark:bg-slate-800 p-5 shadow-sm">
-        <h2 className="mb-3 text-sm font-semibold text-slate-700 dark:text-slate-300">
-          {t('Zaproszeni użytkownicy')} ({user.invited_count})
-        </h2>
+        <div className="mb-3 flex flex-wrap items-baseline justify-between gap-2">
+          <h2 className="text-sm font-semibold text-slate-700 dark:text-slate-300">
+            {t('Zaproszeni użytkownicy')} ({user.invited_count})
+          </h2>
+          <span
+            className="text-xs text-slate-400 dark:text-slate-500"
+            title={t('Łącznie wygenerowanych zaproszeń (linki i maile, każdy wynik) - w odróżnieniu od liczby powyżej, nie maleje, gdy wygasłe nieużyte linki znikają same z systemu.')}
+          >
+            {t('Wygenerowanych łącznie: {0}', String(user.invitations_generated_count))}
+          </span>
+        </div>
         {user.invited_users.length === 0 ? (
           <p className="text-sm text-slate-400 dark:text-slate-500">{t('Nikogo jeszcze nie zaprosił(a).')}</p>
         ) : (
