@@ -8,6 +8,7 @@ import { useTooltipStyle } from '../lib/chartTooltip'
 import { BOND_TYPE_LABELS, formatMoney, formatNumber } from '../lib/format'
 import type { CurrentBondOffer } from '../lib/bonds'
 import { useAuth } from '../auth/AuthContext'
+import { useIsMobile } from '../lib/useIsMobile'
 
 const BELKA_TAX_RATE = 0.19
 
@@ -177,6 +178,7 @@ export default function InvestmentCalculator() {
   const { user } = useAuth()
   const base = user?.profile.base_currency ?? 'PLN'
   const tooltipStyle = useTooltipStyle()
+  const isMobile = useIsMobile()
   const [amount, setAmount] = useState('10000')
   const [years, setYears] = useState(5)
   const [rateOverrides, setRateOverrides] = useState<Record<string, string>>({})
@@ -285,11 +287,17 @@ export default function InvestmentCalculator() {
             <p className="mb-3 text-sm font-semibold text-slate-700 dark:text-slate-300">
               {t('Wynik po {0} {1} (po podatku Belki)', years, years === 1 ? t('roku') : t('latach'))}
             </p>
-            <div style={{ height: Math.max(256, rows.length * 34) }}>
+            <div style={{ height: Math.max(256, rows.length * (isMobile ? 48 : 34)) }}>
               <ResponsiveContainer width="100%" height="100%">
-                <BarChart data={rows} layout="vertical" margin={{ left: 8, right: 90 }}>
+                <BarChart data={rows} layout="vertical" margin={{ left: 8, right: isMobile ? 46 : 90 }}>
                   <XAxis type="number" hide />
-                  <YAxis type="category" dataKey="label" width={170} tick={{ fontSize: 11 }} interval={0} />
+                  <YAxis
+                    type="category"
+                    dataKey="label"
+                    width={isMobile ? 90 : 170}
+                    tick={{ fontSize: isMobile ? 10 : 11 }}
+                    interval={0}
+                  />
                   <Tooltip {...tooltipStyle} formatter={(value) => formatMoney(value as number, base)} />
                   <Bar
                     dataKey="finalValueAfterTax"
@@ -302,7 +310,7 @@ export default function InvestmentCalculator() {
                       dataKey="finalValueAfterTax"
                       position="right"
                       formatter={(value: unknown) => formatMoney(value as number, base)}
-                      style={{ fontSize: 11, fill: 'currentColor' }}
+                      style={{ fontSize: isMobile ? 9 : 11, fill: 'currentColor' }}
                       className="fill-slate-700 dark:fill-slate-200"
                     />
                   </Bar>

@@ -62,6 +62,20 @@ export function formatDateTime(value: string | null | undefined): string {
   return new Date(value).toLocaleString('pl-PL')
 }
 
+/** Session-length style duration - e.g. 45 -> "45 s", 125 -> "2 min 5 s",
+ * 4000 -> "1 godz 6 min". Drops the smaller unit once the larger one hits
+ * hours, since seconds stop being meaningful at that scale. */
+export function formatDuration(seconds: number | null | undefined): string {
+  if (seconds === null || seconds === undefined || Number.isNaN(seconds)) return '—'
+  const total = Math.round(seconds)
+  if (total < 60) return `${total} s`
+  const hours = Math.floor(total / 3600)
+  const minutes = Math.floor((total % 3600) / 60)
+  if (hours > 0) return `${hours} godz ${minutes} min`
+  const secs = total % 60
+  return `${minutes} min ${secs} s`
+}
+
 const ACCOUNT_TYPE_LABELS: Record<string, string> = {
   checking: 'osobiste',
   savings: 'oszczędnościowe',

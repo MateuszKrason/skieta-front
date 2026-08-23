@@ -1,6 +1,7 @@
-import { useState, type FormEvent } from 'react'
+import { useEffect, useState, type FormEvent } from 'react'
 import { Link, useNavigate, useSearchParams } from 'react-router-dom'
 import { AxiosError } from 'axios'
+import { api } from '../api/client'
 import { useAuth } from '../auth/AuthContext'
 import AuthTopBar from '../components/AuthTopBar'
 import SockLogo from '../components/SockLogo'
@@ -12,6 +13,16 @@ export default function Register() {
   const navigate = useNavigate()
   const [searchParams] = useSearchParams()
   const inviteToken = searchParams.get('token') ?? ''
+
+  // Fire-and-forget: records that this link was opened, whether or not the
+  // visitor ever submits the form - powers the admin-only invitation funnel
+  // report (accounts.services.invitation_funnel_stats). Doesn't affect what
+  // renders here either way.
+  useEffect(() => {
+    if (!inviteToken) return
+    api.get('/auth/invitations/check/', { params: { token: inviteToken } }).catch(() => {})
+  }, [inviteToken])
+
   const [firstName, setFirstName] = useState('')
   const [lastName, setLastName] = useState('')
   const [username, setUsername] = useState('')

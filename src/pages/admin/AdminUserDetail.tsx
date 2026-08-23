@@ -5,7 +5,7 @@ import { api } from '../../api/client'
 import { PageLoader } from '../../components/Loader'
 import { useLanguage } from '../../i18n/LanguageContext'
 import { useTooltipStyle } from '../../lib/chartTooltip'
-import { formatDate, formatDateTime } from '../../lib/format'
+import { formatDate, formatDateTime, formatDuration } from '../../lib/format'
 import type { AdminUserDetail as AdminUserDetailType, Role } from '../../types'
 
 const VARIANT_LABELS: Record<string, string> = {
@@ -296,6 +296,7 @@ export default function AdminUserDetail() {
           <InfoRow label={t('Konta bankowe')} value={user.accounts_count} />
           <InfoRow label={t('Transakcje akcji')} value={user.stock_transactions_count} />
           <InfoRow label={t('Transakcje budżetu')} value={user.budget_transactions_count} />
+          <InfoRow label={t('Średni czas sesji')} value={formatDuration(user.avg_session_duration_seconds)} />
         </div>
         <p className="mb-2 mt-5 text-xs font-medium text-slate-500 dark:text-slate-400">
           {t('Aktywność w ostatnich 30 dniach')}

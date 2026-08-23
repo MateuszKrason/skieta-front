@@ -8,6 +8,7 @@ import { useLanguage } from '../../i18n/LanguageContext'
 import { useTooltipStyle } from '../../lib/chartTooltip'
 import { formatDate, formatDateTime } from '../../lib/format'
 import type { AdminActivityStats, AdminUser } from '../../types'
+import { DailyRangePicker, useDailyRange } from './dailyRange'
 
 function StatCard({ label, value }: { label: string; value: string | number }) {
   return (
@@ -26,10 +27,16 @@ export default function AdminUsers() {
   const [isActiveFilter, setIsActiveFilter] = useState('')
   const [isStaffFilter, setIsStaffFilter] = useState('')
   const [emailVerifiedFilter, setEmailVerifiedFilter] = useState('')
+  const dailyRange = useDailyRange('30')
 
   const { data: stats } = useQuery({
-    queryKey: ['admin-stats'],
-    queryFn: async () => (await api.get<AdminActivityStats>('/auth/admin/stats/')).data,
+    queryKey: ['admin-stats', dailyRange.range.from, dailyRange.range.to],
+    queryFn: async () =>
+      (
+        await api.get<AdminActivityStats>('/auth/admin/stats/', {
+          params: { from: dailyRange.range.from, to: dailyRange.range.to },
+        })
+      ).data,
   })
 
   const { data: users, isLoading } = useQuery({
@@ -63,9 +70,12 @@ export default function AdminUsers() {
       </div>
 
       <div className="rounded-xl border border-slate-200 dark:border-slate-700 bg-white dark:bg-slate-800 p-5 shadow-sm">
-        <h2 className="mb-3 text-sm font-semibold text-slate-700 dark:text-slate-300">
-          {t('Aktywni użytkownicy dziennie (30 dni)')}
-        </h2>
+        <div className="mb-3 flex flex-wrap items-center justify-between gap-2">
+          <h2 className="text-sm font-semibold text-slate-700 dark:text-slate-300">
+            {t('Aktywni użytkownicy dziennie')}
+          </h2>
+          <DailyRangePicker {...dailyRange} />
+        </div>
         <div className="h-56">
           <ResponsiveContainer width="100%" height="100%">
             <BarChart data={stats?.daily ?? []}>

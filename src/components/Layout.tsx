@@ -4,6 +4,7 @@ import { Link, NavLink, Outlet } from 'react-router-dom'
 import { api } from '../api/client'
 import { useAuth } from '../auth/AuthContext'
 import FeedbackWidget from './FeedbackWidget'
+import InviteNudgeBubble from './InviteNudgeBubble'
 import SockLogo from './SockLogo'
 import { useTheme, type Theme } from '../theme/ThemeContext'
 import { useLanguage } from '../i18n/LanguageContext'
@@ -16,17 +17,32 @@ import type { User } from '../types'
 // "Giełda"/"Budżet"/"Planowanie" are additionally hidden per the account's
 // own feature-interest toggles (set at onboarding, editable in Account.tsx) —
 // "Konta i lokaty" always shows since a bank account is required at signup.
-const baseLinks = [
-  { to: '/dashboard', label: 'Dashboard', end: true },
-  { to: '/gielda', label: 'Giełda', interest: 'interest_stocks' as const },
-  { to: '/konta', label: 'Konta i lokaty' },
-  { to: '/budzet', label: 'Budżet', interest: 'interest_budget' as const },
-  { to: '/planowanie', label: 'Planowanie', interest: 'interest_planning' as const },
-  { to: '/analiza', label: 'Analiza', interest: 'interest_analysis' as const },
-]
+type InterestKey = 'interest_stocks' | 'interest_budget' | 'interest_planning' | 'interest_analysis'
+
+const DASHBOARD_LINK = { to: '/dashboard', label: 'Dashboard', end: true }
+
+// Everything except Dashboard (always first) and Admin (conditional, always
+// last) — keyed by route slug so a user's custom order (Profile.nav_order,
+// reorderable in Account.tsx) can be applied by key lookup. Must mirror the
+// backend's Profile.NAV_ORDER_KEYS / DEFAULT_NAV_ORDER exactly.
+export const REORDERABLE_LINKS: Record<string, { to: string; label: string; interest?: InterestKey; end?: boolean }> = {
+  budzet: { to: '/budzet', label: 'Budżet', interest: 'interest_budget' },
+  konta: { to: '/konta', label: 'Konta i lokaty' },
+  gielda: { to: '/gielda', label: 'Giełda', interest: 'interest_stocks' },
+  planowanie: { to: '/planowanie', label: 'Planowanie', interest: 'interest_planning' },
+  analiza: { to: '/analiza', label: 'Analiza', interest: 'interest_analysis' },
+}
+export const DEFAULT_NAV_ORDER = ['budzet', 'konta', 'gielda', 'planowanie', 'analiza']
 
 function getNavLinks(profile: User['profile'] | undefined, isStaff: boolean | undefined) {
-  const links = baseLinks.filter((link) => !link.interest || !profile || profile[link.interest])
+  const order =
+    profile?.nav_order && profile.nav_order.length === DEFAULT_NAV_ORDER.length ? profile.nav_order : DEFAULT_NAV_ORDER
+  const ordered = order
+    .map((key) => REORDERABLE_LINKS[key])
+    .filter((link): link is (typeof REORDERABLE_LINKS)[string] => !!link)
+  const links = [DASHBOARD_LINK, ...ordered].filter(
+    (link) => !('interest' in link) || !link.interest || !profile || profile[link.interest],
+  )
   return isStaff ? [...links, { to: '/admin', label: 'Admin' }] : links
 }
 
@@ -78,7 +94,7 @@ function HeaderActions({ stacked = false, onNavigate }: { stacked?: boolean; onN
 
   return (
     <div
-      className={`flex items-center gap-3 text-sm text-slate-600 dark:text-slate-400 ${
+      className={`flex items-center gap-2 text-sm text-slate-600 dark:text-slate-400 ${
         stacked ? 'flex-wrap gap-y-2' : ''
       }`}
     >
@@ -112,20 +128,23 @@ function HeaderActions({ stacked = false, onNavigate }: { stacked?: boolean; onN
       >
         {theme === 'light' ? '🌙' : theme === 'dark' ? '🌸' : '☀️'}
       </button>
-      <NavLink
-        to="/moje-konto"
-        onClick={onNavigate}
-        className={({ isActive }) =>
-          `flex items-center gap-1 rounded-md px-2 py-1 font-medium hover:bg-slate-100 dark:hover:bg-slate-700 ${isActive ? 'text-accent-700 dark:text-accent-400' : ''}`
-        }
-      >
-        {user?.first_name || user?.username}
-        {(user?.profile.login_streak ?? 0) > 0 && (
-          <span title={t('Seria logowań: {0} dni', String(user!.profile.login_streak))}>
-            🔥{user!.profile.login_streak}
-          </span>
-        )}
-      </NavLink>
+      <span className="relative">
+        <NavLink
+          to="/moje-konto"
+          onClick={onNavigate}
+          className={({ isActive }) =>
+            `flex items-center gap-1 rounded-md px-2 py-1 font-medium hover:bg-slate-100 dark:hover:bg-slate-700 ${isActive ? 'text-accent-700 dark:text-accent-400' : ''}`
+          }
+        >
+          {user?.first_name || user?.username}
+          {(user?.profile.login_streak ?? 0) > 0 && (
+            <span title={t('Seria logowań: {0} dni', String(user!.profile.login_streak))}>
+              🔥{user!.profile.login_streak}
+            </span>
+          )}
+        </NavLink>
+        {!stacked && <InviteNudgeBubble />}
+      </span>
       <button
         onClick={logout}
         className="rounded-md border border-slate-300 dark:border-slate-600 px-3 py-1 text-slate-600 dark:text-slate-400 hover:bg-slate-100 dark:hover:bg-slate-700"
@@ -146,7 +165,7 @@ export default function Layout() {
     <div className="min-h-screen">
       <header className="border-b border-slate-200 dark:border-slate-700 bg-white dark:bg-slate-800">
         <div className="mx-auto flex max-w-7xl items-center justify-between px-4 py-3">
-          <div className="flex items-center gap-8">
+          <div className="flex items-center gap-4 xl:gap-8">
             <Link
               to="/dashboard"
               onClick={() => setMobileOpen(false)}
@@ -155,7 +174,7 @@ export default function Layout() {
               <SockLogo className="h-6 w-6" />
               skieta
             </Link>
-            <nav className="hidden md:flex gap-1">
+            <nav className="hidden lg:flex gap-1">
               {links.map((link) => (
                 <NavLink key={link.to} to={link.to} end={link.end} className={navLinkClass}>
                   {t(link.label)}
@@ -163,20 +182,20 @@ export default function Layout() {
               ))}
             </nav>
           </div>
-          <div className="hidden md:block">
+          <div className="hidden lg:block">
             <HeaderActions onNavigate={() => setMobileOpen(false)} />
           </div>
           <button
             onClick={() => setMobileOpen((v) => !v)}
             aria-label={t('Menu')}
             aria-expanded={mobileOpen}
-            className="rounded-md border border-slate-300 dark:border-slate-600 px-2.5 py-1.5 text-slate-600 dark:text-slate-400 hover:bg-slate-100 dark:hover:bg-slate-700 md:hidden"
+            className="rounded-md border border-slate-300 dark:border-slate-600 px-2.5 py-1.5 text-slate-600 dark:text-slate-400 hover:bg-slate-100 dark:hover:bg-slate-700 lg:hidden"
           >
             {mobileOpen ? '✕' : '☰'}
           </button>
         </div>
         {mobileOpen && (
-          <div className="border-t border-slate-200 dark:border-slate-700 px-4 py-3 md:hidden">
+          <div className="border-t border-slate-200 dark:border-slate-700 px-4 py-3 lg:hidden">
             <nav className="mb-3 flex flex-col gap-1">
               {links.map((link) => (
                 <NavLink
@@ -196,7 +215,11 @@ export default function Layout() {
           </div>
         )}
       </header>
-      <main className="mx-auto max-w-7xl px-4 py-6">
+      {/* Extra bottom padding reserves room for the fixed feedback bubble
+          (bottom-left, see FeedbackWidget) so it doesn't sit on top of the
+          last card once a page is scrolled to the bottom - most visible on
+          narrow phones where cards stack into a single tall column. */}
+      <main className="mx-auto max-w-7xl px-4 pt-6 pb-24">
         <Outlet />
       </main>
       <footer className="border-t border-slate-200 dark:border-slate-700">

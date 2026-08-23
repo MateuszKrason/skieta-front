@@ -52,8 +52,18 @@
   --color-accent-950: var(--color-violet-950);
 }
 
+/* Belt-and-suspenders against stray page-wide horizontal scroll on phones
+   (a too-wide table, an un-wrapped flex row, etc.) - individual overflowing
+   elements should still scroll internally where that's the intent (see
+   `overflow-x-auto` on tables/charts throughout), this just stops the whole
+   page from sliding sideways. */
+html {
+  overflow-x: hidden;
+}
+
 body {
   @apply bg-slate-50 text-slate-900 dark:bg-slate-900 dark:text-slate-100;
+  overflow-x: hidden;
 }
 
 :root.pink body {

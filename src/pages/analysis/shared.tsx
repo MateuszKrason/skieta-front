@@ -378,8 +378,19 @@ export function TransactionList({
   }
 
   const updateMutation = useMutation({
-    mutationFn: ({ id, category, store, tags }: { id: number; category: number | null; store: number | null; tags: number[] }) =>
-      api.patch(`/budget/transactions/${id}/`, { category, store, tags }),
+    mutationFn: ({
+      id,
+      amount,
+      category,
+      store,
+      tags,
+    }: {
+      id: number
+      amount: string
+      category: number | null
+      store: number | null
+      tags: number[]
+    }) => api.patch(`/budget/transactions/${id}/`, { amount, category, store, tags }),
     onSuccess: () => {
       setEditingId(null)
       invalidateAfterEdit()
@@ -392,52 +403,55 @@ export function TransactionList({
       <div className="space-y-2">
         {transactions.map((tx) =>
           editingId === tx.id ? (
-            <EditTransactionCategoryStore
+            <EditTransaction
               key={tx.id}
               tx={tx}
               categories={(categories ?? []).filter((c) => c.type === tx.type)}
               stores={stores ?? []}
-              onSave={(category, store, tagIds) => updateMutation.mutate({ id: tx.id, category, store, tags: tagIds })}
+              onSave={(amount, category, store, tagIds) =>
+                updateMutation.mutate({ id: tx.id, amount, category, store, tags: tagIds })
+              }
               onCancel={() => setEditingId(null)}
               saving={updateMutation.isPending}
             />
           ) : (
-            <div key={tx.id} className="flex items-center justify-between border-b border-slate-100 dark:border-slate-800 py-1.5 text-sm last:border-0">
-              <span>
+            <div
+              key={tx.id}
+              className="flex flex-col gap-1 border-b border-slate-100 dark:border-slate-800 py-2 text-sm last:border-0 sm:flex-row sm:items-center sm:justify-between sm:gap-3 sm:py-1.5"
+            >
+              <div className="flex flex-wrap items-center gap-x-1 gap-y-1">
                 <span className={tx.type === 'income' ? 'text-emerald-600' : 'text-red-600 dark:text-red-400'}>
                   {tx.type === 'income' ? '+' : '−'} {formatMoney(tx.amount, tx.currency)}
-                </span>{' '}
+                </span>
                 <span className="text-slate-500 dark:text-slate-400">{tx.category_detail?.name ?? t('Bez kategorii')}</span>
-                {tx.store_detail && (
-                  <span className="text-slate-400 dark:text-slate-500"> · {tx.store_detail.name}</span>
-                )}
-                {tx.description && <span className="text-slate-400 dark:text-slate-500"> — {tx.description}</span>}
+                {tx.store_detail && <span className="text-slate-400 dark:text-slate-500">· {tx.store_detail.name}</span>}
+                {tx.description && <span className="text-slate-400 dark:text-slate-500">— {tx.description}</span>}
                 {tx.account_detail && (
-                  <span className="ml-1 rounded-full bg-slate-100 dark:bg-slate-700 px-2 py-0.5 text-xs text-slate-500 dark:text-slate-400">
+                  <span className="rounded-full bg-slate-100 dark:bg-slate-700 px-2 py-0.5 text-xs text-slate-500 dark:text-slate-400">
                     {tx.account_detail.name}
                   </span>
                 )}
                 {tx.tags_detail.map((tag) => (
                   <span
                     key={tag.id}
-                    className="ml-1 rounded-full bg-accent-50 dark:bg-accent-900/30 px-2 py-0.5 text-xs text-accent-700 dark:text-accent-400"
+                    className="rounded-full bg-accent-50 dark:bg-accent-900/30 px-2 py-0.5 text-xs text-accent-700 dark:text-accent-400"
                   >
                     #{tag.name}
                   </span>
                 ))}
-              </span>
-              <span className="flex items-center gap-3">
+              </div>
+              <div className="flex shrink-0 items-center gap-3">
                 <span className="text-slate-400 dark:text-slate-500">{formatDate(tx.date)}</span>
                 <button
                   onClick={() => setEditingId(tx.id)}
                   className="text-xs font-medium text-accent-700 dark:text-accent-400 hover:underline"
                 >
-                  {t('Kategoria/sklep/tagi')}
+                  {t('Edytuj')}
                 </button>
                 <button onClick={() => onDelete(tx.id)} className="text-xs font-medium text-red-600 dark:text-red-400 hover:underline">
                   {t('Usuń')}
                 </button>
-              </span>
+              </div>
             </div>
           ),
         )}
@@ -556,7 +570,7 @@ function TagPicker({ selected, onToggle }: { selected: number[]; onToggle: (id: 
   )
 }
 
-function EditTransactionCategoryStore({
+function EditTransaction({
   tx,
   categories,
   stores,
@@ -567,11 +581,12 @@ function EditTransactionCategoryStore({
   tx: BudgetTransaction
   categories: Category[]
   stores: Store[]
-  onSave: (category: number | null, store: number | null, tags: number[]) => void
+  onSave: (amount: string, category: number | null, store: number | null, tags: number[]) => void
   onCancel: () => void
   saving: boolean
 }) {
   const { t } = useLanguage()
+  const [amount, setAmount] = useState(tx.amount)
   const [category, setCategory] = useState<number | ''>(tx.category ?? '')
   const [store, setStore] = useState<number | ''>(tx.store ?? '')
   const [selectedTags, setSelectedTags] = useState<number[]>(tx.tags ?? [])
@@ -582,9 +597,17 @@ function EditTransactionCategoryStore({
 
   return (
     <div className="flex flex-wrap items-end gap-2 border-b border-slate-100 dark:border-slate-800 py-2 text-sm">
-      <span className="text-xs text-slate-500 dark:text-slate-400">
-        {formatMoney(tx.amount, tx.currency)} {tx.description && `— ${tx.description}`}
-      </span>
+      {tx.description && <span className="text-xs text-slate-500 dark:text-slate-400">{tx.description}</span>}
+      <Field label="Kwota">
+        <input
+          type="number"
+          step="0.01"
+          value={amount}
+          onChange={(e) => setAmount(e.target.value)}
+          required
+          className="input w-28"
+        />
+      </Field>
       <Field label="Kategoria">
         <select value={category} onChange={(e) => setCategory(e.target.value ? Number(e.target.value) : '')} className="input">
           <option value="">{t('bez kategorii')}</option>
@@ -607,8 +630,8 @@ function EditTransactionCategoryStore({
       </Field>
       <TagPicker selected={selectedTags} onToggle={toggleTag} />
       <button
-        onClick={() => onSave(category || null, store || null, selectedTags)}
-        disabled={saving}
+        onClick={() => onSave(amount, category || null, store || null, selectedTags)}
+        disabled={saving || !amount}
         className="btn-primary"
       >
         {t('Zapisz')}

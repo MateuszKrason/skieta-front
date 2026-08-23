@@ -46,7 +46,12 @@ export default function AdminFeedback() {
   const setStatus = useMutation({
     mutationFn: ({ id, status }: { id: number; status: Feedback['status'] }) =>
       api.patch(`/feedback/${id}/`, { status }),
-    onSuccess: () => queryClient.invalidateQueries({ queryKey: ['admin-feedback'] }),
+    onSuccess: () => {
+      queryClient.invalidateQueries({ queryKey: ['admin-feedback'] })
+      // Changing status away from 'new' affects the nav badge's count too
+      // (AdminNotificationCountsView counts status='new' feedback).
+      queryClient.invalidateQueries({ queryKey: ['admin-notification-counts'] })
+    },
   })
 
   const toggleImportant = useMutation({

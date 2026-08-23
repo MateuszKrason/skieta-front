@@ -308,6 +308,7 @@ export interface User {
     interest_analysis: boolean
     permissions: string[]
     username_changed_at: string | null
+    nav_order: string[]
   }
 }
 
@@ -399,6 +400,26 @@ export interface AdminAppStats {
   stock_transaction_count: number
   bank_account_count: number
   role_count: number
+  avg_session_duration_seconds: number
+  signups_daily: { date: string; count: number }[]
+}
+
+export interface InvitationFunnelRow {
+  invitation_id: number
+  inviter: string
+  inviter_id: number
+  email: string | null
+  visit_count: number
+  first_visited_at: string
+  last_visited_at: string
+}
+
+export interface InvitationFunnelStats {
+  visited_count: number
+  not_registered_count: number
+  registered_count: number
+  avg_visits_to_register: number
+  not_registered: InvitationFunnelRow[]
 }
 
 export interface LoginHistoryEntry {
@@ -491,6 +512,7 @@ export interface AdminUserDetail {
   activity_last_30_days: AdminUserActivityDay[]
   total_active_days: number
   role_assignments: RoleAssignment[]
+  avg_session_duration_seconds: number
 }
 
 export interface AdminActivityStats {

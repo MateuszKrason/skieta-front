@@ -125,10 +125,10 @@ export default function Portfel() {
 
   return (
     <div className="space-y-6">
-      <div className="flex items-center justify-between">
+      <div className="flex flex-col gap-3 sm:flex-row sm:items-center sm:justify-between">
         <div>
           <h1 className="text-2xl font-bold text-slate-900 dark:text-slate-100">{t('Portfel akcji i ETF-ów')}</h1>
-          <p className="flex items-center gap-1.5 text-sm text-slate-500 dark:text-slate-400">
+          <p className="flex flex-wrap items-center gap-1.5 text-sm text-slate-500 dark:text-slate-400">
             {t('Kursy aktualizowane automatycznie 2x dziennie — kliknij "Odśwież kursy" po bieżącą cenę')}
             {(isFetching || refreshPrices.isPending) && (
               <span className="inline-flex items-center gap-1">
@@ -137,7 +137,7 @@ export default function Portfel() {
             )}
           </p>
         </div>
-        <div className="flex gap-2">
+        <div className="flex flex-wrap gap-2">
           <button
             onClick={() => refreshPrices.mutate()}
             disabled={refreshPrices.isPending}
@@ -374,26 +374,29 @@ export default function Portfel() {
         <h2 className="mb-3 text-sm font-semibold text-slate-700 dark:text-slate-300">{t('Historia transakcji')}</h2>
         <div className="space-y-2">
           {(transactions ?? []).map((tx) => (
-            <div key={tx.id} className="flex justify-between border-b border-slate-100 dark:border-slate-800 py-1.5 text-sm last:border-0">
-              <span>
+            <div
+              key={tx.id}
+              className="flex flex-col gap-1 border-b border-slate-100 dark:border-slate-800 py-2 text-sm last:border-0 sm:flex-row sm:items-center sm:justify-between sm:gap-3 sm:py-1.5"
+            >
+              <div className="flex flex-wrap items-center gap-x-1 gap-y-1">
                 <span className={tx.type === 'BUY' ? 'text-emerald-600' : 'text-red-600 dark:text-red-400'}>
                   {tx.type === 'BUY' ? t('Kupno') : t('Sprzedaż')}
-                </span>{' '}
-                {formatNumber(tx.quantity, 4)}x {tx.stock_detail.ticker} @{' '}
-                {formatMoney(tx.price_per_share, tx.currency)}
+                </span>
+                <span>
+                  {formatNumber(tx.quantity, 4)}x {tx.stock_detail.ticker} @ {formatMoney(tx.price_per_share, tx.currency)}
+                </span>
                 {tx.exchange_rate_at_purchase && (
                   <span className="text-xs text-slate-400 dark:text-slate-500">
-                    {' '}
                     ({t('kurs')} {formatNumber(tx.exchange_rate_at_purchase, 4)} PLN/{tx.currency})
                   </span>
                 )}
                 {tx.account_detail && (
-                  <span className="ml-2 rounded-full bg-slate-100 dark:bg-slate-700 px-2 py-0.5 text-xs text-slate-500 dark:text-slate-400">
+                  <span className="rounded-full bg-slate-100 dark:bg-slate-700 px-2 py-0.5 text-xs text-slate-500 dark:text-slate-400">
                     {tx.account_detail.name}
                   </span>
                 )}
-              </span>
-              <span className="text-slate-400 dark:text-slate-500">{tx.executed_at}</span>
+              </div>
+              <span className="shrink-0 text-slate-400 dark:text-slate-500">{tx.executed_at}</span>
             </div>
           ))}
           {transactions?.length === 0 && <p className="text-slate-400 dark:text-slate-500">{t('Brak transakcji.')}</p>}

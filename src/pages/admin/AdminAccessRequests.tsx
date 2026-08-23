@@ -25,6 +25,9 @@ export default function AdminAccessRequests() {
 
   function invalidate() {
     queryClient.invalidateQueries({ queryKey: ['admin-access-requests'] })
+    // Accepting/rejecting moves a request off status='pending', which
+    // affects the nav badge's count too (AdminNotificationCountsView).
+    queryClient.invalidateQueries({ queryKey: ['admin-notification-counts'] })
   }
 
   const accept = useMutation({

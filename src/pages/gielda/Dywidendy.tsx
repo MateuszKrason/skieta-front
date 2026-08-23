@@ -257,7 +257,7 @@ export default function Dywidendy() {
 
   return (
     <div className="space-y-6">
-      <div className="flex items-center justify-between">
+      <div className="flex flex-col gap-3 sm:flex-row sm:items-center sm:justify-between">
         <div>
           <h1 className="text-2xl font-bold text-slate-900 dark:text-slate-100">{t('Profil dywidendowy')}</h1>
           <p className="text-sm text-slate-500 dark:text-slate-400">
@@ -265,7 +265,7 @@ export default function Dywidendy() {
             {sync.isPending && ` — ${t('wykrywam dywidendy…')}`}
           </p>
         </div>
-        <div className="flex gap-2">
+        <div className="flex flex-wrap gap-2">
           <button
             onClick={() => sync.mutate()}
             disabled={sync.isPending}
@@ -343,26 +343,31 @@ export default function Dywidendy() {
           </p>
           <div className="space-y-2">
             {(summary?.upcoming ?? []).map((d) => (
-              <div key={d.id} className="flex justify-between border-b border-amber-100 py-1.5 text-sm last:border-0">
-                <span>
-                  {d.stock_detail.ticker}
-                  {d.stock_detail.name && ` ${d.stock_detail.name}`} - {d.is_confirmed ? '' : `${t('ok.')} `}
-                  {formatMoney(d.total_amount, d.currency)}
+              <div
+                key={d.id}
+                className="flex flex-col gap-1 border-b border-amber-100 py-2 text-sm last:border-0 sm:flex-row sm:items-center sm:justify-between sm:gap-3 sm:py-1.5"
+              >
+                <div className="flex flex-wrap items-center gap-x-1 gap-y-1">
+                  <span>
+                    {d.stock_detail.ticker}
+                    {d.stock_detail.name && ` ${d.stock_detail.name}`} - {d.is_confirmed ? '' : `${t('ok.')} `}
+                    {formatMoney(d.total_amount, d.currency)}
+                  </span>
                   {d.after_tax_amount !== null && (
                     <span
-                      className="ml-1 text-xs text-slate-400 dark:text-slate-500"
+                      className="text-xs text-slate-400 dark:text-slate-500"
                       title={t('Po podatku od zysków kapitałowych (19%)')}
                     >
                       ({t('po Belce')}: {formatMoney(d.after_tax_amount, d.currency)})
                     </span>
                   )}
                   {d.is_confirmed && (
-                    <span className="ml-2 rounded-full bg-accent-100 dark:bg-accent-900/50 px-2 py-0.5 text-xs font-medium text-accent-700 dark:text-accent-400">
+                    <span className="rounded-full bg-accent-100 dark:bg-accent-900/50 px-2 py-0.5 text-xs font-medium text-accent-700 dark:text-accent-400">
                       {t('ogłoszona')}
                     </span>
                   )}
-                </span>
-                <span className="text-amber-600 dark:text-amber-400">{formatDate(d.payment_date)}</span>
+                </div>
+                <span className="shrink-0 text-amber-600 dark:text-amber-400">{formatDate(d.payment_date)}</span>
               </div>
             ))}
           </div>
@@ -619,17 +624,22 @@ export default function Dywidendy() {
           {(dividends ?? [])
             .filter((d) => d.status === 'paid')
             .map((d) => (
-              <div key={d.id} className="flex justify-between border-b border-slate-100 dark:border-slate-800 py-1.5 text-sm last:border-0">
-                <span>
-                  {d.stock_detail.ticker}
-                  {d.stock_detail.name && ` ${d.stock_detail.name}`} - {formatMoney(d.total_amount, d.currency)}
+              <div
+                key={d.id}
+                className="flex flex-col gap-1 border-b border-slate-100 dark:border-slate-800 py-2 text-sm last:border-0 sm:flex-row sm:items-center sm:justify-between sm:gap-3 sm:py-1.5"
+              >
+                <div className="flex flex-wrap items-center gap-x-1 gap-y-1">
+                  <span>
+                    {d.stock_detail.ticker}
+                    {d.stock_detail.name && ` ${d.stock_detail.name}`} - {formatMoney(d.total_amount, d.currency)}
+                  </span>
                   {d.auto_detected && (
-                    <span className="ml-2 rounded-full bg-slate-100 dark:bg-slate-700 px-2 py-0.5 text-xs text-slate-500 dark:text-slate-400">
+                    <span className="rounded-full bg-slate-100 dark:bg-slate-700 px-2 py-0.5 text-xs text-slate-500 dark:text-slate-400">
                       {t('wykryta automatycznie')}
                     </span>
                   )}
-                </span>
-                <span className="text-slate-400 dark:text-slate-500">{formatDate(d.payment_date)}</span>
+                </div>
+                <span className="shrink-0 text-slate-400 dark:text-slate-500">{formatDate(d.payment_date)}</span>
               </div>
             ))}
           {dividends?.filter((d) => d.status === 'paid').length === 0 && (

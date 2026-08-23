@@ -1,9 +1,10 @@
-import { useState, type FormEvent } from 'react'
+import { useEffect, useState, type FormEvent } from 'react'
 import { useMutation, useQuery, useQueryClient } from '@tanstack/react-query'
 import { QRCodeSVG } from 'qrcode.react'
 import { Link } from 'react-router-dom'
 import { api } from '../api/client'
 import { useAuth } from '../auth/AuthContext'
+import { DEFAULT_NAV_ORDER, REORDERABLE_LINKS } from '../components/Layout'
 import { useLanguage } from '../i18n/LanguageContext'
 import { formatDateTime } from '../lib/format'
 import { useTheme, type Theme } from '../theme/ThemeContext'
@@ -43,6 +44,7 @@ export default function Account() {
       <ProfileForm />
       <AppearanceForm />
       <InterestsForm />
+      <NavOrderForm />
       <PasswordForm />
       <InviteFriends />
       <LoginHistorySection />
@@ -108,6 +110,100 @@ function InterestsForm() {
           )
         })}
       </div>
+    </div>
+  )
+}
+
+function NavOrderForm() {
+  const { user, updateProfile } = useAuth()
+  const { t } = useLanguage()
+  const [order, setOrder] = useState<string[]>(user?.profile.nav_order ?? DEFAULT_NAV_ORDER)
+  const [dragKey, setDragKey] = useState<string | null>(null)
+  const [overKey, setOverKey] = useState<string | null>(null)
+
+  useEffect(() => {
+    if (user?.profile.nav_order) setOrder(user.profile.nav_order)
+  }, [user?.profile.nav_order])
+
+  const mutation = useMutation({
+    mutationFn: (nextOrder: string[]) => api.patch('/auth/me/', { nav_order: nextOrder }),
+  })
+
+  // A tab whose "Z czego korzystasz" interest is unchecked is already hidden
+  // from the real nav (see Layout.tsx's getNavLinks) - hide it here too so
+  // there's nothing to drag that wouldn't show up anywhere. "Konta i lokaty"
+  // has no interest key, so it's always visible.
+  function isVisible(key: string) {
+    const link = REORDERABLE_LINKS[key]
+    if (!link) return false
+    return !link.interest || !user || user.profile[link.interest]
+  }
+  const visibleKeys = order.filter(isVisible)
+
+  // Dragging only reorders the visible subset - a hidden (unchecked) key
+  // keeps its exact array slot untouched, so wherever it lands once its
+  // interest gets re-enabled is whatever was last saved, not scrambled by
+  // reorders that happened while it was hidden.
+  function commit(newVisibleKeys: string[]) {
+    let i = 0
+    const next = order.map((key) => (isVisible(key) ? newVisibleKeys[i++] : key))
+    setOrder(next)
+    updateProfile({ nav_order: next })
+    mutation.mutate(next)
+  }
+
+  function handleDrop(targetKey: string) {
+    setOverKey(null)
+    if (!dragKey || dragKey === targetKey) return
+    const next = [...visibleKeys]
+    const from = next.indexOf(dragKey)
+    const to = next.indexOf(targetKey)
+    next.splice(from, 1)
+    next.splice(to, 0, dragKey)
+    commit(next)
+  }
+
+  return (
+    <div className="space-y-3 rounded-xl border border-slate-200 dark:border-slate-700 bg-white dark:bg-slate-800 p-5 shadow-sm">
+      <h2 className="text-sm font-semibold text-slate-700 dark:text-slate-300">{t('Kolejność kart w menu')}</h2>
+      <p className="text-xs text-slate-500 dark:text-slate-400">
+        {t(
+          'Przeciągnij, aby ustawić kolejność, w jakiej karty pojawiają się w górnym menu — Dashboard zawsze jest pierwszy.',
+        )}
+      </p>
+      <ul className="space-y-1.5">
+        {visibleKeys.map((key) => {
+          const link = REORDERABLE_LINKS[key]
+          return (
+            <li
+              key={key}
+              draggable
+              onDragStart={() => setDragKey(key)}
+              onDragEnd={() => {
+                setDragKey(null)
+                setOverKey(null)
+              }}
+              onDragOver={(e) => {
+                e.preventDefault()
+                if (key !== overKey) setOverKey(key)
+              }}
+              onDrop={() => handleDrop(key)}
+              className={`flex cursor-grab items-center gap-2 rounded-md border px-3 py-2 text-sm text-slate-700 dark:text-slate-300 active:cursor-grabbing ${
+                dragKey === key
+                  ? 'opacity-40 border-slate-200 dark:border-slate-700'
+                  : overKey === key
+                    ? 'border-accent-500'
+                    : 'border-slate-200 dark:border-slate-700'
+              }`}
+            >
+              <span className="text-slate-400 dark:text-slate-500" aria-hidden="true">
+                ⠿
+              </span>
+              <span>{t(link.label)}</span>
+            </li>
+          )
+        })}
+      </ul>
     </div>
   )
 }
@@ -475,6 +571,49 @@ function PasswordForm() {
   )
 }
 
+function formatCountdown(totalSeconds: number): string {
+  const h = Math.floor(totalSeconds / 3600)
+  const m = Math.floor((totalSeconds % 3600) / 60)
+  const s = totalSeconds % 60
+  const pad = (n: number) => String(n).padStart(2, '0')
+  return h > 0 ? `${h}:${pad(m)}:${pad(s)}` : `${m}:${pad(s)}`
+}
+
+// Live countdown shown under an open QR code - ticks every second, and
+// closes the QR itself (via onExpire) the moment the invite actually
+// expires, instead of leaving a dead QR sitting on screen.
+function QrCountdown({ expiresAt, onExpire }: { expiresAt: string; onExpire: () => void }) {
+  const { t } = useLanguage()
+  const [remainingSeconds, setRemainingSeconds] = useState(() =>
+    Math.max(0, Math.floor((new Date(expiresAt).getTime() - Date.now()) / 1000)),
+  )
+
+  useEffect(() => {
+    const tick = () => {
+      const next = Math.max(0, Math.floor((new Date(expiresAt).getTime() - Date.now()) / 1000))
+      setRemainingSeconds(next)
+      if (next === 0) {
+        clearInterval(interval)
+        onExpire()
+      }
+    }
+    const interval = setInterval(tick, 1000)
+    return () => clearInterval(interval)
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [expiresAt])
+
+  if (remainingSeconds <= 0) return null
+
+  return (
+    <div className="mt-2 text-center">
+      <p className="text-3xl font-bold tabular-nums text-accent-700 dark:text-accent-400">
+        {formatCountdown(remainingSeconds)}
+      </p>
+      <p className="text-xs text-slate-400 dark:text-slate-500">{t('Ważny jeszcze przez')}</p>
+    </div>
+  )
+}
+
 function InviteFriends() {
   const { t } = useLanguage()
   const queryClient = useQueryClient()
@@ -533,8 +672,20 @@ function InviteFriends() {
     ?.response?.data
   const errorDetail = errorData?.detail ?? errorData?.email
 
+  // Deep-link target for the "invite a friend" header nudge (see
+  // InviteNudgeBubble) - jumps straight here instead of just landing on the
+  // account page and leaving the user to scroll and find it themselves.
+  useEffect(() => {
+    if (window.location.hash === '#zaproszenia') {
+      document.getElementById('zaproszenia')?.scrollIntoView({ behavior: 'smooth', block: 'start' })
+    }
+  }, [])
+
   return (
-    <div className="space-y-3 rounded-xl border border-slate-200 dark:border-slate-700 bg-white dark:bg-slate-800 p-5 shadow-sm">
+    <div
+      id="zaproszenia"
+      className="space-y-3 rounded-xl border border-slate-200 dark:border-slate-700 bg-white dark:bg-slate-800 p-5 shadow-sm scroll-mt-20"
+    >
       <div className="flex items-center justify-between">
         <h2 className="text-sm font-semibold text-slate-700 dark:text-slate-300">{t('Zaproś znajomych')}</h2>
         <span className="text-xs text-slate-400 dark:text-slate-500">
@@ -706,8 +857,11 @@ function InviteFriends() {
                   </div>
                 </div>
                 {qrId === inv.id && (
-                  <div className="mt-2 flex justify-center rounded-md bg-white p-3">
-                    <QRCodeSVG value={inv.invite_url} size={160} />
+                  <div className="mt-2">
+                    <div className="flex justify-center rounded-md bg-white p-3">
+                      <QRCodeSVG value={inv.invite_url} size={160} />
+                    </div>
+                    <QrCountdown expiresAt={inv.expires_at} onExpire={() => setQrId((prev) => (prev === inv.id ? null : prev))} />
                   </div>
                 )}
                 <p className="mt-1 text-xs text-slate-400 dark:text-slate-500">
