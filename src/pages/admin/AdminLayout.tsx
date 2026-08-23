@@ -8,10 +8,12 @@ export default function AdminLayout() {
   const { user } = useAuth()
   const isStaff = !!user?.is_staff
   const canViewStats = isStaff || (user?.profile.permissions.includes('stats.view') ?? false)
+  const canManageInvites = isStaff || (user?.profile.permissions.includes('invites.manage') ?? false)
 
   const tabs = [
     ...(isStaff ? [{ to: '/admin/uzytkownicy', label: t('Użytkownicy') }] : []),
     ...(isStaff ? [{ to: '/admin/prosby-o-dostep', label: t('Prośby o dostęp') }] : []),
+    ...(canManageInvites ? [{ to: '/admin/zaproszenia-grupowe', label: t('Zaproszenia grupowe') }] : []),
     ...(isStaff ? [{ to: '/admin/feedback', label: t('Feedback') }] : []),
     ...(canViewStats ? [{ to: '/admin/statystyki', label: t('Statystyki') }] : []),
     ...(isStaff ? [{ to: '/admin/role', label: t('Role') }] : []),

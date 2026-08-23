@@ -346,6 +346,9 @@ export default function Landing() {
             <Link to="/polityka-prywatnosci" className="hover:text-accent-700 dark:hover:text-accent-400 hover:underline">
               {t('Polityka prywatności')}
             </Link>
+            <Link to="/regulamin" className="hover:text-accent-700 dark:hover:text-accent-400 hover:underline">
+              {t('Regulamin')}
+            </Link>
             <span>© {new Date().getFullYear()} skieta</span>
           </div>
         </div>

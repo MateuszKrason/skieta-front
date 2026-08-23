@@ -309,6 +309,26 @@ export interface Invitation {
   is_expired: boolean
 }
 
+export interface InviteBatchRedemption {
+  username: string
+  created_at: string
+}
+
+export interface InviteBatch {
+  id: number
+  token: string
+  invite_url: string
+  label: string
+  capacity: number
+  used_count: number
+  remaining: number
+  expires_at: string
+  is_expired: boolean
+  created_by: string
+  created_at: string
+  redemptions: InviteBatchRedemption[]
+}
+
 export interface AdminInvitedEmail {
   id: number
   email: string

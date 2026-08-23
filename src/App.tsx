@@ -9,6 +9,7 @@ import ProtectedRoute from './components/ProtectedRoute'
 import ArticleDetail from './pages/ArticleDetail'
 import Landing from './pages/Landing'
 import PrivacyPolicy from './pages/PrivacyPolicy'
+import Terms from './pages/Terms'
 import Login from './pages/Login'
 import Register from './pages/Register'
 import ForgotPassword from './pages/ForgotPassword'
@@ -27,6 +28,7 @@ import AdminFeedback from './pages/admin/AdminFeedback'
 import AdminStatystyki from './pages/admin/AdminStatystyki'
 import AdminRole from './pages/admin/AdminRole'
 import AdminAccessRequests from './pages/admin/AdminAccessRequests'
+import AdminGroupInvites from './pages/admin/AdminGroupInvites'
 import Redakcja from './pages/Redakcja'
 import GieldaLayout from './pages/gielda/GieldaLayout'
 import Portfel from './pages/gielda/Portfel'
@@ -41,6 +43,7 @@ import InvestmentCalculator from './pages/InvestmentCalculator'
 
 const PAGE_TITLES: [string, string][] = [
   ['/polityka-prywatnosci', 'Polityka prywatności'],
+  ['/regulamin', 'Regulamin usługi'],
   ['/', 'Panuj nad swoimi finansami'],
   ['/logowanie', 'Logowanie'],
   ['/register', 'Rejestracja'],
@@ -74,6 +77,7 @@ function AdminIndexRedirect() {
   const { user } = useAuth()
   if (user?.is_staff) return <Navigate to="uzytkownicy" replace />
   if (user?.profile.permissions.includes('stats.view')) return <Navigate to="statystyki" replace />
+  if (user?.profile.permissions.includes('invites.manage')) return <Navigate to="zaproszenia-grupowe" replace />
   return <Navigate to="/dashboard" replace />
 }
 
@@ -90,7 +94,7 @@ function useDocumentTitle() {
 // canonical tag pointing at themselves — everything else (the app itself,
 // behind login) points back at the landing page, since that's the one real
 // entry point search engines should treat as canonical for those paths.
-const CANONICAL_SELF_PATHS = ['/', '/polityka-prywatnosci']
+const CANONICAL_SELF_PATHS = ['/', '/polityka-prywatnosci', '/regulamin']
 
 function useCanonicalLink() {
   const location = useLocation()
@@ -116,6 +120,7 @@ export default function App() {
       <Route path="/" element={<Landing />} />
       <Route path="/witaj" element={<Navigate to="/" replace />} />
       <Route path="/polityka-prywatnosci" element={<PrivacyPolicy />} />
+      <Route path="/regulamin" element={<Terms />} />
       <Route path="/artykuly/:slug" element={<ArticleDetail />} />
       <Route path="/logowanie" element={<Login />} />
       <Route path="/login" element={<Navigate to="/logowanie" replace />} />
@@ -141,6 +146,7 @@ export default function App() {
               <Route path="feedback" element={<AdminFeedback />} />
               <Route path="statystyki" element={<AdminStatystyki />} />
               <Route path="prosby-o-dostep" element={<AdminAccessRequests />} />
+              <Route path="zaproszenia-grupowe" element={<AdminGroupInvites />} />
               <Route path="role" element={<AdminRole />} />
             </Route>
             <Route path="/admin/uzytkownicy/:id" element={<AdminUserDetail />} />
