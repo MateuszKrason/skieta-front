@@ -38,6 +38,7 @@ const AdminRole = lazy(() => import('./pages/admin/AdminRole'))
 const AdminAccessRequests = lazy(() => import('./pages/admin/AdminAccessRequests'))
 const AdminGroupInvites = lazy(() => import('./pages/admin/AdminGroupInvites'))
 const AdminLandingPromotions = lazy(() => import('./pages/admin/AdminLandingPromotions'))
+const AdminArticlesVisibility = lazy(() => import('./pages/admin/AdminArticlesVisibility'))
 const Redakcja = lazy(() => import('./pages/Redakcja'))
 const GieldaLayout = lazy(() => import('./pages/gielda/GieldaLayout'))
 const Portfel = lazy(() => import('./pages/gielda/Portfel'))
@@ -159,6 +160,7 @@ export default function App() {
               <Route path="prosby-o-dostep" element={<AdminAccessRequests />} />
               <Route path="zaproszenia-grupowe" element={<AdminGroupInvites />} />
               <Route path="promocja-startowa" element={<AdminLandingPromotions />} />
+              <Route path="artykuly" element={<AdminArticlesVisibility />} />
               <Route path="role" element={<AdminRole />} />
             </Route>
             <Route path="/admin/uzytkownicy/:id" element={<AdminUserDetail />} />

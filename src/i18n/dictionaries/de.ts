@@ -1194,4 +1194,16 @@ export const de: Record<string, string> = {
   'Ta operacja jest nieodwracalna i trwale usunie konto oraz wszystkie dane użytkownika z bazy danych. Wpisz nazwę użytkownika "{0}", żeby potwierdzić.':
     'Diese Aktion ist unwiderruflich und löscht das Konto sowie alle Daten dieses Nutzers dauerhaft aus der Datenbank. Gib den Benutzernamen "{0}" ein, um zu bestätigen.',
   'Nazwa użytkownika się nie zgadza — anulowano.': 'Benutzername stimmt nicht überein — abgebrochen.',
+
+  // Footer / landing mock card
+  'Regulamin': 'Nutzungsbedingungen',
+  'Dywidendy YTD': 'Dividenden YTD',
+
+  // Admin: articles visibility per language
+  'Artykuły': 'Artikel',
+  'Widoczność artykułów': 'Sichtbarkeit der Artikel',
+  'Artykuły są dziś pisane wyłącznie po polsku - wyłącz sekcję artykułów na stronie głównej dla języków, w których nie ma jeszcze tłumaczeń.':
+    'Artikel werden heute ausschließlich auf Polnisch geschrieben - schalte den Artikelbereich auf der Startseite für Sprachen aus, für die es noch keine Übersetzungen gibt.',
+  'widoczne': 'sichtbar',
+  'ukryte': 'ausgeblendet',
 }

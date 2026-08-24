@@ -31,6 +31,7 @@ export default function AdminLayout() {
       : []),
     ...(canManageInvites ? [{ to: '/admin/zaproszenia-grupowe', label: t('Zaproszenia grupowe') }] : []),
     ...(canManageInvites ? [{ to: '/admin/promocja-startowa', label: t('Promocja na stronie') }] : []),
+    ...(isStaff ? [{ to: '/admin/artykuly', label: t('Artykuły') }] : []),
     ...(isStaff ? [{ to: '/admin/feedback', label: t('Feedback'), badge: counts?.new_feedback }] : []),
     ...(canViewStats ? [{ to: '/admin/statystyki', label: t('Statystyki') }] : []),
     ...(isStaff ? [{ to: '/admin/role', label: t('Role') }] : []),

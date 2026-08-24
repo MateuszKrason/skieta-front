@@ -131,10 +131,11 @@ const STEPS = [
 ]
 
 function MockDashboardCard() {
+  const { t } = useLanguage()
   return (
     <div className="relative rounded-2xl border border-slate-200/80 dark:border-slate-700/80 bg-white/90 dark:bg-slate-800/90 p-5 shadow-2xl shadow-slate-900/10 backdrop-blur">
       <div className="flex items-center justify-between">
-        <p className="text-xs font-medium text-slate-500 dark:text-slate-400">Wartość majątku</p>
+        <p className="text-xs font-medium text-slate-500 dark:text-slate-400">{t('Wartość majątku')}</p>
         <span className="rounded-full bg-emerald-100 dark:bg-emerald-900/40 px-2 py-0.5 text-[10px] font-semibold text-emerald-700 dark:text-emerald-400">
           +4.5%
         </span>
@@ -148,11 +149,11 @@ function MockDashboardCard() {
       </div>
       <div className="mt-5 grid grid-cols-2 gap-3">
         <div className="rounded-lg bg-slate-50 dark:bg-slate-900 p-3">
-          <p className="text-[10px] font-medium text-slate-500 dark:text-slate-400">Zysk</p>
+          <p className="text-[10px] font-medium text-slate-500 dark:text-slate-400">{t('Zysk')}</p>
           <p className="mt-0.5 text-sm font-semibold text-emerald-600 dark:text-emerald-400">+6 150 zł</p>
         </div>
         <div className="rounded-lg bg-slate-50 dark:bg-slate-900 p-3">
-          <p className="text-[10px] font-medium text-slate-500 dark:text-slate-400">Dywidendy YTD</p>
+          <p className="text-[10px] font-medium text-slate-500 dark:text-slate-400">{t('Dywidendy YTD')}</p>
           <p className="mt-0.5 text-sm font-semibold text-slate-700 dark:text-slate-200">3 200 zł</p>
         </div>
       </div>
@@ -240,6 +241,14 @@ export default function Landing() {
     queryKey: ['content-articles'],
     queryFn: async () => (await api.get<Article[]>('/content/articles/')).data,
   })
+  // Articles are all written in Polish today - admin-toggleable per site
+  // language (see AdminArticlesVisibility.tsx) so the section can stay
+  // hidden for languages without translated content yet.
+  const { data: articlesVisibility } = useQuery({
+    queryKey: ['articles-visibility'],
+    queryFn: async () => (await api.get<Record<string, boolean>>('/content/articles-visibility/')).data,
+  })
+  const articlesEnabled = articlesVisibility?.[language] ?? true
 
   // A signed-in visitor still sees the landing page (e.g. clicking the logo
   // from inside the app) — the CTAs below just point into the app instead of
@@ -369,33 +378,35 @@ export default function Landing() {
       </section>
 
       {/* Articles */}
-      <section className="mx-auto max-w-6xl px-4 py-16 sm:py-20">
-        <h2 className="mb-6 text-2xl font-bold text-slate-900 dark:text-slate-100">{t('Artykuły o finansach osobistych')}</h2>
-        {!articles?.length ? (
-          <p className="text-slate-500 dark:text-slate-400">{t('Wkrótce pojawią się tu pierwsze artykuły.')}</p>
-        ) : (
-          <div className="grid grid-cols-1 gap-4 sm:grid-cols-2 lg:grid-cols-3">
-            {articles.map((a) => (
-              <Link
-                key={a.id}
-                to={`/artykuly/${a.slug}`}
-                className="block rounded-xl border border-slate-200 dark:border-slate-800 bg-white dark:bg-slate-900 p-5 shadow-sm transition hover:-translate-y-1 hover:border-accent-300 dark:hover:border-accent-700 hover:shadow-md"
-              >
-                <time dateTime={a.published_at} className="text-xs text-slate-500 dark:text-slate-400">
-                  {a.author_name
-                    ? t('Autor: {0} • {1}', a.author_name, formatDateTime(a.published_at))
-                    : formatDateTime(a.published_at)}
-                </time>
-                <h3 className="mt-1 text-lg font-semibold text-slate-900 dark:text-slate-100">{a.title}</h3>
-                <p className="mt-2 text-sm text-slate-600 dark:text-slate-400">{a.summary}</p>
-                <span className="mt-3 inline-block text-sm font-medium text-accent-700 dark:text-accent-400">
-                  {t('Czytaj więcej →')}
-                </span>
-              </Link>
-            ))}
-          </div>
-        )}
-      </section>
+      {articlesEnabled && (
+        <section className="mx-auto max-w-6xl px-4 py-16 sm:py-20">
+          <h2 className="mb-6 text-2xl font-bold text-slate-900 dark:text-slate-100">{t('Artykuły o finansach osobistych')}</h2>
+          {!articles?.length ? (
+            <p className="text-slate-500 dark:text-slate-400">{t('Wkrótce pojawią się tu pierwsze artykuły.')}</p>
+          ) : (
+            <div className="grid grid-cols-1 gap-4 sm:grid-cols-2 lg:grid-cols-3">
+              {articles.map((a) => (
+                <Link
+                  key={a.id}
+                  to={`/artykuly/${a.slug}`}
+                  className="block rounded-xl border border-slate-200 dark:border-slate-800 bg-white dark:bg-slate-900 p-5 shadow-sm transition hover:-translate-y-1 hover:border-accent-300 dark:hover:border-accent-700 hover:shadow-md"
+                >
+                  <time dateTime={a.published_at} className="text-xs text-slate-500 dark:text-slate-400">
+                    {a.author_name
+                      ? t('Autor: {0} • {1}', a.author_name, formatDateTime(a.published_at))
+                      : formatDateTime(a.published_at)}
+                  </time>
+                  <h3 className="mt-1 text-lg font-semibold text-slate-900 dark:text-slate-100">{a.title}</h3>
+                  <p className="mt-2 text-sm text-slate-600 dark:text-slate-400">{a.summary}</p>
+                  <span className="mt-3 inline-block text-sm font-medium text-accent-700 dark:text-accent-400">
+                    {t('Czytaj więcej →')}
+                  </span>
+                </Link>
+              ))}
+            </div>
+          )}
+        </section>
+      )}
 
       {/* Final CTA */}
       <section className="mx-auto max-w-6xl px-4 pb-20">
