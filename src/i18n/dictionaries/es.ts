@@ -1208,4 +1208,10 @@ export const es: Record<string, string> = {
     'Los artículos hoy se escriben solo en polaco - desactiva la sección de artículos en la página principal para los idiomas que aún no tienen traducciones.',
   'widoczne': 'visible',
   'ukryte': 'oculto',
+
+  // Register: terms/privacy acceptance
+  'Akceptuję': 'Acepto',
+  'Politykę prywatności': 'Política de privacidad',
+  'i': 'y',
+  'Musisz zaakceptować regulamin i politykę prywatności.': 'Debes aceptar los términos de servicio y la política de privacidad.',
 }

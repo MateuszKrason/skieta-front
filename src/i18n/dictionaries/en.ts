@@ -1206,4 +1206,10 @@ export const en: Record<string, string> = {
     'Articles are only written in Polish today - turn off the articles section on the landing page for languages that don\'t have translations yet.',
   'widoczne': 'visible',
   'ukryte': 'hidden',
+
+  // Register: terms/privacy acceptance
+  'Akceptuję': 'I accept',
+  'Politykę prywatności': 'Privacy policy',
+  'i': 'and',
+  'Musisz zaakceptować regulamin i politykę prywatności.': 'You must accept the terms of service and privacy policy.',
 }

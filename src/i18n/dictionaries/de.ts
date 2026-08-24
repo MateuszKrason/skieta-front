@@ -1206,4 +1206,10 @@ export const de: Record<string, string> = {
     'Artikel werden heute ausschließlich auf Polnisch geschrieben - schalte den Artikelbereich auf der Startseite für Sprachen aus, für die es noch keine Übersetzungen gibt.',
   'widoczne': 'sichtbar',
   'ukryte': 'ausgeblendet',
+
+  // Register: terms/privacy acceptance
+  'Akceptuję': 'Ich akzeptiere',
+  'Politykę prywatności': 'Datenschutzrichtlinie',
+  'i': 'und',
+  'Musisz zaakceptować regulamin i politykę prywatności.': 'Du musst die Nutzungsbedingungen und die Datenschutzrichtlinie akzeptieren.',
 }

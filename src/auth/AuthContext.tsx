@@ -17,6 +17,7 @@ interface AuthContextValue {
     baseCurrency: string,
     inviteToken: string,
     language: Language,
+    termsAccepted: boolean,
   ) => Promise<void>
   logout: () => void
   refreshUser: () => Promise<void>
@@ -79,6 +80,7 @@ export function AuthProvider({ children }: { children: ReactNode }) {
     baseCurrency: string,
     inviteToken: string,
     language: Language,
+    termsAccepted: boolean,
   ) {
     const { data } = await api.post('/auth/register/', {
       username,
@@ -89,6 +91,7 @@ export function AuthProvider({ children }: { children: ReactNode }) {
       base_currency: baseCurrency,
       invite_token: inviteToken,
       language,
+      terms_accepted: termsAccepted,
     })
     tokenStore.set(data.access, data.refresh)
     setUser(data.user)

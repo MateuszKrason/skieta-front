@@ -33,6 +33,7 @@ export default function Register() {
   // changeable below, same as currency.
   const [registerLanguage, setRegisterLanguage] = useState<Language>(siteLanguage)
   const [baseCurrency, setBaseCurrency] = useState(CURRENCY_BY_LANGUAGE[siteLanguage])
+  const [termsAccepted, setTermsAccepted] = useState(false)
   const [error, setError] = useState<string | null>(null)
   const [submitting, setSubmitting] = useState(false)
 
@@ -48,7 +49,17 @@ export default function Register() {
     setError(null)
     setSubmitting(true)
     try {
-      await register(username, email, password, firstName, lastName, baseCurrency, inviteToken, registerLanguage)
+      await register(
+        username,
+        email,
+        password,
+        firstName,
+        lastName,
+        baseCurrency,
+        inviteToken,
+        registerLanguage,
+        termsAccepted,
+      )
       navigate('/onboarding')
     } catch (err) {
       if (err instanceof AxiosError && err.response?.data) {
@@ -169,10 +180,29 @@ export default function Register() {
             {t('Konta w innej walucie będą oznaczone jako walutowe — to tylko etykieta, nie wpływa na przeliczenia.')}
           </span>
         </label>
+        <label className="mb-4 flex items-start gap-2 text-sm text-slate-600 dark:text-slate-300">
+          <input
+            type="checkbox"
+            className="mt-0.5"
+            checked={termsAccepted}
+            onChange={(e) => setTermsAccepted(e.target.checked)}
+            required
+          />
+          <span>
+            {t('Akceptuję')}{' '}
+            <Link to="/regulamin" target="_blank" rel="noopener noreferrer" className="font-medium text-accent-700 dark:text-accent-400 hover:underline">
+              {t('Regulamin')}
+            </Link>{' '}
+            {t('i')}{' '}
+            <Link to="/polityka-prywatnosci" target="_blank" rel="noopener noreferrer" className="font-medium text-accent-700 dark:text-accent-400 hover:underline">
+              {t('Politykę prywatności')}
+            </Link>
+          </span>
+        </label>
         {error && <p className="mb-3 text-sm text-red-600 dark:text-red-400">{error}</p>}
         <button
           type="submit"
-          disabled={submitting}
+          disabled={submitting || !termsAccepted}
           className="w-full rounded-md bg-accent-600 py-2 text-sm font-semibold text-white hover:bg-accent-700 disabled:opacity-60"
         >
           {submitting ? t('Tworzenie konta…') : t('Zarejestruj się')}
