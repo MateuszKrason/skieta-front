@@ -3,6 +3,7 @@ import { Navigate, Route, Routes, useLocation } from 'react-router-dom'
 import Layout from './components/Layout'
 import { useAuth } from './auth/AuthContext'
 import { useLanguage } from './i18n/LanguageContext'
+import { useLogVisit } from './i18n/useLogVisit'
 import AdminRoute from './components/AdminRoute'
 import EditorRoute from './components/EditorRoute'
 import ProtectedRoute from './components/ProtectedRoute'
@@ -36,6 +37,7 @@ const AdminStatystyki = lazy(() => import('./pages/admin/AdminStatystyki'))
 const AdminRole = lazy(() => import('./pages/admin/AdminRole'))
 const AdminAccessRequests = lazy(() => import('./pages/admin/AdminAccessRequests'))
 const AdminGroupInvites = lazy(() => import('./pages/admin/AdminGroupInvites'))
+const AdminLandingPromotions = lazy(() => import('./pages/admin/AdminLandingPromotions'))
 const Redakcja = lazy(() => import('./pages/Redakcja'))
 const GieldaLayout = lazy(() => import('./pages/gielda/GieldaLayout'))
 const Portfel = lazy(() => import('./pages/gielda/Portfel'))
@@ -122,6 +124,7 @@ function useCanonicalLink() {
 export default function App() {
   useDocumentTitle()
   useCanonicalLink()
+  useLogVisit()
   return (
     <Suspense fallback={<PageLoader />}>
     <Routes>
@@ -155,6 +158,7 @@ export default function App() {
               <Route path="statystyki" element={<AdminStatystyki />} />
               <Route path="prosby-o-dostep" element={<AdminAccessRequests />} />
               <Route path="zaproszenia-grupowe" element={<AdminGroupInvites />} />
+              <Route path="promocja-startowa" element={<AdminLandingPromotions />} />
               <Route path="role" element={<AdminRole />} />
             </Route>
             <Route path="/admin/uzytkownicy/:id" element={<AdminUserDetail />} />

@@ -1,14 +1,17 @@
 import { useEffect, useState, type FormEvent } from 'react'
 import { useMutation, useQuery, useQueryClient } from '@tanstack/react-query'
 import { QRCodeSVG } from 'qrcode.react'
-import { Link } from 'react-router-dom'
+import { Link, useNavigate } from 'react-router-dom'
 import { api } from '../api/client'
 import { useAuth } from '../auth/AuthContext'
 import { DEFAULT_NAV_ORDER, REORDERABLE_LINKS } from '../components/Layout'
-import { useLanguage } from '../i18n/LanguageContext'
-import { formatDateTime } from '../lib/format'
+import { useLanguage, LANGUAGES, LANGUAGE_LABELS, type Language } from '../i18n/LanguageContext'
+import { COUNTRIES } from '../lib/countries'
+import { formatCountdown, formatDateTime } from '../lib/format'
 import { useTheme, type Theme } from '../theme/ThemeContext'
-import type { Invitation, InvitationList, LoginHistoryResponse, RoleAssignment } from '../types'
+import type { Currency, Invitation, InvitationList, LoginHistoryResponse, RoleAssignment } from '../types'
+
+const CURRENCY_OPTIONS: Currency[] = ['PLN', 'USD', 'EUR', 'GBP']
 
 export default function Account() {
   const { user } = useAuth()
@@ -48,7 +51,93 @@ export default function Account() {
       <PasswordForm />
       <InviteFriends />
       <LoginHistorySection />
+      <DeleteAccountSection />
     </div>
+  )
+}
+
+const DELETE_CONFIRM_WORD = 'USUŃ'
+
+function DeleteAccountSection() {
+  const { t } = useLanguage()
+  const { logout } = useAuth()
+  const navigate = useNavigate()
+  const [password, setPassword] = useState('')
+  const [confirmText, setConfirmText] = useState('')
+  const [error, setError] = useState<string | null>(null)
+
+  const mutation = useMutation({
+    mutationFn: () => api.delete('/auth/me/', { data: { current_password: password } }),
+    onSuccess: () => {
+      logout()
+      navigate('/')
+    },
+    onError: (err: unknown) => {
+      const data = (err as { response?: { data?: unknown } }).response?.data
+      if (data && typeof data === 'object') {
+        setError(Object.values(data as Record<string, unknown>).flat().join(' '))
+      } else {
+        setError(t('Nie udało się usunąć konta.'))
+      }
+    },
+  })
+
+  function onSubmit(e: FormEvent) {
+    e.preventDefault()
+    setError(null)
+    if (confirmText !== DELETE_CONFIRM_WORD) {
+      setError(t('Wpisz dokładnie "{0}", żeby potwierdzić.', DELETE_CONFIRM_WORD))
+      return
+    }
+    const confirmed = window.confirm(
+      t(
+        'Czy na pewno chcesz usunąć swoje konto? Zostanie zablokowane i wylogowane ze wszystkich urządzeń. Masz 3 miesiące na przywrócenie konta — w tym czasie Twoje dane pozostaną zapisane, wystarczy poprosić administratora o przywrócenie.',
+      ),
+    )
+    if (!confirmed) return
+    mutation.mutate()
+  }
+
+  return (
+    <form
+      onSubmit={onSubmit}
+      className="space-y-3 rounded-xl border border-red-300 dark:border-red-800 bg-red-50 dark:bg-red-950/20 p-5 shadow-sm"
+    >
+      <h2 className="text-sm font-semibold text-red-700 dark:text-red-400">{t('Usuń konto')}</h2>
+      <p className="text-xs text-red-700/80 dark:text-red-400/80">
+        {t(
+          'Zablokuje Twoje konto i wyloguje Cię ze wszystkich urządzeń. Twoje dane (konta bankowe, transakcje, budżet, inwestycje, historia logowań) zostaną zachowane. Masz 3 miesiące na przywrócenie konta — wystarczy poprosić administratora.',
+        )}
+      </p>
+      <label className="block text-xs font-medium text-slate-500 dark:text-slate-400">
+        {t('Hasło')}
+        <input
+          type="password"
+          value={password}
+          onChange={(e) => setPassword(e.target.value)}
+          required
+          className="input mt-1"
+        />
+      </label>
+      <label className="block text-xs font-medium text-slate-500 dark:text-slate-400">
+        {t('Wpisz {0}, żeby potwierdzić', DELETE_CONFIRM_WORD)}
+        <input
+          type="text"
+          value={confirmText}
+          onChange={(e) => setConfirmText(e.target.value)}
+          required
+          className="input mt-1"
+        />
+      </label>
+      {error && <p className="text-sm text-red-600 dark:text-red-400">{error}</p>}
+      <button
+        type="submit"
+        disabled={mutation.isPending}
+        className="rounded-md bg-red-600 px-4 py-2 text-sm font-semibold text-white hover:bg-red-700 disabled:opacity-60"
+      >
+        {mutation.isPending ? t('Usuwanie…') : t('Usuń konto')}
+      </button>
+    </form>
   )
 }
 
@@ -214,11 +303,6 @@ const VARIANT_LABELS: Record<Theme, string> = {
   pink: 'Lawendowy',
 }
 
-const LANGUAGE_LABELS: Record<'pl' | 'en', string> = {
-  pl: 'Polski',
-  en: 'English',
-}
-
 function AppearanceForm() {
   const { user, updateProfile } = useAuth()
   const { setTheme } = useTheme()
@@ -235,10 +319,18 @@ function AppearanceForm() {
   })
 
   const languageMutation = useMutation({
-    mutationFn: (lang: 'pl' | 'en') => api.patch('/auth/me/', { language: lang }),
+    mutationFn: (lang: Language) => api.patch('/auth/me/', { language: lang }),
     onSuccess: (_, lang) => {
       setLanguage(lang)
       updateProfile({ language: lang })
+      setSuccess(true)
+    },
+  })
+
+  const currencyMutation = useMutation({
+    mutationFn: (currency: Currency) => api.patch('/auth/me/', { base_currency: currency }),
+    onSuccess: (_, currency) => {
+      updateProfile({ base_currency: currency })
       setSuccess(true)
     },
   })
@@ -269,13 +361,30 @@ function AppearanceForm() {
           value={user?.profile.language ?? language}
           onChange={(e) => {
             setSuccess(false)
-            languageMutation.mutate(e.target.value as 'pl' | 'en')
+            languageMutation.mutate(e.target.value as Language)
           }}
           className="input mt-1"
         >
-          {(Object.keys(LANGUAGE_LABELS) as ('pl' | 'en')[]).map((lang) => (
+          {(Object.keys(LANGUAGE_LABELS) as Language[]).map((lang) => (
             <option key={lang} value={lang}>
               {LANGUAGE_LABELS[lang]}
+            </option>
+          ))}
+        </select>
+      </label>
+      <label className="block text-xs font-medium text-slate-500 dark:text-slate-400">
+        {t('Domyślna waluta')}
+        <select
+          value={user?.profile.base_currency ?? 'PLN'}
+          onChange={(e) => {
+            setSuccess(false)
+            currencyMutation.mutate(e.target.value as Currency)
+          }}
+          className="input mt-1"
+        >
+          {CURRENCY_OPTIONS.map((currency) => (
+            <option key={currency} value={currency}>
+              {currency}
             </option>
           ))}
         </select>
@@ -395,13 +504,31 @@ function PendingRoleOffers() {
 
 const USERNAME_CHANGE_COOLDOWN_DAYS = 30
 
+// Every query key that embeds a server-computed after-tax figure
+// (accounts.tax.after_tax, applied per Profile.residency_country) - changing
+// residency needs all of these invalidated, or the old country's numbers
+// keep showing (cached) until each query's own staleTime/poll interval
+// happens to catch up, which can take up to a minute.
+const TAX_DEPENDENT_QUERY_KEYS = [
+  'holdings',
+  'portfolio-summary',
+  'portfolio-analytics',
+  'dividend-summary',
+  'dividends',
+  'deposits',
+  'bonds',
+  'dashboard',
+]
+
 function ProfileForm() {
   const { user, refreshUser } = useAuth()
   const { t } = useLanguage()
+  const queryClient = useQueryClient()
   const [firstName, setFirstName] = useState(user?.first_name ?? '')
   const [lastName, setLastName] = useState(user?.last_name ?? '')
   const [username, setUsername] = useState(user?.username ?? '')
   const [email, setEmail] = useState(user?.email ?? '')
+  const [residencyCountry, setResidencyCountry] = useState(user?.profile.residency_country ?? '')
   const [error, setError] = useState<string | null>(null)
   const [success, setSuccess] = useState(false)
 
@@ -414,10 +541,21 @@ function ProfileForm() {
 
   const mutation = useMutation({
     mutationFn: () =>
-      api.patch('/auth/me/', { username, email, first_name: firstName, last_name: lastName }),
+      api.patch('/auth/me/', {
+        username,
+        email,
+        first_name: firstName,
+        last_name: lastName,
+        residency_country: residencyCountry,
+      }),
     onSuccess: async () => {
       setSuccess(true)
       setError(null)
+      if (residencyCountry !== (user?.profile.residency_country ?? '')) {
+        for (const key of TAX_DEPENDENT_QUERY_KEYS) {
+          queryClient.invalidateQueries({ queryKey: [key] })
+        }
+      }
       await refreshUser()
     },
     onError: (err: unknown) => {
@@ -476,6 +614,24 @@ function ProfileForm() {
       <label className="block text-xs font-medium text-slate-500 dark:text-slate-400">
         {t('E-mail')}
         <input type="email" value={email} onChange={(e) => setEmail(e.target.value)} className="input mt-1" />
+      </label>
+      <label className="block text-xs font-medium text-slate-500 dark:text-slate-400">
+        {t('Kraj rezydencji podatkowej')}
+        <select
+          value={residencyCountry}
+          onChange={(e) => setResidencyCountry(e.target.value)}
+          className="input mt-1"
+        >
+          <option value="">{t('Nie podano')}</option>
+          {COUNTRIES.map((c) => (
+            <option key={c.code} value={c.code}>
+              {c.name}
+            </option>
+          ))}
+        </select>
+        <span className="mt-1 block text-xs text-slate-400 dark:text-slate-500">
+          {t('Na tej podstawie szacujemy podatek od zysków kapitałowych i odsetek w całej aplikacji - to tylko orientacyjne wyliczenie, nie porada podatkowa.')}
+        </span>
       </label>
       {error && <p className="text-sm text-red-600 dark:text-red-400">{error}</p>}
       {success && <p className="text-sm text-emerald-600">{t('Zapisano zmiany.')}</p>}
@@ -571,28 +727,19 @@ function PasswordForm() {
   )
 }
 
-function formatCountdown(totalSeconds: number): string {
-  const h = Math.floor(totalSeconds / 3600)
-  const m = Math.floor((totalSeconds % 3600) / 60)
-  const s = totalSeconds % 60
-  const pad = (n: number) => String(n).padStart(2, '0')
-  return h > 0 ? `${h}:${pad(m)}:${pad(s)}` : `${m}:${pad(s)}`
-}
-
 // Live countdown shown under an open QR code - ticks every second, and
 // closes the QR itself (via onExpire) the moment the invite actually
 // expires, instead of leaving a dead QR sitting on screen.
 function QrCountdown({ expiresAt, onExpire }: { expiresAt: string; onExpire: () => void }) {
   const { t } = useLanguage()
-  const [remainingSeconds, setRemainingSeconds] = useState(() =>
-    Math.max(0, Math.floor((new Date(expiresAt).getTime() - Date.now()) / 1000)),
-  )
+  const target = new Date(expiresAt)
+  const [label, setLabel] = useState(() => formatCountdown(target))
 
   useEffect(() => {
     const tick = () => {
-      const next = Math.max(0, Math.floor((new Date(expiresAt).getTime() - Date.now()) / 1000))
-      setRemainingSeconds(next)
-      if (next === 0) {
+      const next = formatCountdown(target)
+      setLabel(next)
+      if (next === null) {
         clearInterval(interval)
         onExpire()
       }
@@ -602,24 +749,23 @@ function QrCountdown({ expiresAt, onExpire }: { expiresAt: string; onExpire: () 
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [expiresAt])
 
-  if (remainingSeconds <= 0) return null
+  if (label === null) return null
 
   return (
     <div className="mt-2 text-center">
-      <p className="text-3xl font-bold tabular-nums text-accent-700 dark:text-accent-400">
-        {formatCountdown(remainingSeconds)}
-      </p>
+      <p className="text-3xl font-bold tabular-nums text-accent-700 dark:text-accent-400">{label}</p>
       <p className="text-xs text-slate-400 dark:text-slate-500">{t('Ważny jeszcze przez')}</p>
     </div>
   )
 }
 
 function InviteFriends() {
-  const { t } = useLanguage()
+  const { language: siteLanguage, t } = useLanguage()
   const queryClient = useQueryClient()
   const [copiedId, setCopiedId] = useState<number | null>(null)
   const [qrId, setQrId] = useState<number | null>(null)
   const [email, setEmail] = useState('')
+  const [inviteLanguage, setInviteLanguage] = useState<Language>(siteLanguage)
   const [tab, setTab] = useState<'pending' | 'expired' | 'accepted' | 'emails'>('pending')
 
   const { data } = useQuery({
@@ -628,7 +774,11 @@ function InviteFriends() {
   })
 
   const mutation = useMutation({
-    mutationFn: () => api.post('/auth/invitations/', email.trim() ? { email: email.trim() } : {}),
+    mutationFn: () =>
+      api.post('/auth/invitations/', {
+        ...(email.trim() && { email: email.trim() }),
+        language: inviteLanguage,
+      }),
     onSuccess: () => {
       setEmail('')
       queryClient.invalidateQueries({ queryKey: ['invitations'] })
@@ -641,7 +791,8 @@ function InviteFriends() {
   // already auto-deletes expired, unaccepted, link-only invites on the next
   // list fetch (see InvitationsView.get), so nothing lingers in history.
   const quickQrMutation = useMutation({
-    mutationFn: async () => (await api.post<Invitation>('/auth/invitations/', {})).data,
+    mutationFn: async () =>
+      (await api.post<Invitation>('/auth/invitations/', { language: inviteLanguage })).data,
     onSuccess: (invitation) => {
       queryClient.invalidateQueries({ queryKey: ['invitations'] })
       setTab('pending')
@@ -705,6 +856,18 @@ function InviteFriends() {
           placeholder={t('E-mail znajomego (opcjonalnie)')}
           className="input max-w-xs"
         />
+        <select
+          value={inviteLanguage}
+          onChange={(e) => setInviteLanguage(e.target.value as Language)}
+          title={t('Język zaproszenia')}
+          className="input w-auto"
+        >
+          {LANGUAGES.map((lang) => (
+            <option key={lang} value={lang}>
+              {LANGUAGE_LABELS[lang]}
+            </option>
+          ))}
+        </select>
         <button
           onClick={() => mutation.mutate()}
           disabled={mutation.isPending || !canInvite}

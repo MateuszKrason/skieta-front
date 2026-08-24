@@ -5,12 +5,10 @@ import { api } from '../api/client'
 import { CardLoader } from '../components/Loader'
 import { useLanguage } from '../i18n/LanguageContext'
 import { useTooltipStyle } from '../lib/chartTooltip'
-import { BOND_TYPE_LABELS, formatMoney, formatNumber } from '../lib/format'
+import { afterBelkaTax, BOND_TYPE_LABELS, formatMoney, formatNumber } from '../lib/format'
 import type { CurrentBondOffer } from '../lib/bonds'
 import { useAuth } from '../auth/AuthContext'
 import { useIsMobile } from '../lib/useIsMobile'
-
-const BELKA_TAX_RATE = 0.19
 
 type Risk = 'bardzo-niskie' | 'niskie' | 'srednie' | 'wysokie'
 type BondNature = 'fixed' | 'variable' | 'inflation'
@@ -169,14 +167,11 @@ function futureValue(amount: number, ratePct: number, years: number): number {
   return amount * (1 + ratePct / 100) ** years
 }
 
-function afterBelkaTax(profit: number): number {
-  return profit > 0 ? profit * (1 - BELKA_TAX_RATE) : profit
-}
-
 export default function InvestmentCalculator() {
   const { t } = useLanguage()
   const { user } = useAuth()
   const base = user?.profile.base_currency ?? 'PLN'
+  const country = user?.profile.residency_country || null
   const tooltipStyle = useTooltipStyle()
   const isMobile = useIsMobile()
   const [amount, setAmount] = useState('10000')
@@ -232,11 +227,11 @@ export default function InvestmentCalculator() {
         const rate = override !== undefined && override !== '' ? Number(override) || 0 : row.defaultRate
         const finalValue = futureValue(amountNum, rate, years)
         const profit = finalValue - amountNum
-        const profitAfterTax = afterBelkaTax(profit)
+        const profitAfterTax = afterBelkaTax(profit, country)
         return { ...row, rate, finalValue, profit, profitAfterTax, finalValueAfterTax: amountNum + profitAfterTax }
       })
       .sort((a, b) => b.finalValueAfterTax - a.finalValueAfterTax)
-  }, [baseRows, rateOverrides, amountNum, years])
+  }, [baseRows, rateOverrides, amountNum, years, country])
 
   return (
     <div className="space-y-6">
@@ -244,7 +239,7 @@ export default function InvestmentCalculator() {
         <h1 className="text-lg font-bold text-slate-900 dark:text-slate-100">{t('Kalkulator inwestycyjny')}</h1>
         <p className="mt-1 text-sm text-slate-500 dark:text-slate-400">
           {t(
-            'Podaj kwotę i horyzont czasowy, żeby zobaczyć orientacyjny wynik dla różnych instrumentów, po podatku Belki (19%). Stawki obligacji skarbowych są pobierane na bieżąco, pozostałe oprocentowania możesz dowolnie zmienić.',
+            'Podaj kwotę i horyzont czasowy, żeby zobaczyć orientacyjny wynik dla różnych instrumentów, po podatku od zysków kapitałowych właściwym dla Twojego kraju rezydencji. Stawki obligacji skarbowych są pobierane na bieżąco, pozostałe oprocentowania możesz dowolnie zmienić.',
           )}
         </p>
         <p className="mt-2 rounded-md bg-amber-50 dark:bg-amber-950/30 px-3 py-2 text-xs font-medium text-amber-800 dark:text-amber-300">

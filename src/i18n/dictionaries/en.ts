@@ -1115,4 +1115,83 @@ export const en: Record<string, string> = {
   'Średnia z powyższych': 'Average of the above',
   'WIG20 i mWIG40 to indeksy warszawskiej giełdy (duże i średnie spółki), S&P 500 i Nasdaq to główne indeksy amerykańskie, a MSCI World / FTSE All-World obejmuje akcje z całego świata. Powyższe okresy to najdłuższe, dla których znalazłem wiarygodne, publicznie dostępne dane - dla WIG20/mWIG40 to karty funduszy śledzących te indeksy. Historyczne wyniki nie gwarantują przyszłych - pojedyncze lata potrafią być mocno ujemne.':
     "WIG20 and mWIG40 are Warsaw Stock Exchange indices (large and mid-cap companies), S&P 500 and Nasdaq are the main US indices, and MSCI World / FTSE All-World covers stocks worldwide. The periods above are the longest ones I found reliable, public data for - for WIG20/mWIG40 that's the factsheets of funds tracking those indices. Historical results don't guarantee future ones - single years can be sharply negative.",
+
+  // Residency / tax (Account settings)
+  'Kraj rezydencji podatkowej': 'Tax residency country',
+  'Nie podano': 'Not provided',
+  'Na razie tylko informacyjne - w przyszłości posłuży do wyliczania podatków właściwych dla Twojego kraju.':
+    "For now, informational only - in the future it'll be used to calculate taxes specific to your country.",
+  'Kraj rezydencji': 'Residency country',
+
+  // Landing promotion banner (admin + public)
+  'Zostało': 'Remaining',
+  'Język zaproszenia': 'Invitation language',
+  'Promocja na stronie': 'Landing page promotion',
+  'Wizyty wg wariantu językowego': 'Visits by language variant',
+  'Zaproszenia wysłane wg języka': 'Invitations sent by language',
+  'Nowy baner na stronie głównej': 'New landing page banner',
+  'Wskaż istniejące zaproszenie grupowe — baner pokaże jego link/kod QR i odliczanie do podanej daty. Liczba wykorzystań to liczba osób zarejestrowanych przez to zaproszenie.':
+    "Point to an existing group invite - the banner will show its link/QR code and a countdown to the given date. The usage count is the number of people who registered through that invite.",
+  'Zaproszenie grupowe': 'Group invite',
+  'Wybierz…': 'Select…',
+  'Wiadomość (opcjonalnie)': 'Message (optional)',
+  'Koniec odliczania': 'Countdown end',
+  'Nie udało się utworzyć promocji — sprawdź dane.': 'Failed to create the promotion - check the details.',
+  'Brak promocji.': 'No promotions.',
+  'Wyłączona': 'Disabled',
+  'Wygasła': 'Expired',
+  'Aktywna': 'Active',
+  'Wyłącz': 'Disable',
+  'Włącz': 'Enable',
+  'Zaproszenie {0}': 'Invite {0}',
+  'Wykorzystano {0} z {1}': 'Used {0} of {1}',
+  'Odliczanie do {0}': 'Countdown until {0}',
+  'Utwórz': 'Create',
+
+  // Residency-based tax estimate (investment calculator, dividends, portfolio)
+  'Kwoty "po podatku" wyliczane w Usłudze na podstawie zadeklarowanego kraju rezydencji podatkowej (Polska, Niemcy, Hiszpania, USA, Wielka Brytania) są wyłącznie orientacyjnym szacunkiem opartym na uproszczonych, ogólnych stawkach i ulgach - nie uwzględniają indywidualnej sytuacji podatkowej Użytkownika (m.in. innych źródeł dochodu, stanu cywilnego, podatków stanowych czy lokalnych) i mogą odbiegać od rzeczywistego zobowiązania podatkowego. Usługodawca nie ponosi odpowiedzialności za błędy w tych wyliczeniach ani za decyzje podjęte na ich podstawie - w sprawach podatkowych należy skonsultować się z licencjonowanym doradcą podatkowym we właściwej jurysdykcji.':
+    'The "after-tax" amounts calculated in the Service based on the declared tax residency country (Poland, Germany, Spain, the USA, the United Kingdom) are only an approximate estimate based on simplified, general rates and allowances - they do not account for the User\'s individual tax situation (including other income sources, marital status, or state/local taxes) and may differ from the actual tax liability. The Service Provider is not liable for errors in these calculations or for decisions made based on them - for tax matters, please consult a licensed tax advisor in the relevant jurisdiction.',
+  'Podaj kwotę i horyzont czasowy, żeby zobaczyć orientacyjny wynik dla różnych instrumentów, po podatku od zysków kapitałowych właściwym dla Twojego kraju rezydencji. Stawki obligacji skarbowych są pobierane na bieżąco, pozostałe oprocentowania możesz dowolnie zmienić.':
+    'Enter an amount and time horizon to see an approximate result for different instruments, after the capital gains tax that applies to your residency country. Treasury bond rates are fetched live, the other rates can be freely changed.',
+  'Po podatku od zysków kapitałowych (wg kraju rezydencji)': 'After capital gains tax (per residency country)',
+
+  // Admin: per-user budget entry counts (no amounts)
+  'Przychody wrzucone': 'Income entries',
+  'Wydatki wrzucone': 'Expense entries',
+  'Wpisy budżetowe w ostatnich 30 dniach': 'Budget entries in the last 30 days',
+  'Liczba wpisów dziennie - bez kwot.': 'Number of entries per day - no amounts.',
+  'skieta - Twoja wirtualna skarpeta z oszczędnościami.': 'skieta - Your virtual sock full of savings.',
+  'Odśwież teraz': 'Refresh now',
+  'Na tej podstawie szacujemy podatek od zysków kapitałowych i odsetek w całej aplikacji - to tylko orientacyjne wyliczenie, nie porada podatkowa.':
+    "We use this to estimate capital gains and interest tax throughout the app - just a rough estimate, not tax advice.",
+
+  // Admin: landing promotion per-language editing
+  'Wiadomość': 'Message',
+  'Opcjonalnie - domyślnie użyty zostanie polski tekst': 'Optional - the Polish text will be used by default',
+  'Tłumaczenie…': 'Translating…',
+  '✨ Przetłumacz automatycznie': '✨ Auto-translate',
+  'Wypełni EN/DE/ES na podstawie polskiego tekstu - możesz je potem dowolnie poprawić ręcznie.':
+    'Fills in EN/DE/ES based on the Polish text - you can freely edit them by hand afterwards.',
+  'Usługa tłumaczenia jest chwilowo niedostępna - spróbuj ponownie później albo uzupełnij ręcznie.':
+    'The translation service is temporarily unavailable - try again later or fill it in by hand.',
+
+  // Account: delete account
+  'Usuń konto': 'Delete account',
+  'Zablokuje Twoje konto i wyloguje Cię ze wszystkich urządzeń. Twoje dane (konta bankowe, transakcje, budżet, inwestycje, historia logowań) zostaną zachowane. Masz 3 miesiące na przywrócenie konta — wystarczy poprosić administratora.':
+    'Locks your account and signs you out of every device. Your data (bank accounts, transactions, budget, investments, login history) will be kept. You have 3 months to restore your account — just ask an administrator.',
+  'Wpisz {0}, żeby potwierdzić': 'Type {0} to confirm',
+  'Wpisz dokładnie "{0}", żeby potwierdzić.': 'Type "{0}" exactly to confirm.',
+  'Czy na pewno chcesz usunąć swoje konto? Zostanie zablokowane i wylogowane ze wszystkich urządzeń. Masz 3 miesiące na przywrócenie konta — w tym czasie Twoje dane pozostaną zapisane, wystarczy poprosić administratora o przywrócenie.':
+    'Are you sure you want to delete your account? It will be locked and signed out of every device. You have 3 months to restore your account — during that time your data will remain saved, just ask an administrator to restore it.',
+  'Usuwanie…': 'Deleting…',
+  'Nie udało się usunąć konta.': 'Failed to delete account.',
+
+  // Admin: hard delete a user account
+  'Trwałe usunięcie': 'Permanent deletion',
+  'W przeciwieństwie do archiwizacji, to usuwa konto i wszystkie jego dane z bazy danych na stałe. Tej operacji nie można cofnąć.':
+    'Unlike archiving, this permanently erases the account and all its data from the database. This action cannot be undone.',
+  'Usuń trwale z bazy': 'Permanently delete from database',
+  'Ta operacja jest nieodwracalna i trwale usunie konto oraz wszystkie dane użytkownika z bazy danych. Wpisz nazwę użytkownika "{0}", żeby potwierdzić.':
+    'This action is irreversible and will permanently delete the account and all of this user\'s data from the database. Type the username "{0}" to confirm.',
+  'Nazwa użytkownika się nie zgadza — anulowano.': 'Username did not match — cancelled.',
 }

@@ -1,12 +1,78 @@
-import { useState, type FormEvent } from 'react'
+import { useEffect, useState, type FormEvent } from 'react'
+import { QRCodeSVG } from 'qrcode.react'
 import { useMutation, useQuery } from '@tanstack/react-query'
 import { Link } from 'react-router-dom'
 import { api } from '../api/client'
 import { useAuth } from '../auth/AuthContext'
 import SockLogo from '../components/SockLogo'
-import { useLanguage } from '../i18n/LanguageContext'
-import { formatDateTime } from '../lib/format'
-import type { Article } from '../types'
+import { LANGUAGES, LANGUAGE_LABELS, useLanguage, type Language } from '../i18n/LanguageContext'
+import { formatCountdown, formatDateTime } from '../lib/format'
+import type { ActiveLandingPromotion, Article } from '../types'
+
+// Public, works logged-in or out (same as RequestAccessForm below) — shows an
+// admin-created temporary banner (see AdminLandingPromotions.tsx) with a live
+// countdown, its invite QR/link, and hides itself once the countdown expires.
+// Title/message come back already resolved to the current site language
+// (server-side, see ActiveLandingPromotionSerializer) — `language` is part of
+// the query key so switching languages refetches instead of showing stale text.
+function PromotionBanner() {
+  const { language, t } = useLanguage()
+  const { data: promotion } = useQuery({
+    queryKey: ['landing-promotion', language],
+    queryFn: async () =>
+      (await api.get<ActiveLandingPromotion | null>('/auth/landing-promotion/', { params: { language } })).data,
+  })
+  const [expired, setExpired] = useState(false)
+
+  const target = promotion ? new Date(promotion.countdown_ends_at) : null
+  const [label, setLabel] = useState<string | null>(target ? formatCountdown(target) : null)
+
+  useEffect(() => {
+    if (!target) return
+    setExpired(false)
+    setLabel(formatCountdown(target))
+    const interval = setInterval(() => {
+      const next = formatCountdown(target)
+      setLabel(next)
+      if (next === null) {
+        setExpired(true)
+        clearInterval(interval)
+      }
+    }, 1000)
+    return () => clearInterval(interval)
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [promotion?.id])
+
+  if (!promotion || expired || label === null) return null
+
+  return (
+    <div className="border-b border-accent-800/20 bg-gradient-to-r from-accent-700 to-accent-600 text-white">
+      <div className="mx-auto flex max-w-6xl flex-wrap items-center justify-between gap-4 px-4 py-3">
+        <div className="flex flex-wrap items-center gap-4">
+          <div className="shrink-0 rounded-md bg-white p-1.5">
+            <QRCodeSVG value={promotion.invite_url} size={56} />
+          </div>
+          <div>
+            <p className="text-sm font-semibold">{promotion.title}</p>
+            {promotion.message && <p className="text-xs text-accent-50/90">{promotion.message}</p>}
+          </div>
+        </div>
+        <div className="flex items-center gap-4">
+          <div className="text-center">
+            <p className="font-mono text-lg font-bold tabular-nums">{label}</p>
+            <p className="text-[10px] uppercase tracking-wide text-accent-50/80">{t('Zostało')}</p>
+          </div>
+          <a
+            href={promotion.invite_url}
+            className="rounded-full bg-white px-4 py-2 text-sm font-semibold text-accent-700 shadow-sm transition hover:bg-accent-50"
+          >
+            {t('Zarejestruj się')}
+          </a>
+        </div>
+      </div>
+    </div>
+  )
+}
 
 function Icon({ path, className = 'h-6 w-6' }: { path: string; className?: string }) {
   return (
@@ -167,7 +233,7 @@ function RequestAccessForm() {
 }
 
 export default function Landing() {
-  const { t } = useLanguage()
+  const { language, setLanguage, t } = useLanguage()
   const { user } = useAuth()
 
   const { data: articles } = useQuery({
@@ -183,18 +249,33 @@ export default function Landing() {
 
   return (
     <div className="min-h-screen overflow-x-hidden bg-slate-50 dark:bg-slate-950">
+      <PromotionBanner />
       <header className="sticky top-0 z-20 border-b border-slate-200/70 dark:border-slate-800/70 bg-white/80 dark:bg-slate-950/80 backdrop-blur">
         <div className="mx-auto flex max-w-6xl items-center justify-between px-4 py-4">
           <Link to="/" className="flex items-center gap-2 text-lg font-bold text-accent-700 dark:text-accent-400">
             <SockLogo className="h-7 w-7" />
             skieta
           </Link>
-          <Link
-            to={ctaHref}
-            className="rounded-full bg-accent-700 px-5 py-2 text-sm font-semibold text-white shadow-sm shadow-accent-600/30 transition hover:bg-accent-800 hover:shadow-md"
-          >
-            {user ? ctaLabel : t('Zaloguj się do aplikacji')}
-          </Link>
+          <div className="flex items-center gap-3">
+            <select
+              value={language}
+              onChange={(e) => setLanguage(e.target.value as Language)}
+              title={t('Zmień język interfejsu')}
+              className="rounded-md border border-slate-300 dark:border-slate-600 bg-white dark:bg-slate-800 px-2 py-1.5 text-sm font-medium text-slate-600 dark:text-slate-400 hover:bg-slate-100 dark:hover:bg-slate-700"
+            >
+              {LANGUAGES.map((lang) => (
+                <option key={lang} value={lang}>
+                  {LANGUAGE_LABELS[lang]}
+                </option>
+              ))}
+            </select>
+            <Link
+              to={ctaHref}
+              className="rounded-full bg-accent-700 px-5 py-2 text-sm font-semibold text-white shadow-sm shadow-accent-600/30 transition hover:bg-accent-800 hover:shadow-md"
+            >
+              {user ? ctaLabel : t('Zaloguj się do aplikacji')}
+            </Link>
+          </div>
         </div>
       </header>
 

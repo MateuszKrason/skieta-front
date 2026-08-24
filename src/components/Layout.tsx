@@ -7,8 +7,15 @@ import FeedbackWidget from './FeedbackWidget'
 import InviteNudgeBubble from './InviteNudgeBubble'
 import SockLogo from './SockLogo'
 import { useTheme, type Theme } from '../theme/ThemeContext'
-import { useLanguage } from '../i18n/LanguageContext'
+import { LANGUAGES, useLanguage, type Language } from '../i18n/LanguageContext'
 import type { User } from '../types'
+
+const LANGUAGE_CODE_LABELS: Record<Language, string> = {
+  pl: 'PL',
+  en: 'EN',
+  de: 'DE',
+  es: 'ES',
+}
 
 // Main categories only — each of these already has its own sub-tabs shown on
 // the page itself (see GieldaLayout/AnalysisLayout + SubTabs) once you're in
@@ -69,7 +76,7 @@ function HeaderActions({ stacked = false, onNavigate }: { stacked?: boolean; onN
   // request pairs with no guaranteed resolution order, so whichever refetch
   // happened to land last "won" regardless of actual click order.
   const languageMutation = useMutation({
-    mutationFn: async (next: 'pl' | 'en') => {
+    mutationFn: async (next: Language) => {
       setLanguage(next)
       updateProfile({ language: next })
       await api.patch('/auth/me/', { language: next })
@@ -83,10 +90,6 @@ function HeaderActions({ stacked = false, onNavigate }: { stacked?: boolean; onN
       await api.patch('/auth/me/', { color_variant: next })
     },
   })
-
-  function handleToggleLanguage() {
-    languageMutation.mutate(language === 'pl' ? 'en' : 'pl')
-  }
 
   function handleToggleTheme() {
     themeMutation.mutate(theme === 'light' ? 'dark' : theme === 'dark' ? 'pink' : 'light')
@@ -106,14 +109,19 @@ function HeaderActions({ stacked = false, onNavigate }: { stacked?: boolean; onN
       >
         {t('+ Dodaj pozycje')}
       </NavLink>
-      <button
-        onClick={handleToggleLanguage}
+      <select
+        value={language}
+        onChange={(e) => languageMutation.mutate(e.target.value as Language)}
         disabled={languageMutation.isPending}
         title={t('Zmień język interfejsu')}
-        className="rounded-md border border-slate-300 dark:border-slate-600 px-2.5 py-1 font-medium text-slate-600 dark:text-slate-400 hover:bg-slate-100 dark:hover:bg-slate-700 disabled:opacity-50"
+        className="rounded-md border border-slate-300 dark:border-slate-600 px-2 py-1 font-medium text-slate-600 dark:text-slate-400 hover:bg-slate-100 dark:hover:bg-slate-700 disabled:opacity-50"
       >
-        {language === 'pl' ? 'PL' : 'EN'}
-      </button>
+        {LANGUAGES.map((lang) => (
+          <option key={lang} value={lang}>
+            {LANGUAGE_CODE_LABELS[lang]}
+          </option>
+        ))}
+      </select>
       <button
         onClick={handleToggleTheme}
         disabled={themeMutation.isPending}

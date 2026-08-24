@@ -3,7 +3,7 @@ import { useQuery } from '@tanstack/react-query'
 import { Link } from 'react-router-dom'
 import { Bar, BarChart, ResponsiveContainer, Tooltip, XAxis, YAxis } from 'recharts'
 import { api } from '../../api/client'
-import { useLanguage } from '../../i18n/LanguageContext'
+import { LANGUAGE_LABELS, useLanguage } from '../../i18n/LanguageContext'
 import { useTooltipStyle } from '../../lib/chartTooltip'
 import { formatDate, formatDateTime, formatDuration } from '../../lib/format'
 import type { AdminAppStats, AdminInvitedEmail, AdminUser, InvitationFunnelStats } from '../../types'
@@ -22,6 +22,36 @@ const COLOR_VARIANT_LABELS: Record<string, string> = {
   light: 'Jasny',
   dark: 'Ciemny',
   pink: 'Lawendowy',
+}
+
+/** Simple per-language bar list — shared shape for "visits by language" and
+ * "invitations by language", no per-row drilldown needed unlike the
+ * color-variant block above. */
+function LanguageCountBars({ title, counts }: { title: string; counts: Record<string, number> }) {
+  const total = Object.values(counts).reduce((a, b) => a + b, 0)
+  return (
+    <div className="rounded-xl border border-slate-200 dark:border-slate-700 bg-white dark:bg-slate-800 p-5 shadow-sm">
+      <h2 className="mb-3 text-sm font-semibold text-slate-700 dark:text-slate-300">{title}</h2>
+      <div className="space-y-2">
+        {Object.entries(counts).map(([lang, count]) => {
+          const pct = total ? (count / total) * 100 : 0
+          return (
+            <div key={lang}>
+              <div className="mb-1 flex justify-between text-xs text-slate-600 dark:text-slate-300">
+                <span>{LANGUAGE_LABELS[lang as keyof typeof LANGUAGE_LABELS] ?? lang}</span>
+                <span>
+                  {count} ({pct.toFixed(0)}%)
+                </span>
+              </div>
+              <div className="h-1.5 w-full rounded-full bg-slate-100 dark:bg-slate-700">
+                <div className="h-1.5 rounded-full bg-accent-500" style={{ width: `${pct}%` }} />
+              </div>
+            </div>
+          )
+        })}
+      </div>
+    </div>
+  )
 }
 
 export default function AdminStatystyki() {
@@ -160,6 +190,11 @@ export default function AdminStatystyki() {
             )
           })}
         </div>
+      </div>
+
+      <div className="grid gap-4 sm:grid-cols-2">
+        <LanguageCountBars title={t('Wizyty wg wariantu językowego')} counts={stats.language_visit_counts} />
+        <LanguageCountBars title={t('Zaproszenia wysłane wg języka')} counts={stats.invitations_by_language} />
       </div>
 
       {funnel && (

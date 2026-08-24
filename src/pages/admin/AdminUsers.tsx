@@ -146,6 +146,8 @@ export default function AdminUsers() {
               <th className="px-4 py-2 text-right">{t('Konta')}</th>
               <th className="px-4 py-2 text-right">{t('Transakcje akcji')}</th>
               <th className="px-4 py-2 text-right">{t('Transakcje budżetu')}</th>
+              <th className="px-4 py-2 text-right">{t('Przychody wrzucone')}</th>
+              <th className="px-4 py-2 text-right">{t('Wydatki wrzucone')}</th>
               <th className="px-4 py-2">{t('E-mail')}</th>
               <th className="px-4 py-2">{t('Status')}</th>
               <th className="px-4 py-2 text-right">{t('Operacje')}</th>
@@ -171,6 +173,8 @@ export default function AdminUsers() {
                 <td className="px-4 py-2 text-right">{u.accounts_count}</td>
                 <td className="px-4 py-2 text-right">{u.stock_transactions_count}</td>
                 <td className="px-4 py-2 text-right">{u.budget_transactions_count}</td>
+                <td className="px-4 py-2 text-right">{u.budget_income_count}</td>
+                <td className="px-4 py-2 text-right">{u.budget_expense_count}</td>
                 <td className="px-4 py-2">
                   <span
                     className={`rounded-full px-2 py-0.5 text-xs font-medium ${
@@ -214,7 +218,7 @@ export default function AdminUsers() {
             ))}
             {isLoading && (
               <tr>
-                <td colSpan={11} className="px-4 py-6 text-center">
+                <td colSpan={13} className="px-4 py-6 text-center">
                   <div className="flex items-center justify-center gap-2 text-slate-400 dark:text-slate-500">
                     <Spinner size="sm" /> {t('Ładowanie…')}
                   </div>
@@ -223,7 +227,7 @@ export default function AdminUsers() {
             )}
             {!isLoading && users?.length === 0 && (
               <tr>
-                <td colSpan={11} className="px-4 py-6 text-center text-slate-400 dark:text-slate-500">
+                <td colSpan={13} className="px-4 py-6 text-center text-slate-400 dark:text-slate-500">
                   {t('Brak użytkowników spełniających kryteria.')}
                 </td>
               </tr>

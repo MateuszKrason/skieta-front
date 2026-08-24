@@ -1,6 +1,6 @@
 import { createContext, useContext, useEffect, useRef, useState, type ReactNode } from 'react'
 import { api, tokenStore } from '../api/client'
-import { useLanguage } from '../i18n/LanguageContext'
+import { useLanguage, type Language } from '../i18n/LanguageContext'
 import { useTheme } from '../theme/ThemeContext'
 import type { User } from '../types'
 
@@ -16,6 +16,7 @@ interface AuthContextValue {
     lastName: string,
     baseCurrency: string,
     inviteToken: string,
+    language: Language,
   ) => Promise<void>
   logout: () => void
   refreshUser: () => Promise<void>
@@ -77,6 +78,7 @@ export function AuthProvider({ children }: { children: ReactNode }) {
     lastName: string,
     baseCurrency: string,
     inviteToken: string,
+    language: Language,
   ) {
     const { data } = await api.post('/auth/register/', {
       username,
@@ -86,6 +88,7 @@ export function AuthProvider({ children }: { children: ReactNode }) {
       last_name: lastName,
       base_currency: baseCurrency,
       invite_token: inviteToken,
+      language,
     })
     tokenStore.set(data.access, data.refresh)
     setUser(data.user)

@@ -219,7 +219,7 @@ export default function Portfel() {
                 : 'border-red-200 dark:border-red-800 bg-red-50 dark:bg-red-900/30'
             }`}
           >
-            <p className="text-xs text-slate-500 dark:text-slate-400" title={t('Po podatku od zysków kapitałowych (19%)')}>
+            <p className="text-xs text-slate-500 dark:text-slate-400" title={t('Po podatku od zysków kapitałowych (wg kraju rezydencji)')}>
               {t('Zysk/strata po Belce')}
             </p>
             <p
@@ -282,7 +282,7 @@ export default function Portfel() {
                   <SortTh column="current_price">{t('Cena bieżąca')}</SortTh>
                   <SortTh column="market_value">{t('Wartość')}</SortTh>
                   <SortTh column="unrealized_pl">{t('Zysk/strata')}</SortTh>
-                  <SortTh column="unrealized_pl_after_tax" title={t('Po podatku od zysków kapitałowych (19%)')}>
+                  <SortTh column="unrealized_pl_after_tax" title={t('Po podatku od zysków kapitałowych (wg kraju rezydencji)')}>
                     {t('Zysk/strata po Belce')}
                   </SortTh>
                   <SortTh column="price_fetched_at">{t('Aktualizacja')}</SortTh>

@@ -1,5 +1,7 @@
+import type { Language } from './i18n/LanguageContext'
+
 export type Market = 'GPW' | 'US' | 'EU'
-export type Currency = 'PLN' | 'USD' | 'EUR' | 'NOK' | 'DKK' | 'GBP' | 'SEK' | 'CHF'
+export type Currency = 'PLN' | 'USD' | 'EUR' | 'NOK' | 'DKK' | 'GBP' | 'SEK' | 'CHF' | 'ALL'
 
 export type InstrumentType = 'STOCK' | 'ETF'
 
@@ -297,11 +299,12 @@ export interface User {
   is_staff: boolean
   profile: {
     base_currency: Currency
+    residency_country: string
     email_verified: boolean
     login_streak: number
     color_variant: 'light' | 'dark' | 'pink'
     is_editor: boolean
-    language: 'pl' | 'en'
+    language: Language
     interest_stocks: boolean
     interest_budget: boolean
     interest_planning: boolean
@@ -316,6 +319,7 @@ export interface Invitation {
   id: number
   token: string
   email: string | null
+  language: Language
   invite_url: string
   created_at: string
   accepted_by: string | null
@@ -338,6 +342,7 @@ export interface InviteBatch {
   used_count: number
   remaining: number
   expires_at: string
+  language: Language
   is_expired: boolean
   created_by: string
   created_at: string
@@ -402,6 +407,36 @@ export interface AdminAppStats {
   role_count: number
   avg_session_duration_seconds: number
   signups_daily: { date: string; count: number }[]
+  language_visit_counts: Record<string, number>
+  invitations_by_language: Record<string, number>
+}
+
+export interface LandingPromotion {
+  id: number
+  batch: InviteBatch
+  title_pl: string
+  title_en: string
+  title_de: string
+  title_es: string
+  message_pl: string
+  message_en: string
+  message_de: string
+  message_es: string
+  countdown_ends_at: string
+  is_active: boolean
+  created_by: string
+  created_at: string
+}
+
+// What the public landing page actually fetches — title/message already
+// resolved server-side to the visitor's language (see
+// ActiveLandingPromotionSerializer).
+export interface ActiveLandingPromotion {
+  id: number
+  title: string
+  message: string
+  countdown_ends_at: string
+  invite_url: string
 }
 
 export interface InvitationFunnelRow {
@@ -463,6 +498,8 @@ export interface AdminUser {
   accounts_count: number
   stock_transactions_count: number
   budget_transactions_count: number
+  budget_income_count: number
+  budget_expense_count: number
 }
 
 export interface AdminInvitedUser {
@@ -483,6 +520,12 @@ export interface AdminUserActivityDay {
   active: boolean
 }
 
+export interface AdminUserBudgetEntryDay {
+  date: string
+  income: number
+  expense: number
+}
+
 export interface AdminUserDetail {
   id: number
   username: string
@@ -500,17 +543,21 @@ export interface AdminUserDetail {
   archived_at: string | null
   email_verified: boolean
   color_variant: 'light' | 'dark' | 'pink'
-  language: 'pl' | 'en'
+  language: Language
+  residency_country: string
   login_streak: number
   accounts_count: number
   stock_transactions_count: number
   budget_transactions_count: number
+  budget_income_count: number
+  budget_expense_count: number
   invited_count: number
   invitations_generated_count: number
   invited_users: AdminInvitedUser[]
   articles: AdminUserArticle[]
   activity_last_30_days: AdminUserActivityDay[]
   total_active_days: number
+  budget_entries_last_30_days: AdminUserBudgetEntryDay[]
   role_assignments: RoleAssignment[]
   avg_session_duration_seconds: number
 }

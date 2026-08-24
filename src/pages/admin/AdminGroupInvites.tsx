@@ -2,7 +2,7 @@ import { useState } from 'react'
 import { useMutation, useQuery, useQueryClient } from '@tanstack/react-query'
 import { QRCodeSVG } from 'qrcode.react'
 import { api } from '../../api/client'
-import { useLanguage } from '../../i18n/LanguageContext'
+import { LANGUAGES, LANGUAGE_LABELS, useLanguage, type Language } from '../../i18n/LanguageContext'
 import { formatDateTime } from '../../lib/format'
 import type { InviteBatch } from '../../types'
 
@@ -13,11 +13,12 @@ function defaultExpiry() {
 }
 
 export default function AdminGroupInvites() {
-  const { t } = useLanguage()
+  const { language: siteLanguage, t } = useLanguage()
   const queryClient = useQueryClient()
   const [label, setLabel] = useState('')
   const [capacity, setCapacity] = useState('10')
   const [expiresAt, setExpiresAt] = useState(defaultExpiry())
+  const [batchLanguage, setBatchLanguage] = useState<Language>(siteLanguage)
   const [qrId, setQrId] = useState<number | null>(null)
   const [openId, setOpenId] = useState<number | null>(null)
   const [copiedId, setCopiedId] = useState<number | null>(null)
@@ -37,12 +38,14 @@ export default function AdminGroupInvites() {
         label,
         capacity: Number(capacity),
         expires_at: new Date(expiresAt).toISOString(),
+        language: batchLanguage,
       }),
     onSuccess: () => {
       invalidate()
       setLabel('')
       setCapacity('10')
       setExpiresAt(defaultExpiry())
+      setBatchLanguage(siteLanguage)
     },
   })
 
@@ -96,6 +99,20 @@ export default function AdminGroupInvites() {
               className="input w-56"
             />
           </label>
+          <label className="flex flex-col gap-1">
+            <span className="text-xs text-slate-500 dark:text-slate-400">{t('Język zaproszenia')}</span>
+            <select
+              value={batchLanguage}
+              onChange={(e) => setBatchLanguage(e.target.value as Language)}
+              className="input w-36"
+            >
+              {LANGUAGES.map((lang) => (
+                <option key={lang} value={lang}>
+                  {LANGUAGE_LABELS[lang]}
+                </option>
+              ))}
+            </select>
+          </label>
           <button
             onClick={() => create.mutate()}
             disabled={create.isPending || Number(capacity) < 1 || !expiresAt}
@@ -139,6 +156,9 @@ export default function AdminGroupInvites() {
                         : batch.remaining === 0
                           ? t('Wyczerpane')
                           : t('Aktywne')}
+                    </span>
+                    <span className="ml-2 rounded-full bg-slate-200 dark:bg-slate-700 px-2 py-0.5 text-xs font-medium text-slate-600 dark:text-slate-300">
+                      {LANGUAGE_LABELS[batch.language] ?? batch.language}
                     </span>
                   </div>
                   <div className="flex shrink-0 gap-2">

@@ -30,6 +30,7 @@ export default function AdminLayout() {
       ? [{ to: '/admin/prosby-o-dostep', label: t('Prośby o dostęp'), badge: counts?.pending_access_requests }]
       : []),
     ...(canManageInvites ? [{ to: '/admin/zaproszenia-grupowe', label: t('Zaproszenia grupowe') }] : []),
+    ...(canManageInvites ? [{ to: '/admin/promocja-startowa', label: t('Promocja na stronie') }] : []),
     ...(isStaff ? [{ to: '/admin/feedback', label: t('Feedback'), badge: counts?.new_feedback }] : []),
     ...(canViewStats ? [{ to: '/admin/statystyki', label: t('Statystyki') }] : []),
     ...(isStaff ? [{ to: '/admin/role', label: t('Role') }] : []),

@@ -2,6 +2,7 @@ import { useMemo, useState, type FormEvent } from 'react'
 import { useMutation, useQuery, useQueryClient } from '@tanstack/react-query'
 import { Area, AreaChart, Bar, BarChart, CartesianGrid, Cell, Legend, Pie, PieChart, ResponsiveContainer, Tooltip, XAxis, YAxis } from 'recharts'
 import { api } from '../../api/client'
+import { useAuth } from '../../auth/AuthContext'
 import { CardLoader, PageLoader } from '../../components/Loader'
 import { useLanguage } from '../../i18n/LanguageContext'
 import { useTooltipStyle } from '../../lib/chartTooltip'
@@ -52,6 +53,7 @@ function MonthBreakdownTooltip({
   label,
   tooltipStyle,
   base,
+  country,
   t,
 }: {
   active?: boolean
@@ -61,6 +63,7 @@ function MonthBreakdownTooltip({
   label?: string | number
   tooltipStyle: ReturnType<typeof useTooltipStyle>
   base: string
+  country: string | null
   t: (s: string, ...a: (string | number)[]) => string
 }) {
   if (!active || !payload || payload.length === 0 || !payload[0].payload) return null
@@ -83,7 +86,11 @@ function MonthBreakdownTooltip({
         ))
       )}
       <p style={{ ...tooltipStyle.itemStyle, ...tooltipStyle.labelStyle, marginTop: 4, marginBottom: 0 }}>
-        {t('Ten miesiąc: {0} ({1} po Belce)', formatMoney(monthTotal, base), formatMoney(afterBelkaTax(monthTotal), base))}
+        {t(
+          'Ten miesiąc: {0} ({1} po Belce)',
+          formatMoney(monthTotal, base),
+          formatMoney(afterBelkaTax(monthTotal, country), base),
+        )}
       </p>
       {isCumulative && (
         <p style={{ ...tooltipStyle.itemStyle, marginTop: 2, marginBottom: 0 }}>
@@ -103,6 +110,7 @@ function StockBreakdownPanel({
   total,
   byStock,
   base,
+  country,
   t,
   onClose,
 }: {
@@ -110,6 +118,7 @@ function StockBreakdownPanel({
   total: number
   byStock: DividendSimulationStockAmount[]
   base: string
+  country: string | null
   t: (s: string, ...a: (string | number)[]) => string
   onClose: () => void
 }) {
@@ -143,7 +152,7 @@ function StockBreakdownPanel({
               <span className="text-right tabular-nums text-slate-700 dark:text-slate-200">
                 {formatMoney(s.amount, base)}
                 <span className="block text-[11px] font-normal text-slate-400 dark:text-slate-500">
-                  {formatMoney(afterBelkaTax(Number(s.amount)), base)} {t('po Belce')}
+                  {formatMoney(afterBelkaTax(Number(s.amount), country), base)} {t('po Belce')}
                 </span>
               </span>
             </li>
@@ -151,7 +160,11 @@ function StockBreakdownPanel({
         </ul>
       )}
       <p className="mt-2 border-t border-slate-200 dark:border-slate-700 pt-2 text-xs font-medium text-slate-500 dark:text-slate-400">
-        {t('Razem: {0} ({1} po Belce)', formatMoney(total, base), formatMoney(afterBelkaTax(total), base))}
+        {t(
+          'Razem: {0} ({1} po Belce)',
+          formatMoney(total, base),
+          formatMoney(afterBelkaTax(total, country), base),
+        )}
       </p>
     </div>
   )
@@ -159,6 +172,7 @@ function StockBreakdownPanel({
 
 export default function Dywidendy() {
   const queryClient = useQueryClient()
+  const { user } = useAuth()
   const { t } = useLanguage()
   const tooltipStyle = useTooltipStyle()
   const [showAdd, setShowAdd] = useState(false)
@@ -225,10 +239,11 @@ export default function Dywidendy() {
       ).data,
   })
 
-  const base = 'PLN'
+  const base = user?.profile.base_currency ?? 'PLN'
+  const country = user?.profile.residency_country || null
 
   function moneyTooltip(value: number) {
-    return t('{0} ({1} po Belce)', formatMoney(value, base), formatMoney(afterBelkaTax(value), base))
+    return t('{0} ({1} po Belce)', formatMoney(value, base), formatMoney(afterBelkaTax(value, country), base))
   }
 
   const cumulative = useMemo(() => {
@@ -356,7 +371,7 @@ export default function Dywidendy() {
                   {d.after_tax_amount !== null && (
                     <span
                       className="text-xs text-slate-400 dark:text-slate-500"
-                      title={t('Po podatku od zysków kapitałowych (19%)')}
+                      title={t('Po podatku od zysków kapitałowych (wg kraju rezydencji)')}
                     >
                       ({t('po Belce')}: {formatMoney(d.after_tax_amount, d.currency)})
                     </span>
@@ -395,7 +410,7 @@ export default function Dywidendy() {
                   <CartesianGrid strokeDasharray="3 3" stroke="#94a3b8" strokeOpacity={0.15} />
                   <XAxis dataKey="month" tick={{ fontSize: 12 }} stroke="#94a3b8" />
                   <YAxis tickFormatter={formatAxisValue} tick={{ fontSize: 12 }} stroke="#94a3b8" width={40} />
-                  <Tooltip content={(props) => <MonthBreakdownTooltip {...props} tooltipStyle={tooltipStyle} base={base} t={t} />} />
+                  <Tooltip content={(props) => <MonthBreakdownTooltip {...props} tooltipStyle={tooltipStyle} base={base} country={country} t={t} />} />
                   <Bar dataKey="total" name={t('Dywidendy')} fill="#059669" radius={[4, 4, 0, 0]} isAnimationActive={false} />
                 </BarChart>
               </ResponsiveContainer>
@@ -445,7 +460,7 @@ export default function Dywidendy() {
                 </defs>
                 <XAxis dataKey="month" tick={{ fontSize: 12 }} stroke="#94a3b8" />
                 <YAxis tickFormatter={formatAxisValue} tick={{ fontSize: 12 }} stroke="#94a3b8" width={40} />
-                <Tooltip content={(props) => <MonthBreakdownTooltip {...props} tooltipStyle={tooltipStyle} base={base} t={t} />} />
+                <Tooltip content={(props) => <MonthBreakdownTooltip {...props} tooltipStyle={tooltipStyle} base={base} country={country} t={t} />} />
                 <Area type="monotone" dataKey="cumulative" stroke="#059669" fill="url(#dividendCumulativeGradient)" strokeWidth={2} />
               </AreaChart>
             </ResponsiveContainer>
@@ -513,6 +528,7 @@ export default function Dywidendy() {
             total={selectedSimRow.total}
             byStock={selectedSimRow.by_stock}
             base={base}
+            country={country}
             t={t}
             onClose={() => setSelectedSimMonth(null)}
           />
@@ -570,6 +586,7 @@ export default function Dywidendy() {
             total={Number(selectedYearRow.total)}
             byStock={selectedYearRow.by_stock}
             base={base}
+            country={country}
             t={t}
             onClose={() => setSelectedYear(null)}
           />

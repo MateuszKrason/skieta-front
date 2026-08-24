@@ -28,6 +28,7 @@ export default function Dashboard() {
   const {
     data: summary,
     isLoading,
+    isFetching: summaryFetching,
     dataUpdatedAt,
   } = useQuery({
     queryKey: ['dashboard'],
@@ -39,19 +40,25 @@ export default function Dashboard() {
     refetchIntervalInBackground: true,
   })
 
-  const { data: timeline } = useQuery({
+  const { data: timeline, isFetching: timelineFetching } = useQuery({
     queryKey: ['timeline'],
     queryFn: async () => (await api.get<NetWorthSnapshot[]>('/networth/timeline/')).data,
     refetchInterval: REFRESH_INTERVAL_MS,
     refetchIntervalInBackground: true,
   })
 
-  const { data: budgetSummary } = useQuery({
+  const { data: budgetSummary, isFetching: budgetFetching } = useQuery({
     queryKey: ['budget-summary'],
     queryFn: async () => (await api.get<CategoryBreakdown>('/budget/summary/')).data,
     refetchInterval: REFRESH_INTERVAL_MS,
     refetchIntervalInBackground: true,
   })
+
+  // Drives the spin animation on the refresh button/icon - true both for the
+  // manual "Odśwież teraz" click and for the silent 60s auto-refresh, so the
+  // icon always reflects an actual in-flight request instead of just the
+  // button's own click state.
+  const isRefreshing = summaryFetching || timelineFetching || budgetFetching
 
   const [secondsAgo, setSecondsAgo] = useState(0)
   useEffect(() => {
@@ -94,9 +101,11 @@ export default function Dashboard() {
           <span>{t('Odświeżono {0}s temu (auto co 60s)', secondsAgo)}</span>
           <button
             onClick={refreshNow}
-            className="rounded-md border border-slate-300 dark:border-slate-600 px-2.5 py-1 font-medium text-slate-600 dark:text-slate-400 hover:bg-slate-100 dark:hover:bg-slate-700"
+            disabled={isRefreshing}
+            className="flex items-center gap-1.5 rounded-md border border-slate-300 dark:border-slate-600 px-2.5 py-1 font-medium text-slate-600 dark:text-slate-400 hover:bg-slate-100 dark:hover:bg-slate-700 disabled:opacity-70"
           >
-            {t('⟳ Odśwież teraz')}
+            <span className={`inline-block ${isRefreshing ? 'animate-spin' : ''}`}>⟳</span>
+            {t('Odśwież teraz')}
           </button>
         </div>
       </div>

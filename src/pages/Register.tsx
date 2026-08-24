@@ -5,11 +5,11 @@ import { api } from '../api/client'
 import { useAuth } from '../auth/AuthContext'
 import AuthTopBar from '../components/AuthTopBar'
 import SockLogo from '../components/SockLogo'
-import { useLanguage } from '../i18n/LanguageContext'
+import { CURRENCY_BY_LANGUAGE, LANGUAGES, LANGUAGE_LABELS, useLanguage, type Language } from '../i18n/LanguageContext'
 
 export default function Register() {
   const { register } = useAuth()
-  const { t } = useLanguage()
+  const { language: siteLanguage, t } = useLanguage()
   const navigate = useNavigate()
   const [searchParams] = useSearchParams()
   const inviteToken = searchParams.get('token') ?? ''
@@ -28,16 +28,27 @@ export default function Register() {
   const [username, setUsername] = useState('')
   const [email, setEmail] = useState('')
   const [password, setPassword] = useState('')
-  const [baseCurrency, setBaseCurrency] = useState('PLN')
+  // Defaults to the language the site was in when Register.tsx mounted (per
+  // requirement: "default language = registration language") — freely
+  // changeable below, same as currency.
+  const [registerLanguage, setRegisterLanguage] = useState<Language>(siteLanguage)
+  const [baseCurrency, setBaseCurrency] = useState(CURRENCY_BY_LANGUAGE[siteLanguage])
   const [error, setError] = useState<string | null>(null)
   const [submitting, setSubmitting] = useState(false)
+
+  // Suggest the language's usual currency whenever the language picker
+  // changes — the currency dropdown right below stays fully user-editable.
+  function onLanguageChange(lang: Language) {
+    setRegisterLanguage(lang)
+    setBaseCurrency(CURRENCY_BY_LANGUAGE[lang])
+  }
 
   async function onSubmit(e: FormEvent) {
     e.preventDefault()
     setError(null)
     setSubmitting(true)
     try {
-      await register(username, email, password, firstName, lastName, baseCurrency, inviteToken)
+      await register(username, email, password, firstName, lastName, baseCurrency, inviteToken, registerLanguage)
       navigate('/onboarding')
     } catch (err) {
       if (err instanceof AxiosError && err.response?.data) {
@@ -128,6 +139,20 @@ export default function Register() {
             required
           />
         </label>
+        <label className="mb-3 block text-sm">
+          {t('Język interfejsu')}
+          <select
+            className="mt-1 w-full rounded-md border border-slate-300 dark:border-slate-600 px-3 py-2 text-sm focus:border-accent-500 focus:outline-none"
+            value={registerLanguage}
+            onChange={(e) => onLanguageChange(e.target.value as Language)}
+          >
+            {LANGUAGES.map((lang) => (
+              <option key={lang} value={lang}>
+                {LANGUAGE_LABELS[lang]}
+              </option>
+            ))}
+          </select>
+        </label>
         <label className="mb-4 block text-sm">
           {t('Domyślna waluta')}
           <select
@@ -138,8 +163,6 @@ export default function Register() {
             <option value="PLN">PLN</option>
             <option value="USD">USD</option>
             <option value="EUR">EUR</option>
-            <option value="NOK">NOK</option>
-            <option value="DKK">DKK</option>
             <option value="GBP">GBP</option>
           </select>
           <span className="mt-1 block text-xs text-slate-400 dark:text-slate-500">

@@ -1,9 +1,10 @@
 import { useMutation, useQuery, useQueryClient } from '@tanstack/react-query'
 import { useNavigate, useParams } from 'react-router-dom'
-import { Bar, BarChart, ResponsiveContainer, Tooltip, XAxis, YAxis } from 'recharts'
+import { Bar, BarChart, Legend, ResponsiveContainer, Tooltip, XAxis, YAxis } from 'recharts'
 import { api } from '../../api/client'
 import { PageLoader } from '../../components/Loader'
-import { useLanguage } from '../../i18n/LanguageContext'
+import { LANGUAGE_LABELS, useLanguage } from '../../i18n/LanguageContext'
+import { countryName } from '../../lib/countries'
 import { useTooltipStyle } from '../../lib/chartTooltip'
 import { formatDate, formatDateTime, formatDuration } from '../../lib/format'
 import type { AdminUserDetail as AdminUserDetailType, Role } from '../../types'
@@ -12,11 +13,6 @@ const VARIANT_LABELS: Record<string, string> = {
   light: 'Jasny',
   dark: 'Ciemny',
   pink: 'Lawendowy',
-}
-
-const LANGUAGE_LABELS: Record<string, string> = {
-  pl: 'Polski',
-  en: 'English',
 }
 
 function InfoRow({ label, value }: { label: string; value: React.ReactNode }) {
@@ -69,6 +65,17 @@ export default function AdminUserDetail() {
       if (detail) window.alert(detail)
     },
   })
+  const deleteUser = useMutation({
+    mutationFn: () => api.delete(`/auth/admin/users/${id}/delete/`),
+    onSuccess: () => {
+      queryClient.invalidateQueries({ queryKey: ['admin-users'] })
+      navigate('/admin/uzytkownicy')
+    },
+    onError: (err: unknown) => {
+      const detail = (err as { response?: { data?: { detail?: string } } }).response?.data?.detail
+      window.alert(detail ?? t('Nie udało się usunąć konta.'))
+    },
+  })
 
   const { data: allRoles } = useQuery({
     queryKey: ['admin-roles'],
@@ -98,6 +105,11 @@ export default function AdminUserDetail() {
 
   const fullName = [user.first_name, user.last_name].filter(Boolean).join(' ')
   const activityChartData = user.activity_last_30_days.map((d) => ({ date: d.date, value: d.active ? 1 : 0 }))
+  const budgetEntriesChartData = user.budget_entries_last_30_days.map((d) => ({
+    date: d.date,
+    income: d.income,
+    expense: d.expense,
+  }))
 
   return (
     <div className="space-y-6">
@@ -139,6 +151,10 @@ export default function AdminUserDetail() {
         <InfoRow label={t('Status konta')} value={user.is_active ? t('aktywne') : t('zablokowane')} />
         <InfoRow label={t('Wariant kolorystyczny')} value={t(VARIANT_LABELS[user.color_variant] ?? user.color_variant)} />
         <InfoRow label={t('Język')} value={LANGUAGE_LABELS[user.language] ?? user.language} />
+        <InfoRow
+          label={t('Kraj rezydencji')}
+          value={user.residency_country ? countryName(user.residency_country) : t('Nie podano')}
+        />
         <InfoRow
           label={t('Role')}
           value={
@@ -190,6 +206,32 @@ export default function AdminUserDetail() {
             {t('Zarchiwizowano {0}', formatDateTime(user.archived_at))}
           </p>
         )}
+      </div>
+
+      <div className="rounded-xl border border-red-300 dark:border-red-800 bg-red-50 dark:bg-red-950/20 p-5 shadow-sm">
+        <h2 className="mb-1 text-sm font-semibold text-red-700 dark:text-red-400">{t('Trwałe usunięcie')}</h2>
+        <p className="mb-3 text-xs text-red-700/80 dark:text-red-400/80">
+          {t(
+            'W przeciwieństwie do archiwizacji, to usuwa konto i wszystkie jego dane z bazy danych na stałe. Tej operacji nie można cofnąć.',
+          )}
+        </p>
+        <button
+          onClick={() => {
+            const typed = window.prompt(
+              t(
+                'Ta operacja jest nieodwracalna i trwale usunie konto oraz wszystkie dane użytkownika z bazy danych. Wpisz nazwę użytkownika "{0}", żeby potwierdzić.',
+                user.username,
+              ),
+            )
+            if (typed === null) return
+            if (typed === user.username) deleteUser.mutate()
+            else window.alert(t('Nazwa użytkownika się nie zgadza — anulowano.'))
+          }}
+          disabled={deleteUser.isPending}
+          className="rounded-md bg-red-600 px-3 py-1.5 text-sm font-medium text-white hover:bg-red-700 disabled:opacity-50"
+        >
+          {t('Usuń trwale z bazy')}
+        </button>
       </div>
 
       <div className="rounded-xl border border-slate-200 dark:border-slate-700 bg-white dark:bg-slate-800 p-5 shadow-sm">
@@ -296,6 +338,8 @@ export default function AdminUserDetail() {
           <InfoRow label={t('Konta bankowe')} value={user.accounts_count} />
           <InfoRow label={t('Transakcje akcji')} value={user.stock_transactions_count} />
           <InfoRow label={t('Transakcje budżetu')} value={user.budget_transactions_count} />
+          <InfoRow label={t('Przychody wrzucone')} value={user.budget_income_count} />
+          <InfoRow label={t('Wydatki wrzucone')} value={user.budget_expense_count} />
           <InfoRow label={t('Średni czas sesji')} value={formatDuration(user.avg_session_duration_seconds)} />
         </div>
         <p className="mb-2 mt-5 text-xs font-medium text-slate-500 dark:text-slate-400">
@@ -318,6 +362,36 @@ export default function AdminUserDetail() {
                 formatter={(value) => [value === 1 ? t('aktywny') : t('nieaktywny'), '']}
               />
               <Bar dataKey="value" fill="#7c3aed" radius={[2, 2, 0, 0]} />
+            </BarChart>
+          </ResponsiveContainer>
+        </div>
+      </div>
+
+      <div className="rounded-xl border border-slate-200 dark:border-slate-700 bg-white dark:bg-slate-800 p-5 shadow-sm">
+        <h2 className="mb-1 text-sm font-semibold text-slate-700 dark:text-slate-300">
+          {t('Wpisy budżetowe w ostatnich 30 dniach')}
+        </h2>
+        <p className="mb-3 text-xs text-slate-400 dark:text-slate-500">
+          {t('Liczba wpisów dziennie - bez kwot.')}
+        </p>
+        <div className="h-40">
+          <ResponsiveContainer width="100%" height="100%">
+            <BarChart data={budgetEntriesChartData}>
+              <XAxis
+                dataKey="date"
+                tickFormatter={(d) => formatDate(d)}
+                tick={{ fontSize: 10 }}
+                stroke="#94a3b8"
+                interval="preserveStartEnd"
+              />
+              <YAxis allowDecimals={false} tick={{ fontSize: 11 }} stroke="#94a3b8" width={24} />
+              <Tooltip {...tooltipStyle} labelFormatter={(d) => formatDate(d as string)} />
+              <Legend
+                formatter={(value) => (value === 'income' ? t('Przychody') : t('Wydatki'))}
+                wrapperStyle={{ fontSize: 11 }}
+              />
+              <Bar dataKey="income" name="income" fill="#059669" radius={[2, 2, 0, 0]} />
+              <Bar dataKey="expense" name="expense" fill="#ef4444" radius={[2, 2, 0, 0]} />
             </BarChart>
           </ResponsiveContainer>
         </div>
