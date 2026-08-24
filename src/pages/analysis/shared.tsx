@@ -707,20 +707,46 @@ export function AddCategoryForm({
 export function CategoryManager({ type }: { type: BudgetType }) {
   const queryClient = useQueryClient()
   const { t } = useLanguage()
+  const [dragId, setDragId] = useState<number | null>(null)
+  const [dragOverId, setDragOverId] = useState<number | null>(null)
+  const [editingId, setEditingId] = useState<number | null>(null)
+  const [editName, setEditName] = useState('')
+  const [editAccount, setEditAccount] = useState<number | ''>('')
 
   const { data: categories } = useQuery({
     queryKey: ['budget-categories', type],
     queryFn: async () => (await api.get<Category[]>('/budget/categories/', { params: { type } })).data,
   })
+  const { data: accounts } = useQuery({
+    queryKey: ['accounts'],
+    queryFn: async () => (await api.get<BankAccount[]>('/banking/accounts/')).data,
+  })
+  const sorted = [...(categories ?? [])].sort((a, b) => a.display_order - b.display_order)
+
+  function invalidateAll() {
+    queryClient.invalidateQueries({ queryKey: ['budget-categories'] })
+    queryClient.invalidateQueries({ queryKey: ['budget-breakdown'] })
+    queryClient.invalidateQueries({ queryKey: ['budget-trend'] })
+    queryClient.invalidateQueries({ queryKey: ['budget-category-trend'] })
+    queryClient.invalidateQueries({ queryKey: ['budget-transactions'] })
+  }
 
   const deleteCategory = useMutation({
     mutationFn: (id: number) => api.delete(`/budget/categories/${id}/`),
+    onSuccess: invalidateAll,
+  })
+
+  const reorderMutation = useMutation({
+    mutationFn: (order: number[]) => api.post('/budget/categories/reorder/', { order }),
+    onSuccess: invalidateAll,
+  })
+
+  const editMutation = useMutation({
+    mutationFn: ({ id, name, account }: { id: number; name: string; account: number | null }) =>
+      api.patch(`/budget/categories/${id}/`, { name, account }),
     onSuccess: () => {
-      queryClient.invalidateQueries({ queryKey: ['budget-categories'] })
-      queryClient.invalidateQueries({ queryKey: ['budget-breakdown'] })
-      queryClient.invalidateQueries({ queryKey: ['budget-trend'] })
-      queryClient.invalidateQueries({ queryKey: ['budget-category-trend'] })
-      queryClient.invalidateQueries({ queryKey: ['budget-transactions'] })
+      setEditingId(null)
+      invalidateAll()
     },
   })
 
@@ -734,36 +760,134 @@ export function CategoryManager({ type }: { type: BudgetType }) {
     }
   }
 
+  function startEdit(category: Category) {
+    setEditingId(category.id)
+    setEditName(category.name)
+    setEditAccount(category.account ?? '')
+  }
+
+  function handleDrop(targetId: number) {
+    setDragOverId(null)
+    if (dragId === null || dragId === targetId) {
+      setDragId(null)
+      return
+    }
+    const ids = sorted.map((c) => c.id)
+    const fromIndex = ids.indexOf(dragId)
+    const toIndex = ids.indexOf(targetId)
+    ids.splice(fromIndex, 1)
+    ids.splice(toIndex, 0, dragId)
+    reorderMutation.mutate(ids)
+    setDragId(null)
+  }
+
   return (
     <div className="rounded-xl border border-slate-200 dark:border-slate-700 bg-white dark:bg-slate-800 p-5 shadow-sm">
       <h2 className="mb-3 text-sm font-semibold text-slate-700 dark:text-slate-300">
         {type === 'income' ? t('Kategorie przychodów') : t('Kategorie wydatków')}
       </h2>
       <div className="flex flex-wrap gap-2">
-        {(categories ?? []).map((c) => (
-          <span
-            key={c.id}
-            className="flex items-center gap-1.5 rounded-full border border-slate-200 dark:border-slate-700 bg-slate-50 dark:bg-slate-900 py-1 pl-3 pr-1.5 text-xs text-slate-600 dark:text-slate-400"
-          >
-            {c.name}
-            {c.account_detail && (
-              <span
-                title={t('Kategoria widoczna tylko dla tego konta')}
-                className="rounded-full bg-slate-200 dark:bg-slate-700 px-1.5 py-0.5 text-[10px] text-slate-500 dark:text-slate-400"
-              >
-                {c.account_detail.bank_name}
-              </span>
-            )}
-            <button
-              onClick={() => onDelete(c)}
-              title={t('Usuń kategorię')}
-              className="rounded-full px-1.5 py-0.5 text-red-500 hover:bg-red-50 hover:text-red-700"
+        {sorted.map((c) =>
+          editingId === c.id ? (
+            <span
+              key={c.id}
+              className="flex items-center gap-1.5 rounded-full border border-accent-400 dark:border-accent-600 bg-slate-50 dark:bg-slate-900 py-1 pl-3 pr-1.5 text-xs"
             >
-              ×
-            </button>
-          </span>
-        ))}
-        {categories?.length === 0 && <p className="text-sm text-slate-400 dark:text-slate-500">{t('Brak kategorii.')}</p>}
+              <input
+                value={editName}
+                onChange={(e) => setEditName(e.target.value)}
+                autoFocus
+                className="w-28 border-0 bg-transparent p-0 text-xs text-slate-700 dark:text-slate-200 focus:outline-none"
+              />
+              {accounts && accounts.length > 0 && (
+                <select
+                  value={editAccount}
+                  onChange={(e) => setEditAccount(e.target.value ? Number(e.target.value) : '')}
+                  className="border-0 bg-transparent p-0 text-[10px] text-slate-500 dark:text-slate-400 focus:outline-none"
+                >
+                  <option value="">{t('wszystkie konta')}</option>
+                  {accounts.map((a) => (
+                    <option key={a.id} value={a.id}>
+                      {a.bank_name} — {a.name}
+                    </option>
+                  ))}
+                </select>
+              )}
+              <button
+                onClick={() =>
+                  editMutation.mutate({ id: c.id, name: editName, account: editAccount || null })
+                }
+                disabled={editMutation.isPending || !editName.trim()}
+                title={t('Zapisz')}
+                className="rounded-full px-1.5 py-0.5 text-accent-700 dark:text-accent-400 hover:bg-accent-50 dark:hover:bg-accent-900/30"
+              >
+                ✓
+              </button>
+              <button
+                onClick={() => setEditingId(null)}
+                title={t('Anuluj')}
+                className="rounded-full px-1.5 py-0.5 text-slate-400 hover:bg-slate-100 dark:hover:bg-slate-700"
+              >
+                ×
+              </button>
+            </span>
+          ) : (
+            <span
+              key={c.id}
+              draggable
+              onDragStart={() => setDragId(c.id)}
+              onDragEnd={() => {
+                setDragId(null)
+                setDragOverId(null)
+              }}
+              onDragOver={(e) => {
+                e.preventDefault()
+                if (dragId !== null && dragId !== c.id) setDragOverId(c.id)
+              }}
+              onDragLeave={() => setDragOverId((prev) => (prev === c.id ? null : prev))}
+              onDrop={(e) => {
+                e.preventDefault()
+                handleDrop(c.id)
+              }}
+              title={t('Przeciągnij, aby zmienić kolejność')}
+              className={`flex cursor-grab items-center gap-1.5 rounded-full border bg-slate-50 dark:bg-slate-900 py-1 pl-2 pr-1.5 text-xs text-slate-600 dark:text-slate-400 active:cursor-grabbing ${
+                dragOverId === c.id
+                  ? 'border-accent-500'
+                  : dragId === c.id
+                    ? 'opacity-40 border-slate-200 dark:border-slate-700'
+                    : 'border-slate-200 dark:border-slate-700'
+              }`}
+            >
+              <span className="text-slate-300 dark:text-slate-600" aria-hidden="true">
+                ⠿
+              </span>
+              {c.name}
+              {c.account_detail && (
+                <span
+                  title={t('Kategoria widoczna tylko dla tego konta')}
+                  className="rounded-full bg-slate-200 dark:bg-slate-700 px-1.5 py-0.5 text-[10px] text-slate-500 dark:text-slate-400"
+                >
+                  {c.account_detail.bank_name}
+                </span>
+              )}
+              <button
+                onClick={() => startEdit(c)}
+                title={t('Edytuj kategorię')}
+                className="rounded-full px-1.5 py-0.5 text-slate-400 hover:bg-slate-100 hover:text-slate-600 dark:hover:bg-slate-700 dark:hover:text-slate-200"
+              >
+                ✎
+              </button>
+              <button
+                onClick={() => onDelete(c)}
+                title={t('Usuń kategorię')}
+                className="rounded-full px-1.5 py-0.5 text-red-500 hover:bg-red-50 hover:text-red-700"
+              >
+                ×
+              </button>
+            </span>
+          ),
+        )}
+        {sorted.length === 0 && <p className="text-sm text-slate-400 dark:text-slate-500">{t('Brak kategorii.')}</p>}
       </div>
     </div>
   )
@@ -794,9 +918,14 @@ export function AddTransactionForm({
   const [description, setDescription] = useState('')
   const [error, setError] = useState<string | null>(null)
 
-  const filteredCategories = categories.filter(
-    (c) => c.type === type && (c.account === null || c.account === account),
-  )
+  // Categories aren't restricted to their linked account here - the account
+  // on a Category is just an organizational tag (shown as a badge in
+  // "Zarządzaj kategoriami"), not a hard requirement to select that same
+  // account before the category becomes usable. Filtering on it too used to
+  // make a freshly created account-linked category silently disappear from
+  // this form whenever no account (or a different one) was picked, with no
+  // indication why - and EditTransaction never applied this filter anyway.
+  const filteredCategories = categories.filter((c) => c.type === type)
 
   const { data: stores } = useQuery({
     queryKey: ['budget-stores'],
@@ -952,11 +1081,21 @@ export function TagManager({
   const queryClient = useQueryClient()
   const { t } = useLanguage()
   const [name, setName] = useState('')
+  const [dragId, setDragId] = useState<number | null>(null)
+  const [dragOverId, setDragOverId] = useState<number | null>(null)
+  const [editingId, setEditingId] = useState<number | null>(null)
+  const [editName, setEditName] = useState('')
+  // Drag-to-reorder and editing only make sense in the pure management view
+  // (Kategorie page, no onSelectTag) - in the filter-by-tag view (Bilans)
+  // these pills are click targets, and inviting a drag/edit there would just
+  // be confusing.
+  const draggable = !onSelectTag
 
   const { data: tags } = useQuery({
     queryKey: ['budget-tags'],
     queryFn: async () => (await api.get<Tag[]>('/budget/tags/')).data,
   })
+  const sorted = [...(tags ?? [])].sort((a, b) => a.display_order - b.display_order)
 
   const addTag = useMutation({
     mutationFn: () => api.post('/budget/tags/', { name }),
@@ -975,6 +1114,21 @@ export function TagManager({
     },
   })
 
+  const reorderMutation = useMutation({
+    mutationFn: (order: number[]) => api.post('/budget/tags/reorder/', { order }),
+    onSuccess: () => queryClient.invalidateQueries({ queryKey: ['budget-tags'] }),
+  })
+
+  const editMutation = useMutation({
+    mutationFn: ({ id, name: newName }: { id: number; name: string }) =>
+      api.patch(`/budget/tags/${id}/`, { name: newName }),
+    onSuccess: () => {
+      setEditingId(null)
+      queryClient.invalidateQueries({ queryKey: ['budget-tags'] })
+      queryClient.invalidateQueries({ queryKey: ['budget-transactions'] })
+    },
+  })
+
   function onDelete(tag: Tag) {
     if (window.confirm(t('Usunąć tag "{0}"?', tag.name))) {
       deleteTag.mutate(tag.id)
@@ -985,6 +1139,26 @@ export function TagManager({
     e.preventDefault()
     if (!name.trim()) return
     addTag.mutate()
+  }
+
+  function startEdit(tag: Tag) {
+    setEditingId(tag.id)
+    setEditName(tag.name)
+  }
+
+  function handleDrop(targetId: number) {
+    setDragOverId(null)
+    if (dragId === null || dragId === targetId) {
+      setDragId(null)
+      return
+    }
+    const ids = sorted.map((tag) => tag.id)
+    const fromIndex = ids.indexOf(dragId)
+    const toIndex = ids.indexOf(targetId)
+    ids.splice(fromIndex, 1)
+    ids.splice(toIndex, 0, dragId)
+    reorderMutation.mutate(ids)
+    setDragId(null)
   }
 
   return (
@@ -1005,32 +1179,100 @@ export function TagManager({
         </button>
       </form>
       <div className="flex flex-wrap gap-2">
-        {(tags ?? []).map((tag) => (
-          <span
-            key={tag.id}
-            onClick={() => onSelectTag?.(selectedTagId === tag.id ? null : tag.id)}
-            className={`flex items-center gap-1.5 rounded-full border py-1 pl-3 pr-1.5 text-xs transition ${
-              onSelectTag ? 'cursor-pointer' : ''
-            } ${
-              selectedTagId === tag.id
-                ? 'border-accent-400 dark:border-accent-600 bg-accent-50 dark:bg-accent-900/30 text-accent-700 dark:text-accent-400'
-                : 'border-slate-200 dark:border-slate-700 bg-slate-50 dark:bg-slate-900 text-slate-600 dark:text-slate-400'
-            }`}
-          >
-            {tag.name}
-            <button
-              onClick={(e) => {
-                e.stopPropagation()
-                onDelete(tag)
-              }}
-              title={t('Usuń tag')}
-              className="rounded-full px-1.5 py-0.5 text-red-500 hover:bg-red-50 hover:text-red-700"
+        {sorted.map((tag) =>
+          editingId === tag.id ? (
+            <span
+              key={tag.id}
+              className="flex items-center gap-1.5 rounded-full border border-accent-400 dark:border-accent-600 bg-slate-50 dark:bg-slate-900 py-1 pl-3 pr-1.5 text-xs"
             >
-              ×
-            </button>
-          </span>
-        ))}
-        {tags?.length === 0 && <p className="text-sm text-slate-400 dark:text-slate-500">{t('Brak tagów — dodaj pierwszy powyżej.')}</p>}
+              <input
+                value={editName}
+                onChange={(e) => setEditName(e.target.value)}
+                autoFocus
+                className="w-24 border-0 bg-transparent p-0 text-xs text-slate-700 dark:text-slate-200 focus:outline-none"
+              />
+              <button
+                onClick={() => editMutation.mutate({ id: tag.id, name: editName })}
+                disabled={editMutation.isPending || !editName.trim()}
+                title={t('Zapisz')}
+                className="rounded-full px-1.5 py-0.5 text-accent-700 dark:text-accent-400 hover:bg-accent-50 dark:hover:bg-accent-900/30"
+              >
+                ✓
+              </button>
+              <button
+                onClick={() => setEditingId(null)}
+                title={t('Anuluj')}
+                className="rounded-full px-1.5 py-0.5 text-slate-400 hover:bg-slate-100 dark:hover:bg-slate-700"
+              >
+                ×
+              </button>
+            </span>
+          ) : (
+            <span
+              key={tag.id}
+              onClick={() => onSelectTag?.(selectedTagId === tag.id ? null : tag.id)}
+              draggable={draggable}
+              onDragStart={() => setDragId(tag.id)}
+              onDragEnd={() => {
+                setDragId(null)
+                setDragOverId(null)
+              }}
+              onDragOver={(e) => {
+                if (!draggable) return
+                e.preventDefault()
+                if (dragId !== null && dragId !== tag.id) setDragOverId(tag.id)
+              }}
+              onDragLeave={() => setDragOverId((prev) => (prev === tag.id ? null : prev))}
+              onDrop={(e) => {
+                if (!draggable) return
+                e.preventDefault()
+                handleDrop(tag.id)
+              }}
+              title={draggable ? t('Przeciągnij, aby zmienić kolejność') : undefined}
+              className={`flex items-center gap-1.5 rounded-full border py-1 pl-3 pr-1.5 text-xs transition ${
+                onSelectTag ? 'cursor-pointer' : draggable ? 'cursor-grab active:cursor-grabbing' : ''
+              } ${
+                dragOverId === tag.id
+                  ? 'border-accent-500'
+                  : dragId === tag.id
+                    ? 'opacity-40'
+                    : selectedTagId === tag.id
+                      ? 'border-accent-400 dark:border-accent-600 bg-accent-50 dark:bg-accent-900/30 text-accent-700 dark:text-accent-400'
+                      : 'border-slate-200 dark:border-slate-700 bg-slate-50 dark:bg-slate-900 text-slate-600 dark:text-slate-400'
+              }`}
+            >
+              {draggable && (
+                <span className="text-slate-300 dark:text-slate-600" aria-hidden="true">
+                  ⠿
+                </span>
+              )}
+              {tag.name}
+              {draggable && (
+                <button
+                  onClick={(e) => {
+                    e.stopPropagation()
+                    startEdit(tag)
+                  }}
+                  title={t('Edytuj tag')}
+                  className="rounded-full px-1.5 py-0.5 text-slate-400 hover:bg-slate-100 hover:text-slate-600 dark:hover:bg-slate-700 dark:hover:text-slate-200"
+                >
+                  ✎
+                </button>
+              )}
+              <button
+                onClick={(e) => {
+                  e.stopPropagation()
+                  onDelete(tag)
+                }}
+                title={t('Usuń tag')}
+                className="rounded-full px-1.5 py-0.5 text-red-500 hover:bg-red-50 hover:text-red-700"
+              >
+                ×
+              </button>
+            </span>
+          ),
+        )}
+        {sorted.length === 0 && <p className="text-sm text-slate-400 dark:text-slate-500">{t('Brak tagów — dodaj pierwszy powyżej.')}</p>}
       </div>
     </div>
   )
@@ -1040,11 +1282,16 @@ export function StoreManager() {
   const queryClient = useQueryClient()
   const { t } = useLanguage()
   const [name, setName] = useState('')
+  const [dragId, setDragId] = useState<number | null>(null)
+  const [dragOverId, setDragOverId] = useState<number | null>(null)
+  const [editingId, setEditingId] = useState<number | null>(null)
+  const [editName, setEditName] = useState('')
 
   const { data: stores } = useQuery({
     queryKey: ['budget-stores'],
     queryFn: async () => (await api.get<Store[]>('/budget/stores/')).data,
   })
+  const sorted = [...(stores ?? [])].sort((a, b) => a.display_order - b.display_order)
 
   const addStore = useMutation({
     mutationFn: () => api.post('/budget/stores/', { name }),
@@ -1057,6 +1304,22 @@ export function StoreManager() {
   const deleteStore = useMutation({
     mutationFn: (id: number) => api.delete(`/budget/stores/${id}/`),
     onSuccess: () => {
+      queryClient.invalidateQueries({ queryKey: ['budget-stores'] })
+      queryClient.invalidateQueries({ queryKey: ['budget-store-breakdown'] })
+      queryClient.invalidateQueries({ queryKey: ['budget-transactions'] })
+    },
+  })
+
+  const reorderMutation = useMutation({
+    mutationFn: (order: number[]) => api.post('/budget/stores/reorder/', { order }),
+    onSuccess: () => queryClient.invalidateQueries({ queryKey: ['budget-stores'] }),
+  })
+
+  const editMutation = useMutation({
+    mutationFn: ({ id, name: newName }: { id: number; name: string }) =>
+      api.patch(`/budget/stores/${id}/`, { name: newName }),
+    onSuccess: () => {
+      setEditingId(null)
       queryClient.invalidateQueries({ queryKey: ['budget-stores'] })
       queryClient.invalidateQueries({ queryKey: ['budget-store-breakdown'] })
       queryClient.invalidateQueries({ queryKey: ['budget-transactions'] })
@@ -1077,6 +1340,26 @@ export function StoreManager() {
     addStore.mutate()
   }
 
+  function startEdit(store: Store) {
+    setEditingId(store.id)
+    setEditName(store.name)
+  }
+
+  function handleDrop(targetId: number) {
+    setDragOverId(null)
+    if (dragId === null || dragId === targetId) {
+      setDragId(null)
+      return
+    }
+    const ids = sorted.map((s) => s.id)
+    const fromIndex = ids.indexOf(dragId)
+    const toIndex = ids.indexOf(targetId)
+    ids.splice(fromIndex, 1)
+    ids.splice(toIndex, 0, dragId)
+    reorderMutation.mutate(ids)
+    setDragId(null)
+  }
+
   return (
     <div className="rounded-xl border border-slate-200 dark:border-slate-700 bg-white dark:bg-slate-800 p-5 shadow-sm">
       <h2 className="mb-3 text-sm font-semibold text-slate-700 dark:text-slate-300">{t('Sklepy')}</h2>
@@ -1092,22 +1375,83 @@ export function StoreManager() {
         </button>
       </form>
       <div className="flex flex-wrap gap-2">
-        {(stores ?? []).map((s) => (
-          <span
-            key={s.id}
-            className="flex items-center gap-1.5 rounded-full border border-slate-200 dark:border-slate-700 bg-slate-50 dark:bg-slate-900 py-1 pl-3 pr-1.5 text-xs text-slate-600 dark:text-slate-400"
-          >
-            {s.name}
-            <button
-              onClick={() => onDelete(s)}
-              title={t('Usuń sklep')}
-              className="rounded-full px-1.5 py-0.5 text-red-500 hover:bg-red-50 hover:text-red-700"
+        {sorted.map((s) =>
+          editingId === s.id ? (
+            <span
+              key={s.id}
+              className="flex items-center gap-1.5 rounded-full border border-accent-400 dark:border-accent-600 bg-slate-50 dark:bg-slate-900 py-1 pl-3 pr-1.5 text-xs"
             >
-              ×
-            </button>
-          </span>
-        ))}
-        {stores?.length === 0 && <p className="text-sm text-slate-400 dark:text-slate-500">{t('Brak sklepów — dodaj pierwszy powyżej.')}</p>}
+              <input
+                value={editName}
+                onChange={(e) => setEditName(e.target.value)}
+                autoFocus
+                className="w-28 border-0 bg-transparent p-0 text-xs text-slate-700 dark:text-slate-200 focus:outline-none"
+              />
+              <button
+                onClick={() => editMutation.mutate({ id: s.id, name: editName })}
+                disabled={editMutation.isPending || !editName.trim()}
+                title={t('Zapisz')}
+                className="rounded-full px-1.5 py-0.5 text-accent-700 dark:text-accent-400 hover:bg-accent-50 dark:hover:bg-accent-900/30"
+              >
+                ✓
+              </button>
+              <button
+                onClick={() => setEditingId(null)}
+                title={t('Anuluj')}
+                className="rounded-full px-1.5 py-0.5 text-slate-400 hover:bg-slate-100 dark:hover:bg-slate-700"
+              >
+                ×
+              </button>
+            </span>
+          ) : (
+            <span
+              key={s.id}
+              draggable
+              onDragStart={() => setDragId(s.id)}
+              onDragEnd={() => {
+                setDragId(null)
+                setDragOverId(null)
+              }}
+              onDragOver={(e) => {
+                e.preventDefault()
+                if (dragId !== null && dragId !== s.id) setDragOverId(s.id)
+              }}
+              onDragLeave={() => setDragOverId((prev) => (prev === s.id ? null : prev))}
+              onDrop={(e) => {
+                e.preventDefault()
+                handleDrop(s.id)
+              }}
+              title={t('Przeciągnij, aby zmienić kolejność')}
+              className={`flex cursor-grab items-center gap-1.5 rounded-full border bg-slate-50 dark:bg-slate-900 py-1 pl-2 pr-1.5 text-xs text-slate-600 dark:text-slate-400 active:cursor-grabbing ${
+                dragOverId === s.id
+                  ? 'border-accent-500'
+                  : dragId === s.id
+                    ? 'opacity-40 border-slate-200 dark:border-slate-700'
+                    : 'border-slate-200 dark:border-slate-700'
+              }`}
+            >
+              <span className="text-slate-300 dark:text-slate-600" aria-hidden="true">
+                ⠿
+              </span>
+              {s.name}
+              <button
+                onClick={() => startEdit(s)}
+                title={t('Edytuj sklep')}
+                className="rounded-full px-1.5 py-0.5 text-slate-400 hover:bg-slate-100 hover:text-slate-600 dark:hover:bg-slate-700 dark:hover:text-slate-200"
+              >
+                ✎
+              </button>
+              <button
+                onClick={() => onDelete(s)}
+                title={t('Usuń sklep')}
+                className="rounded-full px-1.5 py-0.5 text-red-500 hover:bg-red-50 hover:text-red-700"
+              >
+                ×
+              </button>
+            </span>
+          ),
+        )}
+        {sorted.length === 0 && <p className="text-sm text-slate-400 dark:text-slate-500">{t('Brak sklepów — dodaj pierwszy powyżej.')}</p>}
       </div>
     </div>
   )

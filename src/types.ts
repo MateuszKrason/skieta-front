@@ -571,18 +571,21 @@ export interface Category {
   type: BudgetType
   account: number | null
   account_detail: BankAccount | null
+  display_order: number
   created_at: string
 }
 
 export interface Store {
   id: number
   name: string
+  display_order: number
   created_at: string
 }
 
 export interface Tag {
   id: number
   name: string
+  display_order: number
   created_at: string
 }
 
