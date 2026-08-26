@@ -5,8 +5,8 @@ import { Link } from 'react-router-dom'
 import { api } from '../api/client'
 import { useAuth } from '../auth/AuthContext'
 import SockLogo from '../components/SockLogo'
-import { LANGUAGES, LANGUAGE_LABELS, useLanguage, type Language } from '../i18n/LanguageContext'
-import { formatCountdown, formatDateTime } from '../lib/format'
+import { CURRENCY_BY_LANGUAGE, LANGUAGES, LANGUAGE_LABELS, useLanguage, type Language } from '../i18n/LanguageContext'
+import { formatCountdown, formatDateTime, formatMoney } from '../lib/format'
 import type { ActiveLandingPromotion, Article } from '../types'
 
 // Public, works logged-in or out (same as RequestAccessForm below) — shows an
@@ -131,7 +131,8 @@ const STEPS = [
 ]
 
 function MockDashboardCard() {
-  const { t } = useLanguage()
+  const { t, language } = useLanguage()
+  const currency = CURRENCY_BY_LANGUAGE[language]
   return (
     <div className="relative rounded-2xl border border-slate-200/80 dark:border-slate-700/80 bg-white/90 dark:bg-slate-800/90 p-5 shadow-2xl shadow-slate-900/10 backdrop-blur">
       <div className="flex items-center justify-between">
@@ -140,8 +141,8 @@ function MockDashboardCard() {
           +4.5%
         </span>
       </div>
-      {/* Illustrative placeholder figures only — never real account data (this is a public, logged-out page). */}
-      <p className="mt-1 text-2xl font-bold text-slate-900 dark:text-slate-100">142 300 zł</p>
+      {/* Illustrative placeholder figures only — never real account data (this is a public, logged-out page). Currency follows the interface language, same mapping as registration's default. */}
+      <p className="mt-1 text-2xl font-bold text-slate-900 dark:text-slate-100">{formatMoney(142_300, currency, 0)}</p>
       <div className="mt-4 flex items-end gap-1.5">
         {[40, 55, 48, 62, 58, 70, 65, 80, 74, 90, 84, 96].map((h, i) => (
           <div key={i} className="flex-1 rounded-t bg-gradient-to-t from-accent-500/30 to-accent-500" style={{ height: `${h}%` }} />
@@ -150,11 +151,11 @@ function MockDashboardCard() {
       <div className="mt-5 grid grid-cols-2 gap-3">
         <div className="rounded-lg bg-slate-50 dark:bg-slate-900 p-3">
           <p className="text-[10px] font-medium text-slate-500 dark:text-slate-400">{t('Zysk')}</p>
-          <p className="mt-0.5 text-sm font-semibold text-emerald-600 dark:text-emerald-400">+6 150 zł</p>
+          <p className="mt-0.5 text-sm font-semibold text-emerald-600 dark:text-emerald-400">+{formatMoney(6_150, currency, 0)}</p>
         </div>
         <div className="rounded-lg bg-slate-50 dark:bg-slate-900 p-3">
           <p className="text-[10px] font-medium text-slate-500 dark:text-slate-400">{t('Dywidendy YTD')}</p>
-          <p className="mt-0.5 text-sm font-semibold text-slate-700 dark:text-slate-200">3 200 zł</p>
+          <p className="mt-0.5 text-sm font-semibold text-slate-700 dark:text-slate-200">{formatMoney(3_200, currency, 0)}</p>
         </div>
       </div>
       <div

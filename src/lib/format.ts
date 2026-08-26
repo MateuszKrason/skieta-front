@@ -14,11 +14,20 @@ function activeLocale(): string {
   return LOCALE_BY_LANGUAGE[lang] ?? 'pl-PL'
 }
 
-export function formatMoney(value: string | number | null | undefined, currency = 'PLN'): string {
+export function formatMoney(
+  value: string | number | null | undefined,
+  currency = 'PLN',
+  fractionDigits?: number,
+): string {
   if (value === null || value === undefined) return '—'
   const num = typeof value === 'string' ? Number(value) : value
   if (Number.isNaN(num)) return '—'
-  return new Intl.NumberFormat(activeLocale(), { style: 'currency', currency }).format(num)
+  const options: Intl.NumberFormatOptions = { style: 'currency', currency }
+  if (fractionDigits !== undefined) {
+    options.minimumFractionDigits = fractionDigits
+    options.maximumFractionDigits = fractionDigits
+  }
+  return new Intl.NumberFormat(activeLocale(), options).format(num)
 }
 
 // Client-side mirror of the backend's per-residency-country investment-income
