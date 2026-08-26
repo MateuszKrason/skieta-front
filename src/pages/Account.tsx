@@ -704,6 +704,7 @@ function PasswordForm() {
           type="password"
           value={newPassword}
           onChange={(e) => setNewPassword(e.target.value)}
+          maxLength={100}
           required
           className="input mt-1"
         />
@@ -714,6 +715,7 @@ function PasswordForm() {
           type="password"
           value={confirmPassword}
           onChange={(e) => setConfirmPassword(e.target.value)}
+          maxLength={100}
           required
           className="input mt-1"
         />

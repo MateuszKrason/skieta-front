@@ -61,6 +61,7 @@ export default function ResetPassword() {
                 className="mt-1 w-full rounded-md border border-slate-300 dark:border-slate-600 px-3 py-2 text-sm focus:border-accent-500 focus:outline-none"
                 value={newPassword}
                 onChange={(e) => setNewPassword(e.target.value)}
+                maxLength={100}
                 required
               />
             </label>

@@ -147,6 +147,7 @@ export default function Register() {
             className="mt-1 w-full rounded-md border border-slate-300 dark:border-slate-600 px-3 py-2 text-sm focus:border-accent-500 focus:outline-none"
             value={password}
             onChange={(e) => setPassword(e.target.value)}
+            maxLength={100}
             required
           />
         </label>
