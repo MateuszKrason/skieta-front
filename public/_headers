@@ -1,0 +1,12 @@
+# Security headers for the whole site. Netlify applies these to every
+# response matching the path pattern, on top of (not instead of) whatever
+# _redirects proxies through — see that file for the /api/* -> Azure rule.
+#
+# CSP is scoped to what the app actually loads: same-origin scripts/styles/
+# fonts/images, plus Google's gtag.js and the Analytics endpoints it talks to
+# (script-src stays free of 'unsafe-inline' because the gtag config snippet
+# lives in /gtag-init.js instead of an inline <script> — see index.html).
+/*
+  Content-Security-Policy: default-src 'self'; script-src 'self' https://www.googletagmanager.com; style-src 'self' 'unsafe-inline'; img-src 'self' data: https://www.googletagmanager.com https://www.google-analytics.com; font-src 'self' data:; connect-src 'self' https://www.googletagmanager.com https://www.google-analytics.com https://*.google-analytics.com https://*.analytics.google.com; frame-ancestors 'none'; base-uri 'self'; form-action 'self'; object-src 'none'
+  Referrer-Policy: strict-origin-when-cross-origin
+  X-Content-Type-Options: nosniff
