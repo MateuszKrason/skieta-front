@@ -269,9 +269,10 @@ export const en: Record<string, string> = {
   'Portfel akcji i ETF-ów': 'Stock & ETF portfolio',
   'Suma wartości akcji': 'Total stock value',
   'Łączny zysk/strata': 'Total profit/loss',
-  'Kursy aktualizowane automatycznie 2x dziennie — kliknij "Odśwież kursy" po bieżącą cenę':
-    'Prices update automatically twice a day — click "Refresh prices" for the current quote',
+  'Kursy odświeżają się przy wejściu na tę stronę — kliknij "Odśwież kursy", by pobrać je ponownie':
+    'Prices refresh when you open this page — click "Refresh prices" to fetch them again',
   '⟳ Odśwież kursy': '⟳ Refresh prices',
+  'Notatki': 'Notes',
   '(odświeżanie…)': '(refreshing…)',
   '+ Nowa spółka': '+ New stock',
   '+ Kupno': '+ Buy',

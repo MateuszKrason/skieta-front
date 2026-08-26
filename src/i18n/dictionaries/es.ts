@@ -269,9 +269,10 @@ export const es: Record<string, string> = {
   'Portfel akcji i ETF-ów': 'Cartera de acciones y ETF',
   'Suma wartości akcji': 'Valor total de acciones',
   'Łączny zysk/strata': 'Ganancia/pérdida total',
-  'Kursy aktualizowane automatycznie 2x dziennie — kliknij "Odśwież kursy" po bieżącą cenę':
-    'Las cotizaciones se actualizan automáticamente 2 veces al día - haz clic en "Actualizar cotizaciones" para obtener el precio actual',
+  'Kursy odświeżają się przy wejściu na tę stronę — kliknij "Odśwież kursy", by pobrać je ponownie':
+    'Las cotizaciones se actualizan al entrar en esta página - haz clic en "Actualizar cotizaciones" para volver a obtenerlas',
   '⟳ Odśwież kursy': '⟳ Actualizar cotizaciones',
+  'Notatki': 'Notas',
   '(odświeżanie…)': '(actualizando…)',
   '+ Nowa spółka': '+ Nueva empresa',
   '+ Kupno': '+ Compra',

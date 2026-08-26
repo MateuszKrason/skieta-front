@@ -1,4 +1,4 @@
-import { Fragment, useState, type FormEvent } from 'react'
+import { Fragment, useEffect, useState, type FormEvent } from 'react'
 import { useMutation, useQuery, useQueryClient } from '@tanstack/react-query'
 import { api } from '../../api/client'
 import { PageLoader, Spinner } from '../../components/Loader'
@@ -59,6 +59,7 @@ export default function Portfel() {
   const [showAddStock, setShowAddStock] = useState(false)
   const [showAddTx, setShowAddTx] = useState(false)
   const [sellingStockId, setSellingStockId] = useState<number | null>(null)
+  const [editingTxId, setEditingTxId] = useState<number | null>(null)
   const [sortKey, setSortKey] = useState<HoldingSortKey>('ticker')
   const [sortDir, setSortDir] = useState<'asc' | 'desc'>('asc')
 
@@ -119,6 +120,14 @@ export default function Portfel() {
     },
   })
 
+  // Force a live quote fetch once whenever this tab is opened, instead of
+  // polling Yahoo on a timer (that would hit the provider every 60s per
+  // open tab — see get_latest_stock_price's docstring in market_data).
+  useEffect(() => {
+    refreshPrices.mutate()
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [])
+
   if (holdingsLoading) {
     return <PageLoader />
   }
@@ -129,7 +138,7 @@ export default function Portfel() {
         <div>
           <h1 className="text-2xl font-bold text-slate-900 dark:text-slate-100">{t('Portfel akcji i ETF-ów')}</h1>
           <p className="flex flex-wrap items-center gap-1.5 text-sm text-slate-500 dark:text-slate-400">
-            {t('Kursy aktualizowane automatycznie 2x dziennie — kliknij "Odśwież kursy" po bieżącą cenę')}
+            {t('Kursy odświeżają się przy wejściu na tę stronę — kliknij "Odśwież kursy", by pobrać je ponownie')}
             {(isFetching || refreshPrices.isPending) && (
               <span className="inline-flex items-center gap-1">
                 <Spinner size="sm" /> {t('odświeżanie…')}
@@ -381,32 +390,54 @@ export default function Portfel() {
       <div className="rounded-xl border border-slate-200 dark:border-slate-700 bg-white dark:bg-slate-800 p-5 shadow-sm">
         <h2 className="mb-3 text-sm font-semibold text-slate-700 dark:text-slate-300">{t('Historia transakcji')}</h2>
         <div className="space-y-2">
-          {(transactions ?? []).map((tx) => (
-            <div
-              key={tx.id}
-              className="flex flex-col gap-1 border-b border-slate-100 dark:border-slate-800 py-2 text-sm last:border-0 sm:flex-row sm:items-center sm:justify-between sm:gap-3 sm:py-1.5"
-            >
-              <div className="flex flex-wrap items-center gap-x-1 gap-y-1">
-                <span className={tx.type === 'BUY' ? 'text-emerald-600' : 'text-red-600 dark:text-red-400'}>
-                  {tx.type === 'BUY' ? t('Kupno') : t('Sprzedaż')}
-                </span>
-                <span>
-                  {formatNumber(tx.quantity, 4)}x {tx.stock_detail.ticker} @ {formatMoney(tx.price_per_share, tx.currency)}
-                </span>
-                {tx.exchange_rate_at_purchase && (
-                  <span className="text-xs text-slate-400 dark:text-slate-500">
-                    ({t('kurs')} {formatNumber(tx.exchange_rate_at_purchase, 4)} PLN/{tx.currency})
+          {(transactions ?? []).map((tx) =>
+            editingTxId === tx.id ? (
+              <EditStockTransactionForm
+                key={tx.id}
+                tx={tx}
+                accounts={accounts ?? []}
+                onDone={() => {
+                  setEditingTxId(null)
+                  invalidatePortfolio()
+                }}
+                onCancel={() => setEditingTxId(null)}
+              />
+            ) : (
+              <div
+                key={tx.id}
+                className="flex flex-col gap-1 border-b border-slate-100 dark:border-slate-800 py-2 text-sm last:border-0 sm:flex-row sm:items-center sm:justify-between sm:gap-3 sm:py-1.5"
+              >
+                <div className="flex flex-wrap items-center gap-x-1 gap-y-1">
+                  <span className={tx.type === 'BUY' ? 'text-emerald-600' : 'text-red-600 dark:text-red-400'}>
+                    {tx.type === 'BUY' ? t('Kupno') : t('Sprzedaż')}
                   </span>
-                )}
-                {tx.account_detail && (
-                  <span className="rounded-full bg-slate-100 dark:bg-slate-700 px-2 py-0.5 text-xs text-slate-500 dark:text-slate-400">
-                    {tx.account_detail.name}
+                  <span>
+                    {formatNumber(tx.quantity, 4)}x {tx.stock_detail.ticker} @ {formatMoney(tx.price_per_share, tx.currency)}
                   </span>
-                )}
+                  {tx.exchange_rate_at_purchase && (
+                    <span className="text-xs text-slate-400 dark:text-slate-500">
+                      ({t('kurs')} {formatNumber(tx.exchange_rate_at_purchase, 4)} PLN/{tx.currency})
+                    </span>
+                  )}
+                  {tx.account_detail && (
+                    <span className="rounded-full bg-slate-100 dark:bg-slate-700 px-2 py-0.5 text-xs text-slate-500 dark:text-slate-400">
+                      {tx.account_detail.name}
+                    </span>
+                  )}
+                </div>
+                <div className="flex shrink-0 items-center gap-2">
+                  <span className="text-slate-400 dark:text-slate-500">{tx.executed_at}</span>
+                  <button
+                    type="button"
+                    onClick={() => setEditingTxId(tx.id)}
+                    className="text-xs font-medium text-accent-600 hover:underline dark:text-accent-400"
+                  >
+                    {t('Edytuj')}
+                  </button>
+                </div>
               </div>
-              <span className="shrink-0 text-slate-400 dark:text-slate-500">{tx.executed_at}</span>
-            </div>
-          ))}
+            ),
+          )}
           {transactions?.length === 0 && <p className="text-slate-400 dark:text-slate-500">{t('Brak transakcji.')}</p>}
         </div>
       </div>
@@ -685,6 +716,126 @@ function EditStockRow({ stock, onDone, onCancel }: { stock: Stock; onDone: () =>
         </button>
       </div>
       {error && <p className="col-span-2 text-sm text-red-600 dark:text-red-400 sm:col-span-5">{error}</p>}
+    </form>
+  )
+}
+
+function EditStockTransactionForm({
+  tx,
+  accounts,
+  onDone,
+  onCancel,
+}: {
+  tx: StockTransaction
+  accounts: BankAccount[]
+  onDone: () => void
+  onCancel: () => void
+}) {
+  const { t } = useLanguage()
+  const [account, setAccount] = useState<number | ''>(tx.account ?? '')
+  const [quantity, setQuantity] = useState(tx.quantity)
+  const [pricePerShare, setPricePerShare] = useState(tx.price_per_share)
+  const [fee, setFee] = useState(tx.fee)
+  const [executedAt, setExecutedAt] = useState(tx.executed_at)
+  const [notes, setNotes] = useState(tx.notes)
+  const [error, setError] = useState<string | null>(null)
+
+  const eligibleAccounts = accounts.filter((a) => a.currency === tx.currency)
+
+  const mutation = useMutation({
+    mutationFn: () =>
+      api.patch(`/stocks/transactions/${tx.id}/`, {
+        account: account || null,
+        quantity,
+        price_per_share: pricePerShare,
+        fee,
+        executed_at: executedAt,
+        notes,
+      }),
+    onSuccess: onDone,
+    onError: (err: unknown) => {
+      const data = (err as { response?: { data?: unknown } }).response?.data
+      if (data && typeof data === 'object') {
+        setError(Object.values(data as Record<string, unknown>).flat().join(' '))
+      } else {
+        setError(t('Nie udało się zapisać zmian.'))
+      }
+    },
+  })
+
+  function onSubmit(e: FormEvent) {
+    e.preventDefault()
+    setError(null)
+    mutation.mutate()
+  }
+
+  return (
+    <form
+      onSubmit={onSubmit}
+      className="grid grid-cols-2 gap-2 rounded-md border border-accent-200 dark:border-accent-800 bg-accent-50 dark:bg-accent-900/20 px-3 py-2 sm:grid-cols-6"
+    >
+      <div className="col-span-2 text-xs font-medium text-slate-500 dark:text-slate-400 sm:col-span-6">
+        <span className={tx.type === 'BUY' ? 'text-emerald-600' : 'text-red-600 dark:text-red-400'}>
+          {tx.type === 'BUY' ? t('Kupno') : t('Sprzedaż')}
+        </span>{' '}
+        {tx.stock_detail.ticker}
+      </div>
+      <Field label="Ilość">
+        <input
+          type="number"
+          step="0.0001"
+          value={quantity}
+          onChange={(e) => setQuantity(e.target.value)}
+          required
+          className="input"
+        />
+      </Field>
+      <Field label="Cena/szt.">
+        <input
+          type="number"
+          step="0.01"
+          value={pricePerShare}
+          onChange={(e) => setPricePerShare(e.target.value)}
+          required
+          className="input"
+        />
+      </Field>
+      <Field label="Prowizja">
+        <input type="number" step="0.01" value={fee} onChange={(e) => setFee(e.target.value)} className="input" />
+      </Field>
+      <Field label="Data">
+        <input type="date" value={executedAt} onChange={(e) => setExecutedAt(e.target.value)} required className="input" />
+      </Field>
+      <Field label="Powiąż z kontem (opcjonalnie)">
+        <select
+          value={account}
+          onChange={(e) => setAccount(e.target.value ? Number(e.target.value) : '')}
+          className="input"
+        >
+          <option value="">{t('bez powiązania')}</option>
+          {eligibleAccounts.map((a) => (
+            <option key={a.id} value={a.id}>
+              {a.bank_name} — {a.name} ({t(accountTypeLabel(a.account_type))})
+            </option>
+          ))}
+        </select>
+      </Field>
+      <Field label="Notatki">
+        <input value={notes} onChange={(e) => setNotes(e.target.value)} className="input" />
+      </Field>
+      <div className="col-span-2 flex items-end gap-2 sm:col-span-6">
+        <button type="submit" className="btn-primary" disabled={mutation.isPending}>
+          {t('Zapisz')}
+        </button>
+        <button
+          type="button"
+          onClick={onCancel}
+          className="rounded-md border border-slate-300 dark:border-slate-600 px-3 py-1.5 text-sm font-medium text-slate-600 dark:text-slate-400 hover:bg-slate-100 dark:hover:bg-slate-700"
+        >
+          {t('Anuluj')}
+        </button>
+      </div>
+      {error && <p className="col-span-2 text-sm text-red-600 dark:text-red-400 sm:col-span-6">{error}</p>}
     </form>
   )
 }

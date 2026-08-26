@@ -269,9 +269,10 @@ export const de: Record<string, string> = {
   'Portfel akcji i ETF-ów': 'Aktien- & ETF-Portfolio',
   'Suma wartości akcji': 'Gesamtwert der Aktien',
   'Łączny zysk/strata': 'Gesamtgewinn/-verlust',
-  'Kursy aktualizowane automatycznie 2x dziennie — kliknij "Odśwież kursy" po bieżącą cenę':
-    'Kurse werden automatisch 2x täglich aktualisiert — klicke auf "Kurse aktualisieren" für den aktuellen Preis',
+  'Kursy odświeżają się przy wejściu na tę stronę — kliknij "Odśwież kursy", by pobrać je ponownie':
+    'Die Kurse werden beim Aufrufen dieser Seite aktualisiert — klicke auf "Kurse aktualisieren", um sie erneut abzurufen',
   '⟳ Odśwież kursy': '⟳ Kurse aktualisieren',
+  'Notatki': 'Notizen',
   '(odświeżanie…)': '(wird aktualisiert…)',
   '+ Nowa spółka': '+ Neue Aktie',
   '+ Kupno': '+ Kauf',

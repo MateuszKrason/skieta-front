@@ -269,9 +269,10 @@ export const no: Record<string, string> = {
   'Portfel akcji i ETF-ów': 'Aksje- og ETF-portefølje',
   'Suma wartości akcji': 'Total aksjeverdi',
   'Łączny zysk/strata': 'Total gevinst/tap',
-  'Kursy aktualizowane automatycznie 2x dziennie — kliknij "Odśwież kursy" po bieżącą cenę':
-    'Kursene oppdateres automatisk to ganger daglig - klikk «Oppdater kurser» for gjeldende pris',
+  'Kursy odświeżają się przy wejściu na tę stronę — kliknij "Odśwież kursy", by pobrać je ponownie':
+    'Kursene oppdateres når du åpner denne siden - klikk «Oppdater kurser» for å hente dem på nytt',
   '⟳ Odśwież kursy': '⟳ Oppdater kurser',
+  'Notatki': 'Notater',
   '(odświeżanie…)': '(oppdaterer…)',
   '+ Nowa spółka': '+ Nytt selskap',
   '+ Kupno': '+ Kjøp',

@@ -269,9 +269,10 @@ export const sq: Record<string, string> = {
   'Portfel akcji i ETF-ów': 'Portofoli i aksioneve dhe ETF-ve',
   'Suma wartości akcji': 'Vlera totale e aksioneve',
   'Łączny zysk/strata': 'Fitimi/humbja totale',
-  'Kursy aktualizowane automatycznie 2x dziennie — kliknij "Odśwież kursy" po bieżącą cenę':
-    'Kurset përditësohen automatikisht 2x në ditë - kliko "Rifresko kurset" për çmimin aktual',
+  'Kursy odświeżają się przy wejściu na tę stronę — kliknij "Odśwież kursy", by pobrać je ponownie':
+    'Kurset rifreskohen kur hyni në këtë faqe - kliko "Rifresko kurset" për t\'i marrë përsëri',
   '⟳ Odśwież kursy': '⟳ Rifresko kurset',
+  'Notatki': 'Shënime',
   '(odświeżanie…)': '(duke rifreskuar…)',
   '+ Nowa spółka': '+ Kompani e re',
   '+ Kupno': '+ Blerje',
