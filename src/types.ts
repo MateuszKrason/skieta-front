@@ -775,6 +775,7 @@ export interface SavingsGoal {
   target_date: string | null
   notes: string
   progress_pct: string | null
+  remaining_amount: string
   paydays_remaining: number | null
   suggested_contribution_per_payday: string | null
   created_at: string

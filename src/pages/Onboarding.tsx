@@ -3,6 +3,7 @@ import { useMutation, useQuery, useQueryClient } from '@tanstack/react-query'
 import { useNavigate } from 'react-router-dom'
 import { api } from '../api/client'
 import { useAuth } from '../auth/AuthContext'
+import { AmountInput } from '../components/AmountInput'
 import BankNameAutocomplete from '../components/BankNameAutocomplete'
 import StockAutocomplete from '../components/StockAutocomplete'
 import { useLanguage } from '../i18n/LanguageContext'
@@ -264,7 +265,7 @@ function AccountsStep() {
           </select>
         </Field>
         <Field label="Obecne saldo">
-          <input type="number" step="0.01" value={balance} onChange={(e) => setBalance(e.target.value)} required className="input" />
+          <AmountInput value={balance} onChange={setBalance} required className="input" />
         </Field>
         <div className="col-span-2 flex items-end sm:col-span-5">
           <button type="submit" className="btn-primary" disabled={mutation.isPending}>
@@ -392,10 +393,10 @@ function StocksStep() {
             </select>
           </Field>
           <Field label="Ilość">
-            <input type="number" step="0.0001" value={quantity} onChange={(e) => setQuantity(e.target.value)} required className="input" />
+            <AmountInput value={quantity} onChange={setQuantity} required className="input" />
           </Field>
           <Field label="Cena zakupu/szt.">
-            <input type="number" step="0.01" value={pricePerShare} onChange={(e) => setPricePerShare(e.target.value)} required className="input" />
+            <AmountInput value={pricePerShare} onChange={setPricePerShare} required className="input" />
           </Field>
           <Field label="Data zakupu (wstecz)">
             <input type="date" value={executedAt} onChange={(e) => setExecutedAt(e.target.value)} required className="input" />
@@ -530,7 +531,7 @@ function DepositsStep() {
           </select>
         </Field>
         <Field label="Kwota">
-          <input type="number" step="0.01" value={principal} onChange={(e) => setPrincipal(e.target.value)} required className="input" />
+          <AmountInput value={principal} onChange={setPrincipal} required className="input" />
         </Field>
         <Field label="Waluta">
           <select value={currency} onChange={(e) => setCurrency(e.target.value as Currency)} className="input">
@@ -543,7 +544,7 @@ function DepositsStep() {
           </select>
         </Field>
         <Field label="Oprocentowanie (%)">
-          <input type="number" step="0.01" value={rate} onChange={(e) => setRate(e.target.value)} required className="input" />
+          <AmountInput value={rate} onChange={setRate} required className="input" />
         </Field>
         <Field label="Data założenia">
           <input type="date" value={startDate} onChange={(e) => setStartDate(e.target.value)} required className="input" />
@@ -654,7 +655,7 @@ function BondsStep() {
           </select>
         </Field>
         <Field label="Wartość nominalna">
-          <input type="number" step="0.01" value={nominalValue} onChange={(e) => setNominalValue(e.target.value)} required className="input" />
+          <AmountInput value={nominalValue} onChange={setNominalValue} required className="input" />
         </Field>
         <Field label="Waluta">
           <select value={currency} onChange={(e) => setCurrency(e.target.value as Currency)} className="input">
@@ -667,7 +668,7 @@ function BondsStep() {
           </select>
         </Field>
         <Field label="Bieżące oprocentowanie (%)">
-          <input type="number" step="0.01" value={rate} onChange={(e) => setRate(e.target.value)} required className="input" />
+          <AmountInput value={rate} onChange={setRate} required className="input" />
         </Field>
         <Field label="Data zakupu">
           <input type="date" value={purchaseDate} onChange={(e) => setPurchaseDate(e.target.value)} required className="input" />

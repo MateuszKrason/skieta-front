@@ -3,6 +3,7 @@ import { useMutation, useQuery, useQueryClient } from '@tanstack/react-query'
 import { api } from '../api/client'
 import { useAuth } from '../auth/AuthContext'
 import BankNameAutocomplete from '../components/BankNameAutocomplete'
+import { AmountInput } from '../components/AmountInput'
 import { PageLoader, Spinner } from '../components/Loader'
 import StatementImportPanel from '../components/StatementImportPanel'
 import { useLanguage } from '../i18n/LanguageContext'
@@ -766,7 +767,7 @@ function AccountForm({
         </select>
       </Field>
       <Field label="Saldo">
-        <input type="number" step="0.01" value={balance} onChange={(e) => setBalance(e.target.value)} required className="input" />
+        <AmountInput value={balance} onChange={setBalance} required className="input" />
       </Field>
       <div className="col-span-2 flex items-end gap-2 sm:col-span-5">
         <button type="submit" className="btn-primary" disabled={mutation.isPending}>
@@ -856,7 +857,7 @@ function TransferForm({
         </select>
       </Field>
       <Field label="Kwota">
-        <input type="number" step="0.01" value={amount} onChange={(e) => setAmount(e.target.value)} required className="input" />
+        <AmountInput value={amount} onChange={setAmount} required className="input" />
       </Field>
       <Field label="Data">
         <input type="date" value={date} onChange={(e) => setDate(e.target.value)} required className="input" />
@@ -931,7 +932,7 @@ function AddDepositForm({ accounts, onDone }: { accounts: BankAccount[]; onDone:
         </select>
       </Field>
       <Field label="Kwota">
-        <input type="number" step="0.01" value={principal} onChange={(e) => setPrincipal(e.target.value)} required className="input" />
+        <AmountInput value={principal} onChange={setPrincipal} required className="input" />
       </Field>
       <Field label="Waluta">
         <select value={currency} onChange={(e) => setCurrency(e.target.value as Currency)} className="input">
@@ -944,7 +945,7 @@ function AddDepositForm({ accounts, onDone }: { accounts: BankAccount[]; onDone:
         </select>
       </Field>
       <Field label="Oprocentowanie (%)">
-        <input type="number" step="0.01" value={rate} onChange={(e) => setRate(e.target.value)} required className="input" />
+        <AmountInput value={rate} onChange={setRate} required className="input" />
       </Field>
       <Field label="Data rozpoczęcia">
         <input type="date" value={startDate} onChange={(e) => setStartDate(e.target.value)} required className="input" />
@@ -1044,7 +1045,7 @@ function EditDepositForm({
         </select>
       </Field>
       <Field label="Kwota">
-        <input type="number" step="0.01" value={principal} onChange={(e) => setPrincipal(e.target.value)} required className="input" />
+        <AmountInput value={principal} onChange={setPrincipal} required className="input" />
       </Field>
       <Field label="Waluta">
         <select value={currency} onChange={(e) => setCurrency(e.target.value as Currency)} className="input">
@@ -1057,7 +1058,7 @@ function EditDepositForm({
         </select>
       </Field>
       <Field label="Oprocentowanie (%)">
-        <input type="number" step="0.01" value={rate} onChange={(e) => setRate(e.target.value)} required className="input" />
+        <AmountInput value={rate} onChange={setRate} required className="input" />
       </Field>
       <Field label="Data rozpoczęcia">
         <input type="date" value={startDate} onChange={(e) => setStartDate(e.target.value)} required className="input" />
@@ -1258,7 +1259,7 @@ function AddBondForm({ accounts, onDone }: { accounts: BankAccount[]; onDone: ()
         </select>
       </Field>
       <Field label="Wartość nominalna">
-        <input type="number" step="0.01" value={nominalValue} onChange={(e) => setNominalValue(e.target.value)} required className="input" />
+        <AmountInput value={nominalValue} onChange={setNominalValue} required className="input" />
       </Field>
       <Field label="Waluta">
         <select value={currency} onChange={(e) => setCurrency(e.target.value as Currency)} className="input">
@@ -1271,13 +1272,11 @@ function AddBondForm({ accounts, onDone }: { accounts: BankAccount[]; onDone: ()
         </select>
       </Field>
       <Field label="Bieżące oprocentowanie (%)">
-        <input
-          type="number"
-          step="0.01"
+        <AmountInput
           value={rate}
-          onChange={(e) => {
+          onChange={(value) => {
             setRateAuto(false)
-            setRate(e.target.value)
+            setRate(value)
           }}
           required
           className="input"
@@ -1389,7 +1388,7 @@ function EditBondForm({
         </select>
       </Field>
       <Field label="Wartość nominalna">
-        <input type="number" step="0.01" value={nominalValue} onChange={(e) => setNominalValue(e.target.value)} required className="input" />
+        <AmountInput value={nominalValue} onChange={setNominalValue} required className="input" />
       </Field>
       <Field label="Waluta">
         <select value={currency} onChange={(e) => setCurrency(e.target.value as Currency)} className="input">
@@ -1402,7 +1401,7 @@ function EditBondForm({
         </select>
       </Field>
       <Field label="Bieżące oprocentowanie (%)">
-        <input type="number" step="0.01" value={rate} onChange={(e) => setRate(e.target.value)} required className="input" />
+        <AmountInput value={rate} onChange={setRate} required className="input" />
       </Field>
       <Field label="Data zakupu">
         <input type="date" value={purchaseDate} onChange={(e) => setPurchaseDate(e.target.value)} required className="input" />

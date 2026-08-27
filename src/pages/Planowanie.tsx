@@ -1,6 +1,7 @@
 import { useState, type FormEvent } from 'react'
 import { useMutation, useQuery, useQueryClient } from '@tanstack/react-query'
 import { api } from '../api/client'
+import { AmountInput } from '../components/AmountInput'
 import { CardLoader, PageLoader } from '../components/Loader'
 import { useLanguage } from '../i18n/LanguageContext'
 import { formatDate, formatMoney } from '../lib/format'
@@ -357,7 +358,7 @@ function SalaryForm({ plan, onDone }: { plan: BudgetPlan | undefined; onDone: ()
   return (
     <form onSubmit={onSubmit} className="grid grid-cols-2 gap-3 rounded-xl border border-slate-200 dark:border-slate-700 bg-white dark:bg-slate-800 p-4 shadow-sm sm:grid-cols-5">
       <Field label="Pensja miesięczna (netto)">
-        <input type="number" step="0.01" value={salary} onChange={(e) => setSalary(e.target.value)} required className="input" />
+        <AmountInput value={salary} onChange={setSalary} required className="input" />
       </Field>
       <Field label="Waluta">
         <select value={currency} onChange={(e) => setCurrency(e.target.value as Currency)} className="input">
@@ -434,10 +435,10 @@ function AddGoalForm({ onDone, categories }: { onDone: () => void; categories: C
         <input value={name} onChange={(e) => setName(e.target.value)} required placeholder="np. Wakacje" className="input" />
       </Field>
       <Field label="Kwota docelowa">
-        <input type="number" step="0.01" value={targetAmount} onChange={(e) => setTargetAmount(e.target.value)} required className="input" />
+        <AmountInput value={targetAmount} onChange={setTargetAmount} required className="input" />
       </Field>
       <Field label="Już odłożono">
-        <input type="number" step="0.01" value={currentAmount} onChange={(e) => setCurrentAmount(e.target.value)} className="input" />
+        <AmountInput value={currentAmount} onChange={setCurrentAmount} className="input" />
       </Field>
       <Field label="Waluta">
         <select value={currency} onChange={(e) => setCurrency(e.target.value as Currency)} className="input">
@@ -590,6 +591,11 @@ function GoalRow({
             {formatMoney(goal.current_amount, goal.currency)} / {formatMoney(goal.target_amount, goal.currency)}
             {goal.target_date && <> · {t('do')} {formatDate(goal.target_date)}</>}
           </p>
+          {!achieved && (
+            <p className="text-xs text-slate-400 dark:text-slate-500">
+              {t('Zostało {0} do zebrania', formatMoney(remaining, goal.currency))}
+            </p>
+          )}
           {!achieved && goal.target_date && (
             <p className="mt-0.5 text-xs text-emerald-700 dark:text-emerald-400">
               {goal.paydays_remaining !== null
@@ -632,12 +638,10 @@ function GoalRow({
           {paydayRows.map((row, i) => (
             <div key={i} className="grid grid-cols-2 gap-2 sm:grid-cols-[1fr_1fr_auto]">
               <Field label="Kwota z wypłaty">
-                <input
-                  type="number"
-                  step="0.01"
+                <AmountInput
                   max={remaining || undefined}
                   value={row.amount}
-                  onChange={(e) => updatePaydayRow(i, 'amount', e.target.value)}
+                  onChange={(value) => updatePaydayRow(i, 'amount', value)}
                   required
                   className="input"
                 />
@@ -692,12 +696,10 @@ function GoalRow({
       {mode === 'contribute-savings' && (
         <form onSubmit={onSubmitSavings} className="mt-3 grid grid-cols-2 gap-2 sm:grid-cols-4">
           <Field label="Kwota z oszczędności">
-            <input
-              type="number"
-              step="0.01"
+            <AmountInput
               max={remaining || undefined}
               value={savingsAmount}
-              onChange={(e) => setSavingsAmount(e.target.value)}
+              onChange={setSavingsAmount}
               required
               className="input"
             />
@@ -792,10 +794,10 @@ function GoalEditForm({
         <input value={name} onChange={(e) => setName(e.target.value)} required className="input" />
       </Field>
       <Field label="Kwota docelowa">
-        <input type="number" step="0.01" value={targetAmount} onChange={(e) => setTargetAmount(e.target.value)} required className="input" />
+        <AmountInput value={targetAmount} onChange={setTargetAmount} required className="input" />
       </Field>
       <Field label="Już odłożono">
-        <input type="number" step="0.01" value={currentAmount} onChange={(e) => setCurrentAmount(e.target.value)} className="input" />
+        <AmountInput value={currentAmount} onChange={setCurrentAmount} className="input" />
       </Field>
       <Field label="Waluta">
         <select value={currency} onChange={(e) => setCurrency(e.target.value as Currency)} className="input">
@@ -870,7 +872,7 @@ function AddExpenseForm({ onDone }: { onDone: () => void }) {
         <input value={name} onChange={(e) => setName(e.target.value)} required placeholder="np. Ubezpieczenie auta" className="input" />
       </Field>
       <Field label="Kwota">
-        <input type="number" step="0.01" value={amount} onChange={(e) => setAmount(e.target.value)} required className="input" />
+        <AmountInput value={amount} onChange={setAmount} required className="input" />
       </Field>
       <Field label="Waluta">
         <select value={currency} onChange={(e) => setCurrency(e.target.value as Currency)} className="input">
@@ -930,7 +932,7 @@ function AddRecurringExpenseForm({ onDone, categories }: { onDone: () => void; c
         <input value={name} onChange={(e) => setName(e.target.value)} required placeholder="np. Czynsz" className="input" />
       </Field>
       <Field label="Kwota miesięcznie">
-        <input type="number" step="0.01" value={amount} onChange={(e) => setAmount(e.target.value)} required className="input" />
+        <AmountInput value={amount} onChange={setAmount} required className="input" />
       </Field>
       <Field label="Waluta">
         <select value={currency} onChange={(e) => setCurrency(e.target.value as Currency)} className="input">
@@ -1072,7 +1074,7 @@ function RecurringExpenseEditForm({
         <input value={name} onChange={(e) => setName(e.target.value)} required className="input" />
       </Field>
       <Field label="Kwota miesięcznie">
-        <input type="number" step="0.01" value={amount} onChange={(e) => setAmount(e.target.value)} required className="input" />
+        <AmountInput value={amount} onChange={setAmount} required className="input" />
       </Field>
       <Field label="Waluta">
         <select value={currency} onChange={(e) => setCurrency(e.target.value as Currency)} className="input">

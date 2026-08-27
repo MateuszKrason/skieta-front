@@ -2,6 +2,7 @@ import { useState, type FormEvent } from 'react'
 import { useMutation, useQuery, useQueryClient } from '@tanstack/react-query'
 import { Area, AreaChart, ResponsiveContainer, Tooltip, XAxis, YAxis } from 'recharts'
 import { api } from '../api/client'
+import { AmountInput } from '../components/AmountInput'
 import { CardLoader, PageLoader } from '../components/Loader'
 import { useLanguage } from '../i18n/LanguageContext'
 import { useTooltipStyle } from '../lib/chartTooltip'
@@ -212,7 +213,7 @@ function AddCashFlowForm({ onDone }: { onDone: () => void }) {
         </select>
       </Field>
       <Field label="Kwota">
-        <input type="number" step="0.01" value={amount} onChange={(e) => setAmount(e.target.value)} required className="input" />
+        <AmountInput value={amount} onChange={setAmount} required className="input" />
       </Field>
       <Field label="Data">
         <input type="date" value={date} onChange={(e) => setDate(e.target.value)} required className="input" />
@@ -276,7 +277,7 @@ function EditCashFlowForm({
         </select>
       </Field>
       <Field label="Kwota">
-        <input type="number" step="0.01" value={amount} onChange={(e) => setAmount(e.target.value)} required className="input" />
+        <AmountInput value={amount} onChange={setAmount} required className="input" />
       </Field>
       <Field label="Data">
         <input type="date" value={date} onChange={(e) => setDate(e.target.value)} required className="input" />

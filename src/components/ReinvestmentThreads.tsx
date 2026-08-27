@@ -2,6 +2,7 @@ import { useState, type FormEvent } from 'react'
 import { useMutation, useQuery, useQueryClient } from '@tanstack/react-query'
 import { ResponsiveContainer, Sankey, Tooltip } from 'recharts'
 import { api } from '../api/client'
+import { AmountInput } from './AmountInput'
 import { useLanguage } from '../i18n/LanguageContext'
 import { useTooltipStyle } from '../lib/chartTooltip'
 import { formatDate, formatMoney, formatNumber } from '../lib/format'
@@ -400,7 +401,7 @@ function CreateThreadForm({ onDone, onCancel }: { onDone: () => void; onCancel: 
         <input value={name} onChange={(e) => setName(e.target.value)} required placeholder="np. Zysk z CDR" className="input" />
       </Field>
       <Field label="Kwota początkowa">
-        <input type="number" step="0.01" value={startingAmount} onChange={(e) => setStartingAmount(e.target.value)} required className="input" />
+        <AmountInput value={startingAmount} onChange={setStartingAmount} required className="input" />
       </Field>
       <Field label="Waluta">
         <select value={currency} onChange={(e) => setCurrency(e.target.value as Currency)} className="input">
@@ -549,12 +550,10 @@ function AddNodeForm({
         <div className="grid grid-cols-2 gap-3 sm:grid-cols-3">
           {sources.map((s) => (
             <Field key={s.key} label={s.label}>
-              <input
-                type="number"
-                step="0.01"
+              <AmountInput
                 min="0"
                 value={amounts[s.key] ?? ''}
-                onChange={(e) => setAmounts((prev) => ({ ...prev, [s.key]: e.target.value }))}
+                onChange={(value) => setAmounts((prev) => ({ ...prev, [s.key]: value }))}
                 className="input"
                 placeholder="0.00"
               />
@@ -643,11 +642,9 @@ function CloseNodeForm({
         </select>
       </Field>
       <Field label="Kwota zrealizowana (opcjonalnie)">
-        <input
-          type="number"
-          step="0.01"
+        <AmountInput
           value={realizedAmount}
-          onChange={(e) => setRealizedAmount(e.target.value)}
+          onChange={setRealizedAmount}
           placeholder={t('auto: proporcjonalnie')}
           className="input"
         />

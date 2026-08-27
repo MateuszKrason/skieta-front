@@ -3,6 +3,7 @@ import { useMutation, useQuery, useQueryClient } from '@tanstack/react-query'
 import { Area, AreaChart, Bar, BarChart, CartesianGrid, Cell, Legend, Pie, PieChart, ResponsiveContainer, Tooltip, XAxis, YAxis } from 'recharts'
 import { api } from '../../api/client'
 import { useAuth } from '../../auth/AuthContext'
+import { AmountInput } from '../../components/AmountInput'
 import { CardLoader, PageLoader } from '../../components/Loader'
 import { useLanguage } from '../../i18n/LanguageContext'
 import { useTooltipStyle } from '../../lib/chartTooltip'
@@ -710,13 +711,13 @@ function AddDividendForm({ stocks, onDone }: { stocks: Stock[]; onDone: () => vo
         </select>
       </Field>
       <Field label="Kwota/akcję">
-        <input type="number" step="0.0001" value={amountPerShare} onChange={(e) => setAmountPerShare(e.target.value)} required className="input" />
+        <AmountInput value={amountPerShare} onChange={setAmountPerShare} required className="input" />
       </Field>
       <Field label="Liczba akcji">
-        <input type="number" step="0.0001" value={shares} onChange={(e) => setShares(e.target.value)} required className="input" />
+        <AmountInput value={shares} onChange={setShares} required className="input" />
       </Field>
       <Field label="Kwota łącznie">
-        <input type="number" step="0.01" value={totalAmount} onChange={(e) => setTotalAmount(e.target.value)} required className="input" />
+        <AmountInput value={totalAmount} onChange={setTotalAmount} required className="input" />
       </Field>
       <Field label="Data wypłaty">
         <input type="date" value={paymentDate} onChange={(e) => setPaymentDate(e.target.value)} required className="input" />

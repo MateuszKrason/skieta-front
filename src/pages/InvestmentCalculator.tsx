@@ -2,6 +2,7 @@ import { useMemo, useState } from 'react'
 import { useQuery } from '@tanstack/react-query'
 import { Bar, BarChart, LabelList, ResponsiveContainer, Tooltip, XAxis, YAxis } from 'recharts'
 import { api } from '../api/client'
+import { AmountInput } from '../components/AmountInput'
 import { CardLoader } from '../components/Loader'
 import { useLanguage } from '../i18n/LanguageContext'
 import { useTooltipStyle } from '../lib/chartTooltip'
@@ -250,14 +251,7 @@ export default function InvestmentCalculator() {
         <div className="mt-4 flex flex-wrap items-end gap-4">
           <label className="flex flex-col gap-1 text-sm">
             <span className="text-xs font-medium text-slate-500 dark:text-slate-400">{t('Kwota do zainwestowania')}</span>
-            <input
-              type="number"
-              min="0"
-              step="100"
-              value={amount}
-              onChange={(e) => setAmount(e.target.value)}
-              className="input w-40"
-            />
+            <AmountInput min="0" value={amount} onChange={setAmount} className="input w-40" />
           </label>
           <label className="flex flex-col gap-1 text-sm">
             <span className="text-xs font-medium text-slate-500 dark:text-slate-400">{t('Horyzont (lata)')}</span>
@@ -355,11 +349,9 @@ export default function InvestmentCalculator() {
                       </span>
                     </td>
                     <td className="py-2 pr-3">
-                      <input
-                        type="number"
-                        step="0.01"
+                      <AmountInput
                         value={rateOverrides[row.key] ?? String(row.defaultRate)}
-                        onChange={(e) => setRateOverrides((prev) => ({ ...prev, [row.key]: e.target.value }))}
+                        onChange={(value) => setRateOverrides((prev) => ({ ...prev, [row.key]: value }))}
                         className="input w-24 tabular-nums"
                       />
                       <span className="ml-1 text-xs text-slate-400 dark:text-slate-500">%</span>

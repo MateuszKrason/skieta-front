@@ -1,6 +1,7 @@
 import { Fragment, useEffect, useState, type FormEvent } from 'react'
 import { useMutation, useQuery, useQueryClient } from '@tanstack/react-query'
 import { api } from '../../api/client'
+import { AmountInput } from '../../components/AmountInput'
 import { PageLoader, Spinner } from '../../components/Loader'
 import ReinvestmentThreads from '../../components/ReinvestmentThreads'
 import StockAutocomplete from '../../components/StockAutocomplete'
@@ -110,6 +111,23 @@ export default function Portfel() {
     queryClient.invalidateQueries({ queryKey: ['accounts'] })
     queryClient.invalidateQueries({ queryKey: ['dashboard'] })
     queryClient.invalidateQueries({ queryKey: ['timeline'] })
+  }
+
+  const deleteTxMutation = useMutation({
+    mutationFn: (id: number) => api.delete(`/stocks/transactions/${id}/`),
+    onSuccess: invalidatePortfolio,
+    onError: (err: unknown) => {
+      const data = (err as { response?: { data?: unknown } }).response?.data
+      const message =
+        data && typeof data === 'object' ? Object.values(data as Record<string, unknown>).flat().join(' ') : null
+      window.alert(message || t('Nie udało się usunąć transakcji.'))
+    },
+  })
+
+  function onDeleteTx(tx: StockTransaction) {
+    if (window.confirm(t('Usunąć tę transakcję? Środki wrócą na powiązane konto.'))) {
+      deleteTxMutation.mutate(tx.id)
+    }
   }
 
   const refreshPrices = useMutation({
@@ -433,6 +451,13 @@ export default function Portfel() {
                     className="text-xs font-medium text-accent-600 hover:underline dark:text-accent-400"
                   >
                     {t('Edytuj')}
+                  </button>
+                  <button
+                    type="button"
+                    onClick={() => onDeleteTx(tx)}
+                    className="text-xs font-medium text-red-600 hover:underline dark:text-red-400"
+                  >
+                    {t('Usuń')}
                   </button>
                 </div>
               </div>
@@ -781,27 +806,13 @@ function EditStockTransactionForm({
         {tx.stock_detail.ticker}
       </div>
       <Field label="Ilość">
-        <input
-          type="number"
-          step="0.0001"
-          value={quantity}
-          onChange={(e) => setQuantity(e.target.value)}
-          required
-          className="input"
-        />
+        <AmountInput value={quantity} onChange={setQuantity} required className="input" />
       </Field>
       <Field label="Cena/szt.">
-        <input
-          type="number"
-          step="0.01"
-          value={pricePerShare}
-          onChange={(e) => setPricePerShare(e.target.value)}
-          required
-          className="input"
-        />
+        <AmountInput value={pricePerShare} onChange={setPricePerShare} required className="input" />
       </Field>
       <Field label="Prowizja">
-        <input type="number" step="0.01" value={fee} onChange={(e) => setFee(e.target.value)} className="input" />
+        <AmountInput value={fee} onChange={setFee} className="input" />
       </Field>
       <Field label="Data">
         <input type="date" value={executedAt} onChange={(e) => setExecutedAt(e.target.value)} required className="input" />
@@ -898,13 +909,13 @@ function BuyForm({ stocks, accounts, onDone }: { stocks: Stock[]; accounts: Bank
         </select>
       </Field>
       <Field label="Ilość">
-        <input type="number" step="0.0001" value={quantity} onChange={(e) => setQuantity(e.target.value)} required className="input" />
+        <AmountInput value={quantity} onChange={setQuantity} required className="input" />
       </Field>
       <Field label="Cena/szt.">
-        <input type="number" step="0.01" value={pricePerShare} onChange={(e) => setPricePerShare(e.target.value)} required className="input" />
+        <AmountInput value={pricePerShare} onChange={setPricePerShare} required className="input" />
       </Field>
       <Field label="Prowizja">
-        <input type="number" step="0.01" value={fee} onChange={(e) => setFee(e.target.value)} className="input" />
+        <AmountInput value={fee} onChange={setFee} className="input" />
       </Field>
       <Field label="Data">
         <input type="date" value={executedAt} onChange={(e) => setExecutedAt(e.target.value)} required className="input" />
@@ -1014,21 +1025,13 @@ function SellForm({
       </p>
       <div className="grid grid-cols-2 gap-3 sm:grid-cols-6">
         <Field label="Ilość (max)">
-          <input
-            type="number"
-            step="0.0001"
-            max={maxQuantity}
-            value={quantity}
-            onChange={(e) => setQuantity(e.target.value)}
-            required
-            className="input"
-          />
+          <AmountInput value={quantity} onChange={setQuantity} max={maxQuantity} required className="input" />
         </Field>
         <Field label="Cena/szt.">
-          <input type="number" step="0.01" value={pricePerShare} onChange={(e) => setPricePerShare(e.target.value)} required className="input" />
+          <AmountInput value={pricePerShare} onChange={setPricePerShare} required className="input" />
         </Field>
         <Field label="Prowizja">
-          <input type="number" step="0.01" value={fee} onChange={(e) => setFee(e.target.value)} className="input" />
+          <AmountInput value={fee} onChange={setFee} className="input" />
         </Field>
         <Field label="Data">
           <input type="date" value={executedAt} onChange={(e) => setExecutedAt(e.target.value)} required className="input" />

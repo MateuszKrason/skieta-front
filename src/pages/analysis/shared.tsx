@@ -18,6 +18,7 @@ import {
   YAxis,
 } from 'recharts'
 import { api } from '../../api/client'
+import { AmountInput } from '../../components/AmountInput'
 import { CardLoader } from '../../components/Loader'
 import { useLanguage } from '../../i18n/LanguageContext'
 import { useTooltipStyle } from '../../lib/chartTooltip'
@@ -599,14 +600,7 @@ function EditTransaction({
     <div className="flex flex-wrap items-end gap-2 border-b border-slate-100 dark:border-slate-800 py-2 text-sm">
       {tx.description && <span className="text-xs text-slate-500 dark:text-slate-400">{tx.description}</span>}
       <Field label="Kwota">
-        <input
-          type="number"
-          step="0.01"
-          value={amount}
-          onChange={(e) => setAmount(e.target.value)}
-          required
-          className="input w-28"
-        />
+        <AmountInput value={amount} onChange={setAmount} required className="input w-28" />
       </Field>
       <Field label="Kategoria">
         <select value={category} onChange={(e) => setCategory(e.target.value ? Number(e.target.value) : '')} className="input">
@@ -1004,7 +998,7 @@ export function AddTransactionForm({
         </select>
       </Field>
       <Field label="Kwota">
-        <input type="number" step="0.01" value={amount} onChange={(e) => setAmount(e.target.value)} required className="input" />
+        <AmountInput value={amount} onChange={setAmount} required className="input" />
       </Field>
       <Field label="Waluta">
         <select value={currency} onChange={(e) => setCurrency(e.target.value as Currency)} className="input">
@@ -1026,7 +1020,6 @@ export function AddTransactionForm({
           value={account}
           onChange={(e) => {
             setAccount(e.target.value ? Number(e.target.value) : '')
-            setCategory('')
           }}
           className="input"
         >
@@ -1585,15 +1578,17 @@ export function TagBreakdownCard({
         <>
           <div className="h-56">
             <ResponsiveContainer width="100%" height="100%">
-              <PieChart>
-                <Pie data={chartData} dataKey="value" nameKey="name" innerRadius={45} outerRadius={80} paddingAngle={2}>
+              <BarChart data={chartData} layout="vertical" margin={{ left: 24 }}>
+                <CartesianGrid strokeDasharray="3 3" stroke="#94a3b8" strokeOpacity={0.15} horizontal={false} />
+                <XAxis type="number" tick={{ fontSize: 11 }} stroke="#94a3b8" />
+                <YAxis type="category" dataKey="name" tick={{ fontSize: 11 }} stroke="#94a3b8" width={100} />
+                <Tooltip {...tooltipStyle} formatter={(value) => formatMoney(value as number, 'PLN')} />
+                <Bar dataKey="value" radius={[0, 3, 3, 0]}>
                   {chartData.map((_, i) => (
                     <Cell key={i} fill={PALETTE[i % PALETTE.length]} />
                   ))}
-                </Pie>
-                <Tooltip {...tooltipStyle} formatter={(value) => formatMoney(value as number, 'PLN')} />
-                <Legend />
-              </PieChart>
+                </Bar>
+              </BarChart>
             </ResponsiveContainer>
           </div>
           <div className="mt-3 space-y-1">
