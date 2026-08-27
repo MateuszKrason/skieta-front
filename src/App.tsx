@@ -44,6 +44,9 @@ const GieldaLayout = lazy(() => import('./pages/gielda/GieldaLayout'))
 const Portfel = lazy(() => import('./pages/gielda/Portfel'))
 const Dywidendy = lazy(() => import('./pages/gielda/Dywidendy'))
 const AnalizaSpolek = lazy(() => import('./pages/gielda/AnalizaSpolek'))
+const KryptoLayout = lazy(() => import('./pages/gielda/krypto/KryptoLayout'))
+const KryptoPortfel = lazy(() => import('./pages/gielda/krypto/KryptoPortfel'))
+const KryptoAnaliza = lazy(() => import('./pages/gielda/krypto/KryptoAnaliza'))
 const AnalysisLayout = lazy(() => import('./pages/analysis/AnalysisLayout'))
 const Bilans = lazy(() => import('./pages/analysis/Bilans'))
 const Przychody = lazy(() => import('./pages/analysis/Przychody'))
@@ -73,6 +76,9 @@ const PAGE_TITLES: [string, string][] = [
   ['/gielda/portfel', 'Portfel'],
   ['/gielda/dywidendy', 'Dywidendy'],
   ['/gielda/analiza-spolek', 'Analiza spółek'],
+  ['/gielda/krypto/portfel', 'Krypto - Portfel'],
+  ['/gielda/krypto/analiza', 'Krypto - Analiza'],
+  ['/gielda/krypto', 'Krypto'],
   ['/gielda', 'Giełda'],
   ['/budzet/bilans', 'Bilans'],
   ['/budzet/przychody', 'Przychody'],
@@ -171,6 +177,11 @@ export default function App() {
             <Route path="portfel" element={<Portfel />} />
             <Route path="dywidendy" element={<Dywidendy />} />
             <Route path="analiza-spolek" element={<AnalizaSpolek />} />
+            <Route path="krypto" element={<KryptoLayout />}>
+              <Route index element={<Navigate to="portfel" replace />} />
+              <Route path="portfel" element={<KryptoPortfel />} />
+              <Route path="analiza" element={<KryptoAnaliza />} />
+            </Route>
           </Route>
 
           <Route path="/budzet" element={<AnalysisLayout />}>

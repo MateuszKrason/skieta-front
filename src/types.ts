@@ -128,6 +128,86 @@ export interface AccountBreakdownRow {
   pct: string
 }
 
+export interface CryptoAsset {
+  id: number
+  coingecko_id: string
+  symbol: string
+  name: string
+  display_order: number
+}
+
+export interface CryptoSearchResult {
+  coingecko_id: string
+  symbol: string
+  name: string
+}
+
+export interface CryptoTransaction {
+  id: number
+  asset: number
+  asset_detail: CryptoAsset
+  account: number | null
+  account_detail: BankAccount | null
+  affects_balance: boolean
+  type: 'BUY' | 'SELL'
+  quantity: string
+  price_per_unit: string
+  fee: string
+  currency: Currency
+  executed_at: string
+  notes: string
+  exchange_rate_at_purchase: string | null
+}
+
+export interface CryptoHolding {
+  asset: CryptoAsset
+  quantity: string
+  avg_cost_base: string
+  cost_basis_base: string
+  current_price_usd: string | null
+  price_fetched_at: string | null
+  market_value_base: string | null
+  unrealized_pl_base: string | null
+  unrealized_pl_pct: string | null
+  unrealized_pl_after_tax_base: string | null
+  unrealized_pl_after_tax_pct: string | null
+}
+
+export interface CryptoPortfolioSummary {
+  total_value: string
+  total_cost_basis: string
+  total_unrealized_pl: string
+  total_unrealized_pl_pct: string | null
+  total_unrealized_pl_after_tax: string
+  total_unrealized_pl_after_tax_pct: string | null
+}
+
+export interface CryptoAllocationRow {
+  asset: CryptoAsset
+  value_base: string
+  pct: string
+  unrealized_pl_after_tax_base: string | null
+  unrealized_pl_pct: string | null
+}
+
+export interface CryptoPortfolioAnalytics {
+  total_value_base: string
+  allocation: CryptoAllocationRow[]
+  by_currency: CurrencyBreakdownRow[]
+  concentration_hhi: string | null
+  top_holding: CryptoAllocationRow | null
+  winners_count: number
+  losers_count: number
+  flat_count: number
+  best_performer: CryptoAllocationRow | null
+  worst_performer: CryptoAllocationRow | null
+  avg_days_held: number | null
+  realized_pl_total: string
+  realized_pl_by_year: RealizedPlYearRow[]
+  belka_tax_liability: string
+  by_account: AccountBreakdownRow[]
+}
+
 export type BankAccountType = 'checking' | 'savings' | 'brokerage' | 'business' | 'ike' | 'ikze' | 'crypto'
 
 export interface BankAccount {
@@ -249,6 +329,7 @@ export interface CashFlow {
 export interface NetWorthSnapshot {
   date: string
   stocks_value: string
+  crypto_value: string
   bank_balance: string
   deposits_value: string
   bonds_value: string
@@ -264,6 +345,7 @@ export interface GrowthSummary {
 
 export interface PeriodReturnBreakdown {
   stocks_value: string
+  crypto_value: string
   bank_balance: string
   deposits_value: string
   bonds_value: string
@@ -309,6 +391,7 @@ export interface User {
     interest_budget: boolean
     interest_planning: boolean
     interest_analysis: boolean
+    interest_crypto: boolean
     permissions: string[]
     username_changed_at: string | null
     nav_order: string[]

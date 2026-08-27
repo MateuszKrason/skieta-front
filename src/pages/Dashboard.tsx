@@ -3,6 +3,7 @@ import { useQuery, useQueryClient } from '@tanstack/react-query'
 import { Link } from 'react-router-dom'
 import { Area, AreaChart, ResponsiveContainer, Tooltip, XAxis, YAxis } from 'recharts'
 import { api } from '../api/client'
+import { useAuth } from '../auth/AuthContext'
 import { PageLoader } from '../components/Loader'
 import { useLanguage } from '../i18n/LanguageContext'
 import { useTooltipStyle } from '../lib/chartTooltip'
@@ -22,8 +23,10 @@ const REFRESH_INTERVAL_MS = 60_000
 
 export default function Dashboard() {
   const queryClient = useQueryClient()
+  const { user } = useAuth()
   const { t } = useLanguage()
   const tooltipStyle = useTooltipStyle()
+  const showCrypto = user?.profile.interest_crypto ?? true
 
   const {
     data: summary,
@@ -79,15 +82,22 @@ export default function Dashboard() {
     return <PageLoader />
   }
 
-  const allocation = latest
+  // totalAlloc always includes every category (matching latest.total) so a
+  // hidden category's real share doesn't get silently redistributed onto the
+  // visible ones' percentages - a hidden Krypto row just means the visible
+  // bars don't visually add up to 100%, which is honest; inflating the
+  // others' percentages to compensate would not be.
+  const fullAllocation = latest
     ? [
         { label: 'Akcje', value: Number(latest.stocks_value) },
+        { label: 'Krypto', value: Number(latest.crypto_value) },
         { label: 'Gotówka', value: Number(latest.bank_balance) },
         { label: 'Lokaty', value: Number(latest.deposits_value) },
         { label: 'Obligacje', value: Number(latest.bonds_value) },
       ]
     : []
-  const totalAlloc = allocation.reduce((s, a) => s + a.value, 0) || 1
+  const allocation = showCrypto ? fullAllocation : fullAllocation.filter((a) => a.label !== 'Krypto')
+  const totalAlloc = fullAllocation.reduce((s, a) => s + a.value, 0) || 1
   const periods: PeriodKey[] = ['1d', '1w', '1m', 'ytd', '1y', '5y']
 
   return (
@@ -110,9 +120,10 @@ export default function Dashboard() {
         </div>
       </div>
 
-      <div className="grid grid-cols-1 gap-4 sm:grid-cols-2 lg:grid-cols-5">
+      <div className={`grid grid-cols-1 gap-4 sm:grid-cols-2 ${showCrypto ? 'lg:grid-cols-6' : 'lg:grid-cols-5'}`}>
         <StatCard label={t('Wartość majątku')} value={formatMoney(latest?.total, base)} highlight />
         <StatCard label={t('Akcje')} value={formatMoney(latest?.stocks_value, base)} />
+        {showCrypto && <StatCard label={t('Krypto')} value={formatMoney(latest?.crypto_value, base)} />}
         <StatCard label={t('Gotówka')} value={formatMoney(latest?.bank_balance, base)} />
         <StatCard label={t('Lokaty')} value={formatMoney(latest?.deposits_value, base)} />
         <StatCard label={t('Obligacje')} value={formatMoney(latest?.bonds_value, base)} />
@@ -122,7 +133,13 @@ export default function Dashboard() {
         <h2 className="mb-3 text-sm font-semibold text-slate-700 dark:text-slate-300">{t('Zmiana wartości majątku')}</h2>
         <div className="grid grid-cols-2 gap-3 sm:grid-cols-3 lg:grid-cols-6">
           {periods.map((key) => (
-            <PeriodChangeCard key={key} label={t(PERIOD_LABELS[key])} pr={summary?.period_returns?.[key] ?? null} base={base} />
+            <PeriodChangeCard
+              key={key}
+              label={t(PERIOD_LABELS[key])}
+              pr={summary?.period_returns?.[key] ?? null}
+              base={base}
+              showCrypto={showCrypto}
+            />
           ))}
         </div>
       </div>
@@ -289,6 +306,7 @@ function StatCard({
 
 const BREAKDOWN_LABELS: Record<keyof import('../types').PeriodReturnBreakdown, string> = {
   stocks_value: 'Akcje',
+  crypto_value: 'Krypto',
   bank_balance: 'Gotówka',
   deposits_value: 'Lokaty',
   bonds_value: 'Obligacje',
@@ -298,10 +316,12 @@ function PeriodChangeCard({
   label,
   pr,
   base,
+  showCrypto,
 }: {
   label: string
   pr: import('../types').PeriodReturn | null
   base: import('../types').Currency
+  showCrypto: boolean
 }) {
   const { t } = useLanguage()
   const [expanded, setExpanded] = useState(false)
@@ -317,6 +337,7 @@ function PeriodChangeCard({
   }
 
   const breakdownEntries = (Object.keys(BREAKDOWN_LABELS) as Array<keyof typeof BREAKDOWN_LABELS>)
+    .filter((k) => showCrypto || k !== 'crypto_value')
     .map((k) => ({ key: k, value: Number(pr.breakdown[k]) }))
     .filter((row) => Math.abs(row.value) > 0.005)
     .sort((a, b) => Math.abs(b.value) - Math.abs(a.value))

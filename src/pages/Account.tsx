@@ -142,10 +142,11 @@ function DeleteAccountSection() {
 }
 
 const INTEREST_OPTIONS: {
-  field: 'interest_stocks' | 'interest_budget' | 'interest_planning' | 'interest_analysis'
+  field: 'interest_stocks' | 'interest_budget' | 'interest_planning' | 'interest_analysis' | 'interest_crypto'
   label: string
 }[] = [
   { field: 'interest_stocks', label: 'Giełda' },
+  { field: 'interest_crypto', label: 'Krypto' },
   { field: 'interest_budget', label: 'Budżet' },
   { field: 'interest_planning', label: 'Planowanie' },
   { field: 'interest_analysis', label: 'Analiza' },

@@ -5,6 +5,7 @@ import { api } from '../api/client'
 import { useAuth } from '../auth/AuthContext'
 import { AmountInput } from '../components/AmountInput'
 import BankNameAutocomplete from '../components/BankNameAutocomplete'
+import CryptoAutocomplete from '../components/CryptoAutocomplete'
 import StockAutocomplete from '../components/StockAutocomplete'
 import { useLanguage } from '../i18n/LanguageContext'
 import { accountTypeLabel, BOND_TYPE_LABELS, formatDate, formatMoney, formatNumber } from '../lib/format'
@@ -12,6 +13,9 @@ import type {
   BankAccount,
   BankAccountType,
   BondType,
+  CryptoAsset,
+  CryptoSearchResult,
+  CryptoTransaction,
   Currency,
   Market,
   Stock,
@@ -21,12 +25,13 @@ import type {
   TreasuryBond,
 } from '../types'
 
-type StepId = 'interests' | 'accounts' | 'stocks' | 'deposits' | 'bonds' | 'done'
+type StepId = 'interests' | 'accounts' | 'stocks' | 'crypto' | 'deposits' | 'bonds' | 'done'
 
 const STEPS: { id: StepId; label: string }[] = [
   { id: 'interests', label: 'Zainteresowania' },
   { id: 'accounts', label: 'Konta' },
   { id: 'stocks', label: 'Akcje' },
+  { id: 'crypto', label: 'Krypto' },
   { id: 'deposits', label: 'Lokaty' },
   { id: 'bonds', label: 'Obligacje' },
   { id: 'done', label: 'Gotowe' },
@@ -107,6 +112,7 @@ export default function Onboarding() {
       {step.id === 'interests' && <InterestsStep />}
       {step.id === 'accounts' && <AccountsStep />}
       {step.id === 'stocks' && <StocksStep />}
+      {step.id === 'crypto' && <CryptoStep />}
       {step.id === 'deposits' && <DepositsStep />}
       {step.id === 'bonds' && <BondsStep />}
       {step.id === 'done' && (
@@ -150,11 +156,12 @@ function Field({ label, children }: { label: string; children: React.ReactNode }
 }
 
 const INTEREST_OPTIONS: {
-  field: 'interest_stocks' | 'interest_budget' | 'interest_planning' | 'interest_analysis'
+  field: 'interest_stocks' | 'interest_budget' | 'interest_planning' | 'interest_analysis' | 'interest_crypto'
   label: string
   hint: string
 }[] = [
   { field: 'interest_stocks', label: 'Giełda', hint: 'Portfel akcji, dywidendy, analiza spółek' },
+  { field: 'interest_crypto', label: 'Krypto', hint: 'Portfel kryptowalut i analiza' },
   { field: 'interest_budget', label: 'Budżet', hint: 'Notowanie przychodów i wydatków' },
   { field: 'interest_planning', label: 'Planowanie', hint: 'Cele oszczędnościowe i planowane wydatki' },
   { field: 'interest_analysis', label: 'Analiza', hint: 'Kalkulator inwestycyjny - obligacje, lokaty, giełda' },
@@ -449,6 +456,183 @@ function StocksStep() {
       )}
       {(transactions?.length ?? 0) === 0 && (stocks?.length ?? 0) === 0 && (
         <p className="text-sm text-slate-400 dark:text-slate-500">{t('Nie dodano jeszcze żadnych akcji.')}</p>
+      )}
+    </div>
+  )
+}
+
+function CryptoStep() {
+  const queryClient = useQueryClient()
+  const { t } = useLanguage()
+  const { data: cryptoAssets } = useQuery({
+    queryKey: ['crypto-assets'],
+    queryFn: async () => (await api.get<CryptoAsset[]>('/crypto/assets/')).data,
+  })
+  const { data: accounts } = useQuery({
+    queryKey: ['accounts'],
+    queryFn: async () => (await api.get<BankAccount[]>('/banking/accounts/')).data,
+  })
+  const { data: transactions } = useQuery({
+    queryKey: ['crypto-transactions'],
+    queryFn: async () => (await api.get<CryptoTransaction[]>('/crypto/transactions/')).data,
+  })
+
+  const [coingeckoId, setCoingeckoId] = useState('')
+  const [symbol, setSymbol] = useState('')
+  const [name, setName] = useState('')
+  const [assetId, setAssetId] = useState<number | ''>('')
+  const [account, setAccount] = useState<number | ''>('')
+  const [alreadyOwned, setAlreadyOwned] = useState(true)
+  const [quantity, setQuantity] = useState('')
+  const [pricePerUnit, setPricePerUnit] = useState('')
+  const [currency, setCurrency] = useState<Currency>('PLN')
+  const [executedAt, setExecutedAt] = useState(() => new Date().toISOString().slice(0, 10))
+  const [error, setError] = useState<string | null>(null)
+
+  const existing = cryptoAssets?.find((a) => a.coingecko_id === coingeckoId)
+  const eligibleAccounts = (accounts ?? []).filter((a) => a.currency === currency)
+
+  function onPick(result: CryptoSearchResult) {
+    setCoingeckoId(result.coingecko_id)
+    setSymbol(result.symbol)
+    setName(result.name)
+    setAssetId('')
+  }
+
+  const mutation = useMutation({
+    mutationFn: async () => {
+      let id = existing?.id ?? assetId
+      if (!id) {
+        const { data } = await api.post<CryptoAsset>('/crypto/assets/', { coingecko_id: coingeckoId, symbol, name })
+        id = data.id
+      }
+      return api.post('/crypto/transactions/', {
+        asset: id,
+        type: 'BUY',
+        account: account || null,
+        affects_balance: !alreadyOwned,
+        quantity,
+        price_per_unit: pricePerUnit,
+        fee: '0',
+        currency,
+        executed_at: executedAt,
+      })
+    },
+    onSuccess: () => {
+      setCoingeckoId('')
+      setSymbol('')
+      setName('')
+      setQuantity('')
+      setPricePerUnit('')
+      setError(null)
+      queryClient.invalidateQueries({ queryKey: ['crypto-assets'] })
+      queryClient.invalidateQueries({ queryKey: ['crypto-transactions'] })
+      queryClient.invalidateQueries({ queryKey: ['crypto-holdings'] })
+      queryClient.invalidateQueries({ queryKey: ['accounts'] })
+    },
+    onError: (err: unknown) => {
+      const data = (err as { response?: { data?: unknown } }).response?.data
+      if (data && typeof data === 'object') {
+        setError(Object.values(data as Record<string, unknown>).flat().join(' '))
+      } else {
+        setError(t('Nie udało się dodać pozycji.'))
+      }
+    },
+  })
+
+  function onSubmit(e: FormEvent) {
+    e.preventDefault()
+    setError(null)
+    if (!coingeckoId) {
+      setError(t('Wybierz monetę.'))
+      return
+    }
+    mutation.mutate()
+  }
+
+  return (
+    <div className="space-y-4">
+      <p className="text-sm text-slate-500 dark:text-slate-400">
+        {t('Dla każdej posiadanej monety podaj ilość, cenę i')} <strong>{t('prawdziwą datę zakupu')}</strong>{' '}
+        {t('— dzięki temu historia i wykresy będą liczone poprawnie.')}
+      </p>
+      <form onSubmit={onSubmit} className="space-y-3 rounded-xl border border-slate-200 dark:border-slate-700 bg-white dark:bg-slate-800 p-4 shadow-sm">
+        <Field label="Wyszukaj monetę">
+          <CryptoAutocomplete onSelect={onPick} />
+        </Field>
+        <div className="grid grid-cols-2 gap-3 sm:grid-cols-7">
+          <Field label="Symbol">
+            <input value={symbol} onChange={(e) => setSymbol(e.target.value.toUpperCase())} required className="input" />
+          </Field>
+          <Field label="Ilość">
+            <AmountInput value={quantity} onChange={setQuantity} required className="input" />
+          </Field>
+          <Field label="Cena zakupu/szt.">
+            <AmountInput value={pricePerUnit} onChange={setPricePerUnit} required className="input" />
+          </Field>
+          <Field label="Waluta">
+            <select value={currency} onChange={(e) => { setCurrency(e.target.value as Currency); setAccount('') }} className="input">
+              <option value="PLN">PLN</option>
+              <option value="USD">USD</option>
+              <option value="EUR">EUR</option>
+              <option value="NOK">NOK</option>
+              <option value="DKK">DKK</option>
+              <option value="GBP">GBP</option>
+              <option value="SEK">SEK</option>
+              <option value="CHF">CHF</option>
+            </select>
+          </Field>
+          <Field label="Data zakupu (wstecz)">
+            <input type="date" value={executedAt} onChange={(e) => setExecutedAt(e.target.value)} required className="input" />
+          </Field>
+          <Field label="Powiąż z kontem (opcjonalnie)">
+            <select value={account} onChange={(e) => setAccount(e.target.value ? Number(e.target.value) : '')} className="input">
+              <option value="">{t('bez powiązania')}</option>
+              {eligibleAccounts.map((a) => (
+                <option key={a.id} value={a.id}>
+                  {a.bank_name} — {a.name}
+                </option>
+              ))}
+            </select>
+          </Field>
+          <div className="flex items-end">
+            <button type="submit" className="btn-primary w-full" disabled={mutation.isPending}>
+              {t('+ Dodaj pozycję')}
+            </button>
+          </div>
+        </div>
+        {account ? (
+          <label className="flex items-center gap-2 text-xs text-slate-500 dark:text-slate-400">
+            <input type="checkbox" checked={alreadyOwned} onChange={(e) => setAlreadyOwned(e.target.checked)} />
+            {t('To pozycja, którą już posiadam — nie odejmuj środków z konta (tylko zapisz powiązanie).')}
+          </label>
+        ) : (
+          <p className="text-xs text-slate-400 dark:text-slate-500">
+            {t(
+              'Jeśli wybierzesz konto, kwota zostanie od razu odjęta z jego salda — zostaw puste, jeśli tylko deklarujesz monety, które już posiadasz.',
+            )}
+          </p>
+        )}
+        {error && <p className="text-sm text-red-600 dark:text-red-400">{error}</p>}
+      </form>
+      {(transactions?.length ?? 0) > 0 && (
+        <ul className="space-y-1 text-sm">
+          {transactions!.map((tx) => (
+            <li key={tx.id} className="flex justify-between rounded-md bg-slate-50 dark:bg-slate-900 px-3 py-1.5">
+              <span>
+                {tx.asset_detail.symbol} — {formatNumber(tx.quantity, 6)} {t('szt.')} @{' '}
+                {formatMoney(tx.price_per_unit, tx.currency)}
+                <span className="ml-2 text-xs text-slate-400 dark:text-slate-500">
+                  {formatDate(tx.executed_at)}
+                  {tx.account_detail ? ` — ${tx.account_detail.bank_name} ${tx.account_detail.name}` : ` — ${t('bez powiązania z kontem')}`}
+                </span>
+              </span>
+            </li>
+          ))}
+        </ul>
+      )}
+      {(transactions?.length ?? 0) === 0 && (cryptoAssets?.length ?? 0) === 0 && (
+        <p className="text-sm text-slate-400 dark:text-slate-500">{t('Nie dodano jeszcze żadnych monet.')}</p>
       )}
     </div>
   )
