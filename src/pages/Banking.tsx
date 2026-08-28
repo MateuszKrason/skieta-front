@@ -4,11 +4,13 @@ import { api } from '../api/client'
 import { useAuth } from '../auth/AuthContext'
 import BankNameAutocomplete from '../components/BankNameAutocomplete'
 import { AmountInput } from '../components/AmountInput'
+import { LoadMoreButton } from '../components/LoadMoreButton'
 import { PageLoader, Spinner } from '../components/Loader'
 import StatementImportPanel from '../components/StatementImportPanel'
 import { useLanguage } from '../i18n/LanguageContext'
 import { addMonths, type CurrentBondOffer } from '../lib/bonds'
 import { accountTypeLabel, formatDate, formatMoney, formatNumber } from '../lib/format'
+import { usePaginatedList } from '../lib/usePaginatedList'
 import { AddTransactionForm } from './analysis/shared'
 import type {
   AccountTransfer,
@@ -88,10 +90,8 @@ export default function Banking() {
     queryFn: async () => (await api.get<TreasuryBond[]>('/bonds/')).data,
   })
 
-  const { data: transfers } = useQuery({
-    queryKey: ['transfers'],
-    queryFn: async () => (await api.get<AccountTransfer[]>('/banking/transfers/')).data,
-  })
+  const { items: transfers, hasMore: hasMoreTransfers, isFetchingMore: isFetchingMoreTransfers, loadMore: loadMoreTransfers } =
+    usePaginatedList<AccountTransfer>(['transfers'], '/banking/transfers/')
 
   const { data: summary } = useQuery({
     queryKey: ['dashboard'],
@@ -345,11 +345,11 @@ export default function Banking() {
           {accounts?.length === 0 && <p className="text-slate-400 dark:text-slate-500">{t('Brak kont — dodaj pierwsze.')}</p>}
         </div>
 
-        {(transfers?.length ?? 0) > 0 && (
+        {transfers.length > 0 && (
           <div className="mt-4 rounded-xl border border-slate-200 dark:border-slate-700 bg-white dark:bg-slate-800 p-5 shadow-sm">
             <h3 className="mb-3 text-sm font-semibold text-slate-700 dark:text-slate-300">{t('Historia przelewów')}</h3>
             <div className="space-y-2">
-              {(transfers ?? []).map((t) => (
+              {transfers.map((t) => (
                 <div key={t.id} className="flex justify-between border-b border-slate-100 dark:border-slate-800 py-1.5 text-sm last:border-0">
                   <span>
                     {t.from_account_detail.name} → {t.to_account_detail.name}:{' '}
@@ -360,6 +360,7 @@ export default function Banking() {
                 </div>
               ))}
             </div>
+            <LoadMoreButton onClick={loadMoreTransfers} loading={isFetchingMoreTransfers} visible={!!hasMoreTransfers} />
           </div>
         )}
       </section>

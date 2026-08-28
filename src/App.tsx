@@ -43,6 +43,7 @@ const Redakcja = lazy(() => import('./pages/Redakcja'))
 const GieldaLayout = lazy(() => import('./pages/gielda/GieldaLayout'))
 const Portfel = lazy(() => import('./pages/gielda/Portfel'))
 const Dywidendy = lazy(() => import('./pages/gielda/Dywidendy'))
+const StatystykiPortfela = lazy(() => import('./pages/gielda/StatystykiPortfela'))
 const AnalizaSpolek = lazy(() => import('./pages/gielda/AnalizaSpolek'))
 const KryptoLayout = lazy(() => import('./pages/gielda/krypto/KryptoLayout'))
 const KryptoPortfel = lazy(() => import('./pages/gielda/krypto/KryptoPortfel'))
@@ -52,6 +53,7 @@ const Bilans = lazy(() => import('./pages/analysis/Bilans'))
 const Przychody = lazy(() => import('./pages/analysis/Przychody'))
 const Wydatki = lazy(() => import('./pages/analysis/Wydatki'))
 const Kategorie = lazy(() => import('./pages/analysis/Kategorie'))
+const Statystyki = lazy(() => import('./pages/analysis/Statystyki'))
 const InvestmentCalculator = lazy(() => import('./pages/InvestmentCalculator'))
 
 const PAGE_TITLES: [string, string][] = [
@@ -75,6 +77,7 @@ const PAGE_TITLES: [string, string][] = [
   ['/timeline', 'Timeline'],
   ['/gielda/portfel', 'Portfel'],
   ['/gielda/dywidendy', 'Dywidendy'],
+  ['/gielda/statystyki', 'Statystyki portfela'],
   ['/gielda/analiza-spolek', 'Analiza spółek'],
   ['/gielda/krypto/portfel', 'Krypto - Portfel'],
   ['/gielda/krypto/analiza', 'Krypto - Analiza'],
@@ -84,6 +87,7 @@ const PAGE_TITLES: [string, string][] = [
   ['/budzet/przychody', 'Przychody'],
   ['/budzet/wydatki', 'Wydatki'],
   ['/budzet/kategorie', 'Kategorie'],
+  ['/budzet/statystyki', 'Statystyki'],
   ['/budzet', 'Budżet'],
   ['/analiza', 'Analiza'],
   ['/dashboard', 'Dashboard'],
@@ -176,6 +180,7 @@ export default function App() {
             <Route index element={<Navigate to="portfel" replace />} />
             <Route path="portfel" element={<Portfel />} />
             <Route path="dywidendy" element={<Dywidendy />} />
+            <Route path="statystyki" element={<StatystykiPortfela />} />
             <Route path="analiza-spolek" element={<AnalizaSpolek />} />
             <Route path="krypto" element={<KryptoLayout />}>
               <Route index element={<Navigate to="portfel" replace />} />
@@ -190,6 +195,7 @@ export default function App() {
             <Route path="przychody" element={<Przychody />} />
             <Route path="wydatki" element={<Wydatki />} />
             <Route path="kategorie" element={<Kategorie />} />
+            <Route path="statystyki" element={<Statystyki />} />
           </Route>
 
           <Route path="/analiza" element={<InvestmentCalculator />} />

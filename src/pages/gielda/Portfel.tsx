@@ -2,11 +2,13 @@ import { Fragment, useEffect, useState, type FormEvent } from 'react'
 import { useMutation, useQuery, useQueryClient } from '@tanstack/react-query'
 import { api } from '../../api/client'
 import { AmountInput } from '../../components/AmountInput'
+import { LoadMoreButton } from '../../components/LoadMoreButton'
 import { PageLoader, Spinner } from '../../components/Loader'
 import ReinvestmentThreads from '../../components/ReinvestmentThreads'
 import StockAutocomplete from '../../components/StockAutocomplete'
 import { useLanguage } from '../../i18n/LanguageContext'
 import { accountTypeLabel, formatDateTime, formatMoney, formatNumber, formatPct, formatShareQuantity } from '../../lib/format'
+import { usePaginatedList } from '../../lib/usePaginatedList'
 import type {
   BankAccount,
   Currency,
@@ -94,10 +96,8 @@ export default function Portfel() {
     queryFn: async () => (await api.get<Stock[]>('/stocks/tickers/')).data,
   })
 
-  const { data: transactions } = useQuery({
-    queryKey: ['transactions'],
-    queryFn: async () => (await api.get<StockTransaction[]>('/stocks/transactions/')).data,
-  })
+  const { items: transactions, hasMore: hasMoreTransactions, isFetchingMore: isFetchingMoreTransactions, loadMore: loadMoreTransactions } =
+    usePaginatedList<StockTransaction>(['transactions'], '/stocks/transactions/')
 
   const { data: accounts } = useQuery({
     queryKey: ['accounts'],
@@ -408,7 +408,7 @@ export default function Portfel() {
       <div className="rounded-xl border border-slate-200 dark:border-slate-700 bg-white dark:bg-slate-800 p-5 shadow-sm">
         <h2 className="mb-3 text-sm font-semibold text-slate-700 dark:text-slate-300">{t('Historia transakcji')}</h2>
         <div className="space-y-2">
-          {(transactions ?? []).map((tx) =>
+          {transactions.map((tx) =>
             editingTxId === tx.id ? (
               <EditStockTransactionForm
                 key={tx.id}
@@ -463,8 +463,9 @@ export default function Portfel() {
               </div>
             ),
           )}
-          {transactions?.length === 0 && <p className="text-slate-400 dark:text-slate-500">{t('Brak transakcji.')}</p>}
+          {transactions.length === 0 && <p className="text-slate-400 dark:text-slate-500">{t('Brak transakcji.')}</p>}
         </div>
+        <LoadMoreButton onClick={loadMoreTransactions} loading={isFetchingMoreTransactions} visible={!!hasMoreTransactions} />
       </div>
 
       <ReinvestmentThreads />

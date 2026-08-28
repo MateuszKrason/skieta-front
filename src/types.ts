@@ -120,6 +120,32 @@ export interface PortfolioAnalytics {
   by_account: AccountBreakdownRow[]
 }
 
+export interface ClosedPosition {
+  stock: Stock
+  opened_at: string
+  closed_at: string
+  quantity: string
+  avg_buy_price: string
+  avg_sell_price: string | null
+  cost_base: string
+  proceeds_base: string
+  realized_pl_base: string
+  realized_pl_after_tax_base: string
+  return_pct: string | null
+  holding_days: number | null
+}
+
+export interface ClosedPositions {
+  count: number
+  total_realized_pl_after_tax_base: string
+  avg_return_pct: string | null
+  win_rate: string | null
+  avg_holding_days: number | null
+  best_position: ClosedPosition | null
+  worst_position: ClosedPosition | null
+  positions: ClosedPosition[]
+}
+
 export interface AccountBreakdownRow {
   account_id: number
   account_label: string
@@ -784,6 +810,49 @@ export interface MonthlyTrendRow {
   income: string
   expense: string
   net: string
+}
+
+export interface TransactionHighlight {
+  amount: string
+  currency: Currency
+  amount_base: string
+  category: Category | null
+  store: Store | null
+  date: string
+  description: string
+}
+
+export interface WeekdayStat {
+  weekday: number
+  total: string
+  count: number
+}
+
+export interface StoreStat {
+  store: Store | null
+  total: string
+  count: number
+}
+
+export interface TagStat {
+  tag: Tag | null
+  count: number
+}
+
+export interface InterestingStats {
+  total_transactions: number
+  avg_expense_amount: string | null
+  avg_income_amount: string | null
+  biggest_expense: TransactionHighlight | null
+  biggest_income: TransactionHighlight | null
+  weekday_breakdown: WeekdayStat[]
+  best_month: MonthlyTrendRow | null
+  worst_month: MonthlyTrendRow | null
+  top_store_by_spend: StoreStat | null
+  most_frequent_store: StoreStat | null
+  most_used_tag: TagStat | null
+  longest_no_spend_streak_days: number | null
+  base_currency: Currency
 }
 
 export type ThreadEdgeOrigin = 'root' | 'cash' | 'node'

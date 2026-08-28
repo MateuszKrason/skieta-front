@@ -12,6 +12,7 @@ export default function AnalysisLayout() {
           { to: '/budzet/przychody', label: t('Przychody') },
           { to: '/budzet/wydatki', label: t('Wydatki') },
           { to: '/budzet/kategorie', label: t('Kategorie') },
+          { to: '/budzet/statystyki', label: t('Statystyki') },
         ]}
       />
       <Outlet />

@@ -316,6 +316,7 @@ function SalaryForm({ plan, onDone }: { plan: BudgetPlan | undefined; onDone: ()
   const [salary, setSalary] = useState('')
   const [currency, setCurrency] = useState<Currency>('PLN')
   const [paydayDay, setPaydayDay] = useState('')
+  const [error, setError] = useState<string | null>(null)
 
   const mutation = useMutation({
     mutationFn: () =>
@@ -328,17 +329,31 @@ function SalaryForm({ plan, onDone }: { plan: BudgetPlan | undefined; onDone: ()
       setEditing(false)
       onDone()
     },
+    onError: (err: unknown) => {
+      const data = (err as { response?: { data?: unknown } }).response?.data
+      if (data && typeof data === 'object') {
+        setError(Object.values(data as Record<string, unknown>).flat().join(' '))
+      } else {
+        setError(t('Nie udało się zapisać zmian.'))
+      }
+    },
   })
 
   function startEditing() {
     setSalary(plan?.monthly_salary ?? '')
     setCurrency(plan?.currency ?? 'PLN')
-    setPaydayDay(plan?.payday_day ? String(plan.payday_day) : '')
+    setPaydayDay(plan?.payday_day ? String(plan.payday_day) : '10')
+    setError(null)
     setEditing(true)
   }
 
   function onSubmit(e: FormEvent) {
     e.preventDefault()
+    setError(null)
+    if (!paydayDay) {
+      setError(t('Dzień wypłaty jest wymagany — bez niego nie da się policzyć planu.'))
+      return
+    }
     mutation.mutate()
   }
 
@@ -370,11 +385,12 @@ function SalaryForm({ plan, onDone }: { plan: BudgetPlan | undefined; onDone: ()
           <option value="GBP">GBP</option>
         </select>
       </Field>
-      <Field label="Dzień wypłaty w miesiącu (opcjonalnie)">
+      <Field label="Dzień wypłaty w miesiącu">
         <input
           type="number"
           min={1}
           max={31}
+          required
           placeholder="np. 10"
           value={paydayDay}
           onChange={(e) => setPaydayDay(e.target.value)}
@@ -393,6 +409,7 @@ function SalaryForm({ plan, onDone }: { plan: BudgetPlan | undefined; onDone: ()
           {t('Anuluj')}
         </button>
       </div>
+      {error && <p className="col-span-2 text-sm text-red-600 dark:text-red-400 sm:col-span-5">{error}</p>}
       <p className="col-span-2 text-xs text-slate-400 dark:text-slate-500 sm:col-span-5">
         {t('Dzień wypłaty pozwala policzyć, ile wypłat zostało do terminu każdego celu oszczędnościowego.')}
       </p>

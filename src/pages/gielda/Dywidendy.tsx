@@ -5,9 +5,11 @@ import { api } from '../../api/client'
 import { useAuth } from '../../auth/AuthContext'
 import { AmountInput } from '../../components/AmountInput'
 import { CardLoader, PageLoader } from '../../components/Loader'
+import { LoadMoreButton } from '../../components/LoadMoreButton'
 import { useLanguage } from '../../i18n/LanguageContext'
 import { useTooltipStyle } from '../../lib/chartTooltip'
 import { afterBelkaTax, formatAxisValue, formatDate, formatMoney, formatNumber, formatPct } from '../../lib/format'
+import { usePaginatedList } from '../../lib/usePaginatedList'
 import type { Dividend, DividendSummary, Stock } from '../../types'
 
 const PALETTE = ['#059669', '#0ea5e9', '#f59e0b', '#ef4444', '#8b5cf6', '#ec4899', '#14b8a6', '#84cc16', '#f97316', '#6366f1']
@@ -199,11 +201,13 @@ export default function Dywidendy() {
     queryFn: async () => (await api.get<DividendSummary>('/dividends/summary/')).data,
   })
 
-  const { data: dividends, isLoading: dividendsLoading } = useQuery({
-    queryKey: ['dividends', stockFilter],
-    queryFn: async () =>
-      (await api.get<Dividend[]>('/dividends/', { params: stockFilter ? { stock: stockFilter } : {} })).data,
-  })
+  const {
+    items: dividends,
+    isLoading: dividendsLoading,
+    hasMore: hasMoreDividends,
+    isFetchingMore: isFetchingMoreDividends,
+    loadMore: loadMoreDividends,
+  } = usePaginatedList<Dividend>(['dividends', stockFilter], '/dividends/', stockFilter ? { stock: stockFilter } : undefined)
 
   const { data: stocks } = useQuery({
     queryKey: ['stocks'],
@@ -639,7 +643,7 @@ export default function Dywidendy() {
       <div className="rounded-xl border border-slate-200 dark:border-slate-700 bg-white dark:bg-slate-800 p-5 shadow-sm">
         <h2 className="mb-3 text-sm font-semibold text-slate-700 dark:text-slate-300">{t('Historia wypłat')}</h2>
         <div className="space-y-2">
-          {(dividends ?? [])
+          {dividends
             .filter((d) => d.status === 'paid')
             .map((d) => (
               <div
@@ -660,10 +664,11 @@ export default function Dywidendy() {
                 <span className="shrink-0 text-slate-400 dark:text-slate-500">{formatDate(d.payment_date)}</span>
               </div>
             ))}
-          {dividends?.filter((d) => d.status === 'paid').length === 0 && (
+          {dividends.filter((d) => d.status === 'paid').length === 0 && (
             <p className="text-slate-400 dark:text-slate-500">{t('Brak wypłat.')}</p>
           )}
         </div>
+        <LoadMoreButton onClick={loadMoreDividends} loading={isFetchingMoreDividends} visible={!!hasMoreDividends} />
       </div>
     </div>
   )

@@ -3,6 +3,7 @@ import { useMutation, useQuery, useQueryClient } from '@tanstack/react-query'
 import { api } from '../../api/client'
 import { useLanguage } from '../../i18n/LanguageContext'
 import { formatMoney } from '../../lib/format'
+import { usePaginatedList } from '../../lib/usePaginatedList'
 import type { BankAccount, BudgetTransaction, Category, CategoryBreakdown } from '../../types'
 import {
   AddCategoryForm,
@@ -41,20 +42,21 @@ export default function Bilans() {
     queryFn: async () => (await api.get<Category[]>('/budget/categories/')).data,
   })
 
-  const { data: transactions } = useQuery({
-    queryKey: ['budget-transactions', period.range.from, period.range.to, selectedTagId, selectedCategoryId, selectedStoreId],
-    queryFn: async () =>
-      (
-        await api.get<BudgetTransaction[]>('/budget/transactions/', {
-          params: {
-            ...period.range,
-            ...(selectedTagId ? { tag: selectedTagId } : {}),
-            ...(selectedCategoryId ? { category: selectedCategoryId } : {}),
-            ...(selectedStoreId ? { store: selectedStoreId } : {}),
-          },
-        })
-      ).data,
-  })
+  const {
+    items: transactions,
+    hasMore: hasMoreTransactions,
+    isFetchingMore: isFetchingMoreTransactions,
+    loadMore: loadMoreTransactions,
+  } = usePaginatedList<BudgetTransaction>(
+    ['budget-transactions', period.range.from, period.range.to, selectedTagId, selectedCategoryId, selectedStoreId],
+    '/budget/transactions/',
+    {
+      ...period.range,
+      ...(selectedTagId ? { tag: selectedTagId } : {}),
+      ...(selectedCategoryId ? { category: selectedCategoryId } : {}),
+      ...(selectedStoreId ? { store: selectedStoreId } : {}),
+    },
+  )
 
   const { data: accounts } = useQuery({
     queryKey: ['accounts'],
@@ -200,7 +202,13 @@ export default function Bilans() {
 
       <TagManager onSelectTag={onSelectTag} selectedTagId={selectedTagId} />
 
-      <TransactionList transactions={transactions ?? []} onDelete={(id) => deleteTx.mutate(id)} />
+      <TransactionList
+        transactions={transactions}
+        onDelete={(id) => deleteTx.mutate(id)}
+        hasMore={hasMoreTransactions}
+        isLoadingMore={isFetchingMoreTransactions}
+        onLoadMore={loadMoreTransactions}
+      />
     </div>
   )
 }

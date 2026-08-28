@@ -12,6 +12,7 @@ export default function GieldaLayout() {
         tabs={[
           { to: '/gielda/portfel', label: t('Portfel') },
           { to: '/gielda/dywidendy', label: t('Dywidendy') },
+          { to: '/gielda/statystyki', label: t('Statystyki portfela') },
           { to: '/gielda/analiza-spolek', label: t('Analiza spółek') },
           ...(user?.profile.interest_crypto ? [{ to: '/gielda/krypto', label: t('Krypto') }] : []),
         ]}

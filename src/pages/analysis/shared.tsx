@@ -20,6 +20,7 @@ import {
 import { api } from '../../api/client'
 import { AmountInput } from '../../components/AmountInput'
 import { CardLoader } from '../../components/Loader'
+import { LoadMoreButton } from '../../components/LoadMoreButton'
 import { useLanguage } from '../../i18n/LanguageContext'
 import { useTooltipStyle } from '../../lib/chartTooltip'
 import { formatAxisValue, formatDate, formatMoney, formatPct } from '../../lib/format'
@@ -346,14 +347,113 @@ export function CategoryTrendChart({
   )
 }
 
+export function TagTrendChart({
+  type,
+  months = 6,
+  onSelectTag,
+  selectedTagId,
+  palette = PALETTE,
+}: {
+  type: BudgetType
+  months?: number
+  onSelectTag: (id: number | null) => void
+  selectedTagId: number | null
+  palette?: string[]
+}) {
+  const { t } = useLanguage()
+  const tooltipStyle = useTooltipStyle()
+  const { data, isLoading } = useQuery({
+    queryKey: ['budget-tag-trend', type, months],
+    queryFn: async () =>
+      (
+        await api.get<{ months: string[]; rows: { tag: Tag | null; totals: string[] }[] }>('/budget/tag-trend/', {
+          params: { type, months },
+        })
+      ).data,
+  })
+
+  const rows = data?.rows ?? []
+  const chartData = (data?.months ?? []).map((month, i) => {
+    const point: Record<string, string | number> = { month }
+    rows.forEach((row) => {
+      const key = row.tag ? `tag_${row.tag.id}` : 'tag_none'
+      point[key] = Number(row.totals[i])
+    })
+    return point
+  })
+
+  return (
+    <div className="rounded-xl border border-slate-200 dark:border-slate-700 bg-white dark:bg-slate-800 p-5 shadow-sm">
+      <h2 className="mb-1 text-sm font-semibold text-slate-700 dark:text-slate-300">
+        {t(type === 'expense' ? 'Wydatki' : 'Przychody')} {t('wg tagów — miesiąc do miesiąca')}
+      </h2>
+      <p className="mb-3 text-xs text-slate-400 dark:text-slate-500">{t('Tylko transakcje z co najmniej jednym tagiem. Kliknij tag poniżej, aby zobaczyć konkretne transakcje w wybranym okresie.')}</p>
+      {isLoading ? (
+        <CardLoader />
+      ) : rows.length === 0 ? (
+        <p className="text-slate-400 dark:text-slate-500">{t('Brak danych.')}</p>
+      ) : (
+        <>
+          <div className="h-64">
+            <ResponsiveContainer width="100%" height="100%">
+              <BarChart data={chartData}>
+                <CartesianGrid strokeDasharray="3 3" stroke="#94a3b8" strokeOpacity={0.15} />
+                <XAxis dataKey="month" tick={{ fontSize: 12 }} stroke="#94a3b8" />
+                <YAxis tickFormatter={formatAxisValue} tick={{ fontSize: 12 }} stroke="#94a3b8" width={40} />
+                <Tooltip {...tooltipStyle} formatter={(value) => formatMoney(value as number, 'PLN')} />
+                {rows.map((row, i) => {
+                  const key = row.tag ? `tag_${row.tag.id}` : 'tag_none'
+                  return (
+                    <Bar
+                      key={key}
+                      dataKey={(entry: Record<string, string | number>) => entry[key]}
+                      name={row.tag ? `#${row.tag.name}` : t('Bez tagu')}
+                      stackId="tag"
+                      fill={palette[i % palette.length]}
+                    />
+                  )
+                })}
+              </BarChart>
+            </ResponsiveContainer>
+          </div>
+          <div className="mt-3 flex flex-wrap gap-2">
+            {rows.map((row, i) => {
+              const id = row.tag?.id ?? null
+              const active = selectedTagId === id
+              return (
+                <button
+                  key={id ?? 'none'}
+                  onClick={() => onSelectTag(active ? null : id)}
+                  className={`flex items-center gap-1.5 rounded-full border px-2.5 py-1 text-xs font-medium transition ${
+                    active ? 'border-accent-400 dark:border-accent-600 bg-accent-50 dark:bg-accent-900/30 text-accent-700 dark:text-accent-400' : 'border-slate-200 dark:border-slate-700 text-slate-600 dark:text-slate-400 hover:bg-slate-50 dark:hover:bg-slate-700'
+                  }`}
+                >
+                  <span className="h-2 w-2 rounded-full" style={{ backgroundColor: palette[i % palette.length] }} />
+                  {row.tag ? `#${row.tag.name}` : t('Bez tagu')}
+                </button>
+              )
+            })}
+          </div>
+        </>
+      )}
+    </div>
+  )
+}
+
 export function TransactionList({
   transactions,
   onDelete,
   title = 'Transakcje w okresie',
+  hasMore = false,
+  isLoadingMore = false,
+  onLoadMore,
 }: {
   transactions: BudgetTransaction[]
   onDelete: (id: number) => void
   title?: string
+  hasMore?: boolean
+  isLoadingMore?: boolean
+  onLoadMore?: () => void
 }) {
   const { t } = useLanguage()
   const queryClient = useQueryClient()
@@ -458,6 +558,7 @@ export function TransactionList({
         )}
         {transactions.length === 0 && <p className="text-slate-400 dark:text-slate-500">{t('Brak transakcji w tym okresie.')}</p>}
       </div>
+      {onLoadMore && <LoadMoreButton onClick={onLoadMore} loading={isLoadingMore} visible={hasMore} />}
     </div>
   )
 }

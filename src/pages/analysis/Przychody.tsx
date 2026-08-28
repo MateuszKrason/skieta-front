@@ -3,6 +3,7 @@ import { useMutation, useQuery, useQueryClient } from '@tanstack/react-query'
 import { api } from '../../api/client'
 import { useLanguage } from '../../i18n/LanguageContext'
 import { formatMoney } from '../../lib/format'
+import { usePaginatedList } from '../../lib/usePaginatedList'
 import type { BankAccount, BudgetTransaction, Category, CategoryBreakdown } from '../../types'
 import {
   AddCategoryForm,
@@ -39,15 +40,16 @@ export default function Przychody() {
     queryFn: async () => (await api.get<BankAccount[]>('/banking/accounts/')).data,
   })
 
-  const { data: transactions } = useQuery({
-    queryKey: ['budget-transactions', 'income', period.range.from, period.range.to, selectedCategoryId],
-    queryFn: async () =>
-      (
-        await api.get<BudgetTransaction[]>('/budget/transactions/', {
-          params: { ...period.range, type: 'income', ...(selectedCategoryId ? { category: selectedCategoryId } : {}) },
-        })
-      ).data,
-  })
+  const {
+    items: transactions,
+    hasMore: hasMoreTransactions,
+    isFetchingMore: isFetchingMoreTransactions,
+    loadMore: loadMoreTransactions,
+  } = usePaginatedList<BudgetTransaction>(
+    ['budget-transactions', 'income', period.range.from, period.range.to, selectedCategoryId],
+    '/budget/transactions/',
+    { ...period.range, type: 'income', ...(selectedCategoryId ? { category: selectedCategoryId } : {}) },
+  )
 
   function invalidateBudget() {
     queryClient.invalidateQueries({ queryKey: ['budget-breakdown'] })
@@ -136,9 +138,12 @@ export default function Przychody() {
       </div>
 
       <TransactionList
-        transactions={transactions ?? []}
+        transactions={transactions}
         onDelete={(id) => deleteTx.mutate(id)}
         title={selectedCategoryName ? t('Przychody: {0}', selectedCategoryName) : t('Przychody w okresie')}
+        hasMore={hasMoreTransactions}
+        isLoadingMore={isFetchingMoreTransactions}
+        onLoadMore={loadMoreTransactions}
       />
     </div>
   )
