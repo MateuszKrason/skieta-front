@@ -181,6 +181,7 @@ export default function Portfel() {
           </button>
           <button
             onClick={() => setShowAddTx((v) => !v)}
+            data-tour="gielda-add-tx"
             className="rounded-md bg-accent-600 px-3 py-1.5 text-sm font-medium text-white hover:bg-accent-700"
           >
             {t('+ Kupno')}

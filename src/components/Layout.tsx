@@ -8,6 +8,8 @@ import InviteNudgeBubble from './InviteNudgeBubble'
 import SockLogo from './SockLogo'
 import { useTheme, type Theme } from '../theme/ThemeContext'
 import { LANGUAGES, useLanguage, type Language } from '../i18n/LanguageContext'
+import { TourProvider } from '../tour/TourContext'
+import TourOverlay from '../tour/TourOverlay'
 import type { User } from '../types'
 
 const LANGUAGE_CODE_LABELS: Record<Language, string> = {
@@ -26,18 +28,23 @@ const LANGUAGE_CODE_LABELS: Record<Language, string> = {
 // "Konta i lokaty" always shows since a bank account is required at signup.
 type InterestKey = 'interest_stocks' | 'interest_budget' | 'interest_planning' | 'interest_analysis'
 
-const DASHBOARD_LINK = { to: '/dashboard', label: 'Dashboard', end: true }
+const DASHBOARD_LINK = { to: '/dashboard', label: 'Dashboard', end: true, tourId: 'nav-dashboard' }
 
 // Everything except Dashboard (always first) and Admin (conditional, always
 // last) — keyed by route slug so a user's custom order (Profile.nav_order,
 // reorderable in Account.tsx) can be applied by key lookup. Must mirror the
-// backend's Profile.NAV_ORDER_KEYS / DEFAULT_NAV_ORDER exactly.
-export const REORDERABLE_LINKS: Record<string, { to: string; label: string; interest?: InterestKey; end?: boolean }> = {
-  budzet: { to: '/budzet', label: 'Budżet', interest: 'interest_budget' },
-  konta: { to: '/konta', label: 'Konta i lokaty' },
-  gielda: { to: '/gielda', label: 'Giełda', interest: 'interest_stocks' },
-  planowanie: { to: '/planowanie', label: 'Planowanie', interest: 'interest_planning' },
-  analiza: { to: '/analiza', label: 'Analiza', interest: 'interest_analysis' },
+// backend's Profile.NAV_ORDER_KEYS / DEFAULT_NAV_ORDER exactly. `tourId`
+// feeds the first-login interactive tour (see ../tour) - it spotlights each
+// nav link by this data-tour value, so it must stay unique per link.
+export const REORDERABLE_LINKS: Record<
+  string,
+  { to: string; label: string; interest?: InterestKey; end?: boolean; tourId: string }
+> = {
+  budzet: { to: '/budzet', label: 'Budżet', interest: 'interest_budget', tourId: 'nav-budzet' },
+  konta: { to: '/konta', label: 'Konta i lokaty', tourId: 'nav-konta' },
+  gielda: { to: '/gielda', label: 'Giełda', interest: 'interest_stocks', tourId: 'nav-gielda' },
+  planowanie: { to: '/planowanie', label: 'Planowanie', interest: 'interest_planning', tourId: 'nav-planowanie' },
+  analiza: { to: '/analiza', label: 'Analiza', interest: 'interest_analysis', tourId: 'nav-analiza' },
 }
 export const DEFAULT_NAV_ORDER = ['budzet', 'konta', 'gielda', 'planowanie', 'analiza']
 
@@ -50,7 +57,7 @@ function getNavLinks(profile: User['profile'] | undefined, isStaff: boolean | un
   const links = [DASHBOARD_LINK, ...ordered].filter(
     (link) => !('interest' in link) || !link.interest || !profile || profile[link.interest],
   )
-  return isStaff ? [...links, { to: '/admin', label: 'Admin' }] : links
+  return isStaff ? [...links, { to: '/admin', label: 'Admin', tourId: 'nav-admin' }] : links
 }
 
 function navLinkClass({ isActive }: { isActive: boolean }) {
@@ -105,6 +112,7 @@ function HeaderActions({ stacked = false, onNavigate }: { stacked?: boolean; onN
         to="/onboarding"
         onClick={onNavigate}
         title={t('Dodaj posiadane konta, akcje, lokaty lub obligacje')}
+        data-tour="header-add-positions"
         className="rounded-md border border-slate-300 dark:border-slate-600 px-2.5 py-1 font-medium text-slate-600 dark:text-slate-400 hover:bg-slate-100 dark:hover:bg-slate-700"
       >
         {t('+ Dodaj pozycje')}
@@ -170,6 +178,7 @@ export default function Layout() {
   const links = getNavLinks(user?.profile, user?.is_staff)
 
   return (
+    <TourProvider>
     <div className="min-h-screen">
       <header className="border-b border-slate-200 dark:border-slate-700 bg-white dark:bg-slate-800">
         <div className="mx-auto flex max-w-7xl items-center justify-between px-4 py-3">
@@ -184,7 +193,7 @@ export default function Layout() {
             </Link>
             <nav className="hidden lg:flex gap-1">
               {links.map((link) => (
-                <NavLink key={link.to} to={link.to} end={link.end} className={navLinkClass}>
+                <NavLink key={link.to} to={link.to} end={link.end} className={navLinkClass} data-tour={link.tourId}>
                   {t(link.label)}
                 </NavLink>
               ))}
@@ -212,6 +221,7 @@ export default function Layout() {
                   end={link.end}
                   onClick={() => setMobileOpen(false)}
                   className={navLinkClass}
+                  data-tour={link.tourId}
                 >
                   {t(link.label)}
                 </NavLink>
@@ -252,5 +262,7 @@ export default function Layout() {
       </footer>
       <FeedbackWidget />
     </div>
+    <TourOverlay />
+    </TourProvider>
   )
 }

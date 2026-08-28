@@ -425,6 +425,7 @@ export interface User {
     permissions: string[]
     username_changed_at: string | null
     nav_order: string[]
+    has_seen_tour: boolean
   }
 }
 

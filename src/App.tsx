@@ -74,7 +74,7 @@ const PAGE_TITLES: [string, string][] = [
   ['/admin', 'Panel administratora'],
   ['/konta', 'Konta i lokaty'],
   ['/planowanie', 'Planowanie budżetu'],
-  ['/timeline', 'Timeline'],
+  ['/timeline', 'Historia majątku'],
   ['/gielda/portfel', 'Portfel'],
   ['/gielda/dywidendy', 'Dywidendy'],
   ['/gielda/statystyki', 'Statystyki portfela'],

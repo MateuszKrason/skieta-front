@@ -1,6 +1,6 @@
-import { useState, type FormEvent } from 'react'
+import { useMemo, useState, type FormEvent } from 'react'
 import { useMutation, useQuery, useQueryClient } from '@tanstack/react-query'
-import { Area, AreaChart, ResponsiveContainer, Tooltip, XAxis, YAxis } from 'recharts'
+import { Area, AreaChart, ReferenceDot, ResponsiveContainer, Tooltip, XAxis, YAxis } from 'recharts'
 import { api } from '../api/client'
 import { AmountInput } from '../components/AmountInput'
 import { CardLoader, PageLoader } from '../components/Loader'
@@ -8,6 +8,18 @@ import { useLanguage } from '../i18n/LanguageContext'
 import { useTooltipStyle } from '../lib/chartTooltip'
 import { formatAxisValue, formatDate, formatMoney, formatPct } from '../lib/format'
 import type { CashFlow, DashboardSummary, NetWorthSnapshot } from '../types'
+
+// A logged deposit/withdrawal rarely lands exactly on a day the snapshot job
+// ran, so its marker is placed on the closest snapshot instead of being
+// silently dropped - close enough to still land visibly on the right bump
+// or dip in the curve.
+function nearestSnapshot(snapshots: NetWorthSnapshot[], targetDate: string): NetWorthSnapshot | null {
+  if (snapshots.length === 0) return null
+  const targetTime = new Date(targetDate).getTime()
+  return snapshots.reduce((best, s) =>
+    Math.abs(new Date(s.date).getTime() - targetTime) < Math.abs(new Date(best.date).getTime() - targetTime) ? s : best,
+  )
+}
 
 export default function Timeline() {
   const queryClient = useQueryClient()
@@ -56,6 +68,16 @@ export default function Timeline() {
 
   const base = summary?.base_currency ?? 'PLN'
 
+  const markers = useMemo(() => {
+    if (!timeline || timeline.length === 0 || !cashflows) return []
+    return cashflows
+      .map((cf) => {
+        const snap = nearestSnapshot(timeline, cf.date)
+        return snap ? { cashflow: cf, snapshotDate: snap.date, y: Number(snap.total) } : null
+      })
+      .filter((m): m is { cashflow: CashFlow; snapshotDate: string; y: number } => m !== null)
+  }, [timeline, cashflows])
+
   if (summaryLoading || cashflowsLoading) {
     return <PageLoader />
   }
@@ -64,7 +86,7 @@ export default function Timeline() {
     <div className="space-y-6">
       <div className="flex items-center justify-between">
         <div>
-          <h1 className="text-2xl font-bold text-slate-900 dark:text-slate-100">{t('Timeline majątku')}</h1>
+          <h1 className="text-2xl font-bold text-slate-900 dark:text-slate-100">{t('Historia majątku')}</h1>
           <p className="text-sm text-slate-500 dark:text-slate-400">
             {t('Sprawdź, jak realnie pomnożyłeś wpłacone środki — niezależnie od tego, ile do systemu dołożyłeś')}
           </p>
@@ -77,12 +99,21 @@ export default function Timeline() {
         </button>
       </div>
 
+      <div className="rounded-xl border border-slate-200 dark:border-slate-700 bg-slate-50 dark:bg-slate-900 p-4 text-xs text-slate-500 dark:text-slate-400">
+        {t(
+          'Wykres poniżej to Twój faktyczny majątek na podstawie kont, inwestycji i lokat — liczy się sam, na bieżąco. Wpłaty/wypłaty, które rejestrujesz tutaj, to coś innego: pieniądze, które wniosłeś lub wyjąłeś SPOZA śledzonych kont (np. gotówka, prezent, przelew z konta spoza aplikacji). Zaznaczamy je na wykresie, żeby było widać, który skok to Twoja wpłata, a który to realny zysk. Nie dodawaj tu zwykłych przychodów już zapisanych w Budżecie ani przelewów między własnymi kontami — to policzyłoby się podwójnie.',
+        )}
+      </div>
+
       <div className="grid grid-cols-1 gap-4 sm:grid-cols-3">
         <div className="rounded-xl border border-slate-200 dark:border-slate-700 bg-white dark:bg-slate-800 p-4 shadow-sm">
           <p className="text-xs text-slate-500 dark:text-slate-400">{t('Obecna wartość majątku')}</p>
           <p className="mt-1 text-xl font-bold text-slate-900 dark:text-slate-100">{formatMoney(summary?.growth.current_total, base)}</p>
         </div>
-        <div className="rounded-xl border border-slate-200 dark:border-slate-700 bg-white dark:bg-slate-800 p-4 shadow-sm">
+        <div
+          className="rounded-xl border border-slate-200 dark:border-slate-700 bg-white dark:bg-slate-800 p-4 shadow-sm"
+          title={t('Majątek na starcie + przychody z Budżetu + wpłaty własne zarejestrowane poniżej, minus wypłaty.')}
+        >
           <p className="text-xs text-slate-500 dark:text-slate-400">{t('Wpłacone środki netto')}</p>
           <p className="mt-1 text-xl font-bold text-slate-900 dark:text-slate-100">{formatMoney(summary?.growth.net_contributed, base)}</p>
         </div>
@@ -105,7 +136,19 @@ export default function Timeline() {
       </div>
 
       <div className="rounded-xl border border-slate-200 dark:border-slate-700 bg-white dark:bg-slate-800 p-5 shadow-sm">
-        <h2 className="mb-3 text-sm font-semibold text-slate-700 dark:text-slate-300">{t('Wartość majątku w czasie')}</h2>
+        <div className="mb-3 flex flex-wrap items-center justify-between gap-2">
+          <h2 className="text-sm font-semibold text-slate-700 dark:text-slate-300">{t('Wartość majątku w czasie')}</h2>
+          <p className="flex items-center gap-3 text-xs text-slate-400 dark:text-slate-500">
+            <span className="flex items-center gap-1">
+              <span className="inline-block h-2.5 w-2.5 rounded-full border border-white dark:border-slate-800" style={{ backgroundColor: '#059669' }} />
+              {t('Wpłata')}
+            </span>
+            <span className="flex items-center gap-1">
+              <span className="inline-block h-2.5 w-2.5 rounded-full border border-white dark:border-slate-800" style={{ backgroundColor: '#ef4444' }} />
+              {t('Wypłata')}
+            </span>
+          </p>
+        </div>
         <div className="h-72">
           {timelineLoading ? (
             <CardLoader />
@@ -122,6 +165,17 @@ export default function Timeline() {
                 <YAxis tickFormatter={formatAxisValue} tick={{ fontSize: 12 }} stroke="#94a3b8" width={40} />
                 <Tooltip {...tooltipStyle} formatter={(value) => formatMoney(value as number, base)} labelFormatter={(d) => formatDate(d as string)} />
                 <Area type="monotone" dataKey="total" stroke="#059669" fill="url(#timelineGradient)" strokeWidth={2} />
+                {markers.map((m, i) => (
+                  <ReferenceDot
+                    key={i}
+                    x={m.snapshotDate}
+                    y={m.y}
+                    r={6}
+                    fill={m.cashflow.type === 'deposit' ? '#059669' : '#ef4444'}
+                    stroke="#fff"
+                    strokeWidth={1.5}
+                  />
+                ))}
               </AreaChart>
             </ResponsiveContainer>
           )}
@@ -138,7 +192,8 @@ export default function Timeline() {
       )}
 
       <div className="rounded-xl border border-slate-200 dark:border-slate-700 bg-white dark:bg-slate-800 p-5 shadow-sm">
-        <h2 className="mb-3 text-sm font-semibold text-slate-700 dark:text-slate-300">{t('Historia wpłat / wypłat')}</h2>
+        <h2 className="mb-1 text-sm font-semibold text-slate-700 dark:text-slate-300">{t('Zarejestrowane wpłaty i wypłaty')}</h2>
+        <p className="mb-3 text-xs text-slate-400 dark:text-slate-500">{t('To te same wpisy, które widzisz jako kropki na wykresie powyżej.')}</p>
         <div className="space-y-2">
           {(cashflows ?? []).map((cf) => (
             <div key={cf.id}>

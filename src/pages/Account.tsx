@@ -9,6 +9,7 @@ import { useLanguage, LANGUAGES, LANGUAGE_LABELS, type Language } from '../i18n/
 import { COUNTRIES } from '../lib/countries'
 import { formatCountdown, formatDateTime } from '../lib/format'
 import { useTheme, type Theme } from '../theme/ThemeContext'
+import { useTour } from '../tour/TourContext'
 import type { Currency, Invitation, InvitationList, LoginHistoryResponse, RoleAssignment } from '../types'
 
 const CURRENCY_OPTIONS: Currency[] = ['PLN', 'USD', 'EUR', 'GBP']
@@ -46,6 +47,7 @@ export default function Account() {
       )}
       <ProfileForm />
       <AppearanceForm />
+      <TourReplaySection />
       <InterestsForm />
       <NavOrderForm />
       <PasswordForm />
@@ -391,6 +393,30 @@ function AppearanceForm() {
         </select>
       </label>
       {success && <p className="text-sm text-emerald-600">{t('Zapisano zmiany.')}</p>}
+    </div>
+  )
+}
+
+function TourReplaySection() {
+  const { t } = useLanguage()
+  const navigate = useNavigate()
+  const { start } = useTour()
+
+  return (
+    <div className="flex items-center justify-between rounded-xl border border-slate-200 dark:border-slate-700 bg-white dark:bg-slate-800 p-5 shadow-sm">
+      <div>
+        <h2 className="text-sm font-semibold text-slate-700 dark:text-slate-300">{t('Przewodnik po aplikacji')}</h2>
+        <p className="mt-1 text-xs text-slate-500 dark:text-slate-400">{t('Krótki, interaktywny spacer po głównych sekcjach aplikacji.')}</p>
+      </div>
+      <button
+        onClick={() => {
+          navigate('/dashboard')
+          start()
+        }}
+        className="shrink-0 rounded-md border border-slate-300 dark:border-slate-600 px-3 py-1.5 text-sm font-medium text-slate-700 dark:text-slate-300 hover:bg-slate-100 dark:hover:bg-slate-700"
+      >
+        {t('Pokaż ponownie')}
+      </button>
     </div>
   )
 }

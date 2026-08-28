@@ -163,7 +163,10 @@ export default function Dashboard() {
       </div>
 
       <div className="grid grid-cols-1 gap-4 lg:grid-cols-3">
-        <div className="rounded-xl border border-slate-200 dark:border-slate-700 bg-white dark:bg-slate-800 p-5 shadow-sm lg:col-span-2">
+        <div
+          data-tour="dashboard-chart"
+          className="rounded-xl border border-slate-200 dark:border-slate-700 bg-white dark:bg-slate-800 p-5 shadow-sm lg:col-span-2"
+        >
           <h2 className="mb-3 text-sm font-semibold text-slate-700 dark:text-slate-300">{t('Wartość majątku w czasie')}</h2>
           <div className="h-64">
             <ResponsiveContainer width="100%" height="100%">
@@ -227,11 +230,11 @@ export default function Dashboard() {
             ))}
           </div>
 
-          <div className="mt-6 border-t border-slate-100 dark:border-slate-800 pt-4">
+          <div data-tour="dashboard-realny-zwrot" className="mt-6 border-t border-slate-100 dark:border-slate-800 pt-4">
             <div className="flex items-center justify-between">
               <h3 className="text-sm font-semibold text-slate-700 dark:text-slate-300">{t('Realny zwrot')}</h3>
               <Link to="/timeline" className="text-xs font-medium text-accent-700 dark:text-accent-400 hover:underline">
-                {t('+ Wpłata / wypłata')}
+                {t('Historia i wpłaty/wypłaty →')}
               </Link>
             </div>
             <p className="mt-2 text-xs text-slate-500 dark:text-slate-400" title={t('To, co włożyłeś: majątek na starcie + przychody + wpłaty własne.')}>
