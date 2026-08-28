@@ -447,6 +447,14 @@ export default function Landing() {
             <Link to="/regulamin" className="hover:text-accent-700 dark:hover:text-accent-400 hover:underline">
               {t('Regulamin')}
             </Link>
+            <a
+              href="https://www.facebook.com/profile.php?id=61593710680861"
+              target="_blank"
+              rel="noreferrer"
+              className="hover:text-accent-700 dark:hover:text-accent-400 hover:underline"
+            >
+              Facebook
+            </a>
             <span>© {new Date().getFullYear()} skieta</span>
           </div>
         </div>
