@@ -95,6 +95,8 @@ export interface CurrencyBreakdownRow {
 export interface RealizedPlYearRow {
   year: number
   realized_pl: string
+  realized_pl_before_tax: string
+  belka_tax: string
 }
 
 export interface PortfolioAnalytics {
@@ -111,7 +113,9 @@ export interface PortfolioAnalytics {
   worst_performer: AllocationRow | null
   avg_days_held: number | null
   realized_pl_total: string
+  realized_pl_total_before_tax: string
   realized_pl_by_year: RealizedPlYearRow[]
+  realized_belka_tax_this_year: string
   belka_tax_liability: string
   dividends_ytd: string
   dividends_ytd_after_tax: string

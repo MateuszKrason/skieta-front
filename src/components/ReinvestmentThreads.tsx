@@ -149,14 +149,20 @@ export default function ReinvestmentThreads() {
     queryFn: async () => (await api.get<MoneyThread[]>('/threads/')).data,
   })
 
+  // Needs every BUY/SELL to match against when building reinvestment chains,
+  // not just the recent page /stocks/transactions/ returns by default -
+  // opts into the full history via page_size instead.
   const { data: transactions } = useQuery({
-    queryKey: ['transactions'],
-    queryFn: async () => (await api.get<StockTransaction[]>('/stocks/transactions/')).data,
+    queryKey: ['transactions-all'],
+    queryFn: async () =>
+      (await api.get<{ results: StockTransaction[] }>('/stocks/transactions/', { params: { page_size: 2000 } })).data
+        .results,
   })
 
   function invalidate() {
     queryClient.invalidateQueries({ queryKey: ['threads'] })
     queryClient.invalidateQueries({ queryKey: ['transactions'] })
+    queryClient.invalidateQueries({ queryKey: ['transactions-all'] })
     queryClient.invalidateQueries({ queryKey: ['holdings'] })
   }
 

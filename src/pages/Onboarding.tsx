@@ -301,8 +301,10 @@ function StocksStep() {
     queryFn: async () => (await api.get<BankAccount[]>('/banking/accounts/')).data,
   })
   const { data: transactions } = useQuery({
-    queryKey: ['transactions'],
-    queryFn: async () => (await api.get<StockTransaction[]>('/stocks/transactions/')).data,
+    queryKey: ['transactions-all'],
+    queryFn: async () =>
+      (await api.get<{ results: StockTransaction[] }>('/stocks/transactions/', { params: { page_size: 2000 } })).data
+        .results,
   })
 
   const [ticker, setTicker] = useState('')
@@ -354,7 +356,7 @@ function StocksStep() {
       setPricePerShare('')
       setError(null)
       queryClient.invalidateQueries({ queryKey: ['stocks'] })
-      queryClient.invalidateQueries({ queryKey: ['transactions'] })
+      queryClient.invalidateQueries({ queryKey: ['transactions-all'] })
       queryClient.invalidateQueries({ queryKey: ['holdings'] })
       queryClient.invalidateQueries({ queryKey: ['accounts'] })
     },
@@ -473,8 +475,10 @@ function CryptoStep() {
     queryFn: async () => (await api.get<BankAccount[]>('/banking/accounts/')).data,
   })
   const { data: transactions } = useQuery({
-    queryKey: ['crypto-transactions'],
-    queryFn: async () => (await api.get<CryptoTransaction[]>('/crypto/transactions/')).data,
+    queryKey: ['crypto-transactions-all'],
+    queryFn: async () =>
+      (await api.get<{ results: CryptoTransaction[] }>('/crypto/transactions/', { params: { page_size: 2000 } }))
+        .data.results,
   })
 
   const [coingeckoId, setCoingeckoId] = useState('')
@@ -526,7 +530,7 @@ function CryptoStep() {
       setPricePerUnit('')
       setError(null)
       queryClient.invalidateQueries({ queryKey: ['crypto-assets'] })
-      queryClient.invalidateQueries({ queryKey: ['crypto-transactions'] })
+      queryClient.invalidateQueries({ queryKey: ['crypto-transactions-all'] })
       queryClient.invalidateQueries({ queryKey: ['crypto-holdings'] })
       queryClient.invalidateQueries({ queryKey: ['accounts'] })
     },

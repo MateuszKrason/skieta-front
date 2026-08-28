@@ -108,6 +108,7 @@ export default function Portfel() {
     queryClient.invalidateQueries({ queryKey: ['holdings'] })
     queryClient.invalidateQueries({ queryKey: ['portfolio-summary'] })
     queryClient.invalidateQueries({ queryKey: ['transactions'] })
+    queryClient.invalidateQueries({ queryKey: ['transactions-all'] })
     queryClient.invalidateQueries({ queryKey: ['accounts'] })
     queryClient.invalidateQueries({ queryKey: ['dashboard'] })
     queryClient.invalidateQueries({ queryKey: ['timeline'] })

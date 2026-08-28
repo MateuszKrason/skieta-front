@@ -1,11 +1,11 @@
 import { useState } from 'react'
 import { useQuery } from '@tanstack/react-query'
-import { Bar, BarChart, Cell, Pie, PieChart, ResponsiveContainer, Tooltip, XAxis } from 'recharts'
+import { Bar, BarChart, CartesianGrid, Cell, Pie, PieChart, ResponsiveContainer, Tooltip, XAxis, YAxis } from 'recharts'
 import { api } from '../../api/client'
 import { CardLoader } from '../../components/Loader'
 import { useLanguage } from '../../i18n/LanguageContext'
 import { useTooltipStyle } from '../../lib/chartTooltip'
-import { formatDate, formatMoney, formatPct } from '../../lib/format'
+import { formatAxisValue, formatDate, formatMoney, formatPct } from '../../lib/format'
 import type { AccountBreakdownRow, AllocationRow, ClosedPosition, ClosedPositions, PortfolioAnalytics } from '../../types'
 
 const PALETTE = ['#059669', '#0ea5e9', '#f59e0b', '#ef4444', '#8b5cf6', '#ec4899', '#14b8a6', '#84cc16', '#f97316', '#6366f1']
@@ -243,25 +243,59 @@ function PortfolioAnalyticsBody({ data }: { data: PortfolioAnalytics }) {
 
       {data.realized_pl_by_year.length > 0 && (
         <div className="rounded-lg border border-slate-100 dark:border-slate-800 p-3">
-          <p className="mb-2 text-xs font-semibold text-slate-600 dark:text-slate-400">
-            {t('Zrealizowany zysk/strata wg roku (po podatku Belki)')}
-          </p>
-          <div className="h-40">
-            <ResponsiveContainer width="100%" height="100%">
-              <BarChart data={data.realized_pl_by_year.map((r) => ({ year: r.year, value: Number(r.realized_pl) }))}>
-                <XAxis dataKey="year" tick={{ fontSize: 11 }} stroke="#94a3b8" axisLine={false} tickLine={false} />
-                <Tooltip {...tooltipStyle} formatter={(value) => formatMoney(value as number, base)} labelFormatter={(y) => String(y)} />
-                <Bar dataKey="value" radius={[4, 4, 0, 0]}>
-                  {data.realized_pl_by_year.map((r, i) => (
-                    <Cell key={i} fill={Number(r.realized_pl) >= 0 ? '#059669' : '#ef4444'} />
-                  ))}
-                </Bar>
-              </BarChart>
-            </ResponsiveContainer>
+          <p className="mb-2 text-xs font-semibold text-slate-600 dark:text-slate-400">{t('Zrealizowany zysk/strata wg roku')}</p>
+          <div className="grid grid-cols-1 gap-4 lg:grid-cols-3">
+            <div className="lg:col-span-2">
+              <p className="mb-2 text-xs text-slate-400 dark:text-slate-500">
+                {t('Zielony/czerwony słupek to zysk lub strata po podatku Belki, bursztynowy to sam podatek — razem dają wynik przed opodatkowaniem.')}
+              </p>
+              <div className="h-48">
+                <ResponsiveContainer width="100%" height="100%">
+                  <BarChart
+                    data={data.realized_pl_by_year.map((r) => ({
+                      year: r.year,
+                      net: Number(r.realized_pl),
+                      tax: Number(r.belka_tax),
+                      beforeTax: Number(r.realized_pl_before_tax),
+                    }))}
+                  >
+                    <CartesianGrid strokeDasharray="3 3" stroke="#94a3b8" strokeOpacity={0.15} />
+                    <XAxis dataKey="year" tick={{ fontSize: 11 }} stroke="#94a3b8" axisLine={false} tickLine={false} />
+                    <YAxis tickFormatter={formatAxisValue} tick={{ fontSize: 11 }} stroke="#94a3b8" width={40} />
+                    <Tooltip
+                      {...tooltipStyle}
+                      formatter={(value, name) => [formatMoney(value as number, base), name]}
+                      labelFormatter={(y) => String(y)}
+                    />
+                    <Bar dataKey="net" name={t('Po Belce')} stackId="pl" radius={[4, 4, 0, 0]}>
+                      {data.realized_pl_by_year.map((r, i) => (
+                        <Cell key={i} fill={Number(r.realized_pl) >= 0 ? '#059669' : '#ef4444'} />
+                      ))}
+                    </Bar>
+                    <Bar dataKey="tax" name={t('Podatek Belki')} stackId="pl" fill="#f59e0b" radius={[4, 4, 0, 0]} />
+                  </BarChart>
+                </ResponsiveContainer>
+              </div>
+              <p className="mt-1 text-right text-xs text-slate-400 dark:text-slate-500">
+                {t('Suma po Belce')}: {formatMoney(data.realized_pl_total, base)} · {t('Suma przed Belką')}:{' '}
+                {formatMoney(data.realized_pl_total_before_tax, base)}
+              </p>
+            </div>
+            <div className="space-y-3">
+              <MiniStat
+                label={t('Zrealizowany zysk w tym roku (przed Belką)')}
+                value={formatMoney(
+                  data.realized_pl_by_year.find((r) => r.year === new Date().getFullYear())?.realized_pl_before_tax ?? '0',
+                  base,
+                )}
+              />
+              <MiniStat
+                label={t('Podatek Belki do zapłaty w tym roku')}
+                value={formatMoney(data.realized_belka_tax_this_year, base)}
+                hint={t('Od transakcji sprzedaży zamkniętych w tym roku podatkowym — nie licząc niezrealizowanych pozycji.')}
+              />
+            </div>
           </div>
-          <p className="mt-1 text-right text-xs text-slate-400 dark:text-slate-500">
-            {t('Suma')}: {formatMoney(data.realized_pl_total, base)}
-          </p>
         </div>
       )}
     </div>

@@ -101,6 +101,7 @@ export default function KryptoPortfel() {
     queryClient.invalidateQueries({ queryKey: ['crypto-holdings'] })
     queryClient.invalidateQueries({ queryKey: ['crypto-portfolio-summary'] })
     queryClient.invalidateQueries({ queryKey: ['crypto-transactions'] })
+    queryClient.invalidateQueries({ queryKey: ['crypto-transactions-all'] })
     queryClient.invalidateQueries({ queryKey: ['accounts'] })
     queryClient.invalidateQueries({ queryKey: ['dashboard'] })
     queryClient.invalidateQueries({ queryKey: ['timeline'] })
