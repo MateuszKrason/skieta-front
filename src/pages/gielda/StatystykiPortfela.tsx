@@ -93,7 +93,7 @@ function PortfolioAnalyticsBody({ data }: { data: PortfolioAnalytics }) {
         <div className="lg:col-span-2">
           <p className="mb-2 text-xs text-slate-400 dark:text-slate-500">
             {t(
-              'Wykres pokazuje udział wartości każdej spółki w całym portfelu akcji. Przy każdej pozycji: pierwszy % to jej udział w portfelu, drugi (kolorowy) to zysk/strata na tej pozycji.',
+              'Wykres pokazuje udział wartości każdej spółki w całym portfelu akcji. Przy każdej pozycji: pierwszy % to jej udział w portfelu, drugi (kolorowy) to zysk/strata PO PODATKU BELKI na tej pozycji — niżej niż w tabeli w Portfelu, która pokazuje wynik przed opodatkowaniem.',
             )}
           </p>
           <div className="h-64">
@@ -123,7 +123,7 @@ function PortfolioAnalyticsBody({ data }: { data: PortfolioAnalytics }) {
                 onClick={() => toggleAllocSort('unrealized_pl_pct')}
                 className="min-w-[56px] text-right hover:text-slate-600 dark:hover:text-slate-300"
               >
-                {t('Zysk')}{allocSortKey === 'unrealized_pl_pct' && (allocSortDir === 'asc' ? ' ▲' : ' ▼')}
+                {t('Zysk (po Belce)')}{allocSortKey === 'unrealized_pl_pct' && (allocSortDir === 'asc' ? ' ▲' : ' ▼')}
               </button>
             </span>
           </div>
@@ -237,8 +237,8 @@ function PortfolioAnalyticsBody({ data }: { data: PortfolioAnalytics }) {
             <span className="text-slate-500 dark:text-slate-400">{data.flat_count}</span>
           </p>
         </div>
-        <PerformerCard label={t('Najlepsza pozycja')} row={data.best_performer} tone="positive" />
-        <PerformerCard label={t('Najgorsza pozycja')} row={data.worst_performer} tone="negative" />
+        <PerformerCard label={t('Najlepsza pozycja (po Belce)')} row={data.best_performer} tone="positive" />
+        <PerformerCard label={t('Najgorsza pozycja (po Belce)')} row={data.worst_performer} tone="negative" />
       </div>
 
       {data.realized_pl_by_year.length > 0 && (
@@ -327,7 +327,7 @@ function AllocationLine({ row, color }: { row: AllocationRow; color: string }) {
           className={`min-w-[56px] text-right ${
             plPct === null ? '' : plPct >= 0 ? 'text-emerald-600 dark:text-emerald-400' : 'text-red-600 dark:text-red-400'
           }`}
-          title={t('Zysk/strata (niezrealizowane) na tej pozycji')}
+          title={t('Zysk/strata (niezrealizowane) na tej pozycji, po podatku Belki')}
         >
           {plPct !== null ? formatPct(row.unrealized_pl_pct) : '—'}
         </span>
