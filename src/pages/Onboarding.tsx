@@ -1,4 +1,4 @@
-import { useState, type FormEvent } from 'react'
+import { forwardRef, useImperativeHandle, useRef, useState, type FormEvent } from 'react'
 import { useMutation, useQuery, useQueryClient } from '@tanstack/react-query'
 import { useNavigate } from 'react-router-dom'
 import { api } from '../api/client'
@@ -8,7 +8,7 @@ import BankNameAutocomplete from '../components/BankNameAutocomplete'
 import CryptoAutocomplete from '../components/CryptoAutocomplete'
 import StockAutocomplete from '../components/StockAutocomplete'
 import { useLanguage } from '../i18n/LanguageContext'
-import { accountTypeLabel, BOND_TYPE_LABELS, formatDate, formatMoney, formatNumber } from '../lib/format'
+import { accountTypeLabel, BOND_TYPE_LABELS, formatDate, formatMoney, formatNumber, groupAccountsByBank } from '../lib/format'
 import type {
   BankAccount,
   BankAccountType,
@@ -26,6 +26,25 @@ import type {
 } from '../types'
 
 type StepId = 'interests' | 'accounts' | 'stocks' | 'crypto' | 'deposits' | 'bonds' | 'done'
+
+// Exposed by every step form below so the wizard can save-then-advance
+// instead of silently discarding whatever someone typed but never explicitly
+// submitted before clicking "Dalej".
+interface StepHandle {
+  /** Returns false (and blocks navigation) only when there's unsaved, invalid
+   * input - e.g. a required field left empty. Returns true and fires off the
+   * save (fire-and-forget; it's the same shared query client regardless of
+   * which step is visible) when there's something valid to save, or when the
+   * step's form was never touched at all. */
+  trySubmitPending: () => boolean
+}
+
+function trySubmitForm(formEl: HTMLFormElement | null): boolean {
+  if (!formEl) return true
+  if (!formEl.reportValidity()) return false
+  formEl.requestSubmit()
+  return true
+}
 
 const STEPS: { id: StepId; label: string }[] = [
   { id: 'interests', label: 'Zainteresowania' },
@@ -55,15 +74,40 @@ export default function Onboarding() {
   const hasAccount = (accounts?.length ?? 0) > 0
   const accountsStepBlocked = step.id === 'accounts' && !hasAccount
 
+  // One ref per step that has a form worth saving before navigating away from
+  // it - see StepHandle. Steps without a ref here (interests/done) have
+  // nothing that can be silently lost.
+  const stepRefs: Partial<Record<StepId, React.RefObject<StepHandle | null>>> = {
+    accounts: useRef<StepHandle>(null),
+    stocks: useRef<StepHandle>(null),
+    crypto: useRef<StepHandle>(null),
+    deposits: useRef<StepHandle>(null),
+    bonds: useRef<StepHandle>(null),
+  }
+
+  // Called before every navigation away from the current step - saves
+  // whatever was typed but never explicitly submitted, or blocks navigation
+  // if it's invalid (missing a required field), so "Dalej" can't silently
+  // discard it.
+  function tryLeaveStep(): boolean {
+    return stepRefs[step.id]?.current?.trySubmitPending() ?? true
+  }
+
   function next() {
+    if (!tryLeaveStep()) return
     setStepIndex((i) => Math.min(i + 1, STEPS.length - 1))
   }
   function back() {
+    if (!tryLeaveStep()) return
     setStepIndex((i) => Math.max(i - 1, 0))
   }
   function finish() {
+    if (!tryLeaveStep()) return
     queryClient.invalidateQueries()
     navigate('/dashboard')
+  }
+  function goToStep(i: number) {
+    if ((i <= ACCOUNTS_STEP_INDEX || hasAccount) && tryLeaveStep()) setStepIndex(i)
   }
 
   return (
@@ -81,7 +125,7 @@ export default function Onboarding() {
         {STEPS.map((s, i) => (
           <button
             key={s.id}
-            onClick={() => (i <= ACCOUNTS_STEP_INDEX || hasAccount) && setStepIndex(i)}
+            onClick={() => goToStep(i)}
             disabled={i > ACCOUNTS_STEP_INDEX && !hasAccount}
             className={`shrink-0 rounded-full px-3 py-1 text-xs font-medium disabled:cursor-not-allowed disabled:opacity-40 ${
               i === stepIndex
@@ -110,11 +154,11 @@ export default function Onboarding() {
       )}
 
       {step.id === 'interests' && <InterestsStep />}
-      {step.id === 'accounts' && <AccountsStep />}
-      {step.id === 'stocks' && <StocksStep />}
-      {step.id === 'crypto' && <CryptoStep />}
-      {step.id === 'deposits' && <DepositsStep />}
-      {step.id === 'bonds' && <BondsStep />}
+      {step.id === 'accounts' && <AccountsStep ref={stepRefs.accounts} />}
+      {step.id === 'stocks' && <StocksStep ref={stepRefs.stocks} />}
+      {step.id === 'crypto' && <CryptoStep ref={stepRefs.crypto} />}
+      {step.id === 'deposits' && <DepositsStep ref={stepRefs.deposits} />}
+      {step.id === 'bonds' && <BondsStep ref={stepRefs.bonds} />}
       {step.id === 'done' && (
         <div className="rounded-xl border border-slate-200 dark:border-slate-700 bg-white dark:bg-slate-800 p-8 text-center shadow-sm">
           <p className="text-lg font-semibold text-slate-800 dark:text-slate-200">{t('Gotowe!')}</p>
@@ -145,10 +189,18 @@ export default function Onboarding() {
   )
 }
 
-function Field({ label, children }: { label: string; children: React.ReactNode }) {
+function Field({
+  label,
+  children,
+  className,
+}: {
+  label: string
+  children: React.ReactNode
+  className?: string
+}) {
   const { t } = useLanguage()
   return (
-    <label className="block text-xs font-medium text-slate-500 dark:text-slate-400">
+    <label className={`block text-xs font-medium text-slate-500 dark:text-slate-400 ${className ?? ''}`}>
       {t(label)}
       <div className="mt-1">{children}</div>
     </label>
@@ -199,7 +251,7 @@ function InterestsStep() {
   )
 }
 
-function AccountsStep() {
+const AccountsStep = forwardRef<StepHandle>(function AccountsStep(_props, ref) {
   const queryClient = useQueryClient()
   const { t } = useLanguage()
   const { data: accounts } = useQuery({
@@ -207,6 +259,7 @@ function AccountsStep() {
     queryFn: async () => (await api.get<BankAccount[]>('/banking/accounts/')).data,
   })
 
+  const formRef = useRef<HTMLFormElement>(null)
   const [bankName, setBankName] = useState('')
   const [name, setName] = useState('')
   const [accountType, setAccountType] = useState<BankAccountType>('checking')
@@ -223,6 +276,10 @@ function AccountsStep() {
       queryClient.invalidateQueries({ queryKey: ['accounts'] })
     },
   })
+
+  useImperativeHandle(ref, () => ({
+    trySubmitPending: () => (bankName.trim() || name.trim() ? trySubmitForm(formRef.current) : true),
+  }))
 
   function onSubmit(e: FormEvent) {
     e.preventDefault()
@@ -243,14 +300,18 @@ function AccountsStep() {
           ))}
         </ul>
       )}
-      <form onSubmit={onSubmit} className="grid grid-cols-2 gap-3 rounded-xl border border-slate-200 dark:border-slate-700 bg-white dark:bg-slate-800 p-4 shadow-sm sm:grid-cols-5">
-        <Field label="Bank">
+      <form
+        ref={formRef}
+        onSubmit={onSubmit}
+        className="flex flex-wrap gap-3 rounded-xl border border-slate-200 dark:border-slate-700 bg-white dark:bg-slate-800 p-4 shadow-sm"
+      >
+        <Field label="Bank" className="min-w-[160px] flex-1">
           <BankNameAutocomplete value={bankName} onChange={setBankName} required />
         </Field>
-        <Field label="Nazwa konta">
+        <Field label="Nazwa konta" className="min-w-[140px] flex-1">
           <input value={name} onChange={(e) => setName(e.target.value)} required className="input" />
         </Field>
-        <Field label="Typ">
+        <Field label="Typ" className="min-w-[140px] flex-1">
           <select value={accountType} onChange={(e) => setAccountType(e.target.value as BankAccountType)} className="input">
             <option value="checking">{t('Osobiste')}</option>
             <option value="savings">{t('Oszczędnościowe')}</option>
@@ -261,7 +322,7 @@ function AccountsStep() {
             <option value="crypto">{t('Kryptowalutowe')}</option>
           </select>
         </Field>
-        <Field label="Waluta">
+        <Field label="Waluta" className="min-w-[110px] flex-1">
           <select value={currency} onChange={(e) => setCurrency(e.target.value as Currency)} className="input">
             <option value="PLN">PLN</option>
             <option value="USD">USD</option>
@@ -271,10 +332,10 @@ function AccountsStep() {
             <option value="GBP">GBP</option>
           </select>
         </Field>
-        <Field label="Obecne saldo">
+        <Field label="Obecne saldo" className="min-w-[140px] flex-1">
           <AmountInput value={balance} onChange={setBalance} required className="input" />
         </Field>
-        <div className="col-span-2 flex items-end sm:col-span-5">
+        <div className="flex items-end">
           <button type="submit" className="btn-primary" disabled={mutation.isPending}>
             {t('+ Dodaj konto')}
           </button>
@@ -287,9 +348,9 @@ function AccountsStep() {
       </p>
     </div>
   )
-}
+})
 
-function StocksStep() {
+const StocksStep = forwardRef<StepHandle>(function StocksStep(_props, ref) {
   const queryClient = useQueryClient()
   const { t } = useLanguage()
   const { data: stocks } = useQuery({
@@ -307,6 +368,7 @@ function StocksStep() {
         .results,
   })
 
+  const formRef = useRef<HTMLFormElement>(null)
   const [ticker, setTicker] = useState('')
   const [market, setMarket] = useState<Market>('GPW')
   const [name, setName] = useState('')
@@ -320,7 +382,14 @@ function StocksStep() {
   const [error, setError] = useState<string | null>(null)
 
   const existing = stocks?.find((s) => s.ticker === ticker && s.market === market)
-  const eligibleAccounts = currency ? (accounts ?? []).filter((a) => a.currency === currency) : accounts ?? []
+  // Every account is selectable regardless of currency - e.g. buying a US
+  // stock from a PLN brokerage account - the backend converts at the
+  // transaction date's exchange rate before touching the account's balance.
+  const accountGroups = groupAccountsByBank(accounts ?? [])
+
+  useImperativeHandle(ref, () => ({
+    trySubmitPending: () => (ticker.trim() ? trySubmitForm(formRef.current) : true),
+  }))
 
   function onPick(result: StockSearchResult) {
     setTicker(result.symbol)
@@ -386,37 +455,45 @@ function StocksStep() {
         {t('Dla każdej posiadanej spółki podaj ilość, cenę i')} <strong>{t('prawdziwą datę zakupu')}</strong>{' '}
         {t('— dzięki temu historia i wykresy będą liczone poprawnie.')}
       </p>
-      <form onSubmit={onSubmit} className="space-y-3 rounded-xl border border-slate-200 dark:border-slate-700 bg-white dark:bg-slate-800 p-4 shadow-sm">
+      <form
+        ref={formRef}
+        onSubmit={onSubmit}
+        className="space-y-3 rounded-xl border border-slate-200 dark:border-slate-700 bg-white dark:bg-slate-800 p-4 shadow-sm"
+      >
         <Field label="Wyszukaj spółkę">
           <StockAutocomplete onSelect={onPick} />
         </Field>
-        <div className="grid grid-cols-2 gap-3 sm:grid-cols-7">
-          <Field label="Ticker">
+        <div className="flex flex-wrap gap-3">
+          <Field label="Ticker" className="min-w-[110px] flex-1">
             <input value={ticker} onChange={(e) => setTicker(e.target.value.toUpperCase())} required className="input" />
           </Field>
-          <Field label="Rynek">
+          <Field label="Rynek" className="min-w-[110px] flex-1">
             <select value={market} onChange={(e) => setMarket(e.target.value as Market)} className="input">
               <option value="GPW">GPW</option>
               <option value="US">USA</option>
               <option value="EU">{t('Europa')}</option>
             </select>
           </Field>
-          <Field label="Ilość">
+          <Field label="Ilość" className="min-w-[110px] flex-1">
             <AmountInput value={quantity} onChange={setQuantity} required className="input" />
           </Field>
-          <Field label="Cena zakupu/szt.">
+          <Field label="Cena zakupu/szt." className="min-w-[130px] flex-1">
             <AmountInput value={pricePerShare} onChange={setPricePerShare} required className="input" />
           </Field>
-          <Field label="Data zakupu (wstecz)">
+          <Field label="Data zakupu (wstecz)" className="min-w-[160px] flex-1">
             <input type="date" value={executedAt} onChange={(e) => setExecutedAt(e.target.value)} required className="input" />
           </Field>
-          <Field label="Powiąż z kontem (opcjonalnie)">
+          <Field label="Powiąż z kontem (opcjonalnie)" className="min-w-[200px] flex-1">
             <select value={account} onChange={(e) => setAccount(e.target.value ? Number(e.target.value) : '')} className="input">
               <option value="">{t('bez powiązania')}</option>
-              {eligibleAccounts.map((a) => (
-                <option key={a.id} value={a.id}>
-                  {a.bank_name} — {a.name}
-                </option>
+              {accountGroups.map(([bankName, group]) => (
+                <optgroup key={bankName} label={bankName}>
+                  {group.map((a) => (
+                    <option key={a.id} value={a.id}>
+                      {a.name} ({a.currency})
+                    </option>
+                  ))}
+                </optgroup>
               ))}
             </select>
           </Field>
@@ -461,9 +538,9 @@ function StocksStep() {
       )}
     </div>
   )
-}
+})
 
-function CryptoStep() {
+const CryptoStep = forwardRef<StepHandle>(function CryptoStep(_props, ref) {
   const queryClient = useQueryClient()
   const { t } = useLanguage()
   const { data: cryptoAssets } = useQuery({
@@ -481,6 +558,7 @@ function CryptoStep() {
         .data.results,
   })
 
+  const formRef = useRef<HTMLFormElement>(null)
   const [coingeckoId, setCoingeckoId] = useState('')
   const [symbol, setSymbol] = useState('')
   const [name, setName] = useState('')
@@ -495,6 +573,10 @@ function CryptoStep() {
 
   const existing = cryptoAssets?.find((a) => a.coingecko_id === coingeckoId)
   const eligibleAccounts = (accounts ?? []).filter((a) => a.currency === currency)
+
+  useImperativeHandle(ref, () => ({
+    trySubmitPending: () => (coingeckoId.trim() ? trySubmitForm(formRef.current) : true),
+  }))
 
   function onPick(result: CryptoSearchResult) {
     setCoingeckoId(result.coingecko_id)
@@ -560,21 +642,25 @@ function CryptoStep() {
         {t('Dla każdej posiadanej monety podaj ilość, cenę i')} <strong>{t('prawdziwą datę zakupu')}</strong>{' '}
         {t('— dzięki temu historia i wykresy będą liczone poprawnie.')}
       </p>
-      <form onSubmit={onSubmit} className="space-y-3 rounded-xl border border-slate-200 dark:border-slate-700 bg-white dark:bg-slate-800 p-4 shadow-sm">
+      <form
+        ref={formRef}
+        onSubmit={onSubmit}
+        className="space-y-3 rounded-xl border border-slate-200 dark:border-slate-700 bg-white dark:bg-slate-800 p-4 shadow-sm"
+      >
         <Field label="Wyszukaj monetę">
           <CryptoAutocomplete onSelect={onPick} />
         </Field>
-        <div className="grid grid-cols-2 gap-3 sm:grid-cols-7">
-          <Field label="Symbol">
+        <div className="flex flex-wrap gap-3">
+          <Field label="Symbol" className="min-w-[110px] flex-1">
             <input value={symbol} onChange={(e) => setSymbol(e.target.value.toUpperCase())} required className="input" />
           </Field>
-          <Field label="Ilość">
+          <Field label="Ilość" className="min-w-[110px] flex-1">
             <AmountInput value={quantity} onChange={setQuantity} required className="input" />
           </Field>
-          <Field label="Cena zakupu/szt.">
+          <Field label="Cena zakupu/szt." className="min-w-[130px] flex-1">
             <AmountInput value={pricePerUnit} onChange={setPricePerUnit} required className="input" />
           </Field>
-          <Field label="Waluta">
+          <Field label="Waluta" className="min-w-[110px] flex-1">
             <select value={currency} onChange={(e) => { setCurrency(e.target.value as Currency); setAccount('') }} className="input">
               <option value="PLN">PLN</option>
               <option value="USD">USD</option>
@@ -586,16 +672,20 @@ function CryptoStep() {
               <option value="CHF">CHF</option>
             </select>
           </Field>
-          <Field label="Data zakupu (wstecz)">
+          <Field label="Data zakupu (wstecz)" className="min-w-[160px] flex-1">
             <input type="date" value={executedAt} onChange={(e) => setExecutedAt(e.target.value)} required className="input" />
           </Field>
-          <Field label="Powiąż z kontem (opcjonalnie)">
+          <Field label="Powiąż z kontem (opcjonalnie)" className="min-w-[200px] flex-1">
             <select value={account} onChange={(e) => setAccount(e.target.value ? Number(e.target.value) : '')} className="input">
               <option value="">{t('bez powiązania')}</option>
-              {eligibleAccounts.map((a) => (
-                <option key={a.id} value={a.id}>
-                  {a.bank_name} — {a.name}
-                </option>
+              {groupAccountsByBank(eligibleAccounts).map(([bankName, group]) => (
+                <optgroup key={bankName} label={bankName}>
+                  {group.map((a) => (
+                    <option key={a.id} value={a.id}>
+                      {a.name}
+                    </option>
+                  ))}
+                </optgroup>
               ))}
             </select>
           </Field>
@@ -640,9 +730,9 @@ function CryptoStep() {
       )}
     </div>
   )
-}
+})
 
-function DepositsStep() {
+const DepositsStep = forwardRef<StepHandle>(function DepositsStep(_props, ref) {
   const queryClient = useQueryClient()
   const { t } = useLanguage()
   const { data: deposits } = useQuery({
@@ -654,6 +744,7 @@ function DepositsStep() {
     queryFn: async () => (await api.get<BankAccount[]>('/banking/accounts/')).data,
   })
 
+  const formRef = useRef<HTMLFormElement>(null)
   const [bankName, setBankName] = useState('')
   const [account, setAccount] = useState<number | ''>('')
   const [alreadyOwned, setAlreadyOwned] = useState(true)
@@ -662,6 +753,10 @@ function DepositsStep() {
   const [rate, setRate] = useState('')
   const [startDate, setStartDate] = useState(() => new Date().toISOString().slice(0, 10))
   const [endDate, setEndDate] = useState('')
+
+  useImperativeHandle(ref, () => ({
+    trySubmitPending: () => (bankName.trim() || principal.trim() ? trySubmitForm(formRef.current) : true),
+  }))
 
   const mutation = useMutation({
     mutationFn: () =>
@@ -704,24 +799,32 @@ function DepositsStep() {
           ))}
         </ul>
       )}
-      <form onSubmit={onSubmit} className="grid grid-cols-2 gap-3 rounded-xl border border-slate-200 dark:border-slate-700 bg-white dark:bg-slate-800 p-4 shadow-sm sm:grid-cols-4">
-        <Field label="Bank">
+      <form
+        ref={formRef}
+        onSubmit={onSubmit}
+        className="flex flex-wrap gap-3 rounded-xl border border-slate-200 dark:border-slate-700 bg-white dark:bg-slate-800 p-4 shadow-sm"
+      >
+        <Field label="Bank" className="min-w-[160px] flex-1">
           <BankNameAutocomplete value={bankName} onChange={setBankName} required />
         </Field>
-        <Field label="Powiąż z kontem (opcjonalnie)">
+        <Field label="Powiąż z kontem (opcjonalnie)" className="min-w-[200px] flex-1">
           <select value={account} onChange={(e) => setAccount(e.target.value ? Number(e.target.value) : '')} className="input">
             <option value="">{t('bez powiązania')}</option>
-            {(accounts ?? []).map((a) => (
-              <option key={a.id} value={a.id}>
-                {a.bank_name} — {a.name}
-              </option>
+            {groupAccountsByBank(accounts ?? []).map(([bankName, group]) => (
+              <optgroup key={bankName} label={bankName}>
+                {group.map((a) => (
+                  <option key={a.id} value={a.id}>
+                    {a.name}
+                  </option>
+                ))}
+              </optgroup>
             ))}
           </select>
         </Field>
-        <Field label="Kwota">
+        <Field label="Kwota" className="min-w-[120px] flex-1">
           <AmountInput value={principal} onChange={setPrincipal} required className="input" />
         </Field>
-        <Field label="Waluta">
+        <Field label="Waluta" className="min-w-[110px] flex-1">
           <select value={currency} onChange={(e) => setCurrency(e.target.value as Currency)} className="input">
             <option value="PLN">PLN</option>
             <option value="USD">USD</option>
@@ -731,13 +834,13 @@ function DepositsStep() {
             <option value="GBP">GBP</option>
           </select>
         </Field>
-        <Field label="Oprocentowanie (%)">
+        <Field label="Oprocentowanie (%)" className="min-w-[130px] flex-1">
           <AmountInput value={rate} onChange={setRate} required className="input" />
         </Field>
-        <Field label="Data założenia">
+        <Field label="Data założenia" className="min-w-[160px] flex-1">
           <input type="date" value={startDate} onChange={(e) => setStartDate(e.target.value)} required className="input" />
         </Field>
-        <Field label="Data zakończenia">
+        <Field label="Data zakończenia" className="min-w-[160px] flex-1">
           <input type="date" value={endDate} onChange={(e) => setEndDate(e.target.value)} required className="input" />
         </Field>
         <div className="flex items-end">
@@ -746,7 +849,7 @@ function DepositsStep() {
           </button>
         </div>
         {account && (
-          <label className="col-span-2 flex items-center gap-2 text-xs text-slate-500 dark:text-slate-400 sm:col-span-4">
+          <label className="flex w-full items-center gap-2 text-xs text-slate-500 dark:text-slate-400">
             <input type="checkbox" checked={alreadyOwned} onChange={(e) => setAlreadyOwned(e.target.checked)} />
             {t('To lokata, którą już posiadam — nie odejmuj środków z konta (tylko zapisz powiązanie).')}
           </label>
@@ -754,9 +857,9 @@ function DepositsStep() {
       </form>
     </div>
   )
-}
+})
 
-function BondsStep() {
+const BondsStep = forwardRef<StepHandle>(function BondsStep(_props, ref) {
   const queryClient = useQueryClient()
   const { t } = useLanguage()
   const { data: bonds } = useQuery({
@@ -768,6 +871,7 @@ function BondsStep() {
     queryFn: async () => (await api.get<BankAccount[]>('/banking/accounts/')).data,
   })
 
+  const formRef = useRef<HTMLFormElement>(null)
   const [bondType, setBondType] = useState<BondType>('EDO')
   const [series, setSeries] = useState('')
   const [account, setAccount] = useState<number | ''>('')
@@ -777,6 +881,10 @@ function BondsStep() {
   const [rate, setRate] = useState('')
   const [purchaseDate, setPurchaseDate] = useState(() => new Date().toISOString().slice(0, 10))
   const [maturityDate, setMaturityDate] = useState('')
+
+  useImperativeHandle(ref, () => ({
+    trySubmitPending: () => (nominalValue.trim() || series.trim() ? trySubmitForm(formRef.current) : true),
+  }))
 
   const mutation = useMutation({
     mutationFn: () =>
@@ -819,8 +927,12 @@ function BondsStep() {
           ))}
         </ul>
       )}
-      <form onSubmit={onSubmit} className="grid grid-cols-2 gap-3 rounded-xl border border-slate-200 dark:border-slate-700 bg-white dark:bg-slate-800 p-4 shadow-sm sm:grid-cols-4">
-        <Field label="Typ obligacji">
+      <form
+        ref={formRef}
+        onSubmit={onSubmit}
+        className="flex flex-wrap gap-3 rounded-xl border border-slate-200 dark:border-slate-700 bg-white dark:bg-slate-800 p-4 shadow-sm"
+      >
+        <Field label="Typ obligacji" className="min-w-[160px] flex-1">
           <select value={bondType} onChange={(e) => setBondType(e.target.value as BondType)} className="input">
             {Object.entries(BOND_TYPE_LABELS).map(([value, label]) => (
               <option key={value} value={value}>
@@ -829,23 +941,27 @@ function BondsStep() {
             ))}
           </select>
         </Field>
-        <Field label="Seria (opcjonalnie)">
+        <Field label="Seria (opcjonalnie)" className="min-w-[140px] flex-1">
           <input value={series} onChange={(e) => setSeries(e.target.value)} placeholder="np. EDO0435" className="input" />
         </Field>
-        <Field label="Powiąż z kontem (opcjonalnie)">
+        <Field label="Powiąż z kontem (opcjonalnie)" className="min-w-[200px] flex-1">
           <select value={account} onChange={(e) => setAccount(e.target.value ? Number(e.target.value) : '')} className="input">
             <option value="">{t('bez powiązania')}</option>
-            {(accounts ?? []).map((a) => (
-              <option key={a.id} value={a.id}>
-                {a.bank_name} — {a.name}
-              </option>
+            {groupAccountsByBank(accounts ?? []).map(([bankName, group]) => (
+              <optgroup key={bankName} label={bankName}>
+                {group.map((a) => (
+                  <option key={a.id} value={a.id}>
+                    {a.name}
+                  </option>
+                ))}
+              </optgroup>
             ))}
           </select>
         </Field>
-        <Field label="Wartość nominalna">
+        <Field label="Wartość nominalna" className="min-w-[130px] flex-1">
           <AmountInput value={nominalValue} onChange={setNominalValue} required className="input" />
         </Field>
-        <Field label="Waluta">
+        <Field label="Waluta" className="min-w-[110px] flex-1">
           <select value={currency} onChange={(e) => setCurrency(e.target.value as Currency)} className="input">
             <option value="PLN">PLN</option>
             <option value="USD">USD</option>
@@ -855,13 +971,13 @@ function BondsStep() {
             <option value="GBP">GBP</option>
           </select>
         </Field>
-        <Field label="Bieżące oprocentowanie (%)">
+        <Field label="Bieżące oprocentowanie (%)" className="min-w-[150px] flex-1">
           <AmountInput value={rate} onChange={setRate} required className="input" />
         </Field>
-        <Field label="Data zakupu">
+        <Field label="Data zakupu" className="min-w-[160px] flex-1">
           <input type="date" value={purchaseDate} onChange={(e) => setPurchaseDate(e.target.value)} required className="input" />
         </Field>
-        <Field label="Data wykupu">
+        <Field label="Data wykupu" className="min-w-[160px] flex-1">
           <input type="date" value={maturityDate} onChange={(e) => setMaturityDate(e.target.value)} required className="input" />
         </Field>
         <div className="flex items-end">
@@ -870,7 +986,7 @@ function BondsStep() {
           </button>
         </div>
         {account && (
-          <label className="col-span-2 flex items-center gap-2 text-xs text-slate-500 dark:text-slate-400 sm:col-span-4">
+          <label className="flex w-full items-center gap-2 text-xs text-slate-500 dark:text-slate-400">
             <input type="checkbox" checked={alreadyOwned} onChange={(e) => setAlreadyOwned(e.target.checked)} />
             {t('To obligacja, którą już posiadam — nie odejmuj środków z konta (tylko zapisz powiązanie).')}
           </label>
@@ -878,4 +994,4 @@ function BondsStep() {
       </form>
     </div>
   )
-}
+})

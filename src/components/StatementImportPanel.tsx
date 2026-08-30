@@ -2,7 +2,7 @@ import { useMemo, useState } from 'react'
 import { useMutation, useQuery, useQueryClient } from '@tanstack/react-query'
 import { api } from '../api/client'
 import { useLanguage } from '../i18n/LanguageContext'
-import { formatDate, formatMoney } from '../lib/format'
+import { formatDate, formatMoney, groupAccountsByBank } from '../lib/format'
 import type { BankAccount, BudgetType, Category, StatementPreview, StatementPreviewRow } from '../types'
 
 interface RowOverride {
@@ -131,10 +131,14 @@ export default function StatementImportPanel({
               className="input mt-1"
             >
               <option value="">{t('bez powiązania')}</option>
-              {accounts.map((a) => (
-                <option key={a.id} value={a.id}>
-                  {a.bank_name} — {a.name}
-                </option>
+              {groupAccountsByBank(accounts).map(([bankName, group]) => (
+                <optgroup key={bankName} label={bankName}>
+                  {group.map((a) => (
+                    <option key={a.id} value={a.id}>
+                      {a.name}
+                    </option>
+                  ))}
+                </optgroup>
               ))}
             </select>
           </label>

@@ -7,7 +7,15 @@ import { PageLoader, Spinner } from '../../components/Loader'
 import ReinvestmentThreads from '../../components/ReinvestmentThreads'
 import StockAutocomplete from '../../components/StockAutocomplete'
 import { useLanguage } from '../../i18n/LanguageContext'
-import { accountTypeLabel, formatDateTime, formatMoney, formatNumber, formatPct, formatShareQuantity } from '../../lib/format'
+import {
+  accountTypeLabel,
+  formatDateTime,
+  formatMoney,
+  formatNumber,
+  formatPct,
+  formatShareQuantity,
+  groupAccountsByBank,
+} from '../../lib/format'
 import { usePaginatedList } from '../../lib/usePaginatedList'
 import type {
   BankAccount,
@@ -190,18 +198,13 @@ export default function Portfel() {
       </div>
 
       {showAddStock && (
-        <div className="space-y-3">
-          <AddStockForm
-            onDone={() => queryClient.invalidateQueries({ queryKey: ['stocks'] })}
-          />
-          <StockManager
-            stocks={stocks ?? []}
-            onChange={() => {
-              queryClient.invalidateQueries({ queryKey: ['stocks'] })
-              invalidatePortfolio()
-            }}
-          />
-        </div>
+        <StockManager
+          stocks={stocks ?? []}
+          onChange={() => {
+            queryClient.invalidateQueries({ queryKey: ['stocks'] })
+            invalidatePortfolio()
+          }}
+        />
       )}
 
       {showAddTx && (
@@ -475,75 +478,6 @@ export default function Portfel() {
   )
 }
 
-function AddStockForm({ onDone }: { onDone: () => void }) {
-  const { t } = useLanguage()
-  const [ticker, setTicker] = useState('')
-  const [market, setMarket] = useState<Market>('GPW')
-  const [name, setName] = useState('')
-  const [currency, setCurrency] = useState<Currency>('PLN')
-  const [instrumentType, setInstrumentType] = useState<InstrumentType>('STOCK')
-
-  const mutation = useMutation({
-    mutationFn: () => api.post('/stocks/tickers/', { ticker, market, name, currency, instrument_type: instrumentType }),
-    onSuccess: onDone,
-  })
-
-  function onSubmit(e: FormEvent) {
-    e.preventDefault()
-    mutation.mutate()
-  }
-
-  function onPick(result: StockSearchResult) {
-    setTicker(result.symbol)
-    setMarket(result.market)
-    setName(result.name)
-    setCurrency(result.currency)
-    setInstrumentType(result.instrument_type)
-  }
-
-  return (
-    <div className="space-y-3 rounded-xl border border-slate-200 dark:border-slate-700 bg-white dark:bg-slate-800 p-4 shadow-sm">
-      <Field label="Wyszukaj spółkę">
-        <StockAutocomplete onSelect={onPick} />
-      </Field>
-      <form onSubmit={onSubmit} className="grid grid-cols-2 gap-3 sm:grid-cols-6">
-        <Field label="Ticker">
-          <input value={ticker} onChange={(e) => setTicker(e.target.value.toUpperCase())} required className="input" />
-        </Field>
-        <Field label="Rynek">
-          <select value={market} onChange={(e) => setMarket(e.target.value as Market)} className="input">
-            <option value="GPW">GPW</option>
-            <option value="US">USA</option>
-            <option value="EU">{t('Europa')}</option>
-          </select>
-        </Field>
-        <Field label="Nazwa">
-          <input value={name} onChange={(e) => setName(e.target.value)} className="input" />
-        </Field>
-        <Field label="Waluta">
-          <select value={currency} onChange={(e) => setCurrency(e.target.value as Currency)} className="input">
-            {CURRENCY_OPTIONS.map((c) => (
-              <option key={c} value={c}>
-                {c}
-              </option>
-            ))}
-          </select>
-        </Field>
-        <Field label="Typ">
-          <select value={instrumentType} onChange={(e) => setInstrumentType(e.target.value as InstrumentType)} className="input">
-            <option value="STOCK">{t('Akcja')}</option>
-            <option value="ETF">ETF</option>
-          </select>
-        </Field>
-        <div className="flex items-end">
-          <button type="submit" className="btn-primary w-full" disabled={mutation.isPending}>
-            {t('Dodaj spółkę')}
-          </button>
-        </div>
-      </form>
-    </div>
-  )
-}
 
 function StockManager({ stocks, onChange }: { stocks: Stock[]; onChange: () => void }) {
   const { t } = useLanguage()
@@ -768,7 +702,7 @@ function EditStockTransactionForm({
   const [notes, setNotes] = useState(tx.notes)
   const [error, setError] = useState<string | null>(null)
 
-  const eligibleAccounts = accounts.filter((a) => a.currency === tx.currency)
+  const accountGroups = groupAccountsByBank(accounts)
 
   const mutation = useMutation({
     mutationFn: () =>
@@ -800,44 +734,48 @@ function EditStockTransactionForm({
   return (
     <form
       onSubmit={onSubmit}
-      className="grid grid-cols-2 gap-2 rounded-md border border-accent-200 dark:border-accent-800 bg-accent-50 dark:bg-accent-900/20 px-3 py-2 sm:grid-cols-6"
+      className="flex flex-wrap items-start gap-2 rounded-md border border-accent-200 dark:border-accent-800 bg-accent-50 dark:bg-accent-900/20 px-3 py-2"
     >
-      <div className="col-span-2 text-xs font-medium text-slate-500 dark:text-slate-400 sm:col-span-6">
+      <div className="w-full text-xs font-medium text-slate-500 dark:text-slate-400">
         <span className={tx.type === 'BUY' ? 'text-emerald-600' : 'text-red-600 dark:text-red-400'}>
           {tx.type === 'BUY' ? t('Kupno') : t('Sprzedaż')}
         </span>{' '}
         {tx.stock_detail.ticker}
       </div>
-      <Field label="Ilość">
+      <Field label="Ilość" className="min-w-[100px] flex-1">
         <AmountInput value={quantity} onChange={setQuantity} required className="input" />
       </Field>
-      <Field label="Cena/szt.">
+      <Field label="Cena/szt." className="min-w-[100px] flex-1">
         <AmountInput value={pricePerShare} onChange={setPricePerShare} required className="input" />
       </Field>
-      <Field label="Prowizja">
+      <Field label="Prowizja" className="min-w-[90px] flex-1">
         <AmountInput value={fee} onChange={setFee} className="input" />
       </Field>
-      <Field label="Data">
+      <Field label="Data" className="min-w-[150px] flex-1">
         <input type="date" value={executedAt} onChange={(e) => setExecutedAt(e.target.value)} required className="input" />
       </Field>
-      <Field label="Powiąż z kontem (opcjonalnie)">
+      <Field label="Powiąż z kontem (opcjonalnie)" className="min-w-[200px] flex-1">
         <select
           value={account}
           onChange={(e) => setAccount(e.target.value ? Number(e.target.value) : '')}
           className="input"
         >
           <option value="">{t('bez powiązania')}</option>
-          {eligibleAccounts.map((a) => (
-            <option key={a.id} value={a.id}>
-              {a.bank_name} — {a.name} ({t(accountTypeLabel(a.account_type))})
-            </option>
+          {accountGroups.map(([bankName, group]) => (
+            <optgroup key={bankName} label={bankName}>
+              {group.map((a) => (
+                <option key={a.id} value={a.id}>
+                  {a.name} ({a.currency}, {t(accountTypeLabel(a.account_type))})
+                </option>
+              ))}
+            </optgroup>
           ))}
         </select>
       </Field>
-      <Field label="Notatki">
+      <Field label="Notatki" className="min-w-[140px] flex-1">
         <input value={notes} onChange={(e) => setNotes(e.target.value)} className="input" />
       </Field>
-      <div className="col-span-2 flex items-end gap-2 sm:col-span-6">
+      <div className="flex items-end gap-2">
         <button type="submit" className="btn-primary" disabled={mutation.isPending}>
           {t('Zapisz')}
         </button>
@@ -856,7 +794,11 @@ function EditStockTransactionForm({
 
 function BuyForm({ stocks, accounts, onDone }: { stocks: Stock[]; accounts: BankAccount[]; onDone: () => void }) {
   const { t } = useLanguage()
-  const [stock, setStock] = useState<number | ''>('')
+  const [ticker, setTicker] = useState('')
+  const [market, setMarket] = useState<Market>('GPW')
+  const [name, setName] = useState('')
+  const [currency, setCurrency] = useState<Currency>('PLN')
+  const [instrumentType, setInstrumentType] = useState<InstrumentType>('STOCK')
   const [account, setAccount] = useState<number | ''>('')
   const [alreadyOwned, setAlreadyOwned] = useState(false)
   const [quantity, setQuantity] = useState('')
@@ -865,22 +807,56 @@ function BuyForm({ stocks, accounts, onDone }: { stocks: Stock[]; accounts: Bank
   const [executedAt, setExecutedAt] = useState(() => new Date().toISOString().slice(0, 10))
   const [error, setError] = useState<string | null>(null)
 
-  const selectedStock = stocks.find((s) => s.id === stock)
-  const eligibleAccounts = selectedStock ? accounts.filter((a) => a.currency === selectedStock.currency) : accounts
+  // Searching (or picking an already-tracked ticker below) fills in
+  // ticker/market/name/currency in one go - if that combination is already on
+  // the list, the mutation reuses it instead of creating a duplicate, same as
+  // the equivalent step in the post-signup wizard (Onboarding.tsx StocksStep).
+  const existing = stocks.find((s) => s.ticker === ticker && s.market === market)
+  const accountGroups = groupAccountsByBank(accounts)
+
+  function onPick(result: StockSearchResult) {
+    setTicker(result.symbol)
+    setMarket(result.market)
+    setName(result.name)
+    setCurrency(result.currency)
+    setInstrumentType(result.instrument_type)
+  }
+
+  function onPickExisting(id: number) {
+    const s = stocks.find((x) => x.id === id)
+    if (!s) return
+    setTicker(s.ticker)
+    setMarket(s.market)
+    setName(s.name)
+    setCurrency(s.currency)
+    setInstrumentType(s.instrument_type)
+  }
 
   const mutation = useMutation({
-    mutationFn: () =>
-      api.post('/stocks/transactions/', {
-        stock,
+    mutationFn: async () => {
+      let id = existing?.id
+      if (!id) {
+        const { data } = await api.post<Stock>('/stocks/tickers/', {
+          ticker,
+          market,
+          name,
+          currency,
+          instrument_type: instrumentType,
+        })
+        id = data.id
+      }
+      return api.post('/stocks/transactions/', {
+        stock: id,
         type: 'BUY',
         account: account || null,
         affects_balance: !alreadyOwned,
         quantity,
         price_per_share: pricePerShare,
         fee,
-        currency: selectedStock?.currency ?? 'PLN',
+        currency,
         executed_at: executedAt,
-      }),
+      })
+    },
     onSuccess: onDone,
     onError: (err: unknown) => {
       const data = (err as { response?: { data?: unknown } }).response?.data
@@ -895,67 +871,104 @@ function BuyForm({ stocks, accounts, onDone }: { stocks: Stock[]; accounts: Bank
   function onSubmit(e: FormEvent) {
     e.preventDefault()
     setError(null)
-    if (!stock) return
+    if (!ticker) {
+      setError(t('Wybierz spółkę.'))
+      return
+    }
     mutation.mutate()
   }
 
   return (
-    <form onSubmit={onSubmit} className="grid grid-cols-2 gap-3 rounded-xl border border-slate-200 dark:border-slate-700 bg-white dark:bg-slate-800 p-4 shadow-sm sm:grid-cols-6">
-      <Field label="Spółka">
-        <select value={stock} onChange={(e) => { setStock(Number(e.target.value)); setAccount('') }} required className="input">
-          <option value="">{t('wybierz…')}</option>
-          {stocks.map((s) => (
-            <option key={s.id} value={s.id}>
-              {s.ticker} ({s.market})
-            </option>
-          ))}
-        </select>
-      </Field>
-      <Field label="Ilość">
-        <AmountInput value={quantity} onChange={setQuantity} required className="input" />
-      </Field>
-      <Field label="Cena/szt.">
-        <AmountInput value={pricePerShare} onChange={setPricePerShare} required className="input" />
-      </Field>
-      <Field label="Prowizja">
-        <AmountInput value={fee} onChange={setFee} className="input" />
-      </Field>
-      <Field label="Data">
-        <input type="date" value={executedAt} onChange={(e) => setExecutedAt(e.target.value)} required className="input" />
-      </Field>
-      <Field label="Powiąż z kontem (opcjonalnie)">
-        <select
-          value={account}
-          onChange={(e) => setAccount(e.target.value ? Number(e.target.value) : '')}
-          className="input"
-        >
-          <option value="">{t('bez powiązania')}</option>
-          {eligibleAccounts.map((a) => (
-            <option key={a.id} value={a.id}>
-              {a.bank_name} — {a.name} ({t(accountTypeLabel(a.account_type))})
-            </option>
-          ))}
-        </select>
-        {eligibleAccounts.length === 0 && selectedStock && (
-          <span className="mt-1 block text-xs text-amber-600 dark:text-amber-400">
-            {t('Brak konta w walucie {0} — dodaj je w zakładce Konta i lokaty.', selectedStock.currency)}
-          </span>
+    <form
+      onSubmit={onSubmit}
+      className="space-y-3 rounded-xl border border-slate-200 dark:border-slate-700 bg-white dark:bg-slate-800 p-4 shadow-sm"
+    >
+      <div className="flex flex-wrap gap-3">
+        <Field label="Wyszukaj spółkę" className="min-w-[220px] flex-1">
+          <StockAutocomplete onSelect={onPick} />
+        </Field>
+        {stocks.length > 0 && (
+          <Field label="...lub już śledzona" className="min-w-[200px] flex-1">
+            <select
+              value=""
+              onChange={(e) => e.target.value && onPickExisting(Number(e.target.value))}
+              className="input"
+            >
+              <option value="">{t('wybierz…')}</option>
+              {stocks.map((s) => (
+                <option key={s.id} value={s.id}>
+                  {s.ticker} ({s.market})
+                </option>
+              ))}
+            </select>
+          </Field>
         )}
-      </Field>
+      </div>
+      <div className="flex flex-wrap gap-3">
+        <Field label="Ticker" className="min-w-[110px] flex-1">
+          <input value={ticker} onChange={(e) => setTicker(e.target.value.toUpperCase())} required className="input" />
+        </Field>
+        <Field label="Rynek" className="min-w-[110px] flex-1">
+          <select value={market} onChange={(e) => setMarket(e.target.value as Market)} className="input">
+            <option value="GPW">GPW</option>
+            <option value="US">USA</option>
+            <option value="EU">{t('Europa')}</option>
+          </select>
+        </Field>
+        <Field label="Waluta" className="min-w-[110px] flex-1">
+          <select value={currency} onChange={(e) => setCurrency(e.target.value as Currency)} className="input">
+            {CURRENCY_OPTIONS.map((c) => (
+              <option key={c} value={c}>
+                {c}
+              </option>
+            ))}
+          </select>
+        </Field>
+        <Field label="Ilość" className="min-w-[110px] flex-1">
+          <AmountInput value={quantity} onChange={setQuantity} required className="input" />
+        </Field>
+        <Field label="Cena/szt." className="min-w-[110px] flex-1">
+          <AmountInput value={pricePerShare} onChange={setPricePerShare} required className="input" />
+        </Field>
+        <Field label="Prowizja" className="min-w-[100px] flex-1">
+          <AmountInput value={fee} onChange={setFee} className="input" />
+        </Field>
+        <Field label="Data" className="min-w-[160px] flex-1">
+          <input type="date" value={executedAt} onChange={(e) => setExecutedAt(e.target.value)} required className="input" />
+        </Field>
+        <Field label="Powiąż z kontem (opcjonalnie)" className="min-w-[220px] flex-1">
+          <select
+            value={account}
+            onChange={(e) => setAccount(e.target.value ? Number(e.target.value) : '')}
+            className="input"
+          >
+            <option value="">{t('bez powiązania')}</option>
+            {accountGroups.map(([bankName, group]) => (
+              <optgroup key={bankName} label={bankName}>
+                {group.map((a) => (
+                  <option key={a.id} value={a.id}>
+                    {a.name} ({a.currency}, {t(accountTypeLabel(a.account_type))})
+                  </option>
+                ))}
+              </optgroup>
+            ))}
+          </select>
+        </Field>
+      </div>
       {account ? (
-        <label className="col-span-2 flex items-center gap-2 text-xs text-slate-500 dark:text-slate-400 sm:col-span-6">
+        <label className="flex items-center gap-2 text-xs text-slate-500 dark:text-slate-400">
           <input type="checkbox" checked={alreadyOwned} onChange={(e) => setAlreadyOwned(e.target.checked)} />
           {t('To pozycja, którą już posiadam — nie odejmuj środków z konta (tylko zapisz powiązanie).')}
         </label>
       ) : (
-        <p className="col-span-2 text-xs text-slate-400 dark:text-slate-500 sm:col-span-6">
+        <p className="text-xs text-slate-400 dark:text-slate-500">
           {t(
             'Jeśli wybierzesz konto, kwota zostanie od razu odjęta z jego salda — zostaw puste, jeśli tylko deklarujesz akcje, które już posiadasz.',
           )}
         </p>
       )}
-      {error && <p className="col-span-2 text-sm text-red-600 dark:text-red-400 sm:col-span-6">{error}</p>}
-      <div className="col-span-2 flex items-end sm:col-span-6">
+      {error && <p className="text-sm text-red-600 dark:text-red-400">{error}</p>}
+      <div className="flex items-end">
         <button type="submit" className="btn-primary" disabled={mutation.isPending}>
           {t('Zapisz kupno')}
         </button>
@@ -984,7 +997,7 @@ function SellForm({
   const [executedAt, setExecutedAt] = useState(() => new Date().toISOString().slice(0, 10))
   const [error, setError] = useState<string | null>(null)
 
-  const eligibleAccounts = accounts.filter((a) => a.currency === holding.stock.currency)
+  const accountGroups = groupAccountsByBank(accounts)
   const estimatedProceeds = Math.max(0, Number(quantity || 0) * Number(pricePerShare || 0) - Number(fee || 0))
 
   const mutation = useMutation({
@@ -1026,30 +1039,34 @@ function SellForm({
         {t('Sprzedaż')} <span className="font-medium">{holding.stock.ticker}</span> — {t('posiadasz')}{' '}
         {formatNumber(holding.quantity, 4)} {t('szt.')}
       </p>
-      <div className="grid grid-cols-2 gap-3 sm:grid-cols-6">
-        <Field label="Ilość (max)">
+      <div className="flex flex-wrap gap-3">
+        <Field label="Ilość (max)" className="min-w-[110px] flex-1">
           <AmountInput value={quantity} onChange={setQuantity} max={maxQuantity} required className="input" />
         </Field>
-        <Field label="Cena/szt.">
+        <Field label="Cena/szt." className="min-w-[110px] flex-1">
           <AmountInput value={pricePerShare} onChange={setPricePerShare} required className="input" />
         </Field>
-        <Field label="Prowizja">
+        <Field label="Prowizja" className="min-w-[100px] flex-1">
           <AmountInput value={fee} onChange={setFee} className="input" />
         </Field>
-        <Field label="Data">
+        <Field label="Data" className="min-w-[150px] flex-1">
           <input type="date" value={executedAt} onChange={(e) => setExecutedAt(e.target.value)} required className="input" />
         </Field>
-        <Field label="Środki na konto">
+        <Field label="Środki na konto" className="min-w-[200px] flex-1">
           <select value={account} onChange={(e) => setAccount(e.target.value ? Number(e.target.value) : '')} className="input">
             <option value="">{t('bez powiązania')}</option>
-            {eligibleAccounts.map((a) => (
-              <option key={a.id} value={a.id}>
-                {a.bank_name} — {a.name} ({t(accountTypeLabel(a.account_type))})
-              </option>
+            {accountGroups.map(([bankName, group]) => (
+              <optgroup key={bankName} label={bankName}>
+                {group.map((a) => (
+                  <option key={a.id} value={a.id}>
+                    {a.name} ({a.currency}, {t(accountTypeLabel(a.account_type))})
+                  </option>
+                ))}
+              </optgroup>
             ))}
           </select>
         </Field>
-        <div className="flex flex-col justify-end text-xs text-slate-500 dark:text-slate-400">
+        <div className="flex min-w-[140px] flex-1 flex-col justify-end text-xs text-slate-500 dark:text-slate-400">
           {t('Szac. wpływ:')} <span className="font-medium text-slate-700 dark:text-slate-300">{formatMoney(estimatedProceeds, holding.stock.currency)}</span>
         </div>
       </div>
@@ -1070,10 +1087,18 @@ function SellForm({
   )
 }
 
-function Field({ label, children }: { label: string; children: React.ReactNode }) {
+function Field({
+  label,
+  children,
+  className,
+}: {
+  label: string
+  children: React.ReactNode
+  className?: string
+}) {
   const { t } = useLanguage()
   return (
-    <label className="block text-xs font-medium text-slate-500 dark:text-slate-400">
+    <label className={`block text-xs font-medium text-slate-500 dark:text-slate-400 ${className ?? ''}`}>
       {t(label)}
       <div className="mt-1">{children}</div>
     </label>

@@ -1,13 +1,15 @@
 import { useMemo, useState } from 'react'
-import { useQuery } from '@tanstack/react-query'
+import { useMutation, useQuery } from '@tanstack/react-query'
 import { Bar, BarChart, LabelList, ResponsiveContainer, Tooltip, XAxis, YAxis } from 'recharts'
 import { api } from '../api/client'
 import { AmountInput } from '../components/AmountInput'
-import { CardLoader } from '../components/Loader'
+import { CardLoader, Spinner } from '../components/Loader'
+import StockAutocomplete from '../components/StockAutocomplete'
 import { useLanguage } from '../i18n/LanguageContext'
 import { useTooltipStyle } from '../lib/chartTooltip'
 import { afterBelkaTax, BOND_TYPE_LABELS, formatMoney, formatNumber } from '../lib/format'
 import type { CurrentBondOffer } from '../lib/bonds'
+import type { StockSearchResult } from '../types'
 import { useAuth } from '../auth/AuthContext'
 import { useIsMobile } from '../lib/useIsMobile'
 
@@ -179,12 +181,73 @@ export default function InvestmentCalculator() {
   const [years, setYears] = useState(5)
   const [rateOverrides, setRateOverrides] = useState<Record<string, string>>({})
   const [openHintKey, setOpenHintKey] = useState<string | null>(null)
+  const [disabledKeys, setDisabledKeys] = useState<Set<string>>(new Set())
+  const [customCompanies, setCustomCompanies] = useState<
+    { key: string; label: string; defaultRate: number; risk: Risk; hint: string }[]
+  >([])
+  const [companyError, setCompanyError] = useState<string | null>(null)
 
   const { data: bondOffer, isLoading: bondsLoading } = useQuery({
     queryKey: ['bonds-current-offer'],
     queryFn: async () => (await api.get<CurrentBondOffer>('/bonds/current-offer/')).data,
     staleTime: 60 * 60 * 1000,
   })
+
+  const addCompanyMutation = useMutation({
+    mutationFn: async (result: StockSearchResult) => {
+      const key = `custom-${result.symbol}-${result.market}`
+      try {
+        const { data } = await api.get<{ cagr: number; years: number; start_date: string; end_date: string }>(
+          '/stocks/historical-return/',
+          { params: { ticker: result.symbol, market: result.market } },
+        )
+        return {
+          key,
+          label: `${result.symbol} - ${result.name}`,
+          defaultRate: data.cagr,
+          risk: 'wysokie' as Risk,
+          hint: t(
+            'Średnioroczna stopa zwrotu z ostatnich {0} lat ({1} - {2}), tylko zmiana kursu bez uwzględnienia dywidend - dane Yahoo Finance.',
+            String(data.years),
+            data.start_date,
+            data.end_date,
+          ),
+        }
+      } catch {
+        return {
+          key,
+          label: `${result.symbol} - ${result.name}`,
+          defaultRate: STOCK_AVERAGE_RATE,
+          risk: 'wysokie' as Risk,
+          hint: t(
+            'Nie udało się pobrać historycznej stopy zwrotu dla tej spółki - to tylko przykładowa wartość początkowa (średnia z indeksów powyżej), zmień ją na własną.',
+          ),
+        }
+      }
+    },
+    onSuccess: (row) => {
+      setCompanyError(null)
+      setCustomCompanies((prev) => (prev.some((r) => r.key === row.key) ? prev : [...prev, row]))
+    },
+  })
+
+  function onPickCompany(result: StockSearchResult) {
+    const key = `custom-${result.symbol}-${result.market}`
+    if (customCompanies.some((r) => r.key === key)) {
+      setCompanyError(t('{0} jest już na liście poniżej.', result.symbol))
+      return
+    }
+    addCompanyMutation.mutate(result)
+  }
+
+  function removeCustomCompany(key: string) {
+    setCustomCompanies((prev) => prev.filter((r) => r.key !== key))
+    setDisabledKeys((prev) => {
+      const next = new Set(prev)
+      next.delete(key)
+      return next
+    })
+  }
 
   const amountNum = Number(amount) || 0
 
@@ -218,8 +281,8 @@ export default function InvestmentCalculator() {
       risk: 'wysokie' as Risk,
       hint: t('Średnioroczna stopa zwrotu z ostatnich {0} ({1} rocznie) - {2}', s.period, `${formatNumber(s.cagr, 1)}%`, t(s.note)),
     }))
-    return [...bondRows, ...staticRows, ...indexRows]
-  }, [bondOffer, t])
+    return [...bondRows, ...staticRows, ...indexRows, ...customCompanies]
+  }, [bondOffer, t, customCompanies])
 
   const rows = useMemo(() => {
     return baseRows
@@ -233,6 +296,17 @@ export default function InvestmentCalculator() {
       })
       .sort((a, b) => b.finalValueAfterTax - a.finalValueAfterTax)
   }, [baseRows, rateOverrides, amountNum, years, country])
+
+  const chartRows = useMemo(() => rows.filter((r) => !disabledKeys.has(r.key)), [rows, disabledKeys])
+
+  function toggleRow(key: string) {
+    setDisabledKeys((prev) => {
+      const next = new Set(prev)
+      if (next.has(key)) next.delete(key)
+      else next.add(key)
+      return next
+    })
+  }
 
   return (
     <div className="space-y-6">
@@ -268,17 +342,46 @@ export default function InvestmentCalculator() {
         </div>
       </div>
 
+      <div className="rounded-xl border border-slate-200 dark:border-slate-700 bg-white dark:bg-slate-800 p-5 shadow-sm">
+        <p className="mb-1 text-sm font-semibold text-slate-700 dark:text-slate-300">
+          {t('Dodaj dowolną spółkę do porównania')}
+        </p>
+        <p className="mb-3 text-xs text-slate-400 dark:text-slate-500">
+          {t(
+            'Wyszukaj dowolną spółkę - jej wiersz w tabeli poniżej dostanie realną, historyczną stopę zwrotu (dane Yahoo Finance), którą możesz dowolnie zmienić.',
+          )}
+        </p>
+        <div className="flex items-center gap-2">
+          <div className="max-w-sm flex-1">
+            <StockAutocomplete onSelect={onPickCompany} />
+          </div>
+          {addCompanyMutation.isPending && (
+            <span className="inline-flex items-center gap-1.5 text-xs text-slate-400 dark:text-slate-500">
+              <Spinner size="sm" /> {t('pobieram dane…')}
+            </span>
+          )}
+        </div>
+        {companyError && <p className="mt-2 text-xs text-red-600 dark:text-red-400">{companyError}</p>}
+      </div>
+
       {bondsLoading ? (
         <CardLoader />
       ) : (
         <>
+          <PresetBar allKeys={baseRows.map((r) => r.key)} disabledKeys={disabledKeys} onLoad={setDisabledKeys} />
+
           <div className="rounded-xl border border-slate-200 dark:border-slate-700 bg-white dark:bg-slate-800 p-5 shadow-sm">
             <p className="mb-3 text-sm font-semibold text-slate-700 dark:text-slate-300">
               {t('Wynik po {0} {1} (po podatku Belki)', years, years === 1 ? t('roku') : t('latach'))}
             </p>
-            <div style={{ height: Math.max(256, rows.length * (isMobile ? 48 : 34)) }}>
-              <ResponsiveContainer width="100%" height="100%">
-                <BarChart data={rows} layout="vertical" margin={{ left: 8, right: isMobile ? 46 : 90 }}>
+            {chartRows.length === 0 ? (
+              <p className="py-8 text-center text-sm text-slate-400 dark:text-slate-500">
+                {t('Wszystkie instrumenty odznaczone — zaznacz przynajmniej jeden w tabeli poniżej.')}
+              </p>
+            ) : (
+              <div style={{ height: Math.max(256, chartRows.length * (isMobile ? 48 : 34)) }}>
+                <ResponsiveContainer width="100%" height="100%">
+                  <BarChart data={chartRows} layout="vertical" margin={{ left: 8, right: isMobile ? 46 : 90 }}>
                   <XAxis type="number" hide />
                   <YAxis
                     type="category"
@@ -306,23 +409,39 @@ export default function InvestmentCalculator() {
                 </BarChart>
               </ResponsiveContainer>
             </div>
+            )}
           </div>
 
           <div className="overflow-x-auto rounded-xl border border-slate-200 dark:border-slate-700 bg-white dark:bg-slate-800 p-5 shadow-sm">
             <table className="w-full text-left text-sm">
               <thead>
                 <tr className="text-xs font-medium text-slate-500 dark:text-slate-400">
+                  <th className="pb-2 pr-3" />
                   <th className="pb-2 pr-3">{t('Instrument')}</th>
                   <th className="pb-2 pr-3">{t('Ryzyko')}</th>
                   <th className="pb-2 pr-3">{t('Oprocentowanie')}</th>
                   <th className="pb-2 pr-3">{t('Zysk (brutto)')}</th>
                   <th className="pb-2 pr-3">{t('Zysk po podatku Belki')}</th>
                   <th className="pb-2 pr-3">{t('Wartość końcowa po podatku')}</th>
+                  <th className="pb-2 pr-3" />
                 </tr>
               </thead>
               <tbody>
                 {rows.map((row) => (
-                  <tr key={row.key} className="border-t border-slate-100 dark:border-slate-700 align-top">
+                  <tr
+                    key={row.key}
+                    className={`border-t border-slate-100 dark:border-slate-700 align-top ${
+                      disabledKeys.has(row.key) ? 'opacity-40' : ''
+                    }`}
+                  >
+                    <td className="py-2 pr-3">
+                      <input
+                        type="checkbox"
+                        checked={!disabledKeys.has(row.key)}
+                        onChange={() => toggleRow(row.key)}
+                        title={t('Uwzględnij w wykresie powyżej')}
+                      />
+                    </td>
                     <td className="py-2 pr-3 text-slate-700 dark:text-slate-200">
                       <span className="inline-flex items-center gap-1.5">
                         {row.label}
@@ -364,6 +483,17 @@ export default function InvestmentCalculator() {
                     </td>
                     <td className="py-2 pr-3 tabular-nums font-medium text-slate-900 dark:text-slate-100">
                       {formatMoney(row.finalValueAfterTax, base)}
+                    </td>
+                    <td className="py-2 pr-3">
+                      {row.key.startsWith('custom-') && (
+                        <button
+                          type="button"
+                          onClick={() => removeCustomCompany(row.key)}
+                          className="text-xs font-medium text-red-600 hover:underline dark:text-red-400"
+                        >
+                          {t('Usuń')}
+                        </button>
+                      )}
                     </td>
                   </tr>
                 ))}
@@ -421,6 +551,86 @@ export default function InvestmentCalculator() {
           </div>
         </>
       )}
+    </div>
+  )
+}
+
+const PRESET_SLOTS = 3
+
+// Save/load which instrument rows are checked in the table above, in up to 3
+// named slots persisted on the user's profile (so switching horizons/amounts
+// doesn't lose a comparison someone set up on purpose - e.g. "just the safe
+// stuff" vs. "everything").
+function PresetBar({
+  allKeys,
+  disabledKeys,
+  onLoad,
+}: {
+  allKeys: string[]
+  disabledKeys: Set<string>
+  onLoad: (disabled: Set<string>) => void
+}) {
+  const { t } = useLanguage()
+  const { user, refreshUser } = useAuth()
+  const presets = user?.profile.calculator_presets ?? []
+
+  const mutation = useMutation({
+    mutationFn: (next: { name: string; keys: string[] }[]) => api.patch('/auth/me/', { calculator_presets: next }),
+    onSuccess: refreshUser,
+  })
+
+  function slot(i: number) {
+    return presets[i] ?? { name: t('Zestaw {0}', i + 1), keys: allKeys }
+  }
+
+  function withSlot(i: number, value: { name: string; keys: string[] }) {
+    const next = Array.from({ length: PRESET_SLOTS }, (_, j) => (j === i ? value : slot(j)))
+    mutation.mutate(next)
+  }
+
+  function saveToSlot(i: number) {
+    withSlot(i, { name: slot(i).name, keys: allKeys.filter((k) => !disabledKeys.has(k)) })
+  }
+
+  function loadSlot(i: number) {
+    const keys = new Set(slot(i).keys)
+    onLoad(new Set(allKeys.filter((k) => !keys.has(k))))
+  }
+
+  return (
+    <div className="rounded-xl border border-slate-200 dark:border-slate-700 bg-white dark:bg-slate-800 p-4 shadow-sm">
+      <p className="mb-2 text-xs font-medium text-slate-500 dark:text-slate-400">
+        {t('Zapisane zestawy zaznaczonych instrumentów')}
+      </p>
+      <div className="flex flex-wrap gap-3">
+        {Array.from({ length: PRESET_SLOTS }, (_, i) => {
+          const saved = presets[i]
+          return (
+            <div key={i} className="flex items-center gap-1.5 rounded-md border border-slate-200 dark:border-slate-700 px-2 py-1.5">
+              <input
+                value={slot(i).name}
+                onChange={(e) => withSlot(i, { ...slot(i), name: e.target.value })}
+                className="w-24 border-0 bg-transparent p-0 text-sm font-medium text-slate-700 focus:outline-none dark:text-slate-300"
+              />
+              <button
+                type="button"
+                onClick={() => loadSlot(i)}
+                disabled={!saved}
+                className="rounded border border-slate-300 dark:border-slate-600 px-2 py-0.5 text-xs font-medium text-slate-600 hover:bg-slate-100 disabled:cursor-not-allowed disabled:opacity-40 dark:text-slate-400 dark:hover:bg-slate-700"
+              >
+                {t('Wczytaj')}
+              </button>
+              <button
+                type="button"
+                onClick={() => saveToSlot(i)}
+                className="rounded border border-accent-300 dark:border-accent-700 px-2 py-0.5 text-xs font-medium text-accent-700 hover:bg-accent-50 dark:text-accent-400 dark:hover:bg-accent-900/30"
+              >
+                {t('Zapisz')}
+              </button>
+            </div>
+          )
+        })}
+      </div>
     </div>
   )
 }

@@ -45,7 +45,7 @@ interface DividendYearlyRow {
 }
 
 const HISTORY_MONTHS_OPTIONS = [6, 12, 24, 36, 60]
-const FORECAST_YEARS_OPTIONS = [5, 10, 15, 20]
+const FORECAST_YEARS_OPTIONS = [5, 10, 15, 20, 30]
 
 // Custom tooltip content (instead of the default `formatter`) so a hover can
 // list every company's contribution for that month, with full names - not

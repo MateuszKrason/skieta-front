@@ -23,7 +23,7 @@ import { CardLoader } from '../../components/Loader'
 import { LoadMoreButton } from '../../components/LoadMoreButton'
 import { useLanguage } from '../../i18n/LanguageContext'
 import { useTooltipStyle } from '../../lib/chartTooltip'
-import { formatAxisValue, formatDate, formatMoney, formatPct } from '../../lib/format'
+import { formatAxisValue, formatDate, formatMoney, formatPct, groupAccountsByBank } from '../../lib/format'
 import type {
   BankAccount,
   BudgetTransaction,
@@ -782,10 +782,14 @@ export function AddCategoryForm({
         <Field label="Konto (opcjonalnie)">
           <select value={account} onChange={(e) => setAccount(e.target.value ? Number(e.target.value) : '')} className="input">
             <option value="">{t('wszystkie konta')}</option>
-            {accounts.map((a) => (
-              <option key={a.id} value={a.id}>
-                {a.bank_name} — {a.name}
-              </option>
+            {groupAccountsByBank(accounts).map(([bankName, group]) => (
+              <optgroup key={bankName} label={bankName}>
+                {group.map((a) => (
+                  <option key={a.id} value={a.id}>
+                    {a.name}
+                  </option>
+                ))}
+              </optgroup>
             ))}
           </select>
         </Field>
@@ -901,10 +905,14 @@ export function CategoryManager({ type }: { type: BudgetType }) {
                   className="border-0 bg-transparent p-0 text-[10px] text-slate-500 dark:text-slate-400 focus:outline-none"
                 >
                   <option value="">{t('wszystkie konta')}</option>
-                  {accounts.map((a) => (
-                    <option key={a.id} value={a.id}>
-                      {a.bank_name} — {a.name}
-                    </option>
+                  {groupAccountsByBank(accounts).map(([bankName, group]) => (
+                    <optgroup key={bankName} label={bankName}>
+                      {group.map((a) => (
+                        <option key={a.id} value={a.id}>
+                          {a.name}
+                        </option>
+                      ))}
+                    </optgroup>
                   ))}
                 </select>
               )}
@@ -1125,10 +1133,14 @@ export function AddTransactionForm({
           className="input"
         >
           <option value="">{t('bez powiązania')}</option>
-          {accounts.filter((a) => a.currency === currency).map((a) => (
-            <option key={a.id} value={a.id}>
-              {a.bank_name} — {a.name}
-            </option>
+          {groupAccountsByBank(accounts.filter((a) => a.currency === currency)).map(([bankName, group]) => (
+            <optgroup key={bankName} label={bankName}>
+              {group.map((a) => (
+                <option key={a.id} value={a.id}>
+                  {a.name}
+                </option>
+              ))}
+            </optgroup>
           ))}
         </select>
         )}

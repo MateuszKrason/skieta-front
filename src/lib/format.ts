@@ -194,3 +194,18 @@ export const BOND_TYPE_LABELS: Record<string, string> = {
 export function bondTypeLabel(type: string): string {
   return BOND_TYPE_LABELS[type] ?? type
 }
+
+// Groups accounts by bank for an <optgroup>-based dropdown - used wherever a
+// form lets you link a transaction to any account regardless of its currency
+// (e.g. buying a USD stock from a PLN brokerage account), so the list stays
+// readable instead of one long flat list of "Bank — Nazwa konta" options.
+export function groupAccountsByBank<T extends { id: number; bank_name: string }>(accounts: T[]): [string, T[]][] {
+  const groups = new Map<string, T[]>()
+  for (const account of accounts) {
+    const key = account.bank_name || ''
+    const list = groups.get(key)
+    if (list) list.push(account)
+    else groups.set(key, [account])
+  }
+  return [...groups.entries()].sort(([a], [b]) => a.localeCompare(b))
+}

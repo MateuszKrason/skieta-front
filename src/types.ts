@@ -426,6 +426,7 @@ export interface User {
     username_changed_at: string | null
     nav_order: string[]
     has_seen_tour: boolean
+    calculator_presets: { name: string; keys: string[] }[]
   }
 }
 

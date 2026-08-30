@@ -6,7 +6,15 @@ import CryptoAutocomplete from '../../../components/CryptoAutocomplete'
 import { LoadMoreButton } from '../../../components/LoadMoreButton'
 import { PageLoader, Spinner } from '../../../components/Loader'
 import { useLanguage } from '../../../i18n/LanguageContext'
-import { accountTypeLabel, formatDateTime, formatMoney, formatNumber, formatPct, formatShareQuantity } from '../../../lib/format'
+import {
+  accountTypeLabel,
+  formatDateTime,
+  formatMoney,
+  formatNumber,
+  formatPct,
+  formatShareQuantity,
+  groupAccountsByBank,
+} from '../../../lib/format'
 import { usePaginatedList } from '../../../lib/usePaginatedList'
 import type {
   BankAccount,
@@ -734,10 +742,14 @@ function EditCryptoTransactionForm({
           className="input"
         >
           <option value="">{t('bez powiązania')}</option>
-          {eligibleAccounts.map((a) => (
-            <option key={a.id} value={a.id}>
-              {a.bank_name} — {a.name} ({t(accountTypeLabel(a.account_type))})
-            </option>
+          {groupAccountsByBank(eligibleAccounts).map(([bankName, group]) => (
+            <optgroup key={bankName} label={bankName}>
+              {group.map((a) => (
+                <option key={a.id} value={a.id}>
+                  {a.name} ({t(accountTypeLabel(a.account_type))})
+                </option>
+              ))}
+            </optgroup>
           ))}
         </select>
       </Field>
@@ -846,10 +858,14 @@ function BuyForm({ assets, accounts, onDone }: { assets: CryptoAsset[]; accounts
           className="input"
         >
           <option value="">{t('bez powiązania')}</option>
-          {eligibleAccounts.map((a) => (
-            <option key={a.id} value={a.id}>
-              {a.bank_name} — {a.name} ({t(accountTypeLabel(a.account_type))})
-            </option>
+          {groupAccountsByBank(eligibleAccounts).map(([bankName, group]) => (
+            <optgroup key={bankName} label={bankName}>
+              {group.map((a) => (
+                <option key={a.id} value={a.id}>
+                  {a.name} ({t(accountTypeLabel(a.account_type))})
+                </option>
+              ))}
+            </optgroup>
           ))}
         </select>
         {eligibleAccounts.length === 0 && (
@@ -968,10 +984,14 @@ function SellForm({
         <Field label="Środki na konto">
           <select value={account} onChange={(e) => setAccount(e.target.value ? Number(e.target.value) : '')} className="input">
             <option value="">{t('bez powiązania')}</option>
-            {eligibleAccounts.map((a) => (
-              <option key={a.id} value={a.id}>
-                {a.bank_name} — {a.name} ({t(accountTypeLabel(a.account_type))})
-              </option>
+            {groupAccountsByBank(eligibleAccounts).map(([bankName, group]) => (
+              <optgroup key={bankName} label={bankName}>
+                {group.map((a) => (
+                  <option key={a.id} value={a.id}>
+                    {a.name} ({t(accountTypeLabel(a.account_type))})
+                  </option>
+                ))}
+              </optgroup>
             ))}
           </select>
         </Field>

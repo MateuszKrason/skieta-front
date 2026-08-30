@@ -9,7 +9,7 @@ import { PageLoader, Spinner } from '../components/Loader'
 import StatementImportPanel from '../components/StatementImportPanel'
 import { useLanguage } from '../i18n/LanguageContext'
 import { addMonths, type CurrentBondOffer } from '../lib/bonds'
-import { accountTypeLabel, formatDate, formatMoney, formatNumber } from '../lib/format'
+import { accountTypeLabel, formatDate, formatMoney, formatNumber, groupAccountsByBank } from '../lib/format'
 import { usePaginatedList } from '../lib/usePaginatedList'
 import { AddTransactionForm } from './analysis/shared'
 import type {
@@ -841,19 +841,27 @@ function TransferForm({
     <form onSubmit={onSubmit} className="grid grid-cols-2 gap-3 rounded-xl border border-slate-200 dark:border-slate-700 bg-white dark:bg-slate-800 p-4 shadow-sm sm:grid-cols-5">
       <Field label="Z konta">
         <select value={fromAccount} onChange={(e) => setFromAccount(Number(e.target.value))} required className="input">
-          {accounts.map((a) => (
-            <option key={a.id} value={a.id}>
-              {a.bank_name} — {a.name} ({a.currency})
-            </option>
+          {groupAccountsByBank(accounts).map(([bankName, group]) => (
+            <optgroup key={bankName} label={bankName}>
+              {group.map((a) => (
+                <option key={a.id} value={a.id}>
+                  {a.name} ({a.currency})
+                </option>
+              ))}
+            </optgroup>
           ))}
         </select>
       </Field>
       <Field label="Na konto">
         <select value={toAccount} onChange={(e) => setToAccount(Number(e.target.value))} required className="input">
-          {accounts.map((a) => (
-            <option key={a.id} value={a.id}>
-              {a.bank_name} — {a.name} ({a.currency})
-            </option>
+          {groupAccountsByBank(accounts).map(([bankName, group]) => (
+            <optgroup key={bankName} label={bankName}>
+              {group.map((a) => (
+                <option key={a.id} value={a.id}>
+                  {a.name} ({a.currency})
+                </option>
+              ))}
+            </optgroup>
           ))}
         </select>
       </Field>
@@ -925,10 +933,14 @@ function AddDepositForm({ accounts, onDone }: { accounts: BankAccount[]; onDone:
       <Field label="Środki z konta">
         <select value={account} onChange={(e) => setAccount(e.target.value ? Number(e.target.value) : '')} className="input">
           <option value="">{t('bez powiązania')}</option>
-          {accounts.map((a) => (
-            <option key={a.id} value={a.id}>
-              {a.bank_name} — {a.name} ({a.currency})
-            </option>
+          {groupAccountsByBank(accounts).map(([bankName, group]) => (
+            <optgroup key={bankName} label={bankName}>
+              {group.map((a) => (
+                <option key={a.id} value={a.id}>
+                  {a.name} ({a.currency})
+                </option>
+              ))}
+            </optgroup>
           ))}
         </select>
       </Field>
@@ -1038,10 +1050,14 @@ function EditDepositForm({
       <Field label="Środki z konta">
         <select value={account} onChange={(e) => setAccount(e.target.value ? Number(e.target.value) : '')} className="input">
           <option value="">{t('bez powiązania')}</option>
-          {accounts.map((a) => (
-            <option key={a.id} value={a.id}>
-              {a.bank_name} — {a.name} ({a.currency})
-            </option>
+          {groupAccountsByBank(accounts).map(([bankName, group]) => (
+            <optgroup key={bankName} label={bankName}>
+              {group.map((a) => (
+                <option key={a.id} value={a.id}>
+                  {a.name} ({a.currency})
+                </option>
+              ))}
+            </optgroup>
           ))}
         </select>
       </Field>
@@ -1149,10 +1165,14 @@ function BreakDepositForm({
           className="input"
         >
           <option value="">{t('wybierz…')}</option>
-          {eligibleAccounts.map((a) => (
-            <option key={a.id} value={a.id}>
-              {a.bank_name} — {a.name} ({a.currency})
-            </option>
+          {groupAccountsByBank(eligibleAccounts).map(([bankName, group]) => (
+            <optgroup key={bankName} label={bankName}>
+              {group.map((a) => (
+                <option key={a.id} value={a.id}>
+                  {a.name} ({a.currency})
+                </option>
+              ))}
+            </optgroup>
           ))}
         </select>
       </Field>
@@ -1252,10 +1272,14 @@ function AddBondForm({ accounts, onDone }: { accounts: BankAccount[]; onDone: ()
       <Field label="Środki z konta">
         <select value={account} onChange={(e) => setAccount(e.target.value ? Number(e.target.value) : '')} className="input">
           <option value="">{t('bez powiązania')}</option>
-          {accounts.map((a) => (
-            <option key={a.id} value={a.id}>
-              {a.bank_name} — {a.name} ({a.currency})
-            </option>
+          {groupAccountsByBank(accounts).map(([bankName, group]) => (
+            <optgroup key={bankName} label={bankName}>
+              {group.map((a) => (
+                <option key={a.id} value={a.id}>
+                  {a.name} ({a.currency})
+                </option>
+              ))}
+            </optgroup>
           ))}
         </select>
       </Field>
@@ -1381,10 +1405,14 @@ function EditBondForm({
       <Field label="Środki z konta">
         <select value={account} onChange={(e) => setAccount(e.target.value ? Number(e.target.value) : '')} className="input">
           <option value="">{t('bez powiązania')}</option>
-          {accounts.map((a) => (
-            <option key={a.id} value={a.id}>
-              {a.bank_name} — {a.name} ({a.currency})
-            </option>
+          {groupAccountsByBank(accounts).map(([bankName, group]) => (
+            <optgroup key={bankName} label={bankName}>
+              {group.map((a) => (
+                <option key={a.id} value={a.id}>
+                  {a.name} ({a.currency})
+                </option>
+              ))}
+            </optgroup>
           ))}
         </select>
       </Field>
@@ -1486,10 +1514,14 @@ function RedeemBondForm({
           className="input"
         >
           <option value="">{t('wybierz…')}</option>
-          {eligibleAccounts.map((a) => (
-            <option key={a.id} value={a.id}>
-              {a.bank_name} — {a.name} ({a.currency})
-            </option>
+          {groupAccountsByBank(eligibleAccounts).map(([bankName, group]) => (
+            <optgroup key={bankName} label={bankName}>
+              {group.map((a) => (
+                <option key={a.id} value={a.id}>
+                  {a.name} ({a.currency})
+                </option>
+              ))}
+            </optgroup>
           ))}
         </select>
       </Field>
