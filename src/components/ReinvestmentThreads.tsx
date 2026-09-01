@@ -1,4 +1,4 @@
-import { useState, type FormEvent } from 'react'
+import { useEffect, useState, type FormEvent } from 'react'
 import { useMutation, useQuery, useQueryClient } from '@tanstack/react-query'
 import { ResponsiveContainer, Sankey, Tooltip } from 'recharts'
 import { api } from '../api/client'
@@ -6,6 +6,7 @@ import { AmountInput } from './AmountInput'
 import { useLanguage } from '../i18n/LanguageContext'
 import { useTooltipStyle } from '../lib/chartTooltip'
 import { formatDate, formatMoney, formatNumber } from '../lib/format'
+import { signalInviteMoment } from '../lib/inviteMoment'
 import type { Currency, MoneyThread, StockTransaction, ThreadEdgeOrigin, ThreadNode } from '../types'
 
 const EPS = 0.005
@@ -160,6 +161,15 @@ export default function ReinvestmentThreads() {
     queryKey: ['threads'],
     queryFn: async () => (await api.get<MoneyThread[]>('/threads/')).data,
   })
+
+  // A path that multiplied is the most concrete "this worked" moment in the
+  // app, so it's worth surfacing the invite nudge on. See lib/inviteMoment.
+  const hasProfitableThread = (threads ?? []).some(
+    (thread) => thread.multiplier_pct !== null && Number(thread.multiplier_pct) > 100,
+  )
+  useEffect(() => {
+    if (hasProfitableThread) signalInviteMoment()
+  }, [hasProfitableThread])
 
   // Needs every BUY/SELL to match against when building reinvestment chains,
   // not just the recent page /stocks/transactions/ returns by default -

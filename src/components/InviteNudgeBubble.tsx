@@ -1,28 +1,46 @@
 import { useEffect, useState } from 'react'
 import { useNavigate } from 'react-router-dom'
+import { useAuth } from '../auth/AuthContext'
 import { useLanguage } from '../i18n/LanguageContext'
+import { subscribeInviteMoment } from '../lib/inviteMoment'
 
-const SHOWN_AFTER_MS = 5 * 60 * 1000
 const DISMISSED_KEY = 'skieta_invite_nudge_dismissed'
+// Long enough that reaching it means the app became a habit, rather than
+// someone who logged in twice in one week.
+const STREAK_MILESTONE = 7
 
-/** Speech bubble pointing at the username in the header - nudges an
- * active-for-a-while user to invite friends, since the app is invite-only.
- * Shows once (ever, per browser - see DISMISSED_KEY), closable, and
- * clicking it (not the close button) jumps straight to the invite section
- * on the account page instead of just linking to the page in general. */
+/** Speech bubble pointing at the username in the header - nudges a user to
+ * invite friends, since the app is invite-only. Shows once (ever, per
+ * browser - see DISMISSED_KEY), closable, and clicking it (not the close
+ * button) jumps straight to the invite section on the account page instead of
+ * just linking to the page in general.
+ *
+ * It used to appear on a five-minute timer, which meant asking for a
+ * recommendation at whatever arbitrary thing the user was doing at the time.
+ * It now waits for a moment that earns the question: a positive real return
+ * or a reinvestment path in profit (signalled by the pages that render those
+ * numbers), or a login streak long enough to mean the app stuck. Someone
+ * whose portfolio is down is never asked to recommend it. */
 export default function InviteNudgeBubble() {
   const { t } = useLanguage()
+  const { user } = useAuth()
   const navigate = useNavigate()
-  const [visible, setVisible] = useState(false)
+  const [dismissed, setDismissed] = useState(() => Boolean(localStorage.getItem(DISMISSED_KEY)))
+  const [signalled, setSignalled] = useState(false)
+  const streak = user?.profile.login_streak ?? 0
 
   useEffect(() => {
-    if (localStorage.getItem(DISMISSED_KEY)) return
-    const timer = setTimeout(() => setVisible(true), SHOWN_AFTER_MS)
-    return () => clearTimeout(timer)
-  }, [])
+    if (dismissed) return
+    return subscribeInviteMoment(() => setSignalled(true))
+  }, [dismissed])
+
+  // The streak condition is derived during render rather than pushed into
+  // state from an effect - `user` arrives asynchronously, so this picks it up
+  // on the render that delivers it without a second pass.
+  const visible = !dismissed && (signalled || streak >= STREAK_MILESTONE)
 
   function dismiss() {
-    setVisible(false)
+    setDismissed(true)
     localStorage.setItem(DISMISSED_KEY, '1')
   }
 

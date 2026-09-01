@@ -7,6 +7,7 @@ import { useAuth } from '../auth/AuthContext'
 import { PageLoader, Spinner } from '../components/Loader'
 import { useLanguage } from '../i18n/LanguageContext'
 import { useTooltipStyle } from '../lib/chartTooltip'
+import { signalInviteMoment } from '../lib/inviteMoment'
 import { formatAxisValue, formatDate, formatMoney, formatPct } from '../lib/format'
 import type { CategoryBreakdown, DashboardSummary, NetWorthSnapshot, PeriodKey } from '../types'
 
@@ -87,6 +88,14 @@ export default function Dashboard() {
     const id = setInterval(() => setSecondsAgo(Math.round((Date.now() - dataUpdatedAt) / 1000)), 1000)
     return () => clearInterval(id)
   }, [dataUpdatedAt])
+
+  // Seeing a real, positive return is the moment this app has actually proved
+  // something to its user - a far better time to ask them to invite someone
+  // than an arbitrary timer. See lib/inviteMoment.
+  const growthAmount = Number(summary?.growth.growth_amount ?? 0)
+  useEffect(() => {
+    if (growthAmount > 0) signalInviteMoment()
+  }, [growthAmount])
 
   function refreshNow() {
     refreshPrices.mutate()
