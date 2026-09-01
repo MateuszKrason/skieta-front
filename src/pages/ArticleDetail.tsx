@@ -16,18 +16,40 @@ import type { Article } from '../types'
 // a block starting with "## " becomes a subheading, and "**...**" spans
 // become bold. Everything stays plain text through React's own escaping, so
 // nothing an editor types can inject markup.
+// Bold spans and links are split in one pass so both can appear in the same
+// paragraph (they can't nest). The link pattern only matches an href starting
+// with a single "/": an article can link to another article, but nothing
+// written in a body can turn into an off-site link. The negative lookahead is
+// what makes that true - "//evil.com" also starts with a slash and a browser
+// resolves it as a protocol-relative link to another host.
+const INLINE_TOKEN = /(\*\*[^*]+\*\*|\[[^\]]+\]\(\/(?!\/)[^)\s]*\))/g
+const INTERNAL_LINK = /^\[([^\]]+)\]\((\/(?!\/)[^)\s]*)\)$/
+
 function InlineText({ text }: { text: string }) {
   return (
     <>
-      {text.split(/(\*\*[^*]+\*\*)/g).map((part, i) =>
-        part.startsWith('**') && part.endsWith('**') && part.length > 4 ? (
-          <strong key={i} className="font-semibold text-slate-900 dark:text-slate-100">
-            {part.slice(2, -2)}
-          </strong>
-        ) : (
-          part
-        ),
-      )}
+      {text.split(INLINE_TOKEN).map((part, i) => {
+        if (part.startsWith('**') && part.endsWith('**') && part.length > 4) {
+          return (
+            <strong key={i} className="font-semibold text-slate-900 dark:text-slate-100">
+              {part.slice(2, -2)}
+            </strong>
+          )
+        }
+        const link = INTERNAL_LINK.exec(part)
+        if (link) {
+          return (
+            <Link
+              key={i}
+              to={link[2]}
+              className="font-medium text-accent-700 underline decoration-accent-300 underline-offset-2 hover:decoration-accent-600 dark:text-accent-400 dark:decoration-accent-700"
+            >
+              {link[1]}
+            </Link>
+          )
+        }
+        return part
+      })}
     </>
   )
 }
