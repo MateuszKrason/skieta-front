@@ -8,5 +8,11 @@
 /api/*         https://api.skieta.com/api/:splat    200
 /sitemap.xml   https://api.skieta.com/sitemap.xml   200
 
+# Per-article preview images live in public/og/<slug>.png and are served as
+# static files, which Netlify matches before any rule here. This only catches
+# an article published since the images were last generated, so its card falls
+# back to the site image instead of resolving to nothing.
+/og/*          /og-image.png                        200
+
 # SPA fallback — every other path is handled by the client-side router.
 /*        /index.html                          200

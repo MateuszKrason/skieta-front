@@ -61,7 +61,11 @@ export default async (request: Request, context: { next: () => Promise<Response>
   const url = `${SITE}/artykuly/${slug}`
   const title = escapeAttribute(`${article.title} - skieta`)
   const description = escapeAttribute(article.summary)
-  const image = `${SITE}/og-image.png`
+  // Per-article preview card carrying the headline (see
+  // scripts/generate_og_images.py). A slug with no generated file falls back
+  // to the site image through the /og/* rule in _redirects, so this is always
+  // a valid URL even for an article published after the last generation run.
+  const image = `${SITE}/og/${slug}.png`
 
   const jsonLd = JSON.stringify({
     '@context': 'https://schema.org',
