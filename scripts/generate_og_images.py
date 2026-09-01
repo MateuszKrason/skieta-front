@@ -1,8 +1,14 @@
-"""Generates one Open Graph preview image per article into public/og/<slug>.png.
+"""Generates one Open Graph preview image per article into public/og/<slug>.jpg.
 
 Every article shared the site's single og-image.png, so a run of posts all
 looked identical in a feed. These carry the article's own title, which is the
 part that makes someone stop scrolling.
+
+Written as baseline JPEG rather than PNG: Facebook rejected the PNGs as
+"Corrupted Image" even though they were structurally valid, served with the
+right content type, and byte-identical between disk and CDN. JPEG is the
+format its image pipeline handles most reliably, and the changed extension
+also gives every card a URL the crawler has no cached verdict for.
 
 One-off local tool, not part of the build: run it after adding an article, or
 leave it - `_redirects` falls back to the generic image for any slug without a
@@ -97,7 +103,10 @@ def render(title: str, path: pathlib.Path) -> None:
         fill=MUTED,
     )
 
-    image.save(path, 'PNG', optimize=True)
+    # Baseline (not progressive) and no subsampling: the widest-compatibility
+    # settings, since the point of moving off PNG was to stop tripping over
+    # decoder quirks.
+    image.save(path, 'JPEG', quality=90, optimize=True, progressive=False, subsampling=0)
 
 
 def main() -> None:
@@ -105,8 +114,11 @@ def main() -> None:
     with urllib.request.urlopen(API, timeout=30) as response:
         articles = json.load(response)
 
+    for old_png in OUT_DIR.glob('*.png'):
+        old_png.unlink()
+
     for article in articles:
-        path = OUT_DIR / f"{article['slug']}.png"
+        path = OUT_DIR / f"{article['slug']}.jpg"
         render(article['title'], path)
         print(f"{path.name}  ({path.stat().st_size // 1024} KB)")
 
