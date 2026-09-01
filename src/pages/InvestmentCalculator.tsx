@@ -170,6 +170,30 @@ function futureValue(amount: number, ratePct: number, years: number): number {
   return amount * (1 + ratePct / 100) ** years
 }
 
+// Groups the flat instrument list into labelled sections so the table reads
+// as "pick from these buckets" instead of one long undifferentiated list.
+type Category = 'obligacje' | 'bezpieczne' | 'fundusze' | 'gielda' | 'zloto' | 'wlasne'
+
+const CATEGORY_ORDER: Category[] = ['obligacje', 'bezpieczne', 'fundusze', 'gielda', 'zloto', 'wlasne']
+
+const CATEGORY_LABELS: Record<Category, string> = {
+  obligacje: 'Obligacje skarbowe',
+  bezpieczne: 'Bezpieczne (lokaty, konta oszczędnościowe)',
+  fundusze: 'Fundusze',
+  gielda: 'Giełda i ETF-y',
+  zloto: 'Złoto',
+  wlasne: 'Twoje spółki',
+}
+
+function categoryForKey(key: string): Category {
+  if (key.startsWith('bond-')) return 'obligacje'
+  if (key === 'lokata' || key === 'oszczednosciowe') return 'bezpieczne'
+  if (key === 'obligacje-korporacyjne' || key === 'fundusz-zrownowazony') return 'fundusze'
+  if (key === 'zloto') return 'zloto'
+  if (key === 'gielda' || key.startsWith('index-')) return 'gielda'
+  return 'wlasne'
+}
+
 export default function InvestmentCalculator() {
   const { t } = useLanguage()
   const { user } = useAuth()
@@ -181,7 +205,7 @@ export default function InvestmentCalculator() {
   const [years, setYears] = useState(5)
   const [rateOverrides, setRateOverrides] = useState<Record<string, string>>({})
   const [openHintKey, setOpenHintKey] = useState<string | null>(null)
-  const [disabledKeys, setDisabledKeys] = useState<Set<string>>(new Set())
+  const [hiddenKeys, setHiddenKeys] = useState<Set<string>>(new Set())
   const [customCompanies, setCustomCompanies] = useState<
     { key: string; label: string; defaultRate: number; risk: Risk; hint: string }[]
   >([])
@@ -242,7 +266,7 @@ export default function InvestmentCalculator() {
 
   function removeCustomCompany(key: string) {
     setCustomCompanies((prev) => prev.filter((r) => r.key !== key))
-    setDisabledKeys((prev) => {
+    setHiddenKeys((prev) => {
       const next = new Set(prev)
       next.delete(key)
       return next
@@ -297,13 +321,30 @@ export default function InvestmentCalculator() {
       .sort((a, b) => b.finalValueAfterTax - a.finalValueAfterTax)
   }, [baseRows, rateOverrides, amountNum, years, country])
 
-  const chartRows = useMemo(() => rows.filter((r) => !disabledKeys.has(r.key)), [rows, disabledKeys])
+  const chartRows = useMemo(() => rows.filter((r) => !hiddenKeys.has(r.key)), [rows, hiddenKeys])
+  const hiddenRows = useMemo(() => rows.filter((r) => hiddenKeys.has(r.key)), [rows, hiddenKeys])
 
-  function toggleRow(key: string) {
-    setDisabledKeys((prev) => {
+  // Grouped by category, each group keeping the overall best-to-worst order
+  // `rows` is already sorted in (filtering preserves it).
+  const groupedVisibleRows = useMemo(() => {
+    const groups = new Map<Category, typeof rows>()
+    for (const row of chartRows) {
+      const category = categoryForKey(row.key)
+      const list = groups.get(category)
+      if (list) list.push(row)
+      else groups.set(category, [row])
+    }
+    return CATEGORY_ORDER.filter((c) => groups.has(c)).map((category) => ({ category, rows: groups.get(category)! }))
+  }, [chartRows])
+
+  function hideRow(key: string) {
+    setHiddenKeys((prev) => new Set(prev).add(key))
+  }
+
+  function showRow(key: string) {
+    setHiddenKeys((prev) => {
       const next = new Set(prev)
-      if (next.has(key)) next.delete(key)
-      else next.add(key)
+      next.delete(key)
       return next
     })
   }
@@ -368,7 +409,7 @@ export default function InvestmentCalculator() {
         <CardLoader />
       ) : (
         <>
-          <PresetBar allKeys={baseRows.map((r) => r.key)} disabledKeys={disabledKeys} onLoad={setDisabledKeys} />
+          <PresetBar allKeys={baseRows.map((r) => r.key)} hiddenKeys={hiddenKeys} onLoad={setHiddenKeys} />
 
           <div className="rounded-xl border border-slate-200 dark:border-slate-700 bg-white dark:bg-slate-800 p-5 shadow-sm">
             <p className="mb-3 text-sm font-semibold text-slate-700 dark:text-slate-300">
@@ -412,94 +453,106 @@ export default function InvestmentCalculator() {
             )}
           </div>
 
-          <div className="overflow-x-auto rounded-xl border border-slate-200 dark:border-slate-700 bg-white dark:bg-slate-800 p-5 shadow-sm">
-            <table className="w-full text-left text-sm">
-              <thead>
-                <tr className="text-xs font-medium text-slate-500 dark:text-slate-400">
-                  <th className="pb-2 pr-3" />
-                  <th className="pb-2 pr-3">{t('Instrument')}</th>
-                  <th className="pb-2 pr-3">{t('Ryzyko')}</th>
-                  <th className="pb-2 pr-3">{t('Oprocentowanie')}</th>
-                  <th className="pb-2 pr-3">{t('Zysk (brutto)')}</th>
-                  <th className="pb-2 pr-3">{t('Zysk po podatku Belki')}</th>
-                  <th className="pb-2 pr-3">{t('Wartość końcowa po podatku')}</th>
-                  <th className="pb-2 pr-3" />
-                </tr>
-              </thead>
-              <tbody>
-                {rows.map((row) => (
-                  <tr
-                    key={row.key}
-                    className={`border-t border-slate-100 dark:border-slate-700 align-top ${
-                      disabledKeys.has(row.key) ? 'opacity-40' : ''
-                    }`}
-                  >
-                    <td className="py-2 pr-3">
-                      <input
-                        type="checkbox"
-                        checked={!disabledKeys.has(row.key)}
-                        onChange={() => toggleRow(row.key)}
-                        title={t('Uwzględnij w wykresie powyżej')}
-                      />
-                    </td>
-                    <td className="py-2 pr-3 text-slate-700 dark:text-slate-200">
-                      <span className="inline-flex items-center gap-1.5">
-                        {row.label}
-                        <button
-                          type="button"
-                          title={row.hint}
-                          onClick={() => setOpenHintKey((prev) => (prev === row.key ? null : row.key))}
-                          className={`flex h-4 w-4 shrink-0 items-center justify-center rounded-full border text-[10px] font-bold ${
-                            openHintKey === row.key
-                              ? 'border-accent-500 text-accent-600 dark:text-accent-400'
-                              : 'border-slate-300 dark:border-slate-600 text-slate-400 hover:border-accent-500 hover:text-accent-600 dark:text-slate-500 dark:hover:text-accent-400'
-                          }`}
-                        >
-                          i
-                        </button>
-                      </span>
-                      {openHintKey === row.key && (
-                        <p className="mt-1 max-w-xs text-xs font-normal text-slate-400 dark:text-slate-500">{row.hint}</p>
-                      )}
-                    </td>
-                    <td className="py-2 pr-3">
-                      <span className={`rounded-full px-2 py-0.5 text-xs font-medium ${RISK_META[row.risk].className}`}>
-                        {t(RISK_META[row.risk].label)}
-                      </span>
-                    </td>
-                    <td className="py-2 pr-3">
-                      <AmountInput
-                        value={rateOverrides[row.key] ?? String(row.defaultRate)}
-                        onChange={(value) => setRateOverrides((prev) => ({ ...prev, [row.key]: value }))}
-                        className="input w-24 tabular-nums"
-                      />
-                      <span className="ml-1 text-xs text-slate-400 dark:text-slate-500">%</span>
-                    </td>
-                    <td className="py-2 pr-3 tabular-nums text-slate-500 dark:text-slate-400">
-                      {formatMoney(row.profit, base)}
-                    </td>
-                    <td className="py-2 pr-3 tabular-nums text-emerald-600 dark:text-emerald-400">
-                      {formatMoney(row.profitAfterTax, base)}
-                    </td>
-                    <td className="py-2 pr-3 tabular-nums font-medium text-slate-900 dark:text-slate-100">
-                      {formatMoney(row.finalValueAfterTax, base)}
-                    </td>
-                    <td className="py-2 pr-3">
-                      {row.key.startsWith('custom-') && (
-                        <button
-                          type="button"
-                          onClick={() => removeCustomCompany(row.key)}
-                          className="text-xs font-medium text-red-600 hover:underline dark:text-red-400"
-                        >
-                          {t('Usuń')}
-                        </button>
-                      )}
-                    </td>
+          {groupedVisibleRows.length === 0 ? (
+            <div className="rounded-xl border border-slate-200 dark:border-slate-700 bg-white dark:bg-slate-800 p-5 text-center text-sm text-slate-400 dark:text-slate-500 shadow-sm">
+              {t('Wszystkie instrumenty ukryte - dodaj je z powrotem poniżej.')}
+            </div>
+          ) : (
+            <div className="overflow-x-auto rounded-xl border border-slate-200 dark:border-slate-700 bg-white dark:bg-slate-800 p-5 shadow-sm">
+              <table className="w-full text-left text-sm">
+                <thead>
+                  <tr className="text-xs font-medium text-slate-500 dark:text-slate-400">
+                    <th className="pb-2 pr-3">{t('Instrument')}</th>
+                    <th className="pb-2 pr-3">{t('Ryzyko')}</th>
+                    <th className="pb-2 pr-3">{t('Oprocentowanie')}</th>
+                    <th className="pb-2 pr-3">{t('Zysk (brutto)')}</th>
+                    <th className="pb-2 pr-3">{t('Zysk po podatku Belki')}</th>
+                    <th className="pb-2 pr-3">{t('Wartość końcowa po podatku')}</th>
+                    <th className="pb-2 pr-3" />
                   </tr>
+                </thead>
+                {groupedVisibleRows.map(({ category, rows: categoryRows }) => (
+                  <tbody key={category}>
+                    <tr>
+                      <td
+                        colSpan={7}
+                        className="pt-4 pb-1.5 text-xs font-semibold uppercase tracking-wide text-slate-400 dark:text-slate-500"
+                      >
+                        {t(CATEGORY_LABELS[category])}
+                      </td>
+                    </tr>
+                    {categoryRows.map((row) => (
+                      <tr key={row.key} className="border-t border-slate-100 dark:border-slate-700 align-top">
+                        <td className="py-2 pr-3 text-slate-700 dark:text-slate-200">
+                          <span className="inline-flex items-center gap-1.5">
+                            {row.label}
+                            <button
+                              type="button"
+                              title={row.hint}
+                              onClick={() => setOpenHintKey((prev) => (prev === row.key ? null : row.key))}
+                              className={`flex h-4 w-4 shrink-0 items-center justify-center rounded-full border text-[10px] font-bold ${
+                                openHintKey === row.key
+                                  ? 'border-accent-500 text-accent-600 dark:text-accent-400'
+                                  : 'border-slate-300 dark:border-slate-600 text-slate-400 hover:border-accent-500 hover:text-accent-600 dark:text-slate-500 dark:hover:text-accent-400'
+                              }`}
+                            >
+                              i
+                            </button>
+                          </span>
+                          {openHintKey === row.key && (
+                            <p className="mt-1 max-w-xs text-xs font-normal text-slate-400 dark:text-slate-500">{row.hint}</p>
+                          )}
+                        </td>
+                        <td className="py-2 pr-3">
+                          <span className={`rounded-full px-2 py-0.5 text-xs font-medium ${RISK_META[row.risk].className}`}>
+                            {t(RISK_META[row.risk].label)}
+                          </span>
+                        </td>
+                        <td className="py-2 pr-3">
+                          <AmountInput
+                            value={rateOverrides[row.key] ?? String(row.defaultRate)}
+                            onChange={(value) => setRateOverrides((prev) => ({ ...prev, [row.key]: value }))}
+                            className="input w-24 tabular-nums"
+                          />
+                          <span className="ml-1 text-xs text-slate-400 dark:text-slate-500">%</span>
+                        </td>
+                        <td className="py-2 pr-3 tabular-nums text-slate-500 dark:text-slate-400">
+                          {formatMoney(row.profit, base)}
+                        </td>
+                        <td className="py-2 pr-3 tabular-nums text-emerald-600 dark:text-emerald-400">
+                          {formatMoney(row.profitAfterTax, base)}
+                        </td>
+                        <td className="py-2 pr-3 tabular-nums font-medium text-slate-900 dark:text-slate-100">
+                          {formatMoney(row.finalValueAfterTax, base)}
+                        </td>
+                        <td className="py-2 pr-3">
+                          <div className="flex items-center gap-2">
+                            <button
+                              type="button"
+                              onClick={() => hideRow(row.key)}
+                              title={t('Ukryj z porównania')}
+                              className="text-xs font-medium text-slate-400 hover:text-slate-700 dark:text-slate-500 dark:hover:text-slate-200"
+                            >
+                              {t('Ukryj')}
+                            </button>
+                            {row.key.startsWith('custom-') && (
+                              <button
+                                type="button"
+                                onClick={() => removeCustomCompany(row.key)}
+                                className="text-xs font-medium text-red-600 hover:underline dark:text-red-400"
+                              >
+                                {t('Usuń')}
+                              </button>
+                            )}
+                          </div>
+                        </td>
+                      </tr>
+                    ))}
+                  </tbody>
                 ))}
-              </tbody>
-            </table>
-          </div>
+              </table>
+            </div>
+          )}
 
           <div className="rounded-xl border border-slate-200 dark:border-slate-700 bg-white dark:bg-slate-800 p-5 shadow-sm">
             <h2 className="text-sm font-semibold text-slate-700 dark:text-slate-300">
@@ -549,87 +602,151 @@ export default function InvestmentCalculator() {
               )}
             </p>
           </div>
+
+          {hiddenRows.length > 0 && (
+            <div className="rounded-xl border border-dashed border-slate-300 dark:border-slate-600 bg-white dark:bg-slate-800 p-4 shadow-sm">
+              <p className="mb-2 text-xs font-medium text-slate-500 dark:text-slate-400">
+                {t('Ukryte instrumenty ({0}) - kliknij, żeby dodać z powrotem do porównania', hiddenRows.length)}
+              </p>
+              <div className="flex flex-wrap gap-2">
+                {hiddenRows.map((row) => (
+                  <button
+                    key={row.key}
+                    type="button"
+                    onClick={() => showRow(row.key)}
+                    className="rounded-full border border-slate-300 dark:border-slate-600 px-3 py-1 text-xs font-medium text-slate-600 dark:text-slate-300 hover:border-accent-500 hover:text-accent-700 dark:hover:text-accent-400"
+                  >
+                    + {row.label}
+                  </button>
+                ))}
+              </div>
+            </div>
+          )}
         </>
       )}
     </div>
   )
 }
 
-const PRESET_SLOTS = 3
+const MAX_PRESETS = 10
 
-// Save/load which instrument rows are checked in the table above, in up to 3
-// named slots persisted on the user's profile (so switching horizons/amounts
-// doesn't lose a comparison someone set up on purpose - e.g. "just the safe
-// stuff" vs. "everything").
+// Save/load which instrument rows are visible in the table above, as an
+// open-ended (but bounded) list of named presets persisted on the user's
+// profile - so switching horizons/amounts doesn't lose a comparison someone
+// set up on purpose (e.g. "just the safe stuff" vs. "everything"). Replaced
+// the old fixed 3-slot design (each slot pre-filled with "everything" and
+// renamed inline) - clicking a chip loads it, the × deletes it, and a new
+// one is only created by explicitly naming and saving the current view.
 function PresetBar({
   allKeys,
-  disabledKeys,
+  hiddenKeys,
   onLoad,
 }: {
   allKeys: string[]
-  disabledKeys: Set<string>
-  onLoad: (disabled: Set<string>) => void
+  hiddenKeys: Set<string>
+  onLoad: (hidden: Set<string>) => void
 }) {
   const { t } = useLanguage()
   const { user, refreshUser } = useAuth()
   const presets = user?.profile.calculator_presets ?? []
+  const [adding, setAdding] = useState(false)
+  const [newName, setNewName] = useState('')
 
   const mutation = useMutation({
     mutationFn: (next: { name: string; keys: string[] }[]) => api.patch('/auth/me/', { calculator_presets: next }),
     onSuccess: refreshUser,
   })
 
-  function slot(i: number) {
-    return presets[i] ?? { name: t('Zestaw {0}', i + 1), keys: allKeys }
+  function saveCurrent() {
+    const name = newName.trim() || t('Zestaw {0}', presets.length + 1)
+    const keys = allKeys.filter((k) => !hiddenKeys.has(k))
+    mutation.mutate([...presets, { name, keys }])
+    setNewName('')
+    setAdding(false)
   }
 
-  function withSlot(i: number, value: { name: string; keys: string[] }) {
-    const next = Array.from({ length: PRESET_SLOTS }, (_, j) => (j === i ? value : slot(j)))
-    mutation.mutate(next)
-  }
-
-  function saveToSlot(i: number) {
-    withSlot(i, { name: slot(i).name, keys: allKeys.filter((k) => !disabledKeys.has(k)) })
-  }
-
-  function loadSlot(i: number) {
-    const keys = new Set(slot(i).keys)
+  function loadPreset(i: number) {
+    const keys = new Set(presets[i].keys)
     onLoad(new Set(allKeys.filter((k) => !keys.has(k))))
+  }
+
+  function deletePreset(i: number) {
+    mutation.mutate(presets.filter((_, j) => j !== i))
   }
 
   return (
     <div className="rounded-xl border border-slate-200 dark:border-slate-700 bg-white dark:bg-slate-800 p-4 shadow-sm">
-      <p className="mb-2 text-xs font-medium text-slate-500 dark:text-slate-400">
-        {t('Zapisane zestawy zaznaczonych instrumentów')}
-      </p>
-      <div className="flex flex-wrap gap-3">
-        {Array.from({ length: PRESET_SLOTS }, (_, i) => {
-          const saved = presets[i]
-          return (
-            <div key={i} className="flex items-center gap-1.5 rounded-md border border-slate-200 dark:border-slate-700 px-2 py-1.5">
-              <input
-                value={slot(i).name}
-                onChange={(e) => withSlot(i, { ...slot(i), name: e.target.value })}
-                className="w-24 border-0 bg-transparent p-0 text-sm font-medium text-slate-700 focus:outline-none dark:text-slate-300"
-              />
-              <button
-                type="button"
-                onClick={() => loadSlot(i)}
-                disabled={!saved}
-                className="rounded border border-slate-300 dark:border-slate-600 px-2 py-0.5 text-xs font-medium text-slate-600 hover:bg-slate-100 disabled:cursor-not-allowed disabled:opacity-40 dark:text-slate-400 dark:hover:bg-slate-700"
-              >
-                {t('Wczytaj')}
-              </button>
-              <button
-                type="button"
-                onClick={() => saveToSlot(i)}
-                className="rounded border border-accent-300 dark:border-accent-700 px-2 py-0.5 text-xs font-medium text-accent-700 hover:bg-accent-50 dark:text-accent-400 dark:hover:bg-accent-900/30"
-              >
-                {t('Zapisz')}
-              </button>
-            </div>
-          )
-        })}
+      <p className="mb-2 text-xs font-medium text-slate-500 dark:text-slate-400">{t('Twoje zestawy porównania')}</p>
+      <div className="flex flex-wrap items-center gap-2">
+        {presets.map((p, i) => (
+          <div
+            key={`${p.name}-${i}`}
+            className="flex items-center gap-1 rounded-full border border-slate-200 dark:border-slate-700 py-1 pl-3 pr-1.5"
+          >
+            <button
+              type="button"
+              onClick={() => loadPreset(i)}
+              title={t('Wczytaj ten zestaw')}
+              className="text-xs font-medium text-slate-700 hover:text-accent-700 dark:text-slate-300 dark:hover:text-accent-400"
+            >
+              {p.name}
+            </button>
+            <button
+              type="button"
+              onClick={() => deletePreset(i)}
+              title={t('Usuń zestaw')}
+              className="flex h-4 w-4 items-center justify-center rounded-full text-slate-400 hover:bg-red-100 hover:text-red-600 dark:hover:bg-red-950 dark:hover:text-red-400"
+            >
+              ×
+            </button>
+          </div>
+        ))}
+
+        {presets.length === 0 && !adding && (
+          <p className="text-xs text-slate-400 dark:text-slate-500">
+            {t('Brak zapisanych zestawów - odznacz/dodaj instrumenty poniżej i zapisz jako zestaw.')}
+          </p>
+        )}
+
+        {adding ? (
+          <div className="flex items-center gap-1.5">
+            <input
+              autoFocus
+              value={newName}
+              onChange={(e) => setNewName(e.target.value)}
+              placeholder={t('Nazwa zestawu')}
+              className="input w-36 py-1 text-xs"
+              onKeyDown={(e) => {
+                if (e.key === 'Enter') saveCurrent()
+                if (e.key === 'Escape') setAdding(false)
+              }}
+            />
+            <button
+              type="button"
+              onClick={saveCurrent}
+              className="rounded-md bg-accent-600 px-2 py-1 text-xs font-medium text-white hover:bg-accent-700"
+            >
+              {t('Zapisz')}
+            </button>
+            <button
+              type="button"
+              onClick={() => setAdding(false)}
+              className="text-xs font-medium text-slate-400 hover:text-slate-600 dark:hover:text-slate-300"
+            >
+              {t('Anuluj')}
+            </button>
+          </div>
+        ) : (
+          <button
+            type="button"
+            onClick={() => setAdding(true)}
+            disabled={presets.length >= MAX_PRESETS}
+            title={presets.length >= MAX_PRESETS ? t('Osiągnięto limit {0} zestawów', MAX_PRESETS) : undefined}
+            className="rounded-full border border-dashed border-accent-300 px-3 py-1 text-xs font-medium text-accent-700 hover:bg-accent-50 disabled:cursor-not-allowed disabled:opacity-40 dark:border-accent-700 dark:text-accent-400 dark:hover:bg-accent-900/30"
+          >
+            {t('+ Zapisz obecny wybór jako zestaw')}
+          </button>
+        )}
       </div>
     </div>
   )

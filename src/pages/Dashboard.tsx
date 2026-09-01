@@ -1,10 +1,10 @@
 import { useEffect, useState } from 'react'
-import { useQuery, useQueryClient } from '@tanstack/react-query'
+import { useMutation, useQuery, useQueryClient } from '@tanstack/react-query'
 import { Link } from 'react-router-dom'
 import { Area, AreaChart, ResponsiveContainer, Tooltip, XAxis, YAxis } from 'recharts'
 import { api } from '../api/client'
 import { useAuth } from '../auth/AuthContext'
-import { PageLoader } from '../components/Loader'
+import { PageLoader, Spinner } from '../components/Loader'
 import { useLanguage } from '../i18n/LanguageContext'
 import { useTooltipStyle } from '../lib/chartTooltip'
 import { formatAxisValue, formatDate, formatMoney, formatPct } from '../lib/format'
@@ -57,11 +57,30 @@ export default function Dashboard() {
     refetchIntervalInBackground: true,
   })
 
+  // Stock/crypto prices are cached and only fetched live on explicit demand
+  // (see get_latest_stock_price's docstring in market_data) - the 60s poll
+  // above just re-reads whatever price is already cached, so "Wartość
+  // majątku" and "Zmiana wartości majątku" can sit flat all day even while
+  // the market moves. Force one live quote fetch per tab-open instead of
+  // polling the provider every 60s - same pattern as Portfel.tsx.
+  const refreshPrices = useMutation({
+    mutationFn: () => api.get<DashboardSummary>('/networth/dashboard/', { params: { refresh: 'true' } }),
+    onSuccess: () => {
+      queryClient.invalidateQueries({ queryKey: ['dashboard'] })
+      queryClient.invalidateQueries({ queryKey: ['timeline'] })
+    },
+  })
+
+  useEffect(() => {
+    refreshPrices.mutate()
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [])
+
   // Drives the spin animation on the refresh button/icon - true both for the
   // manual "Odśwież teraz" click and for the silent 60s auto-refresh, so the
   // icon always reflects an actual in-flight request instead of just the
   // button's own click state.
-  const isRefreshing = summaryFetching || timelineFetching || budgetFetching
+  const isRefreshing = summaryFetching || timelineFetching || budgetFetching || refreshPrices.isPending
 
   const [secondsAgo, setSecondsAgo] = useState(0)
   useEffect(() => {
@@ -70,6 +89,7 @@ export default function Dashboard() {
   }, [dataUpdatedAt])
 
   function refreshNow() {
+    refreshPrices.mutate()
     queryClient.invalidateQueries({ queryKey: ['dashboard'] })
     queryClient.invalidateQueries({ queryKey: ['timeline'] })
     queryClient.invalidateQueries({ queryKey: ['budget-summary'] })
@@ -105,7 +125,14 @@ export default function Dashboard() {
       <div className="flex flex-wrap items-center justify-between gap-2">
         <div>
           <h1 className="text-2xl font-bold text-slate-900 dark:text-slate-100">{t('Dashboard')}</h1>
-          <p className="text-sm text-slate-500 dark:text-slate-400">{t('Podsumowanie Twojego majątku, aktualizowane na bieżąco')}</p>
+          <p className="text-sm text-slate-500 dark:text-slate-400">
+            {t('Podsumowanie Twojego majątku')}
+            {refreshPrices.isPending && (
+              <span className="ml-1.5 inline-flex items-center gap-1 text-xs text-slate-400 dark:text-slate-500">
+                <Spinner size="sm" /> {t('pobieram bieżące kursy…')}
+              </span>
+            )}
+          </p>
         </div>
         <div className="flex items-center gap-2 text-xs text-slate-400 dark:text-slate-500">
           <span>{t('Odświeżono {0}s temu (auto co 60s)', secondsAgo)}</span>

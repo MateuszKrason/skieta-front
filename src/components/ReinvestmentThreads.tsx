@@ -103,11 +103,18 @@ function SankeyNodeShape({ x, y, width, height, payload }: any) {
   return (
     <g>
       <rect x={x} y={y} width={width} height={Math.max(height, 3)} fill="#059669" fillOpacity={0.85} rx={2} />
-      <text x={x + width / 2} y={y - 20} textAnchor="middle" fontSize={11} fontWeight={600} fill="#0f172a">
+      <text
+        x={x + width / 2}
+        y={y - 20}
+        textAnchor="middle"
+        fontSize={11}
+        fontWeight={600}
+        className="fill-slate-800 dark:fill-slate-100"
+      >
         {label}
       </text>
       {amount && (
-        <text x={x + width / 2} y={y - 6} textAnchor="middle" fontSize={11} fill="#059669">
+        <text x={x + width / 2} y={y - 6} textAnchor="middle" fontSize={11} className="fill-emerald-600 dark:fill-emerald-400">
           {amount}
         </text>
       )}
@@ -121,14 +128,19 @@ function ThreadSankey({ thread }: { thread: MoneyThread }) {
   const { nodes, links } = buildSankeyData(thread, t)
   if (links.length === 0) return null
 
+  // Each node's two-line label sits above it with nodePadding=40 between
+  // stacked nodes - a fixed h-64 container was cramping/clipping the top
+  // label once a thread had enough nodes to need more vertical room.
+  const height = Math.max(256, nodes.length * 44)
+
   return (
-    <div className="h-64 w-full">
+    <div style={{ height }} className="w-full">
       <ResponsiveContainer width="100%" height="100%">
         <Sankey
           data={{ nodes, links }}
           nodeWidth={14}
           nodePadding={40}
-          margin={{ top: 40, right: 70, bottom: 10, left: 20 }}
+          margin={{ top: 44, right: 70, bottom: 10, left: 20 }}
           node={SankeyNodeShape}
           link={{ stroke: '#059669', strokeOpacity: 0.25, fill: '#059669', fillOpacity: 0.2 }}
         >
@@ -216,6 +228,9 @@ function ThreadCard({
 }) {
   const { t } = useLanguage()
   const multiplier = thread.multiplier_pct !== null ? Number(thread.multiplier_pct) / 100 : null
+  // "Ile jestem do przodu / w tyle" - the multiplier alone (x1.34) doesn't
+  // say that at a glance, a signed % does.
+  const gainPct = thread.multiplier_pct !== null ? Number(thread.multiplier_pct) - 100 : null
   const openNodes = thread.nodes.filter((n) => n.sell_transaction === null)
 
   const deleteMutation = useMutation({
@@ -247,6 +262,15 @@ function ThreadCard({
                 <span className="text-sm font-medium text-slate-500 dark:text-slate-400">(x{multiplier.toFixed(2)})</span>
               )}
             </p>
+            {gainPct !== null && (
+              <p
+                className={`text-sm font-semibold ${gainPct >= 0 ? 'text-emerald-600 dark:text-emerald-400' : 'text-red-600 dark:text-red-400'}`}
+                title={t('Zmiana względem kwoty startowej')}
+              >
+                {gainPct >= 0 ? '+' : ''}
+                {formatNumber(gainPct, 1)}%
+              </p>
+            )}
           </div>
           <button
             onClick={handleDelete}
