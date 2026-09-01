@@ -15,6 +15,12 @@ Allow: /android-chrome-192x192.png
 Allow: /android-chrome-512x512.png
 Allow: /site.webmanifest
 Allow: /og-image.png
+# Per-article preview cards referenced by og:image (see
+# netlify/edge-functions/article-meta.ts). Without this they fall under the
+# catch-all Disallow below, and a social crawler that honours robots.txt
+# renders a broken image instead of the card - the file serves fine over
+# HTTP, so this is invisible to anything that doesn't check robots.txt.
+Allow: /og/
 Allow: /icons.svg
 Allow: /sitemap.xml
 Allow: /llms.txt
