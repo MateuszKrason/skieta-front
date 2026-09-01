@@ -14,6 +14,14 @@ const API_BASE = 'https://api.skieta.com/api/content/articles'
 const SITE = 'https://skieta.com'
 const FETCH_TIMEOUT_MS = 2000
 
+// Facebook caches the result of fetching an og:image per image URL, and that
+// verdict survives a re-scrape of the page. The cards were briefly blocked by
+// robots.txt, so the failure got cached and every article kept reporting
+// "Corrupted Image" long after the images themselves were fine. Bumping this
+// makes the URL a new resource to any crawler holding a stale verdict; raise
+// it if a preview ever gets stuck on an old or failed image again.
+const OG_IMAGE_VERSION = '2'
+
 interface Article {
   title: string
   summary: string
@@ -65,7 +73,7 @@ export default async (request: Request, context: { next: () => Promise<Response>
   // scripts/generate_og_images.py). A slug with no generated file falls back
   // to the site image through the /og/* rule in _redirects, so this is always
   // a valid URL even for an article published after the last generation run.
-  const image = `${SITE}/og/${slug}.png`
+  const image = `${SITE}/og/${slug}.png?v=${OG_IMAGE_VERSION}`
 
   const jsonLd = JSON.stringify({
     '@context': 'https://schema.org',
