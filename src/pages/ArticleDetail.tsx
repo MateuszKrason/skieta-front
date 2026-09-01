@@ -3,11 +3,52 @@ import { useQuery } from '@tanstack/react-query'
 import { Link, useParams } from 'react-router-dom'
 import { api } from '../api/client'
 import { PageLoader } from '../components/Loader'
+import RequestAccessForm from '../components/RequestAccessForm'
 import SockLogo from '../components/SockLogo'
 import { useLanguage } from '../i18n/LanguageContext'
 import { formatDateTime } from '../lib/format'
 import { useNoindex } from '../lib/useNoindex'
 import type { Article } from '../types'
+
+// The Article.body is plain text split into paragraphs on blank lines (no
+// HTML/markdown parsing on the backend). Two lightweight conventions are
+// honored here so a long-form piece isn't one undifferentiated wall of text:
+// a block starting with "## " becomes a subheading, and "**...**" spans
+// become bold. Everything stays plain text through React's own escaping, so
+// nothing an editor types can inject markup.
+function InlineText({ text }: { text: string }) {
+  return (
+    <>
+      {text.split(/(\*\*[^*]+\*\*)/g).map((part, i) =>
+        part.startsWith('**') && part.endsWith('**') && part.length > 4 ? (
+          <strong key={i} className="font-semibold text-slate-900 dark:text-slate-100">
+            {part.slice(2, -2)}
+          </strong>
+        ) : (
+          part
+        ),
+      )}
+    </>
+  )
+}
+
+function ArticleBody({ body }: { body: string }) {
+  return (
+    <div className="mt-6 flex flex-col gap-4">
+      {body.split(/\n\s*\n/).map((block, i) =>
+        block.startsWith('## ') ? (
+          <h2 key={i} className="mt-4 text-xl font-bold text-slate-900 dark:text-slate-100">
+            {block.slice(3).trim()}
+          </h2>
+        ) : (
+          <p key={i} className="text-base leading-relaxed text-slate-700 dark:text-slate-300">
+            <InlineText text={block} />
+          </p>
+        ),
+      )}
+    </div>
+  )
+}
 
 function setMetaDescription(content: string) {
   let tag = document.querySelector('meta[name="description"]')
@@ -94,19 +135,32 @@ export default function ArticleDetail() {
             </time>
             <h1 className="mt-1 text-3xl font-bold text-slate-900 dark:text-slate-100">{article.title}</h1>
             <p className="mt-3 text-lg text-slate-600 dark:text-slate-400">{article.summary}</p>
-            <div className="mt-6 space-y-4">
-              {article.body.split(/\n\s*\n/).map((paragraph, i) => (
-                <p key={i} className="text-base leading-relaxed text-slate-700 dark:text-slate-300">
-                  {paragraph}
-                </p>
-              ))}
-            </div>
-            <Link
-              to="/logowanie"
-              className="mt-10 inline-block rounded-md bg-accent-600 px-6 py-3 text-base font-semibold text-white hover:bg-accent-700"
-            >
-              {t('Zacznij zarządzać swoimi finansami →')}
-            </Link>
+            <ArticleBody body={article.body} />
+
+            {/* Most readers here arrived from a search engine and have no
+                account - and registration is invite-only, so a bare "log in"
+                button was a dead end for exactly the audience these articles
+                are written to attract. Offer the access-request path first
+                and keep logging in as the secondary route. */}
+            <aside className="mt-12 rounded-xl border border-accent-200 dark:border-accent-800 bg-accent-50 dark:bg-accent-950/40 p-6">
+              <h2 className="text-lg font-bold text-slate-900 dark:text-slate-100">
+                {t('Policz to na swoich danych')}
+              </h2>
+              <p className="mt-1.5 text-sm text-slate-600 dark:text-slate-400">
+                {t(
+                  'skieta pokazuje każdy zysk brutto i po podatku, a kalkulator porównuje lokaty, obligacje i giełdę na Twojej kwocie. Dostęp jest na zaproszenie - zostaw e-mail, a odezwiemy się.',
+                )}
+              </p>
+              <div className="mt-4">
+                <RequestAccessForm variant="prominent" />
+              </div>
+              <p className="mt-4 text-sm text-slate-500 dark:text-slate-400">
+                {t('Masz już konto?')}{' '}
+                <Link to="/logowanie" className="font-medium text-accent-700 dark:text-accent-400 hover:underline">
+                  {t('Zaloguj się →')}
+                </Link>
+              </p>
+            </aside>
           </>
         )}
       </article>

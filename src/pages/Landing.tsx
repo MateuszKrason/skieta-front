@@ -1,9 +1,10 @@
-import { useEffect, useState, type FormEvent } from 'react'
+import { useEffect, useState } from 'react'
 import { QRCodeSVG } from 'qrcode.react'
-import { useMutation, useQuery } from '@tanstack/react-query'
+import { useQuery } from '@tanstack/react-query'
 import { Link } from 'react-router-dom'
 import { api } from '../api/client'
 import { useAuth } from '../auth/AuthContext'
+import RequestAccessForm from '../components/RequestAccessForm'
 import SockLogo from '../components/SockLogo'
 import { CURRENCY_BY_LANGUAGE, LANGUAGES, LANGUAGE_LABELS, useLanguage, type Language } from '../i18n/LanguageContext'
 import { formatCountdown, formatDateTime, formatMoney } from '../lib/format'
@@ -120,7 +121,10 @@ const FEATURES: { icon: keyof typeof ICONS; title: string; body: string }[] = [
   {
     icon: 'shield',
     title: 'Twoje dane, Twoja kontrola',
-    body: 'Dostęp wyłącznie na zaproszenie, bez reklam i bez śledzenia. Historia logowań pokazuje dokładnie, kto i kiedy wchodził na Twoje konto.',
+    // Says precisely what's true - nobody browses users' finances - instead of
+    // a blanket "no tracking" claim, which would sit awkwardly next to the
+    // site's own analytics on page views.
+    body: 'Dostęp wyłącznie na zaproszenie i bez reklam. Nikt nie zagląda w Twoje konta — Twoje liczby służą wyłącznie do wyliczeń, które widzisz w aplikacji. Historia logowań pokazuje, kto i kiedy wchodził na Twoje konto.',
   },
 ]
 
@@ -128,6 +132,37 @@ const STEPS = [
   { n: '1', title: 'Dostajesz zaproszenie', body: 'Rejestracja jest możliwa tylko na zaproszenie od kogoś, kto już korzysta ze skieta.' },
   { n: '2', title: 'Dodajesz swoje konta', body: 'Kilka minut wystarczy, żeby dodać konta bankowe, portfel akcji, lokaty i obligacje.' },
   { n: '3', title: 'Widzisz cały obraz', body: 'Dashboard aktualizuje się na bieżąco — majątek, zwrot z inwestycji i budżet w jednym miejscu.' },
+]
+
+// The first question anyone arriving from a search engine has is why they
+// can't just sign up — leaving that unanswered on the page loses exactly the
+// visitors the articles are meant to bring in. Invite-only is a deliberate
+// product decision, so it's stated as one rather than apologized for.
+const FAQ: { q: string; a: string }[] = [
+  {
+    q: 'Dlaczego rejestracja jest tylko na zaproszenie?',
+    a: 'To świadoma decyzja, a nie etap przejściowy. Baza użytkowników rośnie powoli i w kontrolowany sposób. Jeśli nie masz zaproszenia, zostaw adres e-mail w formularzu wyżej - prośby o dostęp są rozpatrywane pojedynczo.',
+  },
+  {
+    q: 'Czy muszę podawać dane logowania do banku?',
+    a: 'Nie. skieta nie łączy się z bankami i nigdy nie prosi o hasła bankowe. Konta, lokaty i transakcje dodajesz sam, a historię możesz zaimportować z pliku wyciągu. Automatycznie pobierane są wyłącznie publiczne dane rynkowe: notowania akcji, kursy walut NBP i oprocentowanie obligacji skarbowych.',
+  },
+  {
+    q: 'Czym to się różni od arkusza kalkulacyjnego?',
+    a: 'Arkusz pokaże Ci, ile masz. skieta pokazuje, ile z tego faktycznie zarobiłeś - zysk liczony osobno od wpłaconego kapitału, po podatku Belki, z kosztem zakupu akcji przeliczonym po kursie NBP z dnia transakcji, a nie dzisiejszym. To rzeczy, które w arkuszu trzeba utrzymywać ręcznie i łatwo w nich o błąd.',
+  },
+  {
+    q: 'Skąd biorą się kursy i oprocentowanie?',
+    a: 'Z publicznych źródeł: notowania z Yahoo Finance i Stooq, kursy walut z NBP, aktualne oprocentowanie obligacji skarbowych z obligacjeskarbowe.pl. Dane odświeżane są automatycznie, a przy porównaniach zawsze widzisz, z jakiego okresu pochodzą.',
+  },
+  {
+    q: 'Kto widzi moje finanse?',
+    a: 'Tylko Ty. Nikt nie przegląda sald ani transakcji poszczególnych użytkowników - dane są przetwarzane po to, żeby wyliczyć to, co widzisz na swoim dashboardzie. W ustawieniach konta znajdziesz historię logowań, więc sam sprawdzisz, kto i kiedy wchodził na Twoje konto.',
+  },
+  {
+    q: 'Czy mogę usunąć swoje konto i dane?',
+    a: 'Tak, w każdej chwili i samodzielnie, z poziomu ustawień konta - bez pisania do kogokolwiek.',
+  },
 ]
 
 function MockDashboardCard() {
@@ -163,74 +198,6 @@ function MockDashboardCard() {
         className="pointer-events-none absolute -right-6 -top-6 h-16 w-16 rounded-full bg-accent-400/20 blur-2xl"
       />
     </div>
-  )
-}
-
-function RequestAccessForm() {
-  const { t } = useLanguage()
-  const [open, setOpen] = useState(false)
-  const [email, setEmail] = useState('')
-  const [sent, setSent] = useState(false)
-
-  const mutation = useMutation({
-    mutationFn: () => api.post('/auth/access-requests/', { email }),
-    onSuccess: () => setSent(true),
-  })
-
-  function onSubmit(e: FormEvent) {
-    e.preventDefault()
-    if (!email.trim()) return
-    mutation.mutate()
-  }
-
-  const errorDetail = (mutation.error as { response?: { data?: { detail?: string; email?: string } } } | undefined)
-    ?.response?.data
-  const errorMessage = errorDetail?.detail ?? errorDetail?.email
-
-  if (sent) {
-    return (
-      <p className="text-sm text-emerald-700 dark:text-emerald-400">
-        {t('Dziękujemy! Sprawdź skrzynkę e-mail — napiszemy, gdy administrator rozpatrzy Twoją prośbę.')}
-      </p>
-    )
-  }
-
-  if (!open) {
-    return (
-      <p className="text-sm text-slate-500 dark:text-slate-400">
-        {t('Rejestracja jest dostępna tylko na zaproszenie od innego użytkownika.')}{' '}
-        <button
-          type="button"
-          onClick={() => setOpen(true)}
-          className="font-medium text-accent-700 dark:text-accent-400 hover:underline"
-        >
-          {t('Nie masz zaproszenia? Poproś o dostęp →')}
-        </button>
-      </p>
-    )
-  }
-
-  return (
-    <form onSubmit={onSubmit} className="flex flex-wrap items-start gap-2">
-      <div>
-        <input
-          type="email"
-          value={email}
-          onChange={(e) => setEmail(e.target.value)}
-          placeholder={t('Twój adres e-mail')}
-          required
-          className="rounded-full border border-slate-300 dark:border-slate-600 bg-white dark:bg-slate-800 px-4 py-2 text-sm text-slate-900 dark:text-slate-100 focus:border-accent-500 focus:outline-none"
-        />
-        {errorMessage && <p className="mt-1 text-xs text-red-600 dark:text-red-400">{errorMessage}</p>}
-      </div>
-      <button
-        type="submit"
-        disabled={mutation.isPending}
-        className="rounded-full bg-slate-900 dark:bg-slate-100 px-5 py-2 text-sm font-semibold text-white dark:text-slate-900 transition hover:opacity-90 disabled:opacity-60"
-      >
-        {mutation.isPending ? t('Wysyłanie…') : t('Poproś o dostęp')}
-      </button>
-    </form>
   )
 }
 
@@ -376,6 +343,37 @@ export default function Landing() {
             ))}
           </div>
         </div>
+      </section>
+
+      {/* FAQ */}
+      <section className="mx-auto max-w-3xl px-4 py-16 sm:py-20">
+        <h2 className="text-center text-3xl font-bold text-slate-900 dark:text-slate-100">
+          {t('Częste pytania')}
+        </h2>
+        <div className="mt-10 flex flex-col gap-3">
+          {FAQ.map((item) => (
+            <details
+              key={item.q}
+              className="group rounded-xl border border-slate-200 dark:border-slate-800 bg-white dark:bg-slate-900 px-5 py-4 shadow-sm transition hover:border-accent-300 dark:hover:border-accent-700"
+            >
+              <summary className="flex cursor-pointer list-none items-center justify-between gap-4 text-base font-semibold text-slate-900 dark:text-slate-100 [&::-webkit-details-marker]:hidden">
+                {t(item.q)}
+                <span
+                  aria-hidden="true"
+                  className="shrink-0 text-lg font-normal text-accent-600 dark:text-accent-400 transition group-open:rotate-45"
+                >
+                  +
+                </span>
+              </summary>
+              <p className="mt-3 text-sm leading-relaxed text-slate-600 dark:text-slate-400">{t(item.a)}</p>
+            </details>
+          ))}
+        </div>
+        {!user && (
+          <div className="mt-8 flex justify-center">
+            <RequestAccessForm />
+          </div>
+        )}
       </section>
 
       {/* Articles */}
