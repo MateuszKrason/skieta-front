@@ -114,6 +114,16 @@ export default async (request: Request, context: { next: () => Promise<Response>
   )
   html = replaceOnce(
     html,
+    /<meta property="og:image" content="[^"]*"\s*\/?>/,
+    `<meta property="og:image" content="${image}" />`,
+  )
+  html = replaceOnce(
+    html,
+    /<meta name="twitter:image" content="[^"]*"\s*\/?>/,
+    `<meta name="twitter:image" content="${image}" />`,
+  )
+  html = replaceOnce(
+    html,
     /<meta name="twitter:title" content="[^"]*"\s*\/?>/,
     `<meta name="twitter:title" content="${title}" />`,
   )
