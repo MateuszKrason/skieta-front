@@ -26,7 +26,13 @@ import urllib.request
 from PIL import Image, ImageDraw, ImageFont
 
 API = 'https://api.skieta.com/api/content/articles/'
-OUT_DIR = pathlib.Path(__file__).resolve().parent.parent / 'public' / 'og'
+# Cards sit at the root of public/ as og-<slug>.jpg rather than in an og/
+# subdirectory. /og-image.png - the one image Facebook has always processed
+# without complaint - lives there, and a card under /og/ was rejected no matter
+# the format, the headers, or the redirect rules. Same shape as the file that
+# works is the last difference left to remove.
+OUT_DIR = pathlib.Path(__file__).resolve().parent.parent / 'public'
+PREFIX = 'og-'
 
 WIDTH, HEIGHT = 1200, 630
 MARGIN = 84
@@ -114,11 +120,12 @@ def main() -> None:
     with urllib.request.urlopen(API, timeout=30) as response:
         articles = json.load(response)
 
-    for old_png in OUT_DIR.glob('*.png'):
-        old_png.unlink()
+    # Only the generated cards, never og-image.png, which is a hand-made asset.
+    for stale in OUT_DIR.glob(f'{PREFIX}*.jpg'):
+        stale.unlink()
 
     for article in articles:
-        path = OUT_DIR / f"{article['slug']}.jpg"
+        path = OUT_DIR / f"{PREFIX}{article['slug']}.jpg"
         render(article['title'], path)
         print(f"{path.name}  ({path.stat().st_size // 1024} KB)")
 

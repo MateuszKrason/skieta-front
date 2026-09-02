@@ -74,7 +74,7 @@ export default async (request: Request, context: { next: () => Promise<Response>
   // scripts/generate_og_images.py). A slug with no generated file falls back
   // to the site image through the /og/* rule in _redirects, so this is always
   // a valid URL even for an article published after the last generation run.
-  const image = `${SITE}/og/${slug}.jpg`
+  const image = `${SITE}/og-${slug}.jpg`
 
   const jsonLd = JSON.stringify({
     '@context': 'https://schema.org',
