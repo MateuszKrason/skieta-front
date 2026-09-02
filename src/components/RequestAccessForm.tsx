@@ -2,12 +2,23 @@ import { useState, type FormEvent } from 'react'
 import { useMutation } from '@tanstack/react-query'
 import { api } from '../api/client'
 import { useLanguage } from '../i18n/LanguageContext'
+import { trackEvent, type ConversionSource } from '../lib/analytics'
 
 // Registration is invite-only, so this is the only way in for someone who
 // arrived without an invitation - notably anyone landing on an article from
 // a search engine. Lives here rather than inside Landing so both the landing
 // hero and the end of every article can offer the same path.
-export default function RequestAccessForm({ variant = 'inline' }: { variant?: 'inline' | 'prominent' }) {
+export default function RequestAccessForm({
+  variant = 'inline',
+  source,
+  article,
+}: {
+  variant?: 'inline' | 'prominent'
+  /** Reported to analytics so an article's conversions can be told apart from
+   * the landing page's. Never sent with the email address. */
+  source: ConversionSource
+  article?: string
+}) {
   const { t } = useLanguage()
   const [open, setOpen] = useState(variant === 'prominent')
   const [email, setEmail] = useState('')
@@ -15,7 +26,10 @@ export default function RequestAccessForm({ variant = 'inline' }: { variant?: 'i
 
   const mutation = useMutation({
     mutationFn: () => api.post('/auth/access-requests/', { email }),
-    onSuccess: () => setSent(true),
+    onSuccess: () => {
+      setSent(true)
+      trackEvent('access_request_submitted', { source, ...(article ? { article } : {}) })
+    },
   })
 
   function onSubmit(e: FormEvent) {

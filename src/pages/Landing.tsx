@@ -292,7 +292,7 @@ export default function Landing() {
             </div>
             {!user && (
               <div className="mt-4">
-                <RequestAccessForm />
+                <RequestAccessForm source="landing_hero" />
               </div>
             )}
           </div>
@@ -371,7 +371,7 @@ export default function Landing() {
         </div>
         {!user && (
           <div className="mt-8 flex justify-center">
-            <RequestAccessForm />
+            <RequestAccessForm source="landing_faq" />
           </div>
         )}
       </section>

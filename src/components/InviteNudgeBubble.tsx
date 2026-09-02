@@ -2,6 +2,7 @@ import { useEffect, useState } from 'react'
 import { useNavigate } from 'react-router-dom'
 import { useAuth } from '../auth/AuthContext'
 import { useLanguage } from '../i18n/LanguageContext'
+import { trackEvent } from '../lib/analytics'
 import { subscribeInviteMoment } from '../lib/inviteMoment'
 
 const DISMISSED_KEY = 'skieta_invite_nudge_dismissed'
@@ -45,6 +46,9 @@ export default function InviteNudgeBubble() {
   }
 
   function goToInvites() {
+    // Which trigger actually earns the click is the point of having moved this
+    // off a timer - a gain the user just saw, or a login streak.
+    trackEvent('invite_nudge_clicked', { trigger: signalled ? 'moment' : 'streak' })
     dismiss()
     navigate('/moje-konto#zaproszenia')
   }

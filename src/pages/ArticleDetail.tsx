@@ -6,6 +6,7 @@ import { PageLoader } from '../components/Loader'
 import RequestAccessForm from '../components/RequestAccessForm'
 import SockLogo from '../components/SockLogo'
 import { useLanguage } from '../i18n/LanguageContext'
+import { trackEvent } from '../lib/analytics'
 import { formatDateTime } from '../lib/format'
 import { useNoindex } from '../lib/useNoindex'
 import type { Article } from '../types'
@@ -174,11 +175,15 @@ export default function ArticleDetail() {
                 )}
               </p>
               <div className="mt-4">
-                <RequestAccessForm variant="prominent" />
+                <RequestAccessForm variant="prominent" source="article" article={slug} />
               </div>
               <p className="mt-4 text-sm text-slate-500 dark:text-slate-400">
                 {t('Masz już konto?')}{' '}
-                <Link to="/logowanie" className="font-medium text-accent-700 dark:text-accent-400 hover:underline">
+                <Link
+                  to="/logowanie"
+                  onClick={() => trackEvent('article_login_clicked', { article: slug })}
+                  className="font-medium text-accent-700 dark:text-accent-400 hover:underline"
+                >
                   {t('Zaloguj się →')}
                 </Link>
               </p>
