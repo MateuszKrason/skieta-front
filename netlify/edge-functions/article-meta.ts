@@ -14,14 +14,23 @@ const API_BASE = 'https://api.skieta.com/api/content/articles'
 const SITE = 'https://skieta.com'
 const FETCH_TIMEOUT_MS = 2000
 
-// TEMPORARY - diagnostic, not the intended value. og-diagnostyka.png is a
-// byte-identical copy of og-image.png, which Facebook processes without
-// complaint, under a filename it has never seen. Every generated card was
-// rejected as "Corrupted Image" while that original was accepted, and the two
-// were indistinguishable in format, headers, compression, ranged responses,
-// robots.txt and CDN bytes - so this separates the two remaining explanations:
-// whether Facebook objects to the files being generated, or to any image URL
-// that is new on this site. Revert to a real card URL once that is known.
+// Cards are served from the Netlify hostname, not from skieta.com, and that is
+// deliberate. Facebook rejects every image URL it has not already cached from
+// skieta.com as "Corrupted Image" - proven by pointing og:image at a
+// byte-identical copy of og-image.png under a new filename, which was rejected
+// while the original, cached long ago, kept working. The file was therefore
+// never the problem: format, encoder settings, path shape and URL versioning
+// all changed nothing, and the two URLs were identical in headers, bytes,
+// compression, ranged responses and robots.txt.
+//
+// What remains is the domain. skieta.com is young and, per the note in
+// public/_redirects, still carries a poor reputation with security vendors -
+// which is also why the API is proxied through this origin. The Netlify
+// hostname serves the same files from the same deploy and does not.
+//
+// Worth revisiting once skieta.com's reputation settles: an og:image on the
+// site's own domain is tidier, and this is a workaround, not a fix.
+const IMAGE_HOST = 'https://skieta.netlify.app'
 
 interface Article {
   title: string
@@ -74,7 +83,7 @@ export default async (request: Request, context: { next: () => Promise<Response>
   // scripts/generate_og_images.py). A slug with no generated file falls back
   // to the site image through the /og/* rule in _redirects, so this is always
   // a valid URL even for an article published after the last generation run.
-  const image = `${SITE}/og-diagnostyka.png`
+  const image = `${IMAGE_HOST}/og-${slug}.jpg`
 
   const jsonLd = JSON.stringify({
     '@context': 'https://schema.org',
