@@ -83,11 +83,25 @@ function setMetaDescription(content: string) {
   tag.setAttribute('content', content)
 }
 
+/** The article the edge function already fetched and inlined while building
+ * this page's meta tags and prerendered body (netlify/edge-functions/
+ * article-meta.ts). Using it as initial data means React renders the text it
+ * is replacing straight away, instead of tearing it down for a loading
+ * spinner and asking the API for the same thing again.
+ *
+ * Only valid for the article the page was served for - a client-side move to
+ * another article must not reuse it, hence the slug check. */
+function prerenderedArticle(slug: string | undefined): Article | undefined {
+  const injected = (window as unknown as { __SKIETA_ARTICLE__?: Article }).__SKIETA_ARTICLE__
+  return injected && injected.slug === slug ? injected : undefined
+}
+
 export default function ArticleDetail() {
   const { t } = useLanguage()
   const { slug } = useParams<{ slug: string }>()
 
   const { data: article, isLoading } = useQuery({
+    initialData: () => prerenderedArticle(slug),
     queryKey: ['content-article', slug],
     queryFn: async () => (await api.get<Article>(`/content/articles/${slug}/`)).data,
     enabled: Boolean(slug),

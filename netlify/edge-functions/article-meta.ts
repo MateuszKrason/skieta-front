@@ -34,7 +34,9 @@ const IMAGE_HOST = 'https://skieta.netlify.app'
 
 interface Article {
   title: string
+  slug: string
   summary: string
+  body: string
   author_name: string | null
   published_at: string
   updated_at: string
@@ -52,6 +54,65 @@ function escapeAttribute(value: string): string {
 // "$1" inside an article title would otherwise be read as a backreference.
 function replaceOnce(html: string, pattern: RegExp, replacement: string): string {
   return html.replace(pattern, () => replacement)
+}
+
+// Mirrors the two conventions ArticleDetail.tsx renders, so the markup a
+// crawler reads has the same headings and links as the page a person sees.
+// Every value is escaped first, so nothing an editor types can inject markup.
+const INLINE_TOKEN = /(\*\*[^*]+\*\*|\[[^\]]+\]\(\/(?!\/)[^)\s]*\))/g
+const INTERNAL_LINK = /^\[([^\]]+)\]\((\/(?!\/)[^)\s]*)\)$/
+
+function renderInline(text: string): string {
+  return text
+    .split(INLINE_TOKEN)
+    .map((part) => {
+      if (part.startsWith('**') && part.endsWith('**') && part.length > 4) {
+        return `<strong>${escapeAttribute(part.slice(2, -2))}</strong>`
+      }
+      const link = INTERNAL_LINK.exec(part)
+      if (link) {
+        return `<a href="${escapeAttribute(link[2])}">${escapeAttribute(link[1])}</a>`
+      }
+      return escapeAttribute(part)
+    })
+    .join('')
+}
+
+/** The article as plain semantic HTML, placed inside #root so a crawler that
+ * never runs JavaScript still reads the full text. React clears the container
+ * when it mounts, so this is replaced rather than duplicated - and because the
+ * same API response is also handed to the app as initial data, the swap
+ * happens with no loading spinner and no visible change. */
+function renderArticle(article: Article): string {
+  const blocks = article.body
+    .split(/\n\s*\n/)
+    .map((block) =>
+      block.startsWith('## ')
+        ? `<h2>${escapeAttribute(block.slice(3).trim())}</h2>`
+        : `<p>${renderInline(block)}</p>`,
+    )
+    .join('')
+
+  const byline = article.author_name ? `${escapeAttribute(article.author_name)} · ` : ''
+
+  return (
+    `<article style="max-width:48rem;margin:0 auto;padding:3rem 1rem;font-family:system-ui,sans-serif;line-height:1.6">` +
+    `<time datetime="${escapeAttribute(article.published_at)}">${byline}${escapeAttribute(article.published_at.slice(0, 10))}</time>` +
+    `<h1>${escapeAttribute(article.title)}</h1>` +
+    `<p>${escapeAttribute(article.summary)}</p>` +
+    blocks +
+    `</article>`
+  )
+}
+
+/** Hands the already-fetched article to the app so React Query renders from it
+ * immediately instead of showing a loader and refetching. Without this the
+ * prerendered text would flash to a spinner the moment React mounts, which is
+ * worse than the loader alone. "<" is escaped so no article text can close the
+ * script tag early. */
+function renderInitialData(article: Article): string {
+  const json = JSON.stringify(article).replace(/</g, '\\u003c')
+  return `<script>window.__SKIETA_ARTICLE__=${json}</script>`
 }
 
 export default async (request: Request, context: { next: () => Promise<Response> }) => {
@@ -154,6 +215,16 @@ export default async (request: Request, context: { next: () => Promise<Response>
     html,
     /<script type="application\/ld\+json">[\s\S]*?<\/script>/,
     `<script type="application/ld+json">${jsonLd}</script>`,
+  )
+
+  // The article text itself, which until now existed only after the app had
+  // booted and called the API - so the HTML a crawler first reads was an empty
+  // shell. Google renders JavaScript eventually, but that pass is queued and
+  // other crawlers (Bing, and the ones behind llms.txt) never run it at all.
+  html = replaceOnce(
+    html,
+    /<div id="root"><\/div>/,
+    `<div id="root">${renderArticle(article)}</div>${renderInitialData(article)}`,
   )
 
   const headers = new Headers(response.headers)
