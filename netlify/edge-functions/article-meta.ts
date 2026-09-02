@@ -14,14 +14,14 @@ const API_BASE = 'https://api.skieta.com/api/content/articles'
 const SITE = 'https://skieta.com'
 const FETCH_TIMEOUT_MS = 2000
 
-// Cards are JPEG, not PNG. Facebook rejected the PNGs as "Corrupted Image"
-// even though they were structurally valid (correct signature, well-formed
-// IHDR/IDAT/IEND, RGB 1200x630, passing verify() and load()), served as
-// image/png with a matching length, and byte-identical between disk and CDN.
-// Nothing about the file or its delivery explained the verdict, so the format
-// itself was the remaining variable. The extension change also sidesteps any
-// cached verdict, without needing a query string on the URL - which some
-// crawlers handle poorly and which the previous attempt relied on.
+// TEMPORARY - diagnostic, not the intended value. og-diagnostyka.png is a
+// byte-identical copy of og-image.png, which Facebook processes without
+// complaint, under a filename it has never seen. Every generated card was
+// rejected as "Corrupted Image" while that original was accepted, and the two
+// were indistinguishable in format, headers, compression, ranged responses,
+// robots.txt and CDN bytes - so this separates the two remaining explanations:
+// whether Facebook objects to the files being generated, or to any image URL
+// that is new on this site. Revert to a real card URL once that is known.
 
 interface Article {
   title: string
@@ -74,7 +74,7 @@ export default async (request: Request, context: { next: () => Promise<Response>
   // scripts/generate_og_images.py). A slug with no generated file falls back
   // to the site image through the /og/* rule in _redirects, so this is always
   // a valid URL even for an article published after the last generation run.
-  const image = `${SITE}/og-${slug}.jpg`
+  const image = `${SITE}/og-diagnostyka.png`
 
   const jsonLd = JSON.stringify({
     '@context': 'https://schema.org',
