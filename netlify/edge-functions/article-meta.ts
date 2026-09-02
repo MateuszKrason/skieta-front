@@ -108,11 +108,18 @@ function renderArticle(article: Article): string {
 /** Hands the already-fetched article to the app so React Query renders from it
  * immediately instead of showing a loader and refetching. Without this the
  * prerendered text would flash to a spinner the moment React mounts, which is
- * worse than the loader alone. "<" is escaped so no article text can close the
- * script tag early. */
+ * worse than the loader alone.
+ *
+ * A JSON data block, not an executable script: the site's CSP has no
+ * 'unsafe-inline' in script-src (which is why gtag's config lives in its own
+ * file - see index.html), so an inline script here is blocked and silently
+ * does nothing. type="application/json" is never executed, so script-src does
+ * not apply to it. "<" is escaped so no article text can close the tag early. */
+const INITIAL_DATA_ID = 'skieta-article'
+
 function renderInitialData(article: Article): string {
   const json = JSON.stringify(article).replace(/</g, '\\u003c')
-  return `<script>window.__SKIETA_ARTICLE__=${json}</script>`
+  return `<script id="${INITIAL_DATA_ID}" type="application/json">${json}</script>`
 }
 
 export default async (request: Request, context: { next: () => Promise<Response> }) => {

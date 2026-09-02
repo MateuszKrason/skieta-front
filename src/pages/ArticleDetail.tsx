@@ -89,11 +89,19 @@ function setMetaDescription(content: string) {
  * is replacing straight away, instead of tearing it down for a loading
  * spinner and asking the API for the same thing again.
  *
- * Only valid for the article the page was served for - a client-side move to
- * another article must not reuse it, hence the slug check. */
+ * Read from a JSON data block rather than a global, because the site's CSP
+ * forbids inline scripts - a script that assigned a global would simply never
+ * run. Only valid for the article the page was served for: a client-side move
+ * to another article must not reuse it, hence the slug check. */
 function prerenderedArticle(slug: string | undefined): Article | undefined {
-  const injected = (window as unknown as { __SKIETA_ARTICLE__?: Article }).__SKIETA_ARTICLE__
-  return injected && injected.slug === slug ? injected : undefined
+  const block = document.getElementById('skieta-article')?.textContent
+  if (!block) return undefined
+  try {
+    const injected = JSON.parse(block) as Article
+    return injected.slug === slug ? injected : undefined
+  } catch {
+    return undefined
+  }
 }
 
 export default function ArticleDetail() {
