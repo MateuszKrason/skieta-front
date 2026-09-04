@@ -1180,6 +1180,8 @@ export const de: Record<string, string> = {
 
   // Account: delete account
   // Polityka prywatności - analityka bez ciasteczek
+  'Aplikacja i baza danych stoją w centrum danych Microsoft Azure w Polsce (region Poland Central), a serwer pocztowy w Polsce. Zgłoszenia o awariach trafiają do europejskiego regionu dostawcy monitoringu. Twoje dane finansowe nie opuszczają Europejskiego Obszaru Gospodarczego.':
+    'App und Datenbank laufen in einem Microsoft-Azure-Rechenzentrum in Polen (Region Poland Central), der Mailserver steht ebenfalls in Polen. Fehlerberichte gehen an die europäische Region unseres Monitoring-Anbieters. Deine Finanzdaten verlassen den Europäischen Wirtschaftsraum nicht.',
   'dostawca monitoringu błędów — dostaje techniczne zgłoszenie awarii (adres strony i ślad błędu w kodzie), nigdy treści Twoich danych finansowych ani zawartości formularzy,':
     'ein Anbieter für Fehler-Monitoring - erhält eine technische Fehlermeldung (Seitenadresse und Stacktrace), nie den Inhalt deiner Finanzdaten oder von Formularen,',
   'Analityka odwiedzin':

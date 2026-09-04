@@ -112,6 +112,11 @@ export default function PrivacyPolicy() {
               )}
             </li>
           </ul>
+          <p>
+            {t(
+              'Aplikacja i baza danych stoją w centrum danych Microsoft Azure w Polsce (region Poland Central), a serwer pocztowy w Polsce. Zgłoszenia o awariach trafiają do europejskiego regionu dostawcy monitoringu. Twoje dane finansowe nie opuszczają Europejskiego Obszaru Gospodarczego.',
+            )}
+          </p>
         </Section>
 
         <Section title="Jak długo przechowujemy dane">
