@@ -925,8 +925,8 @@ export const en: Record<string, string> = {
   'Czynsz, subskrypcje, ubezpieczenia — cykliczne opłaty co miesiąc, niezależnie od tego, czy już je zapłaciłeś w tym miesiącu.':
     "Rent, subscriptions, insurance — recurring monthly charges, whether or not you've already paid them this month.",
   'Czytaj więcej →': 'Read more →',
-  'Dane konta przechowujemy tak długo, jak konto jest aktywne. Administrator może zarchiwizować konto (dezaktywacja z zachowaniem danych) zamiast je usuwać. Obecnie usunięcie danych na stałe odbywa się na indywidualną prośbę, wysłaną administratorowi — w aplikacji nie ma jeszcze samoobsługowego przycisku "usuń konto".':
-    'We keep account data for as long as the account is active. An administrator can archive an account (deactivating it while keeping its data) instead of deleting it. Right now, permanent deletion happens on individual request to the administrator — there\'s no self-service "delete account" button yet.',
+  'Dane konta przechowujemy tak długo, jak konto jest aktywne. Kiedy usuniesz konto w ustawieniach, blokujemy je od razu, a po 30 dniach trwale kasujemy wszystkie Twoje dane. Przez te 30 dni możesz cofnąć decyzję linkiem z maila, który wysyłamy przy usuwaniu. Osobno administrator może zarchiwizować konto, czyli je zdezaktywować z zachowaniem danych — takie konto czeka, aż zdecydujesz, co dalej, i nie jest kasowane automatycznie.':
+    'We keep your account data for as long as the account is active. When you delete your account in the settings, we lock it immediately and permanently erase all your data after 30 days. During those 30 days you can undo it with the link in the email we send. Separately, an administrator can archive an account, which deactivates it while keeping the data - such an account waits for you to decide and is never erased automatically.',
   'Danych nie sprzedajemy i nie udostępniamy w celach marketingowych. Współpracujemy wyłącznie z dostawcami niezbędnymi do działania serwisu:':
     'We never sell your data or share it for marketing purposes. We only work with providers needed to run the service:',
   'Dashboard': 'Dashboard',
@@ -936,7 +936,8 @@ export const en: Record<string, string> = {
   'Dołączył(a)': 'Joined',
   'Dzień wypłaty pozwala policzyć, ile wypłat zostało do terminu każdego celu oszczędnościowego.':
     'The payday setting lets us calculate how many paychecks are left before each savings goal\'s deadline.',
-  'Google Analytics — statystyki odwiedzin strony (patrz sekcja wyżej),': 'Google Analytics — site visit statistics (see the section above),',
+  'dostawca analityki bez ciasteczek — zbiorcze statystyki odwiedzin (patrz sekcja wyżej),':
+    'a cookieless analytics provider - aggregate visit statistics (see the section above),',
   'Hasła są haszowane, komunikacja z aplikacją odbywa się przez HTTPS, a dostęp do panelu administratora mają wyłącznie konta z uprawnieniami administratora lub odpowiednią rolą — i nawet ten panel nie pokazuje treści Twoich transakcji ani sald, tylko zbiorcze statystyki. Treść danych finansowych nie jest też dostępna przez wbudowany panel Django — do bazy danych dociera się wyłącznie bezpośrednim, świadomym dostępem administracyjnym do infrastruktury, nie jednym kliknięciem w aplikacji.':
     "Passwords are hashed, communication with the app runs over HTTPS, and only accounts with admin rights or an appropriate role can reach the admin panel — and even that panel never shows the content of your transactions or balances, only aggregate statistics. Financial data isn't reachable through Django's built-in admin site either — the database is only reachable through deliberate, direct administrative access to the infrastructure, not a single click in the app.",
   'Historia': 'History',
@@ -949,8 +950,8 @@ export const en: Record<string, string> = {
     "Accounts in a different currency get labeled as foreign-currency — that's just a label, it doesn't affect conversions.",
   'Logowanie działa w oparciu o tokeny JWT przechowywane w local storage przeglądarki — to samo miejsce przechowuje wybrany motyw kolorystyczny i język, zanim zostaną zapisane na koncie. Nie ma żadnych skryptów reklamowych ani śledzących w celach marketingowych.':
     "Logging in relies on JWT tokens kept in the browser's local storage — the same place stores your chosen theme and language before they're saved to your account. There are no advertising or marketing-tracking scripts.",
-  'Masz prawo do wglądu w swoje dane, ich poprawienia (większość — bezpośrednio w ustawieniach konta) oraz do żądania ich usunięcia. W tym celu napisz do nas na adres podany niżej albo skorzystaj z widgetu "Zostaw feedback" w aplikacji.':
-    'You have the right to view your data, correct it (mostly directly in your account settings), and request its deletion. To do so, email us at the address below or use the "Leave feedback" widget in the app.',
+  'Masz prawo do wglądu w swoje dane, ich poprawienia, przeniesienia i usunięcia. Dwa z nich załatwisz sam(a) w ustawieniach konta: "Pobierz swoje dane" daje pełną kopię wszystkiego, co przechowujemy (JSON plus tabele CSV do Excela), a "Usuń konto" uruchamia trwałe skasowanie danych. Większość informacji poprawisz bezpośrednio w ustawieniach. W pozostałych sprawach napisz na adres podany niżej albo skorzystaj z widgetu "Zostaw feedback" w aplikacji.':
+    'You have the right to see your data, correct it, take it with you and have it erased. Two of those you can do yourself in the account settings: "Download your data" gives you a full copy of everything we store (JSON plus CSV tables for Excel), and "Delete account" starts the permanent erasure. Most details you can correct directly in the settings. For anything else, write to the address below or use the "Leave feedback" widget in the app.',
   'Na plusie / na minusie / bez zmian': 'Winning / losing / unchanged',
   'Najgorsza pozycja': 'Worst position',
   'Najlepsza pozycja': 'Best position',
@@ -965,7 +966,8 @@ export const en: Record<string, string> = {
   'Odblokuj': 'Unblock',
   'Odznacz wszystkie': 'Deselect all',
   'Opis': 'Description',
-  'Ostatnia aktualizacja: 22 sierpnia 2026': 'Last updated: August 22, 2026',
+  'Ostatnia aktualizacja: 4 września 2026':
+    'Last updated: September 4, 2026',
   'Ostatnia aktywność': 'Last activity',
   'Ostatnie IP': 'Last IP',
   'Ostatnie logowanie': 'Last login',
@@ -1003,8 +1005,8 @@ export const en: Record<string, string> = {
   'Uwagi': 'Notes',
   'Użytkownicy aplikacji i ich aktywność': 'App users and their activity',
   'Użytkownicy łącznie': 'Users total',
-  'Używamy Google Analytics do liczenia odwiedzin i podstawowej analityki ruchu na stronie — Google ustawia w tym celu własne ciasteczka i przetwarza dane takie jak adres IP, rodzaj urządzenia i przeglądarki oraz odwiedzane podstrony. Więcej o tym, jak Google przetwarza te dane, znajdziesz w polityce prywatności Google.':
-    "We use Google Analytics to count visits and get basic traffic analytics — Google sets its own cookies for this and processes data such as IP address, device and browser type, and pages visited. You can read more about how Google processes this data in Google's own privacy policy.",
+  'Liczymy odwiedziny i podstawowy ruch na stronie, ale robimy to bez ciasteczek analitycznych i bez profilowania. Nasz dostawca analityki nie zapisuje niczego na Twoim urządzeniu, nie tworzy identyfikatora, po którym można Cię rozpoznać na innych stronach, i nie zbiera Twojego adresu IP w postaci pozwalającej Cię zidentyfikować. Dlatego nie prosimy Cię o zgodę na ciasteczka i nie zobaczysz tu żadnego bannera.':
+    'We count visits and basic site traffic, but we do it without analytics cookies and without profiling. Our analytics provider stores nothing on your device, creates no identifier that could recognise you on other sites, and does not collect your IP address in a form that identifies you. That is why we never ask you to accept cookies and you will not see a banner here.',
   'W miarę rozwoju aplikacji ta strona będzie aktualizowana, a data ostatniej zmiany widoczna jest na górze strony.':
     "As the app evolves, this page will be updated, and the date of the last change is shown at the top of the page.",
   'W sprawach dotyczących danych osobowych napisz na:': 'For anything related to personal data, email:',
@@ -1177,13 +1179,46 @@ export const en: Record<string, string> = {
     'The translation service is temporarily unavailable - try again later or fill it in by hand.',
 
   // Account: delete account
+  // Polityka prywatności - analityka bez ciasteczek
+  'dostawca monitoringu błędów — dostaje techniczne zgłoszenie awarii (adres strony i ślad błędu w kodzie), nigdy treści Twoich danych finansowych ani zawartości formularzy,':
+    'an error-monitoring provider - receives a technical crash report (the page address and the stack trace), never the contents of your financial data or of any form,',
+  'Analityka odwiedzin':
+    'Visit analytics',
+  'Wcześniej korzystaliśmy z Google Analytics. Zrezygnowaliśmy z niego właśnie dlatego, że wymagał ciasteczek i Twojej zgody.':
+    'We used to use Google Analytics. We dropped it precisely because it needed cookies and your consent.',
+  // Anulowanie usuwania konta
+  'Zatrzymać usuwanie konta?':
+    'Stop deleting your account?',
+  'Twoje konto jest w trakcie usuwania. Jeśli klikniesz poniżej, odblokujemy je razem ze wszystkimi danymi i będziesz mógł znowu się zalogować.':
+    'Your account is on its way out. Click below and we will unlock it with all your data, so you can log in again.',
+  'Tak, zatrzymaj usuwanie':
+    'Yes, stop the deletion',
+  'Nie, chcę usunąć konto':
+    'No, I want the account deleted',
+  'Przywracanie…':
+    'Restoring…',
+  'Zaloguj się →':
+    'Log in →',
+  'Ten link jest niekompletny. Otwórz go bezpośrednio z maila, który od nas dostałeś.':
+    'This link is incomplete. Open it straight from the email we sent you.',
+  'Nie udało się zatrzymać usuwania konta.':
+    'Could not stop the deletion.',
+  // Eksport danych (RODO art. 15/20)
+  'Pobierz swoje dane': 'Download your data',
+  'Twoje dane należą do Ciebie. Pełna kopia w JSON zawiera wszystko, co przechowujemy na Twoim koncie. Pliki CSV otwierają się bezpośrednio w Excelu i arkuszach Google.':
+    'Your data belongs to you. The full JSON copy contains everything we store on your account. The CSV files open straight in Excel and Google Sheets.',
+  'Pełna kopia (JSON)': 'Full copy (JSON)',
+  'Transakcje (CSV)': 'Transactions (CSV)',
+  'Portfel (CSV)': 'Portfolio (CSV)',
+  'Pobieranie…': 'Downloading…',
+  'Nie udało się pobrać pliku. Spróbuj ponownie za chwilę.': 'Could not download the file. Try again in a moment.',
   'Usuń konto': 'Delete account',
-  'Zablokuje Twoje konto i wyloguje Cię ze wszystkich urządzeń. Twoje dane (konta bankowe, transakcje, budżet, inwestycje, historia logowań) zostaną zachowane. Masz 3 miesiące na przywrócenie konta — wystarczy poprosić administratora.':
-    'Locks your account and signs you out of every device. Your data (bank accounts, transactions, budget, investments, login history) will be kept. You have 3 months to restore your account — just ask an administrator.',
+  'Konto zostanie zablokowane od razu, a po 30 dniach trwale usuniemy wszystkie Twoje dane: konta bankowe, transakcje, budżet, inwestycje i historię logowań. Przez te 30 dni możesz cofnąć decyzję linkiem z maila, który wyślemy. Zanim usuniesz konto, pobierz swoje dane w sekcji wyżej.':
+    'Your account is locked immediately, and after 30 days we permanently erase all your data: bank accounts, transactions, budget, investments and login history. During those 30 days you can undo this with the link in the email we send. Before you delete, download your data in the section above.',
   'Wpisz {0}, żeby potwierdzić': 'Type {0} to confirm',
   'Wpisz dokładnie "{0}", żeby potwierdzić.': 'Type "{0}" exactly to confirm.',
-  'Czy na pewno chcesz usunąć swoje konto? Zostanie zablokowane i wylogowane ze wszystkich urządzeń. Masz 3 miesiące na przywrócenie konta — w tym czasie Twoje dane pozostaną zapisane, wystarczy poprosić administratora o przywrócenie.':
-    'Are you sure you want to delete your account? It will be locked and signed out of every device. You have 3 months to restore your account — during that time your data will remain saved, just ask an administrator to restore it.',
+  'Czy na pewno chcesz usunąć konto? Zostanie zablokowane od razu, a po 30 dniach Twoje dane znikną bezpowrotnie. Link do cofnięcia wyślemy Ci mailem.':
+    'Are you sure you want to delete your account? It is locked right away, and after 30 days your data is gone for good. We will email you a link to undo this.',
   'Usuwanie…': 'Deleting…',
   'Nie udało się usunąć konta.': 'Failed to delete account.',
 

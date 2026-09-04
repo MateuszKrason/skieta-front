@@ -925,8 +925,8 @@ export const es: Record<string, string> = {
   'Czynsz, subskrypcje, ubezpieczenia — cykliczne opłaty co miesiąc, niezależnie od tego, czy już je zapłaciłeś w tym miesiącu.':
     'Alquiler, suscripciones, seguros - gastos recurrentes cada mes, los hayas pagado ya este mes o no.',
   'Czytaj więcej →': 'Leer más →',
-  'Dane konta przechowujemy tak długo, jak konto jest aktywne. Administrator może zarchiwizować konto (dezaktywacja z zachowaniem danych) zamiast je usuwać. Obecnie usunięcie danych na stałe odbywa się na indywidualną prośbę, wysłaną administratorowi — w aplikacji nie ma jeszcze samoobsługowego przycisku "usuń konto".':
-    'Conservamos los datos de la cuenta mientras esté activa. Un administrador puede archivar una cuenta (desactivarla conservando sus datos) en lugar de eliminarla. Por ahora, la eliminación permanente de datos se realiza mediante solicitud individual al administrador - la aplicación todavía no tiene un botón de autoservicio para "eliminar cuenta".',
+  'Dane konta przechowujemy tak długo, jak konto jest aktywne. Kiedy usuniesz konto w ustawieniach, blokujemy je od razu, a po 30 dniach trwale kasujemy wszystkie Twoje dane. Przez te 30 dni możesz cofnąć decyzję linkiem z maila, który wysyłamy przy usuwaniu. Osobno administrator może zarchiwizować konto, czyli je zdezaktywować z zachowaniem danych — takie konto czeka, aż zdecydujesz, co dalej, i nie jest kasowane automatycznie.':
+    'Conservamos los datos de tu cuenta mientras la cuenta esté activa. Cuando eliminas la cuenta desde los ajustes, la bloqueamos de inmediato y, pasados 30 días, borramos definitivamente todos tus datos. Durante esos 30 días puedes deshacerlo con el enlace del correo que te enviamos. Aparte de eso, un administrador puede archivar una cuenta, es decir, desactivarla conservando los datos: esa cuenta espera tu decisión y nunca se borra automáticamente.',
   'Danych nie sprzedajemy i nie udostępniamy w celach marketingowych. Współpracujemy wyłącznie z dostawcami niezbędnymi do działania serwisu:':
     'No vendemos tus datos ni los compartimos con fines de marketing. Solo trabajamos con los proveedores necesarios para el funcionamiento del servicio:',
   'Dashboard': 'Panel',
@@ -936,7 +936,8 @@ export const es: Record<string, string> = {
   'Dołączył(a)': 'Se unió',
   'Dzień wypłaty pozwala policzyć, ile wypłat zostało do terminu każdego celu oszczędnościowego.':
     'El día de la nómina permite calcular cuántas nóminas quedan hasta la fecha límite de cada meta de ahorro.',
-  'Google Analytics — statystyki odwiedzin strony (patrz sekcja wyżej),': 'Google Analytics - estadísticas de visitas al sitio (ver la sección de arriba),',
+  'dostawca analityki bez ciasteczek — zbiorcze statystyki odwiedzin (patrz sekcja wyżej),':
+    'un proveedor de analítica sin cookies - estadísticas agregadas de visitas (ver la sección anterior),',
   'Hasła są haszowane, komunikacja z aplikacją odbywa się przez HTTPS, a dostęp do panelu administratora mają wyłącznie konta z uprawnieniami administratora lub odpowiednią rolą — i nawet ten panel nie pokazuje treści Twoich transakcji ani sald, tylko zbiorcze statystyki. Treść danych finansowych nie jest też dostępna przez wbudowany panel Django — do bazy danych dociera się wyłącznie bezpośrednim, świadomym dostępem administracyjnym do infrastruktury, nie jednym kliknięciem w aplikacji.':
     'Las contraseñas se almacenan cifradas (hash), la comunicación con la aplicación se realiza por HTTPS, y solo las cuentas con permisos de administrador o un rol adecuado pueden acceder al panel de administración - e incluso ese panel nunca muestra el contenido de tus transacciones ni de tus saldos, solo estadísticas agregadas. El contenido de los datos financieros tampoco es accesible a través del panel integrado de Django - a la base de datos solo se llega mediante un acceso administrativo directo y deliberado a la infraestructura, no con un solo clic en la aplicación.',
   'Historia': 'Historial',
@@ -949,8 +950,8 @@ export const es: Record<string, string> = {
     'Las cuentas en otra moneda se marcarán como "en moneda extranjera" - es solo una etiqueta, no afecta a las conversiones.',
   'Logowanie działa w oparciu o tokeny JWT przechowywane w local storage przeglądarki — to samo miejsce przechowuje wybrany motyw kolorystyczny i język, zanim zostaną zapisane na koncie. Nie ma żadnych skryptów reklamowych ani śledzących w celach marketingowych.':
     'El inicio de sesión funciona con tokens JWT guardados en el almacenamiento local del navegador - ese mismo lugar guarda el tema de color y el idioma elegidos antes de que se guarden en tu cuenta. No hay ningún script publicitario ni de rastreo con fines de marketing.',
-  'Masz prawo do wglądu w swoje dane, ich poprawienia (większość — bezpośrednio w ustawieniach konta) oraz do żądania ich usunięcia. W tym celu napisz do nas na adres podany niżej albo skorzystaj z widgetu "Zostaw feedback" w aplikacji.':
-    'Tienes derecho a consultar tus datos, corregirlos (la mayoría, directamente en la configuración de tu cuenta) y solicitar su eliminación. Para ello, escríbenos a la dirección indicada más abajo o usa el widget "Deja un comentario" de la aplicación.',
+  'Masz prawo do wglądu w swoje dane, ich poprawienia, przeniesienia i usunięcia. Dwa z nich załatwisz sam(a) w ustawieniach konta: "Pobierz swoje dane" daje pełną kopię wszystkiego, co przechowujemy (JSON plus tabele CSV do Excela), a "Usuń konto" uruchamia trwałe skasowanie danych. Większość informacji poprawisz bezpośrednio w ustawieniach. W pozostałych sprawach napisz na adres podany niżej albo skorzystaj z widgetu "Zostaw feedback" w aplikacji.':
+    'Tienes derecho a consultar tus datos, corregirlos, llevártelos y solicitar su eliminación. Dos de esas cosas las haces tú mismo en los ajustes de la cuenta: "Descarga tus datos" te da una copia completa de todo lo que guardamos (JSON más tablas CSV para Excel) y "Eliminar cuenta" inicia el borrado definitivo. La mayoría de los datos los corriges directamente en los ajustes. Para cualquier otra cosa, escríbenos a la dirección de abajo o usa el widget de comentarios de la aplicación.',
   'Na plusie / na minusie / bez zmian': 'En ganancia / en pérdida / sin cambios',
   'Najgorsza pozycja': 'Peor posición',
   'Najlepsza pozycja': 'Mejor posición',
@@ -965,7 +966,8 @@ export const es: Record<string, string> = {
   'Odblokuj': 'Desbloquear',
   'Odznacz wszystkie': 'Deseleccionar todo',
   'Opis': 'Descripción',
-  'Ostatnia aktualizacja: 22 sierpnia 2026': 'Última actualización: 22 de agosto de 2026',
+  'Ostatnia aktualizacja: 4 września 2026':
+    'Última actualización: 4 de septiembre de 2026',
   'Ostatnia aktywność': 'Última actividad',
   'Ostatnie IP': 'Última IP',
   'Ostatnie logowanie': 'Último inicio de sesión',
@@ -1004,8 +1006,8 @@ export const es: Record<string, string> = {
   'Użytkownicy aplikacji i ich aktywność': 'Usuarios de la aplicación y su actividad',
   'Użytkownicy łącznie': 'Total de usuarios',
 
-  'Używamy Google Analytics do liczenia odwiedzin i podstawowej analityki ruchu na stronie — Google ustawia w tym celu własne ciasteczka i przetwarza dane takie jak adres IP, rodzaj urządzenia i przeglądarki oraz odwiedzane podstrony. Więcej o tym, jak Google przetwarza te dane, znajdziesz w polityce prywatności Google.':
-    'Usamos Google Analytics para contar las visitas y obtener estadísticas básicas del tráfico del sitio - Google establece sus propias cookies para ello y procesa datos como la dirección IP, el tipo de dispositivo y navegador, y las páginas visitadas. Puedes leer más sobre cómo procesa Google estos datos en la política de privacidad de Google.',
+  'Liczymy odwiedziny i podstawowy ruch na stronie, ale robimy to bez ciasteczek analitycznych i bez profilowania. Nasz dostawca analityki nie zapisuje niczego na Twoim urządzeniu, nie tworzy identyfikatora, po którym można Cię rozpoznać na innych stronach, i nie zbiera Twojego adresu IP w postaci pozwalającej Cię zidentyfikować. Dlatego nie prosimy Cię o zgodę na ciasteczka i nie zobaczysz tu żadnego bannera.':
+    'Contamos las visitas y el tráfico básico del sitio, pero lo hacemos sin cookies analíticas y sin perfilado. Nuestro proveedor de analítica no guarda nada en tu dispositivo, no crea ningún identificador que permita reconocerte en otros sitios y no recoge tu dirección IP de forma que te identifique. Por eso nunca te pedimos que aceptes cookies y no verás aquí ningún banner.',
   'W miarę rozwoju aplikacji ta strona będzie aktualizowana, a data ostatniej zmiany widoczna jest na górze strony.':
     'A medida que la aplicación evolucione, esta página se irá actualizando, y la fecha del último cambio se muestra en la parte superior de la página.',
   'W sprawach dotyczących danych osobowych napisz na:': 'Para asuntos relacionados con datos personales, escribe a:',
@@ -1179,13 +1181,46 @@ export const es: Record<string, string> = {
     'El servicio de traducción no está disponible en este momento - inténtalo más tarde o complétalo a mano.',
 
   // Account: delete account
+  // Polityka prywatności - analityka bez ciasteczek
+  'dostawca monitoringu błędów — dostaje techniczne zgłoszenie awarii (adres strony i ślad błędu w kodzie), nigdy treści Twoich danych finansowych ani zawartości formularzy,':
+    'un proveedor de monitorización de errores - recibe un informe técnico del fallo (la dirección de la página y la traza del error), nunca el contenido de tus datos financieros ni de los formularios,',
+  'Analityka odwiedzin':
+    'Analítica de visitas',
+  'Wcześniej korzystaliśmy z Google Analytics. Zrezygnowaliśmy z niego właśnie dlatego, że wymagał ciasteczek i Twojej zgody.':
+    'Antes usábamos Google Analytics. Lo dejamos precisamente porque necesitaba cookies y tu consentimiento.',
+  // Anulowanie usuwania konta
+  'Zatrzymać usuwanie konta?':
+    '¿Detener la eliminación de la cuenta?',
+  'Twoje konto jest w trakcie usuwania. Jeśli klikniesz poniżej, odblokujemy je razem ze wszystkimi danymi i będziesz mógł znowu się zalogować.':
+    'Tu cuenta está en proceso de eliminación. Pulsa abajo y la desbloquearemos con todos tus datos para que puedas volver a entrar.',
+  'Tak, zatrzymaj usuwanie':
+    'Sí, detener la eliminación',
+  'Nie, chcę usunąć konto':
+    'No, quiero eliminar la cuenta',
+  'Przywracanie…':
+    'Restaurando…',
+  'Zaloguj się →':
+    'Iniciar sesión →',
+  'Ten link jest niekompletny. Otwórz go bezpośrednio z maila, który od nas dostałeś.':
+    'Este enlace está incompleto. Ábrelo directamente desde el correo que te enviamos.',
+  'Nie udało się zatrzymać usuwania konta.':
+    'No se pudo detener la eliminación de la cuenta.',
+  // Eksport danych (RODO art. 15/20)
+  'Pobierz swoje dane': 'Descarga tus datos',
+  'Twoje dane należą do Ciebie. Pełna kopia w JSON zawiera wszystko, co przechowujemy na Twoim koncie. Pliki CSV otwierają się bezpośrednio w Excelu i arkuszach Google.':
+    'Tus datos son tuyos. La copia completa en JSON contiene todo lo que guardamos en tu cuenta. Los archivos CSV se abren directamente en Excel y Hojas de cálculo de Google.',
+  'Pełna kopia (JSON)': 'Copia completa (JSON)',
+  'Transakcje (CSV)': 'Transacciones (CSV)',
+  'Portfel (CSV)': 'Cartera (CSV)',
+  'Pobieranie…': 'Descargando…',
+  'Nie udało się pobrać pliku. Spróbuj ponownie za chwilę.': 'No se pudo descargar el archivo. Inténtalo de nuevo en un momento.',
   'Usuń konto': 'Eliminar cuenta',
-  'Zablokuje Twoje konto i wyloguje Cię ze wszystkich urządzeń. Twoje dane (konta bankowe, transakcje, budżet, inwestycje, historia logowań) zostaną zachowane. Masz 3 miesiące na przywrócenie konta — wystarczy poprosić administratora.':
-    'Bloqueará tu cuenta y cerrará tu sesión en todos los dispositivos. Tus datos (cuentas bancarias, transacciones, presupuesto, inversiones, historial de inicio de sesión) se conservarán. Tienes 3 meses para restaurar tu cuenta — solo pide a un administrador.',
+  'Konto zostanie zablokowane od razu, a po 30 dniach trwale usuniemy wszystkie Twoje dane: konta bankowe, transakcje, budżet, inwestycje i historię logowań. Przez te 30 dni możesz cofnąć decyzję linkiem z maila, który wyślemy. Zanim usuniesz konto, pobierz swoje dane w sekcji wyżej.':
+    'Tu cuenta se bloquea de inmediato y, pasados 30 días, borramos definitivamente todos tus datos: cuentas bancarias, transacciones, presupuesto, inversiones e historial de inicios de sesión. Durante esos 30 días puedes deshacerlo con el enlace del correo que te enviaremos. Antes de eliminarla, descarga tus datos en la sección de arriba.',
   'Wpisz {0}, żeby potwierdzić': 'Escribe {0} para confirmar',
   'Wpisz dokładnie "{0}", żeby potwierdzić.': 'Escribe exactamente "{0}" para confirmar.',
-  'Czy na pewno chcesz usunąć swoje konto? Zostanie zablokowane i wylogowane ze wszystkich urządzeń. Masz 3 miesiące na przywrócenie konta — w tym czasie Twoje dane pozostaną zapisane, wystarczy poprosić administratora o przywrócenie.':
-    '¿Seguro que quieres eliminar tu cuenta? Se bloqueará y se cerrará la sesión en todos los dispositivos. Tienes 3 meses para restaurar tu cuenta — durante ese tiempo tus datos permanecerán guardados, solo pide a un administrador que la restaure.',
+  'Czy na pewno chcesz usunąć konto? Zostanie zablokowane od razu, a po 30 dniach Twoje dane znikną bezpowrotnie. Link do cofnięcia wyślemy Ci mailem.':
+    '¿Seguro que quieres eliminar tu cuenta? Se bloquea al instante y, pasados 30 días, tus datos desaparecen para siempre. Te enviaremos por correo un enlace para deshacerlo.',
   'Usuwanie…': 'Eliminando…',
   'Nie udało się usunąć konta.': 'No se pudo eliminar la cuenta.',
 

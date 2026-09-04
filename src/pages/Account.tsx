@@ -6,6 +6,7 @@ import { api } from '../api/client'
 import { useAuth } from '../auth/AuthContext'
 import { DEFAULT_NAV_ORDER, REORDERABLE_LINKS } from '../components/Layout'
 import { useLanguage, LANGUAGES, LANGUAGE_LABELS, type Language } from '../i18n/LanguageContext'
+import { trackEvent } from '../lib/analytics'
 import { COUNTRIES } from '../lib/countries'
 import { formatCountdown, formatDateTime } from '../lib/format'
 import { useTheme, type Theme } from '../theme/ThemeContext'
@@ -53,7 +54,79 @@ export default function Account() {
       <PasswordForm />
       <InviteFriends />
       <LoginHistorySection />
+      <ExportDataSection />
       <DeleteAccountSection />
+    </div>
+  )
+}
+
+// RODO art. 15 (dostęp) i art. 20 (przenoszalność). Deliberately three
+// separate buttons rather than one "request my data" form: the file is small
+// enough to build on the spot, and a request someone has to handle by hand is
+// a request that gets handled late.
+//
+// The download can't be a plain <a href> - the API is behind a bearer token
+// that lives in localStorage, not in a cookie, so the browser would send an
+// unauthenticated request. Fetch it through the same axios client everything
+// else uses, then hand the blob to a throwaway link.
+function ExportDataSection() {
+  const { t } = useLanguage()
+  const [pending, setPending] = useState<string | null>(null)
+  const [error, setError] = useState<string | null>(null)
+
+  async function download(key: string, path: string) {
+    setPending(key)
+    setError(null)
+    try {
+      const response = await api.get(path, { responseType: 'blob' })
+      const disposition = String(response.headers['content-disposition'] ?? '')
+      const match = disposition.match(/filename="([^"]+)"/)
+      const url = URL.createObjectURL(response.data as Blob)
+      const link = document.createElement('a')
+      link.href = url
+      link.download = match ? match[1] : 'skieta-dane'
+      document.body.appendChild(link)
+      link.click()
+      link.remove()
+      // Revoking immediately can cancel the download in some browsers, so give
+      // the click a moment to start it.
+      setTimeout(() => URL.revokeObjectURL(url), 10_000)
+      trackEvent('data_exported', { dataset: key })
+    } catch {
+      setError(t('Nie udało się pobrać pliku. Spróbuj ponownie za chwilę.'))
+    } finally {
+      setPending(null)
+    }
+  }
+
+  const buttons = [
+    { key: 'json', label: t('Pełna kopia (JSON)'), path: '/auth/me/export/' },
+    { key: 'transakcje', label: t('Transakcje (CSV)'), path: '/auth/me/export/csv/transakcje/' },
+    { key: 'portfel', label: t('Portfel (CSV)'), path: '/auth/me/export/csv/portfel/' },
+  ]
+
+  return (
+    <div className="rounded-xl border border-slate-200 dark:border-slate-700 bg-white dark:bg-slate-800 p-5 shadow-sm">
+      <h2 className="text-sm font-semibold text-slate-700 dark:text-slate-300">{t('Pobierz swoje dane')}</h2>
+      <p className="mt-1 text-xs text-slate-500 dark:text-slate-400">
+        {t(
+          'Twoje dane należą do Ciebie. Pełna kopia w JSON zawiera wszystko, co przechowujemy na Twoim koncie. Pliki CSV otwierają się bezpośrednio w Excelu i arkuszach Google.',
+        )}
+      </p>
+      <div className="mt-3 flex flex-wrap gap-2">
+        {buttons.map((button) => (
+          <button
+            key={button.key}
+            type="button"
+            onClick={() => download(button.key, button.path)}
+            disabled={pending !== null}
+            className="rounded-md border border-slate-300 dark:border-slate-600 px-3 py-1.5 text-xs font-medium text-slate-700 dark:text-slate-300 hover:bg-slate-100 dark:hover:bg-slate-700 disabled:opacity-60"
+          >
+            {pending === button.key ? t('Pobieranie…') : button.label}
+          </button>
+        ))}
+      </div>
+      {error && <p className="mt-2 text-xs text-red-600 dark:text-red-400">{error}</p>}
     </div>
   )
 }
@@ -93,7 +166,7 @@ function DeleteAccountSection() {
     }
     const confirmed = window.confirm(
       t(
-        'Czy na pewno chcesz usunąć swoje konto? Zostanie zablokowane i wylogowane ze wszystkich urządzeń. Masz 3 miesiące na przywrócenie konta — w tym czasie Twoje dane pozostaną zapisane, wystarczy poprosić administratora o przywrócenie.',
+        'Czy na pewno chcesz usunąć konto? Zostanie zablokowane od razu, a po 30 dniach Twoje dane znikną bezpowrotnie. Link do cofnięcia wyślemy Ci mailem.',
       ),
     )
     if (!confirmed) return
@@ -108,7 +181,7 @@ function DeleteAccountSection() {
       <h2 className="text-sm font-semibold text-red-700 dark:text-red-400">{t('Usuń konto')}</h2>
       <p className="text-xs text-red-700/80 dark:text-red-400/80">
         {t(
-          'Zablokuje Twoje konto i wyloguje Cię ze wszystkich urządzeń. Twoje dane (konta bankowe, transakcje, budżet, inwestycje, historia logowań) zostaną zachowane. Masz 3 miesiące na przywrócenie konta — wystarczy poprosić administratora.',
+          'Konto zostanie zablokowane od razu, a po 30 dniach trwale usuniemy wszystkie Twoje dane: konta bankowe, transakcje, budżet, inwestycje i historię logowań. Przez te 30 dni możesz cofnąć decyzję linkiem z maila, który wyślemy. Zanim usuniesz konto, pobierz swoje dane w sekcji wyżej.',
         )}
       </p>
       <label className="block text-xs font-medium text-slate-500 dark:text-slate-400">

@@ -21,7 +21,26 @@ export const tokenStore = {
 
 export const api = axios.create({ baseURL: BASE_URL })
 
+// Endpoints that are meaningful only when logged out. Sending a stale token
+// along with them used to have a nasty consequence on the login form: the
+// response interceptor below treats "401 on a request that carried a token"
+// as an expired session, so a simple wrong-password attempt by someone with a
+// leftover token in local storage triggered a refresh, failed, and redirected
+// to /logowanie - a full page reload that wiped the form and its error message.
+// The user saw their input vanish with no explanation at all.
+const UNAUTHENTICATED_PATHS = [
+  '/auth/login/',
+  '/auth/register/',
+  '/auth/refresh/',
+  '/auth/password-reset/',
+  '/auth/password-reset-confirm/',
+  '/auth/cancel-deletion/',
+]
+
 api.interceptors.request.use((config) => {
+  if (UNAUTHENTICATED_PATHS.some((path) => config.url?.startsWith(path))) {
+    return config
+  }
   const token = tokenStore.getAccess()
   if (token) {
     config.headers.Authorization = `Bearer ${token}`

@@ -6,6 +6,7 @@ import { useAuth } from '../auth/AuthContext'
 import AuthTopBar from '../components/AuthTopBar'
 import SockLogo from '../components/SockLogo'
 import { CURRENCY_BY_LANGUAGE, LANGUAGES, LANGUAGE_LABELS, useLanguage, type Language } from '../i18n/LanguageContext'
+import { trackEvent } from '../lib/analytics'
 
 export default function Register() {
   const { register } = useAuth()
@@ -60,6 +61,7 @@ export default function Register() {
         registerLanguage,
         termsAccepted,
       )
+      trackEvent('registered')
       navigate('/onboarding')
     } catch (err) {
       if (err instanceof AxiosError && err.response?.data) {

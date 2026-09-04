@@ -17,6 +17,7 @@ import Register from './pages/Register'
 import ForgotPassword from './pages/ForgotPassword'
 import ResetPassword from './pages/ResetPassword'
 import VerifyEmail from './pages/VerifyEmail'
+import CancelDeletion from './pages/CancelDeletion'
 import NotFound from './pages/NotFound'
 
 // Lazy-loaded: everything below only renders behind a login, so none of it
@@ -150,6 +151,7 @@ export default function App() {
       <Route path="/zapomnialem-hasla" element={<ForgotPassword />} />
       <Route path="/reset-hasla" element={<ResetPassword />} />
       <Route path="/zweryfikuj-email" element={<VerifyEmail />} />
+      <Route path="/anuluj-usuniecie" element={<CancelDeletion />} />
       <Route element={<ProtectedRoute />}>
         <Route element={<Layout />}>
           <Route path="/dashboard" element={<Dashboard />} />

@@ -8,6 +8,7 @@ import BankNameAutocomplete from '../components/BankNameAutocomplete'
 import CryptoAutocomplete from '../components/CryptoAutocomplete'
 import StockAutocomplete from '../components/StockAutocomplete'
 import { useLanguage } from '../i18n/LanguageContext'
+import { trackEvent } from '../lib/analytics'
 import { accountTypeLabel, BOND_TYPE_LABELS, formatDate, formatMoney, formatNumber, groupAccountsByBank } from '../lib/format'
 import type {
   BankAccount,
@@ -103,6 +104,7 @@ export default function Onboarding() {
   }
   function finish() {
     if (!tryLeaveStep()) return
+    trackEvent('onboarding_completed')
     queryClient.invalidateQueries()
     navigate('/dashboard')
   }

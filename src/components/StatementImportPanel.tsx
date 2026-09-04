@@ -2,6 +2,7 @@ import { useMemo, useState } from 'react'
 import { useMutation, useQuery, useQueryClient } from '@tanstack/react-query'
 import { api } from '../api/client'
 import { useLanguage } from '../i18n/LanguageContext'
+import { trackEvent } from '../lib/analytics'
 import { formatDate, formatMoney, groupAccountsByBank } from '../lib/format'
 import type { BankAccount, BudgetType, Category, StatementPreview, StatementPreviewRow } from '../types'
 
@@ -74,6 +75,7 @@ export default function StatementImportPanel({
       ).data
     },
     onSuccess: (result) => {
+      trackEvent('statement_imported')
       queryClient.invalidateQueries({ queryKey: ['budget-categories'] })
       alert(t('Zaimportowano {0} transakcji, pominięto {1}.', String(result.imported), String(result.skipped)))
       onDone()

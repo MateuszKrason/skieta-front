@@ -32,7 +32,7 @@ export default function PrivacyPolicy() {
       <div className="mx-auto max-w-3xl space-y-8 px-4 py-12">
         <div>
           <h1 className="text-3xl font-bold text-slate-900 dark:text-slate-100">{t('Polityka prywatności')}</h1>
-          <p className="mt-2 text-sm text-slate-400 dark:text-slate-500">{t('Ostatnia aktualizacja: 22 sierpnia 2026')}</p>
+          <p className="mt-2 text-sm text-slate-400 dark:text-slate-500">{t('Ostatnia aktualizacja: 4 września 2026')}</p>
         </div>
 
         <Section title="Kim jesteśmy">
@@ -78,10 +78,15 @@ export default function PrivacyPolicy() {
           </p>
         </Section>
 
-        <Section title="Google Analytics">
+        <Section title="Analityka odwiedzin">
           <p>
             {t(
-              'Używamy Google Analytics do liczenia odwiedzin i podstawowej analityki ruchu na stronie — Google ustawia w tym celu własne ciasteczka i przetwarza dane takie jak adres IP, rodzaj urządzenia i przeglądarki oraz odwiedzane podstrony. Więcej o tym, jak Google przetwarza te dane, znajdziesz w polityce prywatności Google.',
+              'Liczymy odwiedziny i podstawowy ruch na stronie, ale robimy to bez ciasteczek analitycznych i bez profilowania. Nasz dostawca analityki nie zapisuje niczego na Twoim urządzeniu, nie tworzy identyfikatora, po którym można Cię rozpoznać na innych stronach, i nie zbiera Twojego adresu IP w postaci pozwalającej Cię zidentyfikować. Dlatego nie prosimy Cię o zgodę na ciasteczka i nie zobaczysz tu żadnego bannera.',
+            )}
+          </p>
+          <p>
+            {t(
+              'Wcześniej korzystaliśmy z Google Analytics. Zrezygnowaliśmy z niego właśnie dlatego, że wymagał ciasteczek i Twojej zgody.',
             )}
           </p>
         </Section>
@@ -95,7 +100,12 @@ export default function PrivacyPolicy() {
           <ul className="list-disc space-y-1 pl-5">
             <li>{t('hosting aplikacji i baza danych (Microsoft Azure),')}</li>
             <li>{t('dostawca poczty e-mail — do wysyłki e-maili weryfikacyjnych, resetu hasła i zaproszeń,')}</li>
-            <li>{t('Google Analytics — statystyki odwiedzin strony (patrz sekcja wyżej),')}</li>
+            <li>{t('dostawca analityki bez ciasteczek — zbiorcze statystyki odwiedzin (patrz sekcja wyżej),')}</li>
+            <li>
+              {t(
+                'dostawca monitoringu błędów — dostaje techniczne zgłoszenie awarii (adres strony i ślad błędu w kodzie), nigdy treści Twoich danych finansowych ani zawartości formularzy,'
+              )}
+            </li>
             <li>
               {t(
                 'publiczne źródła danych rynkowych (np. Stooq, Yahoo Finance) — zapytania dotyczą wyłącznie tickerów giełdowych i kursów walut, nigdy Twoich danych osobowych.',
@@ -107,7 +117,7 @@ export default function PrivacyPolicy() {
         <Section title="Jak długo przechowujemy dane">
           <p>
             {t(
-              'Dane konta przechowujemy tak długo, jak konto jest aktywne. Administrator może zarchiwizować konto (dezaktywacja z zachowaniem danych) zamiast je usuwać. Obecnie usunięcie danych na stałe odbywa się na indywidualną prośbę, wysłaną administratorowi — w aplikacji nie ma jeszcze samoobsługowego przycisku "usuń konto".',
+              'Dane konta przechowujemy tak długo, jak konto jest aktywne. Kiedy usuniesz konto w ustawieniach, blokujemy je od razu, a po 30 dniach trwale kasujemy wszystkie Twoje dane. Przez te 30 dni możesz cofnąć decyzję linkiem z maila, który wysyłamy przy usuwaniu. Osobno administrator może zarchiwizować konto, czyli je zdezaktywować z zachowaniem danych — takie konto czeka, aż zdecydujesz, co dalej, i nie jest kasowane automatycznie.',
             )}
           </p>
         </Section>
@@ -115,7 +125,7 @@ export default function PrivacyPolicy() {
         <Section title="Twoje prawa">
           <p>
             {t(
-              'Masz prawo do wglądu w swoje dane, ich poprawienia (większość — bezpośrednio w ustawieniach konta) oraz do żądania ich usunięcia. W tym celu napisz do nas na adres podany niżej albo skorzystaj z widgetu "Zostaw feedback" w aplikacji.',
+              'Masz prawo do wglądu w swoje dane, ich poprawienia, przeniesienia i usunięcia. Dwa z nich załatwisz sam(a) w ustawieniach konta: "Pobierz swoje dane" daje pełną kopię wszystkiego, co przechowujemy (JSON plus tabele CSV do Excela), a "Usuń konto" uruchamia trwałe skasowanie danych. Większość informacji poprawisz bezpośrednio w ustawieniach. W pozostałych sprawach napisz na adres podany niżej albo skorzystaj z widgetu "Zostaw feedback" w aplikacji.',
             )}
           </p>
         </Section>

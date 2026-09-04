@@ -925,8 +925,8 @@ export const de: Record<string, string> = {
   'Czynsz, subskrypcje, ubezpieczenia — cykliczne opłaty co miesiąc, niezależnie od tego, czy już je zapłaciłeś w tym miesiącu.':
     'Miete, Abos, Versicherungen — wiederkehrende monatliche Zahlungen, unabhängig davon, ob du sie diesen Monat schon bezahlt hast.',
   'Czytaj więcej →': 'Weiterlesen →',
-  'Dane konta przechowujemy tak długo, jak konto jest aktywne. Administrator może zarchiwizować konto (dezaktywacja z zachowaniem danych) zamiast je usuwać. Obecnie usunięcie danych na stałe odbywa się na indywidualną prośbę, wysłaną administratorowi — w aplikacji nie ma jeszcze samoobsługowego przycisku "usuń konto".':
-    'Wir speichern Kontodaten, solange das Konto aktiv ist. Ein Administrator kann ein Konto archivieren (Deaktivierung unter Beibehaltung der Daten), statt es zu löschen. Derzeit erfolgt die endgültige Löschung von Daten auf individuelle Anfrage an den Administrator — die App hat noch keinen Selbstbedienungs-Button "Konto löschen".',
+  'Dane konta przechowujemy tak długo, jak konto jest aktywne. Kiedy usuniesz konto w ustawieniach, blokujemy je od razu, a po 30 dniach trwale kasujemy wszystkie Twoje dane. Przez te 30 dni możesz cofnąć decyzję linkiem z maila, który wysyłamy przy usuwaniu. Osobno administrator może zarchiwizować konto, czyli je zdezaktywować z zachowaniem danych — takie konto czeka, aż zdecydujesz, co dalej, i nie jest kasowane automatycznie.':
+    'Wir speichern deine Kontodaten, solange das Konto aktiv ist. Wenn du dein Konto in den Einstellungen löschst, sperren wir es sofort und löschen nach 30 Tagen alle deine Daten endgültig. In diesen 30 Tagen kannst du das mit dem Link aus unserer E-Mail rückgängig machen. Davon getrennt kann ein Administrator ein Konto archivieren, also deaktivieren und die Daten behalten - so ein Konto wartet auf deine Entscheidung und wird nie automatisch gelöscht.',
   'Danych nie sprzedajemy i nie udostępniamy w celach marketingowych. Współpracujemy wyłącznie z dostawcami niezbędnymi do działania serwisu:':
     'Wir verkaufen deine Daten nicht und geben sie nicht zu Marketingzwecken weiter. Wir arbeiten ausschließlich mit Anbietern zusammen, die für den Betrieb des Dienstes notwendig sind:',
   'Dashboard': 'Dashboard',
@@ -936,7 +936,8 @@ export const de: Record<string, string> = {
   'Dołączył(a)': 'Beigetreten',
   'Dzień wypłaty pozwala policzyć, ile wypłat zostało do terminu każdego celu oszczędnościowego.':
     'Der Gehaltstag ermöglicht die Berechnung, wie viele Gehälter bis zum Termin jedes Sparziels noch übrig sind.',
-  'Google Analytics — statystyki odwiedzin strony (patrz sekcja wyżej),': 'Google Analytics — Besucherstatistiken der Website (siehe Abschnitt oben),',
+  'dostawca analityki bez ciasteczek — zbiorcze statystyki odwiedzin (patrz sekcja wyżej),':
+    'ein Analyseanbieter ohne Cookies - aggregierte Besuchsstatistiken (siehe Abschnitt oben),',
   'Hasła są haszowane, komunikacja z aplikacją odbywa się przez HTTPS, a dostęp do panelu administratora mają wyłącznie konta z uprawnieniami administratora lub odpowiednią rolą — i nawet ten panel nie pokazuje treści Twoich transakcji ani sald, tylko zbiorcze statystyki. Treść danych finansowych nie jest też dostępna przez wbudowany panel Django — do bazy danych dociera się wyłącznie bezpośrednim, świadomym dostępem administracyjnym do infrastruktury, nie jednym kliknięciem w aplikacji.':
     'Passwörter werden gehasht, die Kommunikation mit der App erfolgt über HTTPS, und nur Konten mit Administratorrechten oder einer entsprechenden Rolle haben Zugriff auf das Admin-Panel — und selbst dieses Panel zeigt niemals den Inhalt deiner Transaktionen oder Salden, sondern nur aggregierte Statistiken. Der Inhalt der Finanzdaten ist auch nicht über das integrierte Django-Admin-Panel zugänglich — die Datenbank ist nur durch bewussten, direkten administrativen Zugriff auf die Infrastruktur erreichbar, nicht mit einem einzigen Klick in der App.',
   'Historia': 'Verlauf',
@@ -949,8 +950,8 @@ export const de: Record<string, string> = {
     'Konten in einer anderen Währung werden als Fremdwährungskonten markiert — das ist nur eine Kennzeichnung, sie beeinflusst keine Umrechnungen.',
   'Logowanie działa w oparciu o tokeny JWT przechowywane w local storage przeglądarki — to samo miejsce przechowuje wybrany motyw kolorystyczny i język, zanim zostaną zapisane na koncie. Nie ma żadnych skryptów reklamowych ani śledzących w celach marketingowych.':
     'Die Anmeldung basiert auf JWT-Tokens, die im lokalen Speicher des Browsers abgelegt werden — derselbe Ort speichert auch das gewählte Farbschema und die Sprache, bevor sie im Konto gespeichert werden. Es gibt keine Werbe- oder Marketing-Tracking-Skripte.',
-  'Masz prawo do wglądu w swoje dane, ich poprawienia (większość — bezpośrednio w ustawieniach konta) oraz do żądania ich usunięcia. W tym celu napisz do nas na adres podany niżej albo skorzystaj z widgetu "Zostaw feedback" w aplikacji.':
-    'Du hast das Recht, deine Daten einzusehen, zu korrigieren (meist direkt in den Kontoeinstellungen) und ihre Löschung zu verlangen. Schreib uns dazu an die unten angegebene Adresse oder nutze das Widget "Feedback hinterlassen" in der App.',
+  'Masz prawo do wglądu w swoje dane, ich poprawienia, przeniesienia i usunięcia. Dwa z nich załatwisz sam(a) w ustawieniach konta: "Pobierz swoje dane" daje pełną kopię wszystkiego, co przechowujemy (JSON plus tabele CSV do Excela), a "Usuń konto" uruchamia trwałe skasowanie danych. Większość informacji poprawisz bezpośrednio w ustawieniach. W pozostałych sprawach napisz na adres podany niżej albo skorzystaj z widgetu "Zostaw feedback" w aplikacji.':
+    'Du hast das Recht, deine Daten einzusehen, zu berichtigen, mitzunehmen und löschen zu lassen. Zwei davon erledigst du selbst in den Kontoeinstellungen: "Deine Daten herunterladen" liefert eine vollständige Kopie von allem, was wir speichern (JSON plus CSV-Tabellen für Excel), und "Konto löschen" startet die endgültige Löschung. Die meisten Angaben korrigierst du direkt in den Einstellungen. Für alles Weitere schreib an die Adresse unten oder nutze das Feedback-Widget in der App.',
   'Na plusie / na minusie / bez zmian': 'Im Plus / im Minus / unverändert',
   'Najgorsza pozycja': 'Schlechteste Position',
   'Najlepsza pozycja': 'Beste Position',
@@ -965,7 +966,8 @@ export const de: Record<string, string> = {
   'Odblokuj': 'Entsperren',
   'Odznacz wszystkie': 'Alle abwählen',
   'Opis': 'Beschreibung',
-  'Ostatnia aktualizacja: 22 sierpnia 2026': 'Letzte Aktualisierung: 22. August 2026',
+  'Ostatnia aktualizacja: 4 września 2026':
+    'Zuletzt aktualisiert: 4. September 2026',
   'Ostatnia aktywność': 'Letzte Aktivität',
   'Ostatnie IP': 'Letzte IP',
   'Ostatnie logowanie': 'Letzte Anmeldung',
@@ -1003,8 +1005,8 @@ export const de: Record<string, string> = {
   'Uwagi': 'Anmerkungen',
   'Użytkownicy aplikacji i ich aktywność': 'App-Nutzer und ihre Aktivität',
   'Użytkownicy łącznie': 'Nutzer gesamt',
-  'Używamy Google Analytics do liczenia odwiedzin i podstawowej analityki ruchu na stronie — Google ustawia w tym celu własne ciasteczka i przetwarza dane takie jak adres IP, rodzaj urządzenia i przeglądarki oraz odwiedzane podstrony. Więcej o tym, jak Google przetwarza te dane, znajdziesz w polityce prywatności Google.':
-    'Wir nutzen Google Analytics, um Besuche zu zählen und grundlegende Traffic-Analysen durchzuführen — Google setzt dafür eigene Cookies und verarbeitet Daten wie IP-Adresse, Geräte- und Browsertyp sowie besuchte Seiten. Mehr darüber, wie Google diese Daten verarbeitet, findest du in der Datenschutzerklärung von Google.',
+  'Liczymy odwiedziny i podstawowy ruch na stronie, ale robimy to bez ciasteczek analitycznych i bez profilowania. Nasz dostawca analityki nie zapisuje niczego na Twoim urządzeniu, nie tworzy identyfikatora, po którym można Cię rozpoznać na innych stronach, i nie zbiera Twojego adresu IP w postaci pozwalającej Cię zidentyfikować. Dlatego nie prosimy Cię o zgodę na ciasteczka i nie zobaczysz tu żadnego bannera.':
+    'Wir zählen Besuche und den grundlegenden Traffic, aber ohne Analyse-Cookies und ohne Profiling. Unser Analyseanbieter speichert nichts auf deinem Gerät, erstellt keine Kennung, mit der du auf anderen Seiten wiedererkannt werden könntest, und erfasst deine IP-Adresse nicht in einer Form, die dich identifiziert. Deshalb bitten wir dich nie um eine Cookie-Einwilligung und du siehst hier kein Banner.',
   'W miarę rozwoju aplikacji ta strona będzie aktualizowana, a data ostatniej zmiany widoczna jest na górze strony.':
     'Im Zuge der Weiterentwicklung der App wird diese Seite aktualisiert, das Datum der letzten Änderung steht oben auf der Seite.',
   'W sprawach dotyczących danych osobowych napisz na:': 'Bei Fragen zu personenbezogenen Daten schreib an:',
@@ -1177,13 +1179,46 @@ export const de: Record<string, string> = {
     'Der Übersetzungsdienst ist vorübergehend nicht verfügbar - versuche es später erneut oder trage den Text manuell ein.',
 
   // Account: delete account
+  // Polityka prywatności - analityka bez ciasteczek
+  'dostawca monitoringu błędów — dostaje techniczne zgłoszenie awarii (adres strony i ślad błędu w kodzie), nigdy treści Twoich danych finansowych ani zawartości formularzy,':
+    'ein Anbieter für Fehler-Monitoring - erhält eine technische Fehlermeldung (Seitenadresse und Stacktrace), nie den Inhalt deiner Finanzdaten oder von Formularen,',
+  'Analityka odwiedzin':
+    'Besuchsanalyse',
+  'Wcześniej korzystaliśmy z Google Analytics. Zrezygnowaliśmy z niego właśnie dlatego, że wymagał ciasteczek i Twojej zgody.':
+    'Früher haben wir Google Analytics genutzt. Wir haben es genau deshalb abgeschafft, weil es Cookies und deine Einwilligung brauchte.',
+  // Anulowanie usuwania konta
+  'Zatrzymać usuwanie konta?':
+    'Löschung des Kontos stoppen?',
+  'Twoje konto jest w trakcie usuwania. Jeśli klikniesz poniżej, odblokujemy je razem ze wszystkimi danymi i będziesz mógł znowu się zalogować.':
+    'Dein Konto wird gerade gelöscht. Klicke unten, dann entsperren wir es samt allen Daten und du kannst dich wieder anmelden.',
+  'Tak, zatrzymaj usuwanie':
+    'Ja, Löschung stoppen',
+  'Nie, chcę usunąć konto':
+    'Nein, Konto soll gelöscht werden',
+  'Przywracanie…':
+    'Wird wiederhergestellt…',
+  'Zaloguj się →':
+    'Anmelden →',
+  'Ten link jest niekompletny. Otwórz go bezpośrednio z maila, który od nas dostałeś.':
+    'Dieser Link ist unvollständig. Öffne ihn direkt aus unserer E-Mail.',
+  'Nie udało się zatrzymać usuwania konta.':
+    'Die Löschung konnte nicht gestoppt werden.',
+  // Eksport danych (RODO art. 15/20)
+  'Pobierz swoje dane': 'Deine Daten herunterladen',
+  'Twoje dane należą do Ciebie. Pełna kopia w JSON zawiera wszystko, co przechowujemy na Twoim koncie. Pliki CSV otwierają się bezpośrednio w Excelu i arkuszach Google.':
+    'Deine Daten gehören dir. Die vollständige JSON-Kopie enthält alles, was wir zu deinem Konto speichern. Die CSV-Dateien lassen sich direkt in Excel und Google Tabellen öffnen.',
+  'Pełna kopia (JSON)': 'Vollständige Kopie (JSON)',
+  'Transakcje (CSV)': 'Transaktionen (CSV)',
+  'Portfel (CSV)': 'Portfolio (CSV)',
+  'Pobieranie…': 'Wird heruntergeladen…',
+  'Nie udało się pobrać pliku. Spróbuj ponownie za chwilę.': 'Die Datei konnte nicht heruntergeladen werden. Versuche es gleich noch einmal.',
   'Usuń konto': 'Konto löschen',
-  'Zablokuje Twoje konto i wyloguje Cię ze wszystkich urządzeń. Twoje dane (konta bankowe, transakcje, budżet, inwestycje, historia logowań) zostaną zachowane. Masz 3 miesiące na przywrócenie konta — wystarczy poprosić administratora.':
-    'Sperrt dein Konto und meldet dich auf allen Geräten ab. Deine Daten (Bankkonten, Transaktionen, Budget, Investitionen, Anmeldeverlauf) bleiben erhalten. Du hast 3 Monate Zeit, dein Konto wiederherstellen zu lassen — bitte dazu einfach einen Administrator.',
+  'Konto zostanie zablokowane od razu, a po 30 dniach trwale usuniemy wszystkie Twoje dane: konta bankowe, transakcje, budżet, inwestycje i historię logowań. Przez te 30 dni możesz cofnąć decyzję linkiem z maila, który wyślemy. Zanim usuniesz konto, pobierz swoje dane w sekcji wyżej.':
+    'Dein Konto wird sofort gesperrt, und nach 30 Tagen löschen wir alle deine Daten endgültig: Bankkonten, Transaktionen, Budget, Investitionen und Login-Verlauf. In diesen 30 Tagen kannst du das mit dem Link aus unserer E-Mail rückgängig machen. Lade deine Daten vorher im Abschnitt oben herunter.',
   'Wpisz {0}, żeby potwierdzić': 'Gib {0} ein, um zu bestätigen',
   'Wpisz dokładnie "{0}", żeby potwierdzić.': 'Gib genau "{0}" ein, um zu bestätigen.',
-  'Czy na pewno chcesz usunąć swoje konto? Zostanie zablokowane i wylogowane ze wszystkich urządzeń. Masz 3 miesiące na przywrócenie konta — w tym czasie Twoje dane pozostaną zapisane, wystarczy poprosić administratora o przywrócenie.':
-    'Möchtest du dein Konto wirklich löschen? Es wird gesperrt und auf allen Geräten abgemeldet. Du hast 3 Monate Zeit, dein Konto wiederherstellen zu lassen — in dieser Zeit bleiben deine Daten gespeichert, bitte dazu einfach einen Administrator.',
+  'Czy na pewno chcesz usunąć konto? Zostanie zablokowane od razu, a po 30 dniach Twoje dane znikną bezpowrotnie. Link do cofnięcia wyślemy Ci mailem.':
+    'Möchtest du dein Konto wirklich löschen? Es wird sofort gesperrt, und nach 30 Tagen sind deine Daten endgültig weg. Den Link zum Rückgängigmachen schicken wir dir per E-Mail.',
   'Usuwanie…': 'Wird gelöscht…',
   'Nie udało się usunąć konta.': 'Konto konnte nicht gelöscht werden.',
 

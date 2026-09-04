@@ -21,8 +21,21 @@ export default function Login() {
     try {
       await login(username, password)
       navigate('/dashboard')
-    } catch {
-      setError(t('Nieprawidłowy login lub hasło.'))
+    } catch (err) {
+      // A 429 carries a real explanation from the server (too many attempts,
+      // and how long to wait). Collapsing it into "wrong password" would send
+      // someone off resetting a password that was never the problem.
+      //
+      // Read the response off the error by shape rather than with
+      // `instanceof AxiosError`: under Vite's dependency pre-bundling the
+      // class the app imports is not always the same object as the one axios
+      // threw, and a failed instanceof here would silently hide every login
+      // error, not just the throttled one.
+      const response = (err as { response?: { status?: number; data?: unknown } }).response
+      const data = response?.data
+      const detail =
+        typeof data === 'object' && data !== null ? (data as { detail?: string }).detail : undefined
+      setError(response?.status === 429 && detail ? detail : t('Nieprawidłowy login lub hasło.'))
     } finally {
       setSubmitting(false)
     }
