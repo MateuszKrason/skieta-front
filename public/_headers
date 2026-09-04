@@ -11,9 +11,12 @@
 # Two hosts here have to match your accounts, and getting either wrong means
 # the browser blocks the request silently, with no error anywhere:
 #
-#   * https://cloud.umami.is is Umami Cloud, the default analytics provider.
-#     For Plausible, replace it with https://plausible.io in script-src and
-#     connect-src; when self-hosting, use your own origin.
+#   * Umami Cloud needs two entries, and this is the trap: the script is
+#     served from cloud.umami.is but it posts its data to gateway.umami.is.
+#     Allowing only the first one loads the tracker and then blocks every
+#     pageview it tries to send, which is exactly as useless as not having it
+#     and much harder to notice. For Plausible, both roles are on
+#     https://plausible.io; when self-hosting, use your own origin.
 #   * The two Sentry ingest hosts cover both of its data regions. A CSP
 #     wildcard replaces exactly the leading labels, so *.ingest.sentry.io does
 #     NOT match o123.ingest.de.sentry.io - an EU-region DSN needs its own
@@ -21,6 +24,6 @@
 #     the browser drops the request and no error appears anywhere. A
 #     self-hosted Sentry needs its own origin here instead.
 /*
-  Content-Security-Policy: default-src 'self'; script-src 'self' https://cloud.umami.is; style-src 'self' 'unsafe-inline'; img-src 'self' data:; font-src 'self' data:; connect-src 'self' https://cloud.umami.is https://*.ingest.sentry.io https://*.ingest.de.sentry.io; frame-ancestors 'none'; base-uri 'self'; form-action 'self'; object-src 'none'
+  Content-Security-Policy: default-src 'self'; script-src 'self' https://cloud.umami.is; style-src 'self' 'unsafe-inline'; img-src 'self' data:; font-src 'self' data:; connect-src 'self' https://cloud.umami.is https://gateway.umami.is https://*.ingest.sentry.io https://*.ingest.de.sentry.io; frame-ancestors 'none'; base-uri 'self'; form-action 'self'; object-src 'none'
   Referrer-Policy: strict-origin-when-cross-origin
   X-Content-Type-Options: nosniff
