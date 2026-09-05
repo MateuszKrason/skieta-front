@@ -1179,6 +1179,13 @@ export const en: Record<string, string> = {
     'The translation service is temporarily unavailable - try again later or fill it in by hand.',
 
   // Account: delete account
+  // Wyloguj ze wszystkich urzadzen
+  'To wyloguje Cię ze wszystkich urządzeń, także z tego. Zaloguj się ponownie tam, gdzie chcesz dalej korzystać z konta. Kontynuować?':
+    'This logs you out of every device, including this one. Log in again wherever you want to keep using the account. Continue?',
+  'Wyloguj ze wszystkich urządzeń':
+    'Log out of all devices',
+  'Wylogowywanie…':
+    'Logging out…',
   // Pusty dashboard - baner z zachetą
   'Zera poniżej to nie błąd — po prostu jeszcze nic nie dodałeś(-aś)':
     "The zeros below aren't a bug - you just haven't added anything yet",

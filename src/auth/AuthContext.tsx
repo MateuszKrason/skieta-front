@@ -20,6 +20,12 @@ interface AuthContextValue {
     termsAccepted: boolean,
   ) => Promise<void>
   logout: () => void
+  /** Kills every refresh token this account has ever been issued (see
+   * accounts.views.LogoutAllView on the backend), then logs this device out
+   * the same way `logout` does. For "I think someone else has access" /
+   * "I logged in on a shared computer and forgot to log out" - not the
+   * everyday sign-out button. */
+  logoutFromAllDevices: () => Promise<void>
   refreshUser: () => Promise<void>
   updateProfile: (patch: Partial<User['profile']>) => void
 }
@@ -98,10 +104,50 @@ export function AuthProvider({ children }: { children: ReactNode }) {
     syncPreferencesFromUser(data.user)
   }
 
+  // Also tells the server to kill the refresh token this device is holding
+  // (see accounts.views.LogoutView), not just forget it locally - otherwise
+  // a copied token (a stolen device, an XSS payload, a synced browser
+  // profile someone forgot about) keeps working for its full 14-day
+  // lifetime after the user thinks they've signed out. Fired before
+  // clearing local storage, since the request needs the still-valid access
+  // token attached to authenticate as this user, and is deliberately never
+  // awaited: the user is logged out of *this device* immediately regardless
+  // of whether the network call succeeds, fails, or is offline entirely -
+  // it's a best-effort security hardening on top of the local logout, not a
+  // precondition for it.
   function logout() {
+    const access = tokenStore.getAccess()
+    const refresh = tokenStore.getRefresh()
+    if (refresh) {
+      // The Authorization header is set explicitly here rather than left to
+      // api's request interceptor, which reads tokenStore.getAccess() at
+      // dispatch time - and axios doesn't dispatch synchronously. clear()
+      // below runs before that interceptor gets a turn, so by the time it
+      // read the token itself it was already gone and the request went out
+      // unauthenticated (a real 401 this shipped with once, caught by
+      // clicking the actual "Wyloguj" button rather than just calling the
+      // endpoint directly with curl - the two took different code paths).
+      api
+        .post('/auth/logout/', { refresh }, access ? { headers: { Authorization: `Bearer ${access}` } } : undefined)
+        .catch(() => {})
+    }
     tokenStore.clear()
     setUser(null)
     hasSyncedPreferences.current = false
+  }
+
+  async function logoutFromAllDevices() {
+    try {
+      await api.post('/auth/logout-all/')
+    } finally {
+      // Runs even if the request failed: whatever devices didn't get
+      // blacklisted on the server, this one still stops trusting its own
+      // tokens - the alternative is a "log out everywhere" button that
+      // doesn't log the person clicking it out.
+      tokenStore.clear()
+      setUser(null)
+      hasSyncedPreferences.current = false
+    }
   }
 
   // Applies a known profile change (e.g. a color/language toggle) straight
@@ -118,7 +164,9 @@ export function AuthProvider({ children }: { children: ReactNode }) {
   }
 
   return (
-    <AuthContext.Provider value={{ user, loading, login, register, logout, refreshUser: fetchMe, updateProfile }}>
+    <AuthContext.Provider
+      value={{ user, loading, login, register, logout, logoutFromAllDevices, refreshUser: fetchMe, updateProfile }}
+    >
       {children}
     </AuthContext.Provider>
   )

@@ -1204,11 +1204,30 @@ function LoginHeatmap({ dates }: { dates: string[] }) {
 
 function LoginHistorySection() {
   const { t } = useLanguage()
+  const { logoutFromAllDevices } = useAuth()
+  const navigate = useNavigate()
 
   const { data } = useQuery({
     queryKey: ['login-history'],
     queryFn: async () => (await api.get<LoginHistoryResponse>('/auth/login-history/')).data,
   })
+
+  const logoutAllMutation = useMutation({
+    mutationFn: logoutFromAllDevices,
+    onSuccess: () => navigate('/logowanie'),
+  })
+
+  function onLogoutAll() {
+    if (
+      window.confirm(
+        t(
+          'To wyloguje Cię ze wszystkich urządzeń, także z tego. Zaloguj się ponownie tam, gdzie chcesz dalej korzystać z konta. Kontynuować?',
+        ),
+      )
+    ) {
+      logoutAllMutation.mutate()
+    }
+  }
 
   const peakHourLabel = data?.stats.peak_hour !== null && data?.stats.peak_hour !== undefined
     ? `${String(data.stats.peak_hour).padStart(2, '0')}:00`
@@ -1216,7 +1235,17 @@ function LoginHistorySection() {
 
   return (
     <div className="space-y-3 rounded-xl border border-slate-200 dark:border-slate-700 bg-white dark:bg-slate-800 p-5 shadow-sm">
-      <h2 className="text-sm font-semibold text-slate-700 dark:text-slate-300">{t('Historia logowań')}</h2>
+      <div className="flex flex-wrap items-center justify-between gap-2">
+        <h2 className="text-sm font-semibold text-slate-700 dark:text-slate-300">{t('Historia logowań')}</h2>
+        <button
+          type="button"
+          onClick={onLogoutAll}
+          disabled={logoutAllMutation.isPending}
+          className="text-xs font-medium text-red-600 dark:text-red-400 hover:underline disabled:opacity-60"
+        >
+          {logoutAllMutation.isPending ? t('Wylogowywanie…') : t('Wyloguj ze wszystkich urządzeń')}
+        </button>
+      </div>
 
       <div className="grid grid-cols-2 gap-3 sm:grid-cols-4">
         <div className="rounded-lg border border-slate-100 dark:border-slate-800 p-3">

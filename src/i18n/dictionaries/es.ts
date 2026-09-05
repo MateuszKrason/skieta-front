@@ -1181,6 +1181,13 @@ export const es: Record<string, string> = {
     'El servicio de traducción no está disponible en este momento - inténtalo más tarde o complétalo a mano.',
 
   // Account: delete account
+  // Wyloguj ze wszystkich urzadzen
+  'To wyloguje Cię ze wszystkich urządzeń, także z tego. Zaloguj się ponownie tam, gdzie chcesz dalej korzystać z konta. Kontynuować?':
+    'Esto cerrará tu sesión en todos los dispositivos, incluido este. Vuelve a iniciar sesión donde quieras seguir usando la cuenta. ¿Continuar?',
+  'Wyloguj ze wszystkich urządzeń':
+    'Cerrar sesión en todos los dispositivos',
+  'Wylogowywanie…':
+    'Cerrando sesión…',
   // Pusty dashboard - baner z zachetą
   'Zera poniżej to nie błąd — po prostu jeszcze nic nie dodałeś(-aś)':
     'Los ceros de abajo no son un error - simplemente aún no has añadido nada',

@@ -1179,6 +1179,13 @@ export const de: Record<string, string> = {
     'Der Übersetzungsdienst ist vorübergehend nicht verfügbar - versuche es später erneut oder trage den Text manuell ein.',
 
   // Account: delete account
+  // Wyloguj ze wszystkich urzadzen
+  'To wyloguje Cię ze wszystkich urządzeń, także z tego. Zaloguj się ponownie tam, gdzie chcesz dalej korzystać z konta. Kontynuować?':
+    'Dadurch wirst du von allen Geräten abgemeldet, auch von diesem. Melde dich dort wieder an, wo du das Konto weiter nutzen möchtest. Fortfahren?',
+  'Wyloguj ze wszystkich urządzeń':
+    'Von allen Geräten abmelden',
+  'Wylogowywanie…':
+    'Wird abgemeldet…',
   // Pusty dashboard - baner z zachetą
   'Zera poniżej to nie błąd — po prostu jeszcze nic nie dodałeś(-aś)':
     'Die Nullen unten sind kein Fehler - du hast einfach noch nichts hinzugefügt',
