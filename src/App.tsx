@@ -56,6 +56,7 @@ const Wydatki = lazy(() => import('./pages/analysis/Wydatki'))
 const Kategorie = lazy(() => import('./pages/analysis/Kategorie'))
 const Statystyki = lazy(() => import('./pages/analysis/Statystyki'))
 const InvestmentCalculator = lazy(() => import('./pages/InvestmentCalculator'))
+const PublicCalculator = lazy(() => import('./pages/PublicCalculator'))
 
 const PAGE_TITLES: [string, string][] = [
   ['/polityka-prywatnosci', 'Polityka prywatności'],
@@ -90,6 +91,7 @@ const PAGE_TITLES: [string, string][] = [
   ['/budzet/kategorie', 'Kategorie'],
   ['/budzet/statystyki', 'Statystyki'],
   ['/budzet', 'Budżet'],
+  ['/kalkulator', 'Kalkulator inwestycyjny - lokata, obligacje czy giełda'],
   ['/analiza', 'Analiza'],
   ['/dashboard', 'Dashboard'],
 ]
@@ -115,7 +117,7 @@ function useDocumentTitle() {
 // canonical tag pointing at themselves — everything else (the app itself,
 // behind login) points back at the landing page, since that's the one real
 // entry point search engines should treat as canonical for those paths.
-const CANONICAL_SELF_PATHS = ['/', '/polityka-prywatnosci', '/regulamin']
+const CANONICAL_SELF_PATHS = ['/', '/polityka-prywatnosci', '/regulamin', '/kalkulator']
 
 function useCanonicalLink() {
   const location = useLocation()
@@ -152,6 +154,7 @@ export default function App() {
       <Route path="/reset-hasla" element={<ResetPassword />} />
       <Route path="/zweryfikuj-email" element={<VerifyEmail />} />
       <Route path="/anuluj-usuniecie" element={<CancelDeletion />} />
+      <Route path="/kalkulator" element={<PublicCalculator />} />
       <Route element={<ProtectedRoute />}>
         <Route element={<Layout />}>
           <Route path="/dashboard" element={<Dashboard />} />

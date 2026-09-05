@@ -1,6 +1,7 @@
 User-agent: *
 Allow: /$
 Allow: /artykuly/
+Allow: /kalkulator
 Allow: /polityka-prywatnosci
 Allow: /regulamin
 Allow: /logowanie

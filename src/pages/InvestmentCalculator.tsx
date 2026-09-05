@@ -194,7 +194,7 @@ function categoryForKey(key: string): Category {
   return 'wlasne'
 }
 
-export default function InvestmentCalculator() {
+export default function InvestmentCalculator({ publicMode = false }: { publicMode?: boolean }) {
   const { t } = useLanguage()
   const { user } = useAuth()
   const base = user?.profile.base_currency ?? 'PLN'
@@ -383,33 +383,48 @@ export default function InvestmentCalculator() {
         </div>
       </div>
 
-      <div className="rounded-xl border border-slate-200 dark:border-slate-700 bg-white dark:bg-slate-800 p-5 shadow-sm">
-        <p className="mb-1 text-sm font-semibold text-slate-700 dark:text-slate-300">
-          {t('Dodaj dowolną spółkę do porównania')}
-        </p>
-        <p className="mb-3 text-xs text-slate-400 dark:text-slate-500">
-          {t(
-            'Wyszukaj dowolną spółkę - jej wiersz w tabeli poniżej dostanie realną, historyczną stopę zwrotu (dane Yahoo Finance), którą możesz dowolnie zmienić.',
-          )}
-        </p>
-        <div className="flex items-center gap-2">
-          <div className="max-w-sm flex-1">
-            <StockAutocomplete onSelect={onPickCompany} />
-          </div>
-          {addCompanyMutation.isPending && (
-            <span className="inline-flex items-center gap-1.5 text-xs text-slate-400 dark:text-slate-500">
-              <Spinner size="sm" /> {t('pobieram dane…')}
-            </span>
-          )}
+      {publicMode ? (
+        // StockAutocomplete and the CAGR lookup both call authenticated
+        // endpoints (a company search hitting Yahoo on the user's behalf
+        // needs its own rate limiting, which this public page doesn't carry
+        // yet) - so the public version prompts for an account instead of
+        // rendering a search box that would 401 on every keystroke.
+        <div className="rounded-xl border border-dashed border-slate-300 dark:border-slate-700 bg-slate-50 dark:bg-slate-800/50 p-5 text-sm text-slate-500 dark:text-slate-400">
+          {t('Zaloguj się, żeby dodać dowolną spółkę z realną, historyczną stopą zwrotu.')}
         </div>
-        {companyError && <p className="mt-2 text-xs text-red-600 dark:text-red-400">{companyError}</p>}
-      </div>
+      ) : (
+        <div className="rounded-xl border border-slate-200 dark:border-slate-700 bg-white dark:bg-slate-800 p-5 shadow-sm">
+          <p className="mb-1 text-sm font-semibold text-slate-700 dark:text-slate-300">
+            {t('Dodaj dowolną spółkę do porównania')}
+          </p>
+          <p className="mb-3 text-xs text-slate-400 dark:text-slate-500">
+            {t(
+              'Wyszukaj dowolną spółkę - jej wiersz w tabeli poniżej dostanie realną, historyczną stopę zwrotu (dane Yahoo Finance), którą możesz dowolnie zmienić.',
+            )}
+          </p>
+          <div className="flex items-center gap-2">
+            <div className="max-w-sm flex-1">
+              <StockAutocomplete onSelect={onPickCompany} />
+            </div>
+            {addCompanyMutation.isPending && (
+              <span className="inline-flex items-center gap-1.5 text-xs text-slate-400 dark:text-slate-500">
+                <Spinner size="sm" /> {t('pobieram dane…')}
+              </span>
+            )}
+          </div>
+          {companyError && <p className="mt-2 text-xs text-red-600 dark:text-red-400">{companyError}</p>}
+        </div>
+      )}
 
       {bondsLoading ? (
         <CardLoader />
       ) : (
         <>
-          <PresetBar allKeys={baseRows.map((r) => r.key)} hiddenKeys={hiddenKeys} onLoad={setHiddenKeys} />
+          {/* Presets save to the user's profile (PATCH /auth/me/) - nothing
+              to show or save for a logged-out visitor. */}
+          {!publicMode && (
+            <PresetBar allKeys={baseRows.map((r) => r.key)} hiddenKeys={hiddenKeys} onLoad={setHiddenKeys} />
+          )}
 
           <div className="rounded-xl border border-slate-200 dark:border-slate-700 bg-white dark:bg-slate-800 p-5 shadow-sm">
             <p className="mb-3 text-sm font-semibold text-slate-700 dark:text-slate-300">

@@ -7,6 +7,7 @@ Aplikacja (dashboard, portfel, budżet, planowanie) jest prywatna i wymaga zalog
 ## Strony publiczne
 
 - [Strona główna](https://skieta.com/): opis produktu i wejście do logowania/rejestracji.
+- [Kalkulator inwestycyjny](https://skieta.com/kalkulator): porównanie lokaty, obligacji skarbowych i giełdy dla podanej kwoty i horyzontu, po podatku Belki - działa bez konta.
 - [Artykuły o finansach osobistych](https://skieta.com/sitemap.xml): pełna, aktualna lista w mapie witryny.
 - [Logowanie](https://skieta.com/logowanie)
 - [Rejestracja](https://skieta.com/register): wymaga ważnego linku z zaproszeniem.

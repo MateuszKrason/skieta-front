@@ -1181,6 +1181,19 @@ export const es: Record<string, string> = {
     'El servicio de traducción no está disponible en este momento - inténtalo más tarde o complétalo a mano.',
 
   // Account: delete account
+  // Publiczny kalkulator (/kalkulator)
+  'Wypróbuj kalkulator →':
+    'Prueba la calculadora →',
+  'Otwórz kalkulator →':
+    'Abrir la calculadora →',
+  'Zaloguj się, żeby dodać dowolną spółkę z realną, historyczną stopą zwrotu.':
+    'Inicia sesión para añadir cualquier empresa con una rentabilidad histórica real.',
+  'Śledź to na bieżąco, nie tylko dziś':
+    'Sigue esto de forma continua, no solo hoy',
+  'skieta liczy to samo dla Twojego prawdziwego portfela - konta bankowe, akcje, obligacje i lokaty w jednym miejscu, z zyskiem po podatku Belki. Dostęp jest na zaproszenie - zostaw e-mail, a odezwiemy się.':
+    'skieta calcula lo mismo para tu cartera real - cuentas bancarias, acciones, bonos y depósitos en un solo lugar, con la ganancia ya calculada después de impuestos. El acceso es por invitación - déjanos tu correo y te contactaremos.',
+  'Kalkulator inwestycyjny - lokata, obligacje czy giełda':
+    'Calculadora de inversión - depósito, bonos o bolsa',
   // Polityka prywatności - analityka bez ciasteczek
   'Aplikacja i baza danych stoją w centrum danych Microsoft Azure w Polsce (region Poland Central), a serwer pocztowy w Polsce. Zgłoszenia o awariach trafiają do europejskiego regionu dostawcy monitoringu. Twoje dane finansowe nie opuszczają Europejskiego Obszaru Gospodarczego.':
     'La aplicación y la base de datos están en un centro de datos de Microsoft Azure en Polonia (la región Poland Central), y el servidor de correo también está en Polonia. Los informes de fallos van a la región europea de nuestro proveedor de monitorización. Tus datos financieros no salen del Espacio Económico Europeo.',

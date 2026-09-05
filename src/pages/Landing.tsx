@@ -289,6 +289,14 @@ export default function Landing() {
               >
                 {ctaLabel}
               </Link>
+              {/* No account needed - the same engine as /analiza, minus the
+                  two account-only extras. See PublicCalculator.tsx. */}
+              <Link
+                to="/kalkulator"
+                className="rounded-full border border-slate-300 dark:border-slate-600 px-7 py-3 text-base font-semibold text-slate-700 dark:text-slate-200 transition hover:border-accent-400 hover:text-accent-700 dark:hover:text-accent-400"
+              >
+                {t('Wypróbuj kalkulator →')}
+              </Link>
             </div>
             {!user && (
               <div className="mt-4">

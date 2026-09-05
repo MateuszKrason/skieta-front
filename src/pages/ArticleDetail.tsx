@@ -196,6 +196,14 @@ export default function ArticleDetail() {
                   'skieta pokazuje każdy zysk brutto i po podatku, a kalkulator porównuje lokaty, obligacje i giełdę na Twojej kwocie. Dostęp jest na zaproszenie - zostaw e-mail, a odezwiemy się.',
                 )}
               </p>
+              <div className="mt-4 flex flex-wrap items-center gap-3">
+                <Link
+                  to="/kalkulator"
+                  className="rounded-full border border-accent-300 dark:border-accent-700 bg-white dark:bg-slate-900 px-5 py-2 text-sm font-semibold text-accent-700 dark:text-accent-400 transition hover:border-accent-500"
+                >
+                  {t('Otwórz kalkulator →')}
+                </Link>
+              </div>
               <div className="mt-4">
                 <RequestAccessForm variant="prominent" source="article" article={slug} />
               </div>
