@@ -7,6 +7,7 @@ import App from './App.tsx'
 import { AuthProvider } from './auth/AuthContext'
 import { ThemeProvider } from './theme/ThemeContext'
 import { LanguageProvider } from './i18n/LanguageContext'
+import RootErrorBoundary from './components/RootErrorBoundary'
 import { initAnalytics } from './lib/analytics'
 import { initErrorReporting } from './lib/errorReporting'
 
@@ -24,16 +25,18 @@ initAnalytics()
 
 createRoot(document.getElementById('root')!).render(
   <StrictMode>
-    <QueryClientProvider client={queryClient}>
-      <ThemeProvider>
-        <LanguageProvider>
-          <BrowserRouter>
-            <AuthProvider>
-              <App />
-            </AuthProvider>
-          </BrowserRouter>
-        </LanguageProvider>
-      </ThemeProvider>
-    </QueryClientProvider>
+    <RootErrorBoundary>
+      <QueryClientProvider client={queryClient}>
+        <ThemeProvider>
+          <LanguageProvider>
+            <BrowserRouter>
+              <AuthProvider>
+                <App />
+              </AuthProvider>
+            </BrowserRouter>
+          </LanguageProvider>
+        </ThemeProvider>
+      </QueryClientProvider>
+    </RootErrorBoundary>
   </StrictMode>,
 )
