@@ -1179,6 +1179,15 @@ export const de: Record<string, string> = {
     'Der Übersetzungsdienst ist vorübergehend nicht verfügbar - versuche es später erneut oder trage den Text manuell ein.',
 
   // Account: delete account
+  // Pusty dashboard - baner z zachetą
+  'Zera poniżej to nie błąd — po prostu jeszcze nic nie dodałeś(-aś)':
+    'Die Nullen unten sind kein Fehler - du hast einfach noch nichts hinzugefügt',
+  'Dodaj konto bankowe, akcje, obligacje albo lokatę, a ten pulpit zacznie liczyć Twój prawdziwy majątek — zysk osobno od wpłaconego kapitału, po podatku Belki.':
+    'Füge ein Bankkonto, Aktien, Anleihen oder eine Termineinlage hinzu, und dieses Dashboard beginnt, dein echtes Vermögen zu berechnen - Gewinn getrennt vom eingezahlten Kapital, nach Steuer.',
+  'Dodaj pierwsze dane →':
+    'Erste Daten hinzufügen →',
+  'Zobacz, co by policzył, na przykładzie':
+    'Sieh dir an, was er anhand eines Beispiels berechnen würde',
   // Publiczny kalkulator (/kalkulator)
   'Wypróbuj kalkulator →':
     'Rechner ausprobieren →',

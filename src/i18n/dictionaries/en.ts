@@ -1179,6 +1179,15 @@ export const en: Record<string, string> = {
     'The translation service is temporarily unavailable - try again later or fill it in by hand.',
 
   // Account: delete account
+  // Pusty dashboard - baner z zachetą
+  'Zera poniżej to nie błąd — po prostu jeszcze nic nie dodałeś(-aś)':
+    "The zeros below aren't a bug - you just haven't added anything yet",
+  'Dodaj konto bankowe, akcje, obligacje albo lokatę, a ten pulpit zacznie liczyć Twój prawdziwy majątek — zysk osobno od wpłaconego kapitału, po podatku Belki.':
+    'Add a bank account, stocks, bonds or a deposit, and this dashboard starts tracking your real net worth - profit worked out separately from what you put in, after tax.',
+  'Dodaj pierwsze dane →':
+    'Add your first data →',
+  'Zobacz, co by policzył, na przykładzie':
+    'See what it would calculate, with an example',
   // Publiczny kalkulator (/kalkulator)
   'Wypróbuj kalkulator →':
     'Try the calculator →',

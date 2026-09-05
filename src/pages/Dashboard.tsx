@@ -107,6 +107,14 @@ export default function Dashboard() {
   const base = summary?.base_currency ?? 'PLN'
   const latest = summary?.latest
 
+  // A snapshot with everything at zero and nothing ever contributed means
+  // this is a brand-new account, not someone who genuinely holds nothing -
+  // the two would look identical below without this check, and the stat
+  // cards would read as "0 zł" six times over with no explanation why.
+  const isEmpty =
+    !latest ||
+    (Number(latest.total) === 0 && Number(summary?.growth.net_contributed ?? 0) === 0)
+
   if (isLoading) {
     return <PageLoader />
   }
@@ -155,6 +163,8 @@ export default function Dashboard() {
           </button>
         </div>
       </div>
+
+      {isEmpty && <EmptyDashboardBanner />}
 
       <div className={`grid grid-cols-1 gap-4 sm:grid-cols-2 ${showCrypto ? 'lg:grid-cols-6' : 'lg:grid-cols-5'}`}>
         <StatCard label={t('Wartość majątku')} value={formatMoney(latest?.total, base)} highlight />
@@ -307,6 +317,40 @@ export default function Dashboard() {
             </p>
           </div>
         </div>
+      </div>
+    </div>
+  )
+}
+
+// Shown instead of letting six "0 zł" stat cards speak for themselves - a
+// brand-new account and a real zero balance render identically otherwise,
+// and only one of those is worth explaining. No fabricated numbers here on
+// purpose: this is a finance app, and a plausible-looking amount that isn't
+// the user's own is exactly the kind of thing that should never appear next
+// to their real balance, even labelled "example". A clear reason plus one
+// obvious next step does the same job without that risk.
+function EmptyDashboardBanner() {
+  const { t } = useLanguage()
+  return (
+    <div className="rounded-xl border border-accent-200 dark:border-accent-800 bg-accent-50 dark:bg-accent-950/40 p-5">
+      <h2 className="text-sm font-semibold text-slate-900 dark:text-slate-100">
+        {t('Zera poniżej to nie błąd — po prostu jeszcze nic nie dodałeś(-aś)')}
+      </h2>
+      <p className="mt-1 text-sm text-slate-600 dark:text-slate-400">
+        {t(
+          'Dodaj konto bankowe, akcje, obligacje albo lokatę, a ten pulpit zacznie liczyć Twój prawdziwy majątek — zysk osobno od wpłaconego kapitału, po podatku Belki.',
+        )}
+      </p>
+      <div className="mt-3 flex flex-wrap gap-2">
+        <Link to="/onboarding" className="btn-primary">
+          {t('Dodaj pierwsze dane →')}
+        </Link>
+        <Link
+          to="/kalkulator"
+          className="rounded-md border border-slate-300 dark:border-slate-600 bg-white dark:bg-slate-800 px-4 py-2 text-sm font-medium text-slate-700 dark:text-slate-300 hover:bg-slate-100 dark:hover:bg-slate-700"
+        >
+          {t('Zobacz, co by policzył, na przykładzie')}
+        </Link>
       </div>
     </div>
   )

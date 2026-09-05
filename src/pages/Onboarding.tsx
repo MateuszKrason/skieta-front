@@ -57,8 +57,6 @@ const STEPS: { id: StepId; label: string }[] = [
   { id: 'done', label: 'Gotowe' },
 ]
 
-const ACCOUNTS_STEP_INDEX = STEPS.findIndex((s) => s.id === 'accounts')
-
 export default function Onboarding() {
   const navigate = useNavigate()
   const queryClient = useQueryClient()
@@ -66,14 +64,17 @@ export default function Onboarding() {
   const [stepIndex, setStepIndex] = useState(0)
   const step = STEPS[stepIndex]
 
-  const { data: accounts } = useQuery({
-    queryKey: ['accounts'],
-    queryFn: async () => (await api.get<BankAccount[]>('/banking/accounts/')).data,
-  })
-  // Registration requires at least one bank account — the "accounts" step
-  // can't be skipped or passed until one exists.
-  const hasAccount = (accounts?.length ?? 0) > 0
-  const accountsStepBlocked = step.id === 'accounts' && !hasAccount
+  // The wizard used to hard-block past the "accounts" step until one
+  // existed. Nothing downstream actually requires that: every other step's
+  // account field is optional (StocksStep and CryptoStep have none at all;
+  // DepositsStep/BondsStep default to "bez powiązania"), and every
+  // dashboard/portfolio endpoint returns a clean zero-value response for a
+  // user with nothing recorded yet (verified directly against the API, not
+  // assumed). A first-time user who came to see what the app does before
+  // typing in their real bank balance had no way past that block, which is
+  // a worse first five minutes than an honest empty dashboard with a way
+  // in - see Dashboard.tsx for the empty-state banner that replaces the
+  // wall of zeros this now exposes. All steps are freely skippable.
 
   // One ref per step that has a form worth saving before navigating away from
   // it - see StepHandle. Steps without a ref here (interests/done) have
@@ -109,7 +110,7 @@ export default function Onboarding() {
     navigate('/dashboard')
   }
   function goToStep(i: number) {
-    if ((i <= ACCOUNTS_STEP_INDEX || hasAccount) && tryLeaveStep()) setStepIndex(i)
+    if (tryLeaveStep()) setStepIndex(i)
   }
 
   return (
@@ -128,8 +129,7 @@ export default function Onboarding() {
           <button
             key={s.id}
             onClick={() => goToStep(i)}
-            disabled={i > ACCOUNTS_STEP_INDEX && !hasAccount}
-            className={`shrink-0 rounded-full px-3 py-1 text-xs font-medium disabled:cursor-not-allowed disabled:opacity-40 ${
+            className={`shrink-0 rounded-full px-3 py-1 text-xs font-medium ${
               i === stepIndex
                 ? 'bg-accent-600 text-white'
                 : i < stepIndex
@@ -142,18 +142,11 @@ export default function Onboarding() {
         ))}
         <button
           onClick={finish}
-          disabled={!hasAccount}
-          title={!hasAccount ? t('Dodaj najpierw co najmniej jedno konto bankowe.') : undefined}
-          className="ml-auto text-xs font-medium text-slate-400 hover:text-slate-600 dark:hover:text-slate-300 hover:underline disabled:cursor-not-allowed disabled:opacity-40 disabled:hover:no-underline"
+          className="ml-auto text-xs font-medium text-slate-400 hover:text-slate-600 dark:hover:text-slate-300 hover:underline"
         >
           {t('Zakończ teraz →')}
         </button>
       </div>
-      {accountsStepBlocked && (
-        <p className="text-xs text-amber-600 dark:text-amber-400">
-          {t('Dodaj co najmniej jedno konto bankowe, żeby przejść dalej.')}
-        </p>
-      )}
 
       {step.id === 'interests' && <InterestsStep />}
       {step.id === 'accounts' && <AccountsStep ref={stepRefs.accounts} />}
@@ -182,7 +175,7 @@ export default function Onboarding() {
           >
             {t('← Wstecz')}
           </button>
-          <button onClick={next} disabled={accountsStepBlocked} className="btn-primary disabled:cursor-not-allowed disabled:opacity-40">
+          <button onClick={next} className="btn-primary">
             {t('Dalej →')}
           </button>
         </div>

@@ -1181,6 +1181,15 @@ export const es: Record<string, string> = {
     'El servicio de traducción no está disponible en este momento - inténtalo más tarde o complétalo a mano.',
 
   // Account: delete account
+  // Pusty dashboard - baner z zachetą
+  'Zera poniżej to nie błąd — po prostu jeszcze nic nie dodałeś(-aś)':
+    'Los ceros de abajo no son un error - simplemente aún no has añadido nada',
+  'Dodaj konto bankowe, akcje, obligacje albo lokatę, a ten pulpit zacznie liczyć Twój prawdziwy majątek — zysk osobno od wpłaconego kapitału, po podatku Belki.':
+    'Añade una cuenta bancaria, acciones, bonos o un depósito, y este panel empezará a calcular tu patrimonio real - la ganancia calculada aparte del capital aportado, después de impuestos.',
+  'Dodaj pierwsze dane →':
+    'Añade tus primeros datos →',
+  'Zobacz, co by policzył, na przykładzie':
+    'Mira lo que calcularía, con un ejemplo',
   // Publiczny kalkulator (/kalkulator)
   'Wypróbuj kalkulator →':
     'Prueba la calculadora →',
