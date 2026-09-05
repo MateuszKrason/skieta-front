@@ -1,4 +1,9 @@
-import { defineConfig } from 'vite'
+// vitest/config's defineConfig, not vite's - it's the same function, but its
+// type also recognises the `test` option below. Importing from plain 'vite'
+// type-checks fine until `test` is added, then fails tsc with an opaque
+// "does not exist in type 'UserConfigExport'" that has nothing to do with
+// the actual config.
+import { defineConfig } from 'vitest/config'
 import react from '@vitejs/plugin-react'
 import tailwindcss from '@tailwindcss/vite'
 
@@ -6,7 +11,7 @@ import tailwindcss from '@tailwindcss/vite'
 // and `vite preview` send the same security headers — keep the two in sync.
 const securityHeaders = {
   'Content-Security-Policy':
-    "default-src 'self'; script-src 'self' https://www.googletagmanager.com; style-src 'self' 'unsafe-inline'; img-src 'self' data: https://www.googletagmanager.com https://www.google-analytics.com; font-src 'self' data:; connect-src 'self' https://www.googletagmanager.com https://www.google-analytics.com https://*.google-analytics.com https://*.analytics.google.com; frame-ancestors 'none'; base-uri 'self'; form-action 'self'; object-src 'none'",
+    "default-src 'self'; script-src 'self' https://cloud.umami.is; style-src 'self' 'unsafe-inline'; img-src 'self' data:; font-src 'self' data:; connect-src 'self' https://cloud.umami.is https://gateway.umami.is https://*.ingest.sentry.io https://*.ingest.de.sentry.io; frame-ancestors 'none'; base-uri 'self'; form-action 'self'; object-src 'none'",
   'Referrer-Policy': 'strict-origin-when-cross-origin',
   'X-Content-Type-Options': 'nosniff',
 }
@@ -23,5 +28,15 @@ export default defineConfig({
   },
   preview: {
     headers: securityHeaders,
+  },
+  test: {
+    // jsdom, not Node's default: format.ts reads localStorage (the saved UI
+    // language) to pick a locale for Intl.NumberFormat, and Node has no such
+    // global. Scope is deliberately narrow - the calculation layer
+    // (lib/format.ts and friends), not components; see package.json's `test`
+    // script, which `npm run build` now runs before `vite build` so a broken
+    // tax or money calculation fails the build instead of reaching Netlify.
+    environment: 'jsdom',
+    include: ['src/**/*.test.ts'],
   },
 })
