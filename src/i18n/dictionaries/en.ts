@@ -1234,6 +1234,23 @@ export const en: Record<string, string> = {
     'This link is incomplete. Open it straight from the email we sent you.',
   'Nie udało się zatrzymać usuwania konta.':
     'Could not stop the deletion.',
+  // Wypisanie z przypomnień e-mail (accounts.reengagement)
+  'Powiadomienia e-mail':
+    'Email notifications',
+  'Przypomnij mi e-mailem, jeśli dawno się nie logowałem/am':
+    'Remind me by email if I have not logged in for a while',
+  'Wypisać z przypomnień e-mail?':
+    'Unsubscribe from email reminders?',
+  'Przestaniemy wysyłać e-maile z przypomnieniem, gdy dawno się nie logowałeś/aś. Możesz to zmienić w każdej chwili w ustawieniach konta.':
+    'We will stop sending you reminder emails about being inactive. You can change this anytime in your account settings.',
+  'Tak, wypisz mnie':
+    'Yes, unsubscribe me',
+  'Wypisywanie…':
+    'Unsubscribing…',
+  'Wróć do skieta →':
+    'Back to skieta →',
+  'Nie udało się wypisać z przypomnień.':
+    'Could not unsubscribe from reminders.',
   // Eksport danych (RODO art. 15/20)
   'Pobierz swoje dane': 'Download your data',
   'Twoje dane należą do Ciebie. Pełna kopia w JSON zawiera wszystko, co przechowujemy na Twoim koncie. Pliki CSV otwierają się bezpośrednio w Excelu i arkuszach Google.':

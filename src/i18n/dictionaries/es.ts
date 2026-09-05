@@ -1236,6 +1236,23 @@ export const es: Record<string, string> = {
     'Este enlace está incompleto. Ábrelo directamente desde el correo que te enviamos.',
   'Nie udało się zatrzymać usuwania konta.':
     'No se pudo detener la eliminación de la cuenta.',
+  // Wypisanie z przypomnień e-mail (accounts.reengagement)
+  'Powiadomienia e-mail':
+    'Notificaciones por correo',
+  'Przypomnij mi e-mailem, jeśli dawno się nie logowałem/am':
+    'Recuérdame por correo si llevo tiempo sin iniciar sesión',
+  'Wypisać z przypomnień e-mail?':
+    '¿Darte de baja de los recordatorios por correo?',
+  'Przestaniemy wysyłać e-maile z przypomnieniem, gdy dawno się nie logowałeś/aś. Możesz to zmienić w każdej chwili w ustawieniach konta.':
+    'Dejaremos de enviarte correos recordatorios por inactividad. Puedes cambiarlo en cualquier momento en los ajustes de tu cuenta.',
+  'Tak, wypisz mnie':
+    'Sí, dame de baja',
+  'Wypisywanie…':
+    'Dando de baja…',
+  'Wróć do skieta →':
+    'Volver a skieta →',
+  'Nie udało się wypisać z przypomnień.':
+    'No se pudo completar la baja de los recordatorios.',
   // Eksport danych (RODO art. 15/20)
   'Pobierz swoje dane': 'Descarga tus datos',
   'Twoje dane należą do Ciebie. Pełna kopia w JSON zawiera wszystko, co przechowujemy na Twoim koncie. Pliki CSV otwierają się bezpośrednio w Excelu i arkuszach Google.':

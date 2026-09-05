@@ -1234,6 +1234,23 @@ export const de: Record<string, string> = {
     'Dieser Link ist unvollständig. Öffne ihn direkt aus unserer E-Mail.',
   'Nie udało się zatrzymać usuwania konta.':
     'Die Löschung konnte nicht gestoppt werden.',
+  // Wypisanie z przypomnień e-mail (accounts.reengagement)
+  'Powiadomienia e-mail':
+    'E-Mail-Benachrichtigungen',
+  'Przypomnij mi e-mailem, jeśli dawno się nie logowałem/am':
+    'Erinnere mich per E-Mail, wenn ich mich lange nicht angemeldet habe',
+  'Wypisać z przypomnień e-mail?':
+    'Von E-Mail-Erinnerungen abmelden?',
+  'Przestaniemy wysyłać e-maile z przypomnieniem, gdy dawno się nie logowałeś/aś. Możesz to zmienić w każdej chwili w ustawieniach konta.':
+    'Wir senden dir keine Erinnerungs-E-Mails mehr wegen Inaktivität. Du kannst das jederzeit in den Kontoeinstellungen ändern.',
+  'Tak, wypisz mnie':
+    'Ja, abmelden',
+  'Wypisywanie…':
+    'Wird abgemeldet…',
+  'Wróć do skieta →':
+    'Zurück zu skieta →',
+  'Nie udało się wypisać z przypomnień.':
+    'Die Abmeldung von den Erinnerungen ist fehlgeschlagen.',
   // Eksport danych (RODO art. 15/20)
   'Pobierz swoje dane': 'Deine Daten herunterladen',
   'Twoje dane należą do Ciebie. Pełna kopia w JSON zawiera wszystko, co przechowujemy na Twoim koncie. Pliki CSV otwierają się bezpośrednio w Excelu i arkuszach Google.':

@@ -50,6 +50,7 @@ export default function Account() {
       <AppearanceForm />
       <TourReplaySection />
       <InterestsForm />
+      <EmailPreferencesForm />
       <NavOrderForm />
       <PasswordForm />
       <InviteFriends />
@@ -275,6 +276,40 @@ function InterestsForm() {
           )
         })}
       </div>
+    </div>
+  )
+}
+
+function EmailPreferencesForm() {
+  const { user, refreshUser } = useAuth()
+  const { t } = useLanguage()
+
+  const mutation = useMutation({
+    mutationFn: async (value: boolean) => {
+      await api.patch('/auth/me/', { reengagement_emails_enabled: value })
+      await refreshUser()
+    },
+  })
+
+  return (
+    <div className="space-y-3 rounded-xl border border-slate-200 dark:border-slate-700 bg-white dark:bg-slate-800 p-5 shadow-sm">
+      <h2 className="text-sm font-semibold text-slate-700 dark:text-slate-300">{t('Powiadomienia e-mail')}</h2>
+      <label className="flex items-center gap-2 text-sm text-slate-700 dark:text-slate-300">
+        {mutation.isPending ? (
+          <span
+            className="inline-block h-4 w-4 shrink-0 animate-spin rounded-full border-2 border-slate-300 border-t-accent-600 dark:border-slate-600"
+            aria-hidden="true"
+          />
+        ) : (
+          <input
+            type="checkbox"
+            checked={user?.profile.reengagement_emails_enabled ?? true}
+            disabled={mutation.isPending}
+            onChange={(e) => mutation.mutate(e.target.checked)}
+          />
+        )}
+        {t('Przypomnij mi e-mailem, jeśli dawno się nie logowałem/am')}
+      </label>
     </div>
   )
 }

@@ -427,6 +427,7 @@ export interface User {
     nav_order: string[]
     has_seen_tour: boolean
     calculator_presets: { name: string; keys: string[] }[]
+    reengagement_emails_enabled: boolean
   }
 }
 

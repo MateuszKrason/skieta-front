@@ -18,6 +18,7 @@ import ForgotPassword from './pages/ForgotPassword'
 import ResetPassword from './pages/ResetPassword'
 import VerifyEmail from './pages/VerifyEmail'
 import CancelDeletion from './pages/CancelDeletion'
+import UnsubscribeReengagement from './pages/UnsubscribeReengagement'
 import NotFound from './pages/NotFound'
 
 // Lazy-loaded: everything below only renders behind a login, so none of it
@@ -154,6 +155,7 @@ export default function App() {
       <Route path="/reset-hasla" element={<ResetPassword />} />
       <Route path="/zweryfikuj-email" element={<VerifyEmail />} />
       <Route path="/anuluj-usuniecie" element={<CancelDeletion />} />
+      <Route path="/wypisz-z-przypomnien" element={<UnsubscribeReengagement />} />
       <Route path="/kalkulator" element={<PublicCalculator />} />
       <Route element={<ProtectedRoute />}>
         <Route element={<Layout />}>
