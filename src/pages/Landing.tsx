@@ -1,14 +1,20 @@
-import { useEffect, useState } from 'react'
-import { QRCodeSVG } from 'qrcode.react'
+import { lazy, Suspense, useEffect, useState } from 'react'
 import { useQuery } from '@tanstack/react-query'
 import { Link } from 'react-router-dom'
 import { api } from '../api/client'
 import { useAuth } from '../auth/AuthContext'
 import RequestAccessForm from '../components/RequestAccessForm'
 import SockLogo from '../components/SockLogo'
-import { CURRENCY_BY_LANGUAGE, LANGUAGES, LANGUAGE_LABELS, useLanguage, type Language } from '../i18n/LanguageContext'
-import { formatCountdown, formatDateTime, formatMoney } from '../lib/format'
+import { LANGUAGES, LANGUAGE_LABELS, useLanguage, type Language } from '../i18n/LanguageContext'
+import { useTheme } from '../theme/ThemeContext'
+import { formatCountdown, formatDateTime } from '../lib/format'
 import type { ActiveLandingPromotion, Article } from '../types'
+
+// Only rendered when an admin has an active promotion running, which is
+// almost never — so the QR library stays out of the chunk every visitor to
+// the landing page downloads, and is fetched on the rare occasion a banner
+// actually shows.
+const QRCodeSVG = lazy(() => import('qrcode.react').then((m) => ({ default: m.QRCodeSVG })))
 
 // Public, works logged-in or out (same as RequestAccessForm below) — shows an
 // admin-created temporary banner (see AdminLandingPromotions.tsx) with a live
@@ -51,7 +57,11 @@ function PromotionBanner() {
       <div className="mx-auto flex max-w-6xl flex-wrap items-center justify-between gap-4 px-4 py-3">
         <div className="flex flex-wrap items-center gap-4">
           <div className="shrink-0 rounded-md bg-white p-1.5">
-            <QRCodeSVG value={promotion.invite_url} size={56} />
+            {/* Fallback holds the exact 56px the code will occupy, so the
+                banner doesn't reflow when the chunk lands. */}
+            <Suspense fallback={<div className="h-14 w-14" />}>
+              <QRCodeSVG value={promotion.invite_url} size={56} />
+            </Suspense>
           </div>
           <div>
             <p className="text-sm font-semibold">{promotion.title}</p>
@@ -128,6 +138,32 @@ const FEATURES: { icon: keyof typeof ICONS; title: string; body: string }[] = [
   },
 ]
 
+// The three claims from FEATURES that are hardest to believe without seeing
+// them - profit split from contributed capital, dividends projected forward,
+// goals funded from a specific payslip - each paired with the screen that
+// proves it. Deliberately not one row per feature: six screenshots would be a
+// scroll marathon, and the remaining features are believable as text.
+const SHOWCASE: { name: 'portfel' | 'dywidendy' | 'planowanie'; title: string; body: string; alt: string }[] = [
+  {
+    name: 'portfel',
+    title: 'Zysk, a nie tylko saldo',
+    body: 'Portfel pokazuje osobno wpłacony kapitał i osobno zysk — brutto oraz po podatku Belki. Przy akcjach kupionych w obcej walucie widzisz dodatkowo, ile z wyniku zrobił sam kurs, a nie kurs spółki.',
+    alt: 'Portfel akcji w skiecie z kolumnami zysku brutto i po podatku Belki oraz wpływem kursu waluty',
+  },
+  {
+    name: 'dywidendy',
+    title: 'Dywidendy policzone w przód',
+    body: 'Historia wypłat, prognoza kolejnych na podstawie rytmu każdej spółki i szacowany podatek do zapłaty. Nie musisz nic wpisywać ręcznie ani pilnować terminów.',
+    alt: 'Profil dywidendowy w skiecie: suma wypłat, projekcja rocznego dochodu i planowane dywidendy',
+  },
+  {
+    name: 'planowanie',
+    title: 'Cele, które same się pilnują',
+    body: 'Ustaw cel i zarezerwuj na niego kwotę z konkretnej wypłaty albo z bieżących oszczędności. skieta liczy, ile wypłat zostało i ile trzeba odkładać z każdej, żeby zdążyć.',
+    alt: 'Planowanie budżetu w skiecie z celami oszczędnościowymi i postępem zbierania',
+  },
+]
+
 const STEPS = [
   { n: '1', title: 'Dostajesz zaproszenie', body: 'Rejestracja jest możliwa tylko na zaproszenie od kogoś, kto już korzysta ze skieta.' },
   { n: '2', title: 'Dodajesz swoje konta', body: 'Kilka minut wystarczy, żeby dodać konta bankowe, portfel akcji, lokaty i obligacje.' },
@@ -142,6 +178,10 @@ const FAQ: { q: string; a: string }[] = [
   {
     q: 'Dlaczego rejestracja jest tylko na zaproszenie?',
     a: 'To świadoma decyzja, a nie etap przejściowy. Baza użytkowników rośnie powoli i w kontrolowany sposób. Jeśli nie masz zaproszenia, zostaw adres e-mail w formularzu wyżej - prośby o dostęp są rozpatrywane pojedynczo.',
+  },
+  {
+    q: 'Ile to kosztuje?',
+    a: 'Nic. skieta jest bezpłatna - bez abonamentu, bez płatnych funkcji i bez reklam. Nie podajesz numeru karty ani przy zakładaniu konta, ani później.',
   },
   {
     q: 'Czy muszę podawać dane logowania do banku?',
@@ -165,39 +205,49 @@ const FAQ: { q: string; a: string }[] = [
   },
 ]
 
-function MockDashboardCard() {
-  const { t, language } = useLanguage()
-  const currency = CURRENCY_BY_LANGUAGE[language]
+// Real screenshots of the running app, replacing the hand-drawn mock card that
+// used to sit in the hero with invented figures. They are captures of a
+// demo account, not anyone's finances - see the caption under the hero shot,
+// which says so rather than leaving a visitor to assume these are real
+// customer balances.
+//
+// Intrinsic sizes are the light variant's; the dark file differs by a pixel or
+// two, which the browser scales into the same box. They're set as width/height
+// attributes so the browser reserves the right space before the image arrives
+// instead of shoving the page down when it lands.
+const PRODUCT_SHOTS = {
+  dashboard: { width: 1262, height: 843 },
+  portfel: { width: 1262, height: 725 },
+  dywidendy: { width: 1256, height: 821 },
+  planowanie: { width: 1261, height: 788 },
+} as const
+
+function ProductShot({
+  name,
+  alt,
+  priority = false,
+}: {
+  name: keyof typeof PRODUCT_SHOTS
+  alt: string
+  priority?: boolean
+}) {
+  const { theme } = useTheme()
+  // Only two sets of captures exist; the pink theme keeps the app's light
+  // chrome, so it reads the light one too.
+  const variant = theme === 'dark' ? 'dark' : 'light'
+  const { width, height } = PRODUCT_SHOTS[name]
   return (
-    <div className="relative rounded-2xl border border-slate-200/80 dark:border-slate-700/80 bg-white/90 dark:bg-slate-800/90 p-5 shadow-2xl shadow-slate-900/10 backdrop-blur">
-      <div className="flex items-center justify-between">
-        <p className="text-xs font-medium text-slate-500 dark:text-slate-400">{t('Wartość majątku')}</p>
-        <span className="rounded-full bg-emerald-100 dark:bg-emerald-900/40 px-2 py-0.5 text-[10px] font-semibold text-emerald-700 dark:text-emerald-400">
-          +4.5%
-        </span>
-      </div>
-      {/* Illustrative placeholder figures only — never real account data (this is a public, logged-out page). Currency follows the interface language, same mapping as registration's default. */}
-      <p className="mt-1 text-2xl font-bold text-slate-900 dark:text-slate-100">{formatMoney(142_300, currency, 0)}</p>
-      <div className="mt-4 flex items-end gap-1.5">
-        {[40, 55, 48, 62, 58, 70, 65, 80, 74, 90, 84, 96].map((h, i) => (
-          <div key={i} className="flex-1 rounded-t bg-gradient-to-t from-accent-500/30 to-accent-500" style={{ height: `${h}%` }} />
-        ))}
-      </div>
-      <div className="mt-5 grid grid-cols-2 gap-3">
-        <div className="rounded-lg bg-slate-50 dark:bg-slate-900 p-3">
-          <p className="text-[10px] font-medium text-slate-500 dark:text-slate-400">{t('Zysk')}</p>
-          <p className="mt-0.5 text-sm font-semibold text-emerald-600 dark:text-emerald-400">+{formatMoney(6_150, currency, 0)}</p>
-        </div>
-        <div className="rounded-lg bg-slate-50 dark:bg-slate-900 p-3">
-          <p className="text-[10px] font-medium text-slate-500 dark:text-slate-400">{t('Dywidendy YTD')}</p>
-          <p className="mt-0.5 text-sm font-semibold text-slate-700 dark:text-slate-200">{formatMoney(3_200, currency, 0)}</p>
-        </div>
-      </div>
-      <div
-        aria-hidden="true"
-        className="pointer-events-none absolute -right-6 -top-6 h-16 w-16 rounded-full bg-accent-400/20 blur-2xl"
-      />
-    </div>
+    <img
+      src={`/screens/${name}-${variant}.webp`}
+      alt={alt}
+      width={width}
+      height={height}
+      // The hero shot is the largest thing above the fold, so it loads
+      // eagerly; everything below waits until the visitor scrolls to it.
+      loading={priority ? 'eager' : 'lazy'}
+      decoding="async"
+      className="w-full rounded-xl border border-slate-200/80 dark:border-slate-700/80 shadow-2xl shadow-slate-900/10"
+    />
   )
 }
 
@@ -205,10 +255,16 @@ export default function Landing() {
   const { language, setLanguage, t } = useLanguage()
   const { user } = useAuth()
 
-  const { data: articles } = useQuery({
+  const { data: articlesData } = useQuery({
     queryKey: ['content-articles'],
     queryFn: async () => (await api.get<Article[]>('/content/articles/')).data,
   })
+  // Anything other than an array means the API didn't answer with what it
+  // promises - the SPA fallback returning index.html for /api/* is the way
+  // this actually happens, and a 200 full of HTML sails past every error
+  // path. Without this the landing page died on `.map` of a string, taking
+  // the whole page down with it rather than just the articles section.
+  const articles = Array.isArray(articlesData) ? articlesData : []
   // Articles are all written in Polish today - admin-toggleable per site
   // language (see AdminArticlesVisibility.tsx) so the section can stay
   // hidden for languages without translated content yet.
@@ -265,8 +321,12 @@ export default function Landing() {
         >
           <div className="absolute left-1/2 top-[-120px] h-[500px] w-[900px] -translate-x-1/2 rounded-full bg-gradient-to-br from-accent-400/25 via-accent-500/10 to-transparent blur-3xl" />
         </div>
-        <div className="mx-auto grid max-w-6xl grid-cols-1 items-center gap-12 px-4 py-16 sm:py-24 lg:grid-cols-2 lg:py-28">
-          <div>
+        {/* Text above, product shot below, rather than side by side: a real
+            screenshot squeezed into half a column is too small to read, and
+            the whole point of showing one is that a visitor can see what they
+            would actually be using. */}
+        <div className="mx-auto max-w-6xl px-4 py-16 sm:py-20">
+          <div className="mx-auto max-w-3xl text-center">
             <span className="inline-flex items-center gap-1.5 rounded-full border border-accent-200 dark:border-accent-800 bg-accent-50 dark:bg-accent-950/40 px-3 py-1 text-xs font-medium text-accent-700 dark:text-accent-400">
               {t('Dostępne wyłącznie na zaproszenie')}
             </span>
@@ -277,36 +337,66 @@ export default function Landing() {
             <p className="mt-3 text-base font-medium italic text-accent-700 dark:text-accent-400">
               {t('skieta - Twoja wirtualna skarpeta z oszczędnościami.')}
             </p>
-            <p className="mt-5 max-w-xl text-lg text-slate-600 dark:text-slate-400">
+            <p className="mx-auto mt-5 max-w-xl text-lg text-slate-600 dark:text-slate-400">
               {t(
                 'skieta łączy konta bankowe, inwestycje, lokaty i obligacje w jednym miejscu — zobacz, jak naprawdę rośnie Twój majątek, bez arkusza kalkulacyjnego i bez zgadywania.',
               )}
             </p>
-            <div className="mt-8 flex flex-wrap items-center gap-4">
+            {/* The order flips with who's reading. A signed-in visitor wants
+                the app. A stranger cannot log in at all - registration is
+                invite-only - so leading them with a login button was sending
+                the one group that can actually convert to a dead end, and
+                duplicating the header's button while doing it. They get the
+                calculator instead: it needs no account, and it carries its
+                own access-request form at the bottom (PublicCalculator.tsx),
+                so it hands them something before asking for anything. */}
+            <div className="mt-8 flex flex-wrap items-center justify-center gap-4">
               <Link
-                to={ctaHref}
+                to={user ? ctaHref : '/kalkulator'}
                 className="rounded-full bg-accent-700 px-7 py-3 text-base font-semibold text-white shadow-lg shadow-accent-600/30 transition hover:-translate-y-0.5 hover:bg-accent-800 hover:shadow-xl"
               >
-                {ctaLabel}
+                {user ? ctaLabel : t('Wypróbuj kalkulator →')}
               </Link>
-              {/* No account needed - the same engine as /analiza, minus the
-                  two account-only extras. See PublicCalculator.tsx. */}
               <Link
-                to="/kalkulator"
+                to={user ? '/kalkulator' : '/logowanie'}
                 className="rounded-full border border-slate-300 dark:border-slate-600 px-7 py-3 text-base font-semibold text-slate-700 dark:text-slate-200 transition hover:border-accent-400 hover:text-accent-700 dark:hover:text-accent-400"
               >
-                {t('Wypróbuj kalkulator →')}
+                {user ? t('Wypróbuj kalkulator →') : t('Zaloguj się')}
               </Link>
             </div>
+            {/* Answered next to the decision, not only in the FAQ far below:
+                "what does it cost" is the question a stranger asks before
+                handing over an email address, and silence about price reads
+                worse than any price. */}
             {!user && (
-              <div className="mt-4">
-                <RequestAccessForm source="landing_hero" />
+              <p className="mt-4 text-sm text-slate-500 dark:text-slate-400">
+                {t('Bezpłatnie, bez reklam i bez podawania karty.')}
+              </p>
+            )}
+            {!user && (
+              <div className="mx-auto mt-8 max-w-md rounded-2xl border border-slate-200 dark:border-slate-800 bg-white/70 dark:bg-slate-900/50 p-5">
+                {/* The prominent variant renders the field straight away. The
+                    collapsed one hid the only action a new visitor can take
+                    behind a text link they had to find and click first. */}
+                <p className="text-sm font-medium text-slate-700 dark:text-slate-200">
+                  {t('Rejestracja jest na zaproszenie — nie masz go? Zostaw e-mail.')}
+                </p>
+                <div className="mt-3 flex justify-center">
+                  <RequestAccessForm variant="prominent" source="landing_hero" />
+                </div>
               </div>
             )}
           </div>
-          <div className="relative mx-auto w-full max-w-sm lg:max-w-none">
-            <MockDashboardCard />
-          </div>
+
+          <figure className="mx-auto mt-14 max-w-5xl">
+            <ProductShot name="dashboard" alt={t('Dashboard skiety: wartość majątku, podział na akcje, gotówkę, lokaty i obligacje oraz wykres majątku w czasie')} priority />
+            {/* Says plainly whose numbers these are. They come from a demo
+                account, and a finance app showing balances owes the visitor
+                that much rather than letting them assume it's a real user. */}
+            <figcaption className="mt-3 text-center text-xs text-slate-400 dark:text-slate-500">
+              {t('Zrzut z działającej aplikacji, na danych demonstracyjnych.')}
+            </figcaption>
+          </figure>
         </div>
       </section>
 
@@ -331,6 +421,36 @@ export default function Landing() {
               <p className="mt-1.5 text-sm leading-relaxed text-slate-500 dark:text-slate-400">{t(f.body)}</p>
             </div>
           ))}
+        </div>
+      </section>
+
+      {/* Showcase — the claims above, shown rather than asserted. Left on the
+          page background so the white "Jak to działa" band below still reads
+          as a change of section rather than two white blocks in a row. */}
+      <section>
+        <div className="mx-auto max-w-6xl px-4 pb-16 sm:pb-20">
+          <div className="mx-auto max-w-2xl text-center">
+            <h2 className="text-3xl font-bold text-slate-900 dark:text-slate-100">{t('Zobacz, jak to wygląda w środku')}</h2>
+            <p className="mt-3 text-slate-500 dark:text-slate-400">
+              {t('Poniżej prawdziwe ekrany aplikacji — te same, które zobaczysz po zalogowaniu.')}
+            </p>
+          </div>
+          <div className="mt-14 flex flex-col gap-16 sm:gap-20">
+            {SHOWCASE.map((item, i) => (
+              <div key={item.name} className="grid items-center gap-8 lg:grid-cols-5 lg:gap-12">
+                {/* Alternating sides, but only from lg up - stacked on a
+                    phone the image always comes first, so the reader sees
+                    what's being described before reading about it. */}
+                <div className={i % 2 === 1 ? 'lg:col-span-3 lg:order-2' : 'lg:col-span-3'}>
+                  <ProductShot name={item.name} alt={t(item.alt)} />
+                </div>
+                <div className={i % 2 === 1 ? 'lg:col-span-2 lg:order-1' : 'lg:col-span-2'}>
+                  <h3 className="text-2xl font-bold text-slate-900 dark:text-slate-100">{t(item.title)}</h3>
+                  <p className="mt-3 text-base leading-relaxed text-slate-600 dark:text-slate-400">{t(item.body)}</p>
+                </div>
+              </div>
+            ))}
+          </div>
         </div>
       </section>
 
@@ -378,8 +498,15 @@ export default function Landing() {
           ))}
         </div>
         {!user && (
-          <div className="mt-8 flex justify-center">
-            <RequestAccessForm source="landing_faq" />
+          <div className="mx-auto mt-10 max-w-md rounded-2xl border border-slate-200 dark:border-slate-800 bg-white dark:bg-slate-900 p-5 text-center">
+            {/* Someone who read to the bottom of the FAQ has done the work of
+                being convinced - don't make them hunt for the field. */}
+            <p className="text-sm font-medium text-slate-700 dark:text-slate-200">
+              {t('Rejestracja jest na zaproszenie — nie masz go? Zostaw e-mail.')}
+            </p>
+            <div className="mt-3 flex justify-center">
+              <RequestAccessForm variant="prominent" source="landing_faq" />
+            </div>
           </div>
         )}
       </section>
@@ -388,7 +515,7 @@ export default function Landing() {
       {articlesEnabled && (
         <section className="mx-auto max-w-6xl px-4 py-16 sm:py-20">
           <h2 className="mb-6 text-2xl font-bold text-slate-900 dark:text-slate-100">{t('Artykuły o finansach osobistych')}</h2>
-          {!articles?.length ? (
+          {!articles.length ? (
             <p className="text-slate-500 dark:text-slate-400">{t('Wkrótce pojawią się tu pierwsze artykuły.')}</p>
           ) : (
             <div className="grid grid-cols-1 gap-4 sm:grid-cols-2 lg:grid-cols-3">

@@ -45,7 +45,10 @@ export default function RequestAccessForm({
   if (sent) {
     return (
       <p className="text-sm font-medium text-emerald-700 dark:text-emerald-400">
-        {t('Dziękujemy! Sprawdź skrzynkę e-mail — napiszemy, gdy administrator rozpatrzy Twoją prośbę.')}
+        {/* Says when, not just that. "We'll write when an admin reviews it"
+            was an open-ended wait in exchange for an email address, which is
+            a weak trade to offer a stranger. */}
+        {t('Dziękujemy! Odpowiadamy zwykle w ciągu kilku dni — napiszemy na podany adres, gdy administrator rozpatrzy prośbę.')}
       </p>
     )
   }

@@ -872,8 +872,8 @@ export const en: Record<string, string> = {
   'Nie masz zaproszenia? Poproś o dostęp →': "Don't have an invite? Request access →",
   'Twój adres e-mail': 'Your email address',
   'Poproś o dostęp': 'Request access',
-  'Dziękujemy! Sprawdź skrzynkę e-mail — napiszemy, gdy administrator rozpatrzy Twoją prośbę.':
-    "Thanks! Check your inbox — we'll email you once an administrator reviews your request.",
+  'Dziękujemy! Odpowiadamy zwykle w ciągu kilku dni — napiszemy na podany adres, gdy administrator rozpatrzy prośbę.':
+    "Thanks! We usually reply within a few days — we'll write to the address you gave once an administrator reviews the request.",
   'Prośby o dostęp': 'Access requests',
   'Oczekujące': 'Pending',
   'Zaakceptowane': 'Accepted',
@@ -1296,4 +1296,35 @@ export const en: Record<string, string> = {
   'Politykę prywatności': 'Privacy policy',
   'i': 'and',
   'Musisz zaakceptować regulamin i politykę prywatności.': 'You must accept the terms of service and privacy policy.',
+
+  // Landing - price and access request
+  'Bezpłatnie, bez reklam i bez podawania karty.': 'Free, with no ads and no card details.',
+  'Rejestracja jest na zaproszenie — nie masz go? Zostaw e-mail.':
+    'Sign-up is invite-only — no invitation? Leave your email.',
+  'Ile to kosztuje?': 'What does it cost?',
+  'Nic. skieta jest bezpłatna - bez abonamentu, bez płatnych funkcji i bez reklam. Nie podajesz numeru karty ani przy zakładaniu konta, ani później.':
+    'Nothing. skieta is free - no subscription, no paid features and no ads. You are never asked for a card number, either when setting up an account or later.',
+
+  // Landing - product screenshots
+  'Zrzut z działającej aplikacji, na danych demonstracyjnych.': 'A screenshot of the running app, using demo data.',
+  'Dashboard skiety: wartość majątku, podział na akcje, gotówkę, lokaty i obligacje oraz wykres majątku w czasie':
+    'The skieta dashboard: net worth, the split across stocks, cash, deposits and bonds, and a chart of net worth over time',
+  'Zobacz, jak to wygląda w środku': 'See what it looks like inside',
+  'Poniżej prawdziwe ekrany aplikacji — te same, które zobaczysz po zalogowaniu.':
+    'Real screens from the app below — the same ones you get after logging in.',
+  'Zysk, a nie tylko saldo': 'Profit, not just a balance',
+  'Portfel pokazuje osobno wpłacony kapitał i osobno zysk — brutto oraz po podatku Belki. Przy akcjach kupionych w obcej walucie widzisz dodatkowo, ile z wyniku zrobił sam kurs, a nie kurs spółki.':
+    'The portfolio shows contributed capital and profit separately — before and after capital gains tax. For shares bought in a foreign currency you also see how much of the result came from the exchange rate rather than the share price.',
+  'Portfel akcji w skiecie z kolumnami zysku brutto i po podatku Belki oraz wpływem kursu waluty':
+    'The stock portfolio in skieta, with profit columns before and after capital gains tax and the exchange-rate effect',
+  'Dywidendy policzone w przód': 'Dividends worked out ahead of time',
+  'Historia wypłat, prognoza kolejnych na podstawie rytmu każdej spółki i szacowany podatek do zapłaty. Nie musisz nic wpisywać ręcznie ani pilnować terminów.':
+    'Payment history, a forecast of the next ones based on how often each company pays, and the tax you can expect. Nothing to enter by hand, no dates to keep track of.',
+  'Profil dywidendowy w skiecie: suma wypłat, projekcja rocznego dochodu i planowane dywidendy':
+    'The dividend profile in skieta: total paid out, projected annual income and upcoming dividends',
+  'Cele, które same się pilnują': 'Goals that keep track of themselves',
+  'Ustaw cel i zarezerwuj na niego kwotę z konkretnej wypłaty albo z bieżących oszczędności. skieta liczy, ile wypłat zostało i ile trzeba odkładać z każdej, żeby zdążyć.':
+    'Set a goal and reserve money for it from a specific payslip or from your current savings. skieta works out how many paydays are left and how much to set aside from each one to get there in time.',
+  'Planowanie budżetu w skiecie z celami oszczędnościowymi i postępem zbierania':
+    'Budget planning in skieta, with savings goals and the progress towards each one',
 }

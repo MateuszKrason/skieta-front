@@ -872,8 +872,8 @@ export const es: Record<string, string> = {
   'Nie masz zaproszenia? Poproś o dostęp →': '¿No tienes invitación? Solicita acceso →',
   'Twój adres e-mail': 'Tu correo electrónico',
   'Poproś o dostęp': 'Solicitar acceso',
-  'Dziękujemy! Sprawdź skrzynkę e-mail — napiszemy, gdy administrator rozpatrzy Twoją prośbę.':
-    '¡Gracias! Revisa tu correo electrónico - te escribiremos en cuanto un administrador revise tu solicitud.',
+  'Dziękujemy! Odpowiadamy zwykle w ciągu kilku dni — napiszemy na podany adres, gdy administrator rozpatrzy prośbę.':
+    '¡Gracias! Solemos responder en unos días: te escribiremos a la dirección indicada en cuanto un administrador revise la solicitud.',
   'Prośby o dostęp': 'Solicitudes de acceso',
   'Oczekujące': 'Pendientes',
   'Zaakceptowane': 'Aceptadas',
@@ -1298,4 +1298,35 @@ export const es: Record<string, string> = {
   'Politykę prywatności': 'Política de privacidad',
   'i': 'y',
   'Musisz zaakceptować regulamin i politykę prywatności.': 'Debes aceptar los términos de servicio y la política de privacidad.',
+
+  // Landing - precio y solicitud de acceso
+  'Bezpłatnie, bez reklam i bez podawania karty.': 'Gratis, sin anuncios y sin datos de tarjeta.',
+  'Rejestracja jest na zaproszenie — nie masz go? Zostaw e-mail.':
+    'El registro es solo por invitación: ¿no tienes una? Deja tu correo.',
+  'Ile to kosztuje?': '¿Cuánto cuesta?',
+  'Nic. skieta jest bezpłatna - bez abonamentu, bez płatnych funkcji i bez reklam. Nie podajesz numeru karty ani przy zakładaniu konta, ani później.':
+    'Nada. skieta es gratuita: sin suscripción, sin funciones de pago y sin anuncios. No se te pide ningún número de tarjeta, ni al crear la cuenta ni después.',
+
+  // Landing - capturas del producto
+  'Zrzut z działającej aplikacji, na danych demonstracyjnych.': 'Una captura de la aplicación en funcionamiento, con datos de demostración.',
+  'Dashboard skiety: wartość majątku, podział na akcje, gotówkę, lokaty i obligacje oraz wykres majątku w czasie':
+    'El panel de skieta: patrimonio, el reparto entre acciones, efectivo, depósitos y bonos, y un gráfico del patrimonio en el tiempo',
+  'Zobacz, jak to wygląda w środku': 'Mira cómo es por dentro',
+  'Poniżej prawdziwe ekrany aplikacji — te same, które zobaczysz po zalogowaniu.':
+    'Abajo, pantallas reales de la aplicación: las mismas que verás al iniciar sesión.',
+  'Zysk, a nie tylko saldo': 'Beneficio, no solo un saldo',
+  'Portfel pokazuje osobno wpłacony kapitał i osobno zysk — brutto oraz po podatku Belki. Przy akcjach kupionych w obcej walucie widzisz dodatkowo, ile z wyniku zrobił sam kurs, a nie kurs spółki.':
+    'La cartera muestra por separado el capital aportado y el beneficio, antes y después del impuesto sobre ganancias de capital. En acciones compradas en otra moneda ves además cuánto del resultado vino del tipo de cambio y no del precio de la acción.',
+  'Portfel akcji w skiecie z kolumnami zysku brutto i po podatku Belki oraz wpływem kursu waluty':
+    'La cartera de acciones en skieta, con columnas de beneficio antes y después del impuesto sobre ganancias de capital y el efecto del tipo de cambio',
+  'Dywidendy policzone w przód': 'Dividendos calculados por adelantado',
+  'Historia wypłat, prognoza kolejnych na podstawie rytmu każdej spółki i szacowany podatek do zapłaty. Nie musisz nic wpisywać ręcznie ani pilnować terminów.':
+    'Historial de pagos, una previsión de los siguientes según el ritmo de cada empresa y el impuesto estimado a pagar. Nada que introducir a mano, ninguna fecha que vigilar.',
+  'Profil dywidendowy w skiecie: suma wypłat, projekcja rocznego dochodu i planowane dywidendy':
+    'El perfil de dividendos en skieta: total pagado, proyección de ingresos anuales y dividendos previstos',
+  'Cele, które same się pilnują': 'Objetivos que se vigilan solos',
+  'Ustaw cel i zarezerwuj na niego kwotę z konkretnej wypłaty albo z bieżących oszczędności. skieta liczy, ile wypłat zostało i ile trzeba odkładać z każdej, żeby zdążyć.':
+    'Fija un objetivo y reserva para él una cantidad de una nómina concreta o de tus ahorros actuales. skieta calcula cuántas nóminas quedan y cuánto hay que apartar de cada una para llegar a tiempo.',
+  'Planowanie budżetu w skiecie z celami oszczędnościowymi i postępem zbierania':
+    'Planificación del presupuesto en skieta, con objetivos de ahorro y el progreso de cada uno',
 }

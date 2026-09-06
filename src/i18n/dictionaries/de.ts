@@ -872,8 +872,8 @@ export const de: Record<string, string> = {
   'Nie masz zaproszenia? Poproś o dostęp →': 'Keine Einladung? Zugang anfragen →',
   'Twój adres e-mail': 'Deine E-Mail-Adresse',
   'Poproś o dostęp': 'Zugang anfragen',
-  'Dziękujemy! Sprawdź skrzynkę e-mail — napiszemy, gdy administrator rozpatrzy Twoją prośbę.':
-    'Danke! Schau in dein Postfach — wir melden uns, sobald ein Administrator deine Anfrage geprüft hat.',
+  'Dziękujemy! Odpowiadamy zwykle w ciągu kilku dni — napiszemy na podany adres, gdy administrator rozpatrzy prośbę.':
+    'Danke! Wir antworten meist innerhalb weniger Tage — wir schreiben an die angegebene Adresse, sobald ein Administrator die Anfrage geprüft hat.',
   'Prośby o dostęp': 'Zugangsanfragen',
   'Oczekujące': 'Ausstehend',
   'Zaakceptowane': 'Angenommen',
@@ -1296,4 +1296,35 @@ export const de: Record<string, string> = {
   'Politykę prywatności': 'Datenschutzrichtlinie',
   'i': 'und',
   'Musisz zaakceptować regulamin i politykę prywatności.': 'Du musst die Nutzungsbedingungen und die Datenschutzrichtlinie akzeptieren.',
+
+  // Landing - Preis und Zugangsanfrage
+  'Bezpłatnie, bez reklam i bez podawania karty.': 'Kostenlos, ohne Werbung und ohne Kartendaten.',
+  'Rejestracja jest na zaproszenie — nie masz go? Zostaw e-mail.':
+    'Die Registrierung läuft nur über Einladung — keine? Hinterlass deine E-Mail-Adresse.',
+  'Ile to kosztuje?': 'Was kostet das?',
+  'Nic. skieta jest bezpłatna - bez abonamentu, bez płatnych funkcji i bez reklam. Nie podajesz numeru karty ani przy zakładaniu konta, ani później.':
+    'Nichts. skieta ist kostenlos - kein Abo, keine kostenpflichtigen Funktionen und keine Werbung. Nach einer Kartennummer wirst du weder bei der Anmeldung noch später gefragt.',
+
+  // Landing - Produkt-Screenshots
+  'Zrzut z działającej aplikacji, na danych demonstracyjnych.': 'Ein Screenshot der laufenden App mit Demodaten.',
+  'Dashboard skiety: wartość majątku, podział na akcje, gotówkę, lokaty i obligacje oraz wykres majątku w czasie':
+    'Das skieta-Dashboard: Nettovermögen, die Aufteilung auf Aktien, Bargeld, Festgelder und Anleihen sowie ein Diagramm des Vermögens im Zeitverlauf',
+  'Zobacz, jak to wygląda w środku': 'Sieh, wie es von innen aussieht',
+  'Poniżej prawdziwe ekrany aplikacji — te same, które zobaczysz po zalogowaniu.':
+    'Unten echte Ansichten aus der App — dieselben, die du nach dem Anmelden siehst.',
+  'Zysk, a nie tylko saldo': 'Gewinn, nicht nur ein Kontostand',
+  'Portfel pokazuje osobno wpłacony kapitał i osobno zysk — brutto oraz po podatku Belki. Przy akcjach kupionych w obcej walucie widzisz dodatkowo, ile z wyniku zrobił sam kurs, a nie kurs spółki.':
+    'Das Depot zeigt eingezahltes Kapital und Gewinn getrennt — vor und nach Kapitalertragsteuer. Bei Aktien in Fremdwährung siehst du zusätzlich, wie viel vom Ergebnis der Wechselkurs ausgemacht hat und nicht der Aktienkurs.',
+  'Portfel akcji w skiecie z kolumnami zysku brutto i po podatku Belki oraz wpływem kursu waluty':
+    'Das Aktiendepot in skieta mit Gewinnspalten vor und nach Kapitalertragsteuer sowie dem Wechselkurseffekt',
+  'Dywidendy policzone w przód': 'Dividenden im Voraus berechnet',
+  'Historia wypłat, prognoza kolejnych na podstawie rytmu każdej spółki i szacowany podatek do zapłaty. Nie musisz nic wpisywać ręcznie ani pilnować terminów.':
+    'Auszahlungshistorie, eine Prognose der nächsten anhand des Rhythmus jeder Gesellschaft und die geschätzte fällige Steuer. Nichts von Hand einzutragen, keine Termine zu verfolgen.',
+  'Profil dywidendowy w skiecie: suma wypłat, projekcja rocznego dochodu i planowane dywidendy':
+    'Das Dividendenprofil in skieta: Summe der Auszahlungen, prognostiziertes Jahreseinkommen und geplante Dividenden',
+  'Cele, które same się pilnują': 'Ziele, die sich selbst im Blick behalten',
+  'Ustaw cel i zarezerwuj na niego kwotę z konkretnej wypłaty albo z bieżących oszczędności. skieta liczy, ile wypłat zostało i ile trzeba odkładać z każdej, żeby zdążyć.':
+    'Lege ein Ziel fest und reserviere dafür einen Betrag aus einem bestimmten Gehalt oder aus deinen laufenden Ersparnissen. skieta berechnet, wie viele Gehälter bleiben und wie viel du von jedem zurücklegen musst, um rechtzeitig anzukommen.',
+  'Planowanie budżetu w skiecie z celami oszczędnościowymi i postępem zbierania':
+    'Budgetplanung in skieta mit Sparzielen und dem Fortschritt beim Ansparen',
 }
