@@ -1,16 +1,24 @@
 import { useState } from 'react'
 import { useQuery } from '@tanstack/react-query'
-import { Bar, BarChart, CartesianGrid, ResponsiveContainer, Tooltip, XAxis, YAxis } from 'recharts'
+import { Bar, BarChart, CartesianGrid, Cell, ReferenceLine, ResponsiveContainer, Tooltip, XAxis, YAxis } from 'recharts'
 import { api } from '../../api/client'
 import { CardLoader } from '../../components/Loader'
 import { useLanguage } from '../../i18n/LanguageContext'
 import { useTooltipStyle } from '../../lib/chartTooltip'
-import { formatAxisValue, formatDate, formatMoney, formatNumber } from '../../lib/format'
-import type { BudgetType, InterestingStats } from '../../types'
-import { TagTrendChart } from './shared'
+import { formatAxisValue, formatDate, formatMoney, formatNumber, formatPct } from '../../lib/format'
+import type { BudgetType, InterestingStats, MonthlyTrendRow } from '../../types'
+import { CategoryTrendChart, StoreTrendChart, TagTrendChart } from './shared'
 
 const WEEKDAY_NAMES = ['Poniedziałek', 'Wtorek', 'Środa', 'Czwartek', 'Piątek', 'Sobota', 'Niedziela']
 const TREND_MONTHS_OPTIONS = [6, 12, 24]
+const SAVINGS_RATE_MONTHS_OPTIONS = [6, 12, 24, 36]
+const TREND_DIMENSIONS = ['category', 'store', 'tag'] as const
+type TrendDimension = (typeof TREND_DIMENSIONS)[number]
+const TREND_DIMENSION_LABELS: Record<TrendDimension, string> = {
+  category: 'Kategorie',
+  store: 'Sklepy',
+  tag: 'Tagi',
+}
 
 function InsightCard({ label, value, hint }: { label: string; value: string; hint?: string }) {
   return (
@@ -22,11 +30,82 @@ function InsightCard({ label, value, hint }: { label: string; value: string; hin
   )
 }
 
+/** What fraction of income is actually left over each month, not just
+ * whether the month was net positive or negative (FlexibleTrendChart on
+ * Bilans already shows that). A month with 8000 zł income and 200 zł net is
+ * "barely scraping by" in a way the raw net amount alone doesn't convey -
+ * the rate does. */
+function SavingsRateChart() {
+  const { t } = useLanguage()
+  const tooltipStyle = useTooltipStyle()
+  const [months, setMonths] = useState(12)
+
+  const { data, isLoading } = useQuery({
+    queryKey: ['budget-trend', months],
+    queryFn: async () => (await api.get<MonthlyTrendRow[]>('/budget/trend/', { params: { months } })).data,
+  })
+
+  const chartData = (data ?? []).map((row) => {
+    const income = Number(row.income)
+    const net = Number(row.net)
+    return { month: row.month, rate: income > 0 ? (net / income) * 100 : null }
+  })
+  const validRates = chartData.map((d) => d.rate).filter((r): r is number => r !== null)
+  const avgRate = validRates.length ? validRates.reduce((a, b) => a + b, 0) / validRates.length : null
+
+  return (
+    <div className="rounded-xl border border-slate-200 dark:border-slate-700 bg-white dark:bg-slate-800 p-5 shadow-sm">
+      <div className="mb-1 flex flex-wrap items-center justify-between gap-2">
+        <h2 className="text-sm font-semibold text-slate-700 dark:text-slate-300">{t('Wskaźnik oszczędności')}</h2>
+        <select value={months} onChange={(e) => setMonths(Number(e.target.value))} className="input w-auto">
+          {SAVINGS_RATE_MONTHS_OPTIONS.map((m) => (
+            <option key={m} value={m}>
+              {t('Ostatnie {0} mies.', m)}
+            </option>
+          ))}
+        </select>
+      </div>
+      <p className="mb-3 text-xs text-slate-400 dark:text-slate-500">
+        {t('Jaki procent przychodów zostaje Ci po opłaceniu wydatków, w każdym miesiącu.')}
+        {avgRate !== null && <> {t('Średnio w tym okresie: {0}', formatPct(avgRate))}</>}
+      </p>
+      {isLoading ? (
+        <CardLoader />
+      ) : chartData.length === 0 ? (
+        <p className="text-slate-400 dark:text-slate-500">{t('Brak danych.')}</p>
+      ) : (
+        <div className="h-56">
+          <ResponsiveContainer width="100%" height="100%">
+            <BarChart data={chartData}>
+              <CartesianGrid strokeDasharray="3 3" stroke="#94a3b8" strokeOpacity={0.15} />
+              <XAxis dataKey="month" tick={{ fontSize: 12 }} stroke="#94a3b8" />
+              <YAxis tickFormatter={(v) => `${v}%`} tick={{ fontSize: 12 }} stroke="#94a3b8" width={44} />
+              <ReferenceLine y={0} stroke="#94a3b8" />
+              <Tooltip
+                {...tooltipStyle}
+                formatter={(value) => (value === null ? t('brak przychodów') : formatPct(value as number))}
+              />
+              <Bar dataKey="rate" radius={[3, 3, 3, 3]}>
+                {chartData.map((d, i) => (
+                  <Cell key={i} fill={d.rate !== null && d.rate < 0 ? '#ef4444' : '#059669'} />
+                ))}
+              </Bar>
+            </BarChart>
+          </ResponsiveContainer>
+        </div>
+      )}
+    </div>
+  )
+}
+
 export default function Statystyki() {
   const { t } = useLanguage()
   const tooltipStyle = useTooltipStyle()
-  const [tagTrendType, setTagTrendType] = useState<BudgetType>('expense')
-  const [tagTrendMonths, setTagTrendMonths] = useState(6)
+  const [trendDimension, setTrendDimension] = useState<TrendDimension>('category')
+  const [trendType, setTrendType] = useState<BudgetType>('expense')
+  const [trendMonths, setTrendMonths] = useState(6)
+  const [selectedCategoryId, setSelectedCategoryId] = useState<number | null>(null)
+  const [selectedStoreId, setSelectedStoreId] = useState<number | null>(null)
   const [selectedTagId, setSelectedTagId] = useState<number | null>(null)
 
   const { data, isLoading } = useQuery({
@@ -129,17 +208,41 @@ export default function Statystyki() {
               </ResponsiveContainer>
             </div>
           </div>
+
+          <SavingsRateChart />
         </>
       )}
 
+      <div>
+        <h2 className="text-lg font-semibold text-slate-900 dark:text-slate-100">{t('Miesiąc do miesiąca')}</h2>
+        <p className="text-sm text-slate-500 dark:text-slate-400">
+          {t('Ile wydajesz albo zarabiasz w danej kategorii, sklepie lub pod danym tagiem, miesiąc po miesiącu.')}
+        </p>
+      </div>
+
       <div className="flex flex-wrap items-center gap-2">
+        <div className="flex overflow-hidden rounded-md border border-slate-300 dark:border-slate-600">
+          {TREND_DIMENSIONS.map((dimension) => (
+            <button
+              key={dimension}
+              onClick={() => setTrendDimension(dimension)}
+              className={`px-3 py-1.5 text-sm font-medium ${
+                trendDimension === dimension
+                  ? 'bg-accent-600 text-white'
+                  : 'bg-white dark:bg-slate-800 text-slate-600 dark:text-slate-400 hover:bg-slate-100 dark:hover:bg-slate-700'
+              }`}
+            >
+              {t(TREND_DIMENSION_LABELS[dimension])}
+            </button>
+          ))}
+        </div>
         <div className="flex overflow-hidden rounded-md border border-slate-300 dark:border-slate-600">
           {(['expense', 'income'] as BudgetType[]).map((type) => (
             <button
               key={type}
-              onClick={() => setTagTrendType(type)}
+              onClick={() => setTrendType(type)}
               className={`px-3 py-1.5 text-sm font-medium ${
-                tagTrendType === type
+                trendType === type
                   ? 'bg-accent-600 text-white'
                   : 'bg-white dark:bg-slate-800 text-slate-600 dark:text-slate-400 hover:bg-slate-100 dark:hover:bg-slate-700'
               }`}
@@ -149,8 +252,8 @@ export default function Statystyki() {
           ))}
         </div>
         <select
-          value={tagTrendMonths}
-          onChange={(e) => setTagTrendMonths(Number(e.target.value))}
+          value={trendMonths}
+          onChange={(e) => setTrendMonths(Number(e.target.value))}
           className="input w-auto"
         >
           {TREND_MONTHS_OPTIONS.map((m) => (
@@ -161,7 +264,25 @@ export default function Statystyki() {
         </select>
       </div>
 
-      <TagTrendChart type={tagTrendType} months={tagTrendMonths} onSelectTag={setSelectedTagId} selectedTagId={selectedTagId} />
+      {trendDimension === 'category' && (
+        <CategoryTrendChart
+          type={trendType}
+          months={trendMonths}
+          onSelectCategory={setSelectedCategoryId}
+          selectedCategoryId={selectedCategoryId}
+        />
+      )}
+      {trendDimension === 'store' && (
+        <StoreTrendChart
+          type={trendType}
+          months={trendMonths}
+          onSelectStore={setSelectedStoreId}
+          selectedStoreId={selectedStoreId}
+        />
+      )}
+      {trendDimension === 'tag' && (
+        <TagTrendChart type={trendType} months={trendMonths} onSelectTag={setSelectedTagId} selectedTagId={selectedTagId} />
+      )}
     </div>
   )
 }
