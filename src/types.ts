@@ -544,7 +544,7 @@ export interface LandingPromotion {
   created_at: string
 }
 
-// What the public landing page actually fetches — title/message already
+// What the public landing page actually fetches - title/message already
 // resolved server-side to the visitor's language (see
 // ActiveLandingPromotionSerializer).
 export interface ActiveLandingPromotion {
@@ -678,6 +678,13 @@ export interface AdminUserDetail {
   avg_session_duration_seconds: number
 }
 
+export interface AdminActiveUser {
+  id: number
+  username: string
+  email: string
+  last_login: string | null
+}
+
 export interface AdminActivityStats {
   active_today: number
   total_users: number
@@ -734,6 +741,7 @@ export interface Category {
   type: BudgetType
   account: number | null
   account_detail: BankAccount | null
+  color: string
   display_order: number
   created_at: string
 }

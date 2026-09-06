@@ -1,4 +1,4 @@
-import { useState, type FormEvent } from 'react'
+import { useEffect, useRef, useState, type FormEvent } from 'react'
 import { useMutation, useQuery, useQueryClient } from '@tanstack/react-query'
 import {
   Area,
@@ -51,7 +51,7 @@ export const PALETTE = [
   '#6366f1',
 ]
 
-// Red/orange family for expense-only pages (Wydatki) — still distinct shades per
+// Red/orange family for expense-only pages (Wydatki) - still distinct shades per
 // category, but reading unmistakably as "money going out" instead of the
 // general-purpose rainbow palette shared with income charts.
 export const EXPENSE_PALETTE = [
@@ -131,7 +131,7 @@ export function PeriodSelector({
   )
 }
 
-/** Small pie/bar toggle for charts that can reasonably render either way —
+/** Small pie/bar toggle for charts that can reasonably render either way -
  * reusable anywhere a chart offers more than one chart type, not just here. */
 export function ChartTypeSwitcher({
   value,
@@ -189,7 +189,12 @@ export function CategoryPieCard({
   const { t } = useLanguage()
   const tooltipStyle = useTooltipStyle()
   const [chartType, setChartType] = useState<'pie' | 'bar'>('pie')
-  const data = rows.map((r) => ({ id: r.category?.id ?? null, name: r.category?.name ?? t('Bez kategorii'), value: Number(r.total) }))
+  const data = rows.map((r) => ({
+    id: r.category?.id ?? null,
+    name: r.category?.name ?? t('Bez kategorii'),
+    value: Number(r.total),
+    color: r.category?.color || null,
+  }))
 
   return (
     <div className="rounded-xl border border-slate-200 dark:border-slate-700 bg-white dark:bg-slate-800 p-5 shadow-sm">
@@ -207,8 +212,8 @@ export function CategoryPieCard({
             {chartType === 'pie' ? (
               <PieChart>
                 <Pie data={data} dataKey="value" nameKey="name" innerRadius={55} outerRadius={90} paddingAngle={2}>
-                  {data.map((_, i) => (
-                    <Cell key={i} fill={palette[i % palette.length]} />
+                  {data.map((d, i) => (
+                    <Cell key={i} fill={d.color || palette[i % palette.length]} />
                   ))}
                 </Pie>
                 <Tooltip {...tooltipStyle} formatter={(value) => formatMoney(value as number, 'PLN')} />
@@ -221,8 +226,8 @@ export function CategoryPieCard({
                 <YAxis type="category" dataKey="name" tick={{ fontSize: 11 }} stroke="#94a3b8" width={100} />
                 <Tooltip {...tooltipStyle} formatter={(value) => formatMoney(value as number, 'PLN')} />
                 <Bar dataKey="value" radius={[0, 3, 3, 0]}>
-                  {data.map((_, i) => (
-                    <Cell key={i} fill={palette[i % palette.length]} />
+                  {data.map((d, i) => (
+                    <Cell key={i} fill={d.color || palette[i % palette.length]} />
                   ))}
                 </Bar>
               </BarChart>
@@ -240,7 +245,7 @@ export function CategoryPieCard({
             } ${selectedCategoryId === (r.category?.id ?? null) && onSelectCategory ? 'bg-accent-50 dark:bg-accent-900/30 ring-1 ring-accent-200 dark:ring-accent-800' : ''}`}
           >
             <span className="flex items-center gap-2">
-              <span className="h-2 w-2 rounded-full" style={{ backgroundColor: palette[i % palette.length] }} />
+              <span className="h-2 w-2 rounded-full" style={{ backgroundColor: r.category?.color || palette[i % palette.length] }} />
               {r.category?.name ?? t('Bez kategorii')}
             </span>
             <span className="text-slate-500 dark:text-slate-400">
@@ -292,7 +297,7 @@ export function CategoryTrendChart({
   return (
     <div className="rounded-xl border border-slate-200 dark:border-slate-700 bg-white dark:bg-slate-800 p-5 shadow-sm">
       <h2 className="mb-1 text-sm font-semibold text-slate-700 dark:text-slate-300">
-        {t(type === 'expense' ? 'Wydatki' : 'Przychody')} {t('wg kategorii — miesiąc do miesiąca')}
+        {t(type === 'expense' ? 'Wydatki' : 'Przychody')} {t('wg kategorii - miesiąc do miesiąca')}
       </h2>
       <p className="mb-3 text-xs text-slate-400 dark:text-slate-500">{t('Kliknij kategorię poniżej, aby zobaczyć konkretne transakcje w wybranym okresie.')}</p>
       {isLoading ? (
@@ -316,7 +321,7 @@ export function CategoryTrendChart({
                       dataKey={(entry: Record<string, string | number>) => entry[key]}
                       name={row.category?.name ?? t('Bez kategorii')}
                       stackId="cat"
-                      fill={palette[i % palette.length]}
+                      fill={row.category?.color || palette[i % palette.length]}
                     />
                   )
                 })}
@@ -335,7 +340,7 @@ export function CategoryTrendChart({
                     active ? 'border-accent-400 dark:border-accent-600 bg-accent-50 dark:bg-accent-900/30 text-accent-700 dark:text-accent-400' : 'border-slate-200 dark:border-slate-700 text-slate-600 dark:text-slate-400 hover:bg-slate-50 dark:hover:bg-slate-700'
                   }`}
                 >
-                  <span className="h-2 w-2 rounded-full" style={{ backgroundColor: palette[i % palette.length] }} />
+                  <span className="h-2 w-2 rounded-full" style={{ backgroundColor: row.category?.color || palette[i % palette.length] }} />
                   {row.category?.name ?? t('Bez kategorii')}
                 </button>
               )
@@ -385,7 +390,7 @@ export function TagTrendChart({
   return (
     <div className="rounded-xl border border-slate-200 dark:border-slate-700 bg-white dark:bg-slate-800 p-5 shadow-sm">
       <h2 className="mb-1 text-sm font-semibold text-slate-700 dark:text-slate-300">
-        {t(type === 'expense' ? 'Wydatki' : 'Przychody')} {t('wg tagów — miesiąc do miesiąca')}
+        {t(type === 'expense' ? 'Wydatki' : 'Przychody')} {t('wg tagów - miesiąc do miesiąca')}
       </h2>
       <p className="mb-3 text-xs text-slate-400 dark:text-slate-500">{t('Tylko transakcje z co najmniej jednym tagiem. Kliknij tag poniżej, aby zobaczyć konkretne transakcje w wybranym okresie.')}</p>
       {isLoading ? (
@@ -440,6 +445,99 @@ export function TagTrendChart({
   )
 }
 
+export function StoreTrendChart({
+  type,
+  months = 6,
+  onSelectStore,
+  selectedStoreId,
+  palette = PALETTE,
+}: {
+  type: BudgetType
+  months?: number
+  onSelectStore: (id: number | null) => void
+  selectedStoreId: number | null
+  palette?: string[]
+}) {
+  const { t } = useLanguage()
+  const tooltipStyle = useTooltipStyle()
+  const { data, isLoading } = useQuery({
+    queryKey: ['budget-store-trend', type, months],
+    queryFn: async () =>
+      (
+        await api.get<{ months: string[]; rows: { store: Store | null; totals: string[] }[] }>('/budget/store-trend/', {
+          params: { type, months },
+        })
+      ).data,
+  })
+
+  const rows = data?.rows ?? []
+  const chartData = (data?.months ?? []).map((month, i) => {
+    const point: Record<string, string | number> = { month }
+    rows.forEach((row) => {
+      const key = row.store ? `store_${row.store.id}` : 'store_none'
+      point[key] = Number(row.totals[i])
+    })
+    return point
+  })
+
+  return (
+    <div className="rounded-xl border border-slate-200 dark:border-slate-700 bg-white dark:bg-slate-800 p-5 shadow-sm">
+      <h2 className="mb-1 text-sm font-semibold text-slate-700 dark:text-slate-300">
+        {t(type === 'expense' ? 'Wydatki' : 'Przychody')} {t('wg sklepów - miesiąc do miesiąca')}
+      </h2>
+      <p className="mb-3 text-xs text-slate-400 dark:text-slate-500">{t('Tylko transakcje przypisane do sklepu. Kliknij sklep poniżej, aby zobaczyć konkretne transakcje w wybranym okresie.')}</p>
+      {isLoading ? (
+        <CardLoader />
+      ) : rows.length === 0 ? (
+        <p className="text-slate-400 dark:text-slate-500">{t('Brak danych.')}</p>
+      ) : (
+        <>
+          <div className="h-64">
+            <ResponsiveContainer width="100%" height="100%">
+              <BarChart data={chartData}>
+                <CartesianGrid strokeDasharray="3 3" stroke="#94a3b8" strokeOpacity={0.15} />
+                <XAxis dataKey="month" tick={{ fontSize: 12 }} stroke="#94a3b8" />
+                <YAxis tickFormatter={formatAxisValue} tick={{ fontSize: 12 }} stroke="#94a3b8" width={40} />
+                <Tooltip {...tooltipStyle} formatter={(value) => formatMoney(value as number, 'PLN')} />
+                {rows.map((row, i) => {
+                  const key = row.store ? `store_${row.store.id}` : 'store_none'
+                  return (
+                    <Bar
+                      key={key}
+                      dataKey={(entry: Record<string, string | number>) => entry[key]}
+                      name={row.store?.name ?? t('Bez sklepu')}
+                      stackId="store"
+                      fill={palette[i % palette.length]}
+                    />
+                  )
+                })}
+              </BarChart>
+            </ResponsiveContainer>
+          </div>
+          <div className="mt-3 flex flex-wrap gap-2">
+            {rows.map((row, i) => {
+              const id = row.store?.id ?? null
+              const active = selectedStoreId === id
+              return (
+                <button
+                  key={id ?? 'none'}
+                  onClick={() => onSelectStore(active ? null : id)}
+                  className={`flex items-center gap-1.5 rounded-full border px-2.5 py-1 text-xs font-medium transition ${
+                    active ? 'border-accent-400 dark:border-accent-600 bg-accent-50 dark:bg-accent-900/30 text-accent-700 dark:text-accent-400' : 'border-slate-200 dark:border-slate-700 text-slate-600 dark:text-slate-400 hover:bg-slate-50 dark:hover:bg-slate-700'
+                  }`}
+                >
+                  <span className="h-2 w-2 rounded-full" style={{ backgroundColor: palette[i % palette.length] }} />
+                  {row.store?.name ?? t('Bez sklepu')}
+                </button>
+              )
+            })}
+          </div>
+        </>
+      )}
+    </div>
+  )
+}
+
 export function TransactionList({
   transactions,
   onDelete,
@@ -467,6 +565,10 @@ export function TransactionList({
     queryKey: ['budget-stores'],
     queryFn: async () => (await api.get<Store[]>('/budget/stores/')).data,
   })
+  const { data: accounts } = useQuery({
+    queryKey: ['accounts'],
+    queryFn: async () => (await api.get<BankAccount[]>('/banking/accounts/')).data,
+  })
 
   function invalidateAfterEdit() {
     queryClient.invalidateQueries({ queryKey: ['budget-breakdown'] })
@@ -475,6 +577,9 @@ export function TransactionList({
     queryClient.invalidateQueries({ queryKey: ['budget-store-breakdown'] })
     queryClient.invalidateQueries({ queryKey: ['budget-transactions'] })
     queryClient.invalidateQueries({ queryKey: ['budget-summary'] })
+    // Moving a transaction to a different account changes both accounts'
+    // balances, not just the budget views.
+    queryClient.invalidateQueries({ queryKey: ['accounts'] })
     queryClient.invalidateQueries({ queryKey: ['dashboard'] })
   }
 
@@ -485,13 +590,15 @@ export function TransactionList({
       category,
       store,
       tags,
+      account,
     }: {
       id: number
       amount: string
       category: number | null
       store: number | null
       tags: number[]
-    }) => api.patch(`/budget/transactions/${id}/`, { amount, category, store, tags }),
+      account: number | null
+    }) => api.patch(`/budget/transactions/${id}/`, { amount, category, store, tags, account }),
     onSuccess: () => {
       setEditingId(null)
       invalidateAfterEdit()
@@ -509,8 +616,9 @@ export function TransactionList({
               tx={tx}
               categories={(categories ?? []).filter((c) => c.type === tx.type)}
               stores={stores ?? []}
-              onSave={(amount, category, store, tagIds) =>
-                updateMutation.mutate({ id: tx.id, amount, category, store, tags: tagIds })
+              accounts={(accounts ?? []).filter((a) => a.currency === tx.currency)}
+              onSave={(amount, category, store, tagIds, account) =>
+                updateMutation.mutate({ id: tx.id, amount, category, store, tags: tagIds, account })
               }
               onCancel={() => setEditingId(null)}
               saving={updateMutation.isPending}
@@ -526,7 +634,7 @@ export function TransactionList({
                 </span>
                 <span className="text-slate-500 dark:text-slate-400">{tx.category_detail?.name ?? t('Bez kategorii')}</span>
                 {tx.store_detail && <span className="text-slate-400 dark:text-slate-500">· {tx.store_detail.name}</span>}
-                {tx.description && <span className="text-slate-400 dark:text-slate-500">— {tx.description}</span>}
+                {tx.description && <span className="text-slate-400 dark:text-slate-500">- {tx.description}</span>}
                 {tx.account_detail && (
                   <span className="rounded-full bg-slate-100 dark:bg-slate-700 px-2 py-0.5 text-xs text-slate-500 dark:text-slate-400">
                     {tx.account_detail.name}
@@ -618,7 +726,7 @@ function TagPicker({ selected, onToggle }: { selected: number[]; onToggle: (id: 
           </button>
         ))}
         {adding ? (
-          // Plain div, not a <form> — this already lives inside the outer
+          // Plain div, not a <form> - this already lives inside the outer
           // transaction/category <form>, and nested <form> elements are
           // invalid HTML: the browser can fall back to a native full-page
           // submit instead of React's handler, silently wiping the whole
@@ -676,6 +784,7 @@ function EditTransaction({
   tx,
   categories,
   stores,
+  accounts,
   onSave,
   onCancel,
   saving,
@@ -683,7 +792,8 @@ function EditTransaction({
   tx: BudgetTransaction
   categories: Category[]
   stores: Store[]
-  onSave: (amount: string, category: number | null, store: number | null, tags: number[]) => void
+  accounts: BankAccount[]
+  onSave: (amount: string, category: number | null, store: number | null, tags: number[], account: number | null) => void
   onCancel: () => void
   saving: boolean
 }) {
@@ -691,6 +801,7 @@ function EditTransaction({
   const [amount, setAmount] = useState(tx.amount)
   const [category, setCategory] = useState<number | ''>(tx.category ?? '')
   const [store, setStore] = useState<number | ''>(tx.store ?? '')
+  const [account, setAccount] = useState<number | ''>(tx.account ?? '')
   const [selectedTags, setSelectedTags] = useState<number[]>(tx.tags ?? [])
 
   function toggleTag(id: number) {
@@ -723,9 +834,23 @@ function EditTransaction({
           ))}
         </select>
       </Field>
+      <Field label="Konto (opcjonalnie)">
+        <select value={account} onChange={(e) => setAccount(e.target.value ? Number(e.target.value) : '')} className="input">
+          <option value="">{t('bez powiązania')}</option>
+          {groupAccountsByBank(accounts).map(([bankName, group]) => (
+            <optgroup key={bankName} label={bankName}>
+              {group.map((a) => (
+                <option key={a.id} value={a.id}>
+                  {a.name}
+                </option>
+              ))}
+            </optgroup>
+          ))}
+        </select>
+      </Field>
       <TagPicker selected={selectedTags} onToggle={toggleTag} />
       <button
-        onClick={() => onSave(amount, category || null, store || null, selectedTags)}
+        onClick={() => onSave(amount, category || null, store || null, selectedTags, account || null)}
         disabled={saving || !amount}
         className="btn-primary"
       >
@@ -811,6 +936,8 @@ export function CategoryManager({ type }: { type: BudgetType }) {
   const [editingId, setEditingId] = useState<number | null>(null)
   const [editName, setEditName] = useState('')
   const [editAccount, setEditAccount] = useState<number | ''>('')
+  const [editColor, setEditColor] = useState('')
+  const palette = type === 'expense' ? EXPENSE_PALETTE : PALETTE
 
   const { data: categories } = useQuery({
     queryKey: ['budget-categories', type],
@@ -841,8 +968,8 @@ export function CategoryManager({ type }: { type: BudgetType }) {
   })
 
   const editMutation = useMutation({
-    mutationFn: ({ id, name, account }: { id: number; name: string; account: number | null }) =>
-      api.patch(`/budget/categories/${id}/`, { name, account }),
+    mutationFn: ({ id, name, account, color }: { id: number; name: string; account: number | null; color: string }) =>
+      api.patch(`/budget/categories/${id}/`, { name, account, color }),
     onSuccess: () => {
       setEditingId(null)
       invalidateAll()
@@ -863,6 +990,7 @@ export function CategoryManager({ type }: { type: BudgetType }) {
     setEditingId(category.id)
     setEditName(category.name)
     setEditAccount(category.account ?? '')
+    setEditColor(category.color)
   }
 
   function handleDrop(targetId: number) {
@@ -886,12 +1014,29 @@ export function CategoryManager({ type }: { type: BudgetType }) {
         {type === 'income' ? t('Kategorie przychodów') : t('Kategorie wydatków')}
       </h2>
       <div className="flex flex-wrap gap-2">
-        {sorted.map((c) =>
+        {sorted.map((c, i) =>
           editingId === c.id ? (
             <span
               key={c.id}
               className="flex items-center gap-1.5 rounded-full border border-accent-400 dark:border-accent-600 bg-slate-50 dark:bg-slate-900 py-1 pl-3 pr-1.5 text-xs"
             >
+              <input
+                type="color"
+                value={editColor || palette[i % palette.length]}
+                onChange={(e) => setEditColor(e.target.value)}
+                title={t('Kolor na wykresach')}
+                className="h-4 w-4 shrink-0 cursor-pointer rounded-full border-0 bg-transparent p-0"
+              />
+              {editColor && (
+                <button
+                  type="button"
+                  onClick={() => setEditColor('')}
+                  title={t('Użyj domyślnego koloru')}
+                  className="shrink-0 text-[10px] text-slate-400 hover:text-slate-600 dark:hover:text-slate-300"
+                >
+                  ⟲
+                </button>
+              )}
               <input
                 value={editName}
                 onChange={(e) => setEditName(e.target.value)}
@@ -918,7 +1063,7 @@ export function CategoryManager({ type }: { type: BudgetType }) {
               )}
               <button
                 onClick={() =>
-                  editMutation.mutate({ id: c.id, name: editName, account: editAccount || null })
+                  editMutation.mutate({ id: c.id, name: editName, account: editAccount || null, color: editColor })
                 }
                 disabled={editMutation.isPending || !editName.trim()}
                 title={t('Zapisz')}
@@ -964,6 +1109,11 @@ export function CategoryManager({ type }: { type: BudgetType }) {
               <span className="text-slate-300 dark:text-slate-600" aria-hidden="true">
                 ⠿
               </span>
+              <span
+                className="h-2.5 w-2.5 shrink-0 rounded-full"
+                style={{ backgroundColor: c.color || palette[i % palette.length] }}
+                aria-hidden="true"
+              />
               {c.name}
               {c.account_detail && (
                 <span
@@ -996,6 +1146,30 @@ export function CategoryManager({ type }: { type: BudgetType }) {
   )
 }
 
+// Remembers the last account picked per transaction type (expense/income),
+// so the form defaults to it next time instead of forcing the same manual
+// pick over and over. Per-device on purpose (localStorage) - this is a form
+// convenience, not data that needs to follow the user across devices.
+const LAST_ACCOUNT_KEY_PREFIX = 'skieta.lastTransactionAccount.'
+
+function readLastAccount(type: BudgetType): number | null {
+  try {
+    const raw = localStorage.getItem(LAST_ACCOUNT_KEY_PREFIX + type)
+    return raw ? Number(raw) : null
+  } catch {
+    return null
+  }
+}
+
+function writeLastAccount(type: BudgetType, accountId: number) {
+  try {
+    localStorage.setItem(LAST_ACCOUNT_KEY_PREFIX + type, String(accountId))
+  } catch {
+    // Private browsing / blocked site data - the form still works, it just
+    // won't remember the choice for next time.
+  }
+}
+
 export function AddTransactionForm({
   categories,
   accounts,
@@ -1020,6 +1194,22 @@ export function AddTransactionForm({
   const [date, setDate] = useState(() => new Date().toISOString().slice(0, 10))
   const [description, setDescription] = useState('')
   const [error, setError] = useState<string | null>(null)
+  const appliedRememberedAccount = useRef(false)
+
+  // Runs once, as soon as the accounts list has loaded (it's often still []
+  // on the very first render, before the query resolves). Only applies to a
+  // form that isn't already pinned to one account, and only ever fires once
+  // per mount so it never overwrites a choice the user makes afterwards.
+  useEffect(() => {
+    if (lockedAccount || appliedRememberedAccount.current || accounts.length === 0) return
+    appliedRememberedAccount.current = true
+    const rememberedId = readLastAccount(type)
+    const remembered = rememberedId ? accounts.find((a) => a.id === rememberedId) : undefined
+    if (remembered) {
+      setAccount(remembered.id)
+      setCurrency(remembered.currency)
+    }
+  }, [accounts, lockedAccount, type])
 
   // Categories aren't restricted to their linked account here - the account
   // on a Category is just an organizational tag (shown as a badge in
@@ -1052,7 +1242,10 @@ export function AddTransactionForm({
         date,
         description,
       }),
-    onSuccess: onDone,
+    onSuccess: () => {
+      if (account) writeLastAccount(type, account)
+      onDone()
+    },
     onError: (err: unknown) => {
       const data = (err as { response?: { data?: unknown } }).response?.data
       if (data && typeof data === 'object') {
@@ -1122,7 +1315,7 @@ export function AddTransactionForm({
       <Field label="Konto (opcjonalnie)">
         {lockedAccount ? (
           <p className="input flex items-center bg-slate-50 dark:bg-slate-900 text-slate-600 dark:text-slate-400">
-            {lockedAccount.bank_name} — {lockedAccount.name}
+            {lockedAccount.bank_name} - {lockedAccount.name}
           </p>
         ) : (
         <select
@@ -1378,7 +1571,7 @@ export function TagManager({
             </span>
           ),
         )}
-        {sorted.length === 0 && <p className="text-sm text-slate-400 dark:text-slate-500">{t('Brak tagów — dodaj pierwszy powyżej.')}</p>}
+        {sorted.length === 0 && <p className="text-sm text-slate-400 dark:text-slate-500">{t('Brak tagów - dodaj pierwszy powyżej.')}</p>}
       </div>
     </div>
   )
@@ -1557,7 +1750,7 @@ export function StoreManager() {
             </span>
           ),
         )}
-        {sorted.length === 0 && <p className="text-sm text-slate-400 dark:text-slate-500">{t('Brak sklepów — dodaj pierwszy powyżej.')}</p>}
+        {sorted.length === 0 && <p className="text-sm text-slate-400 dark:text-slate-500">{t('Brak sklepów - dodaj pierwszy powyżej.')}</p>}
       </div>
     </div>
   )
@@ -1681,7 +1874,7 @@ export function TagBreakdownCard({
         {t(type === 'income' ? 'Przychody wg tagów' : 'Wydatki wg tagów')}
       </h2>
       <p className="mb-3 text-xs text-slate-400 dark:text-slate-500">
-        {t('Tylko transakcje z co najmniej jednym tagiem — transakcja z kilkoma tagami liczy się do każdego z nich.')}
+        {t('Tylko transakcje z co najmniej jednym tagiem - transakcja z kilkoma tagami liczy się do każdego z nich.')}
       </p>
       {isLoading ? (
         <CardLoader />
@@ -1909,7 +2102,7 @@ export function CumulativeNetChart() {
         </select>
       </div>
       <p className="mb-3 text-xs text-slate-400 dark:text-slate-500">
-        {t('Suma miesięcznych bilansów narastająco — jak rósł Twój zaoszczędzony kapitał w tym okresie.')}
+        {t('Suma miesięcznych bilansów narastająco - jak rósł Twój zaoszczędzony kapitał w tym okresie.')}
       </p>
       <div className="h-56">
         {isLoading ? (
