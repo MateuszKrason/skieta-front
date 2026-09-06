@@ -56,7 +56,7 @@ export default function AdminAccessRequests() {
             {t('Zaakceptuj losowy procent oczekujących')}
           </h2>
           <p className="mb-3 text-xs text-slate-400 dark:text-slate-500">
-            {t('Przydatne przy stopniowym otwieraniu dostępu — zamiast rozpatrywać każdą prośbę osobno.')}
+            {t('Przydatne przy stopniowym otwieraniu dostępu - zamiast rozpatrywać każdą prośbę osobno.')}
           </p>
           <div className="flex flex-wrap items-center gap-2">
             <input

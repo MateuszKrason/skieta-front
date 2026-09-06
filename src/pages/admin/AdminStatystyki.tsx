@@ -24,7 +24,7 @@ const COLOR_VARIANT_LABELS: Record<string, string> = {
   pink: 'Lawendowy',
 }
 
-/** Simple per-language bar list — shared shape for "visits by language" and
+/** Simple per-language bar list - shared shape for "visits by language" and
  * "invitations by language", no per-row drilldown needed unlike the
  * color-variant block above. */
 function LanguageCountBars({ title, counts }: { title: string; counts: Record<string, number> }) {

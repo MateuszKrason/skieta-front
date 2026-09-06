@@ -32,7 +32,7 @@ export default function ForgotPassword() {
           <SockLogo className="h-8 w-8" />
           skieta
         </h1>
-        <p className="mb-6 text-sm text-slate-500 dark:text-slate-400">{t('Podaj adres e-mail przypisany do konta — wyślemy link do resetu hasła.')}</p>
+        <p className="mb-6 text-sm text-slate-500 dark:text-slate-400">{t('Podaj adres e-mail przypisany do konta - wyślemy link do resetu hasła.')}</p>
         {message ? (
           <p className="rounded-md bg-accent-50 dark:bg-accent-900/30 px-3 py-2 text-sm text-accent-800 dark:text-accent-300">{message}</p>
         ) : (

@@ -109,7 +109,7 @@ export default function Bilans() {
       <div className="flex flex-wrap items-center justify-between gap-3">
         <div>
           <h1 className="text-2xl font-bold text-slate-900 dark:text-slate-100">{t('Bilans')}</h1>
-          <p className="text-sm text-slate-500 dark:text-slate-400">{t('Przychody i wydatki razem — podział na kategorie i trend w czasie')}</p>
+          <p className="text-sm text-slate-500 dark:text-slate-400">{t('Przychody i wydatki razem - podział na kategorie i trend w czasie')}</p>
         </div>
         <div className="flex gap-2">
           <button

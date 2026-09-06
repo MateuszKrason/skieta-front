@@ -19,19 +19,19 @@ const LANGUAGE_CODE_LABELS: Record<Language, string> = {
   es: 'ES',
 }
 
-// Main categories only — each of these already has its own sub-tabs shown on
+// Main categories only - each of these already has its own sub-tabs shown on
 // the page itself (see GieldaLayout/AnalysisLayout + SubTabs) once you're in
 // it, so the top bar doesn't also need flat shortcuts to those subcategories
 // (e.g. "Przychody"/"Wydatki" used to be duplicated here AND inside Budżet).
 // "Giełda"/"Budżet"/"Planowanie" are additionally hidden per the account's
-// own feature-interest toggles (set at onboarding, editable in Account.tsx) —
+// own feature-interest toggles (set at onboarding, editable in Account.tsx) -
 // "Konta i lokaty" always shows since a bank account is required at signup.
 type InterestKey = 'interest_stocks' | 'interest_budget' | 'interest_planning' | 'interest_analysis'
 
 const DASHBOARD_LINK = { to: '/dashboard', label: 'Dashboard', end: true, tourId: 'nav-dashboard' }
 
 // Everything except Dashboard (always first) and Admin (conditional, always
-// last) — keyed by route slug so a user's custom order (Profile.nav_order,
+// last) - keyed by route slug so a user's custom order (Profile.nav_order,
 // reorderable in Account.tsx) can be applied by key lookup. Must mirror the
 // backend's Profile.NAV_ORDER_KEYS / DEFAULT_NAV_ORDER exactly. `tourId`
 // feeds the first-login interactive tour (see ../tour) - it spotlights each
@@ -73,13 +73,13 @@ function HeaderActions({ stacked = false, onNavigate }: { stacked?: boolean; onN
   const { theme, setTheme } = useTheme()
   const { language, setLanguage, t } = useLanguage()
 
-  // Persist to the account too, not just localStorage — otherwise the next
+  // Persist to the account too, not just localStorage - otherwise the next
   // login re-applies the server's stale value and silently reverts the pick
   // made from this quick toggle (the Account settings dropdown already did
   // this correctly; this button didn't). Update the local profile directly
   // (via AuthContext's `updateProfile`, not a PATCH-then-refetch) so e.g. the
   // Account page's "Domyślny kolor interfejsu" dropdown reflects the change
-  // immediately — two clicks close together used to fire two independent
+  // immediately - two clicks close together used to fire two independent
   // request pairs with no guaranteed resolution order, so whichever refetch
   // happened to land last "won" regardless of actual click order.
   const languageMutation = useMutation({

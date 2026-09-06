@@ -33,12 +33,12 @@ export const sq: Record<string, string> = {
   '← Powrót do logowania': '← Kthehu te identifikimi',
   'Adres e-mail': 'Adresa e-mail',
   'Wysyłanie…': 'Duke dërguar…',
-  'Podaj adres e-mail przypisany do konta — wyślemy link do resetu hasła.':
+  'Podaj adres e-mail przypisany do konta - wyślemy link do resetu hasła.':
     'Jep adresën e-mail të lidhur me llogarinë - do të dërgojmë një lidhje për rivendosjen e fjalëkalimit.',
   'Jeśli podany adres e-mail istnieje w naszej bazie, wysłaliśmy na niego link do resetu hasła.':
     'Nëse adresa e dhënë ekziston në bazën tonë, kemi dërguar një lidhje për rivendosjen e fjalëkalimit.',
   'Wyślij link do resetu': 'Dërgo lidhjen e rivendosjes',
-  'Link resetu hasła jest niepełny — otwórz go bezpośrednio z wiadomości e-mail.':
+  'Link resetu hasła jest niepełny - otwórz go bezpośrednio z wiadomości e-mail.':
     'Lidhja e rivendosjes së fjalëkalimit është e paplotë - hape drejtpërdrejt nga email-i.',
   'Hasło zostało zresetowane. Przekierowuję do logowania…': 'Fjalëkalimi u rivendos. Duke ridrejtuar te identifikimi…',
   'Ustaw nowe hasło do swojego konta.': 'Vendos një fjalëkalim të ri për llogarinë tënde.',
@@ -50,7 +50,7 @@ export const sq: Record<string, string> = {
   'Nie udało się potwierdzić adresu e-mail.': 'Verifikimi i adresës e-mail dështoi.',
   'Przejdź do aplikacji →': 'Shko te aplikacioni →',
   'Adres e-mail nie jest jeszcze potwierdzony': 'Adresa jote e-mail nuk është verifikuar ende',
-  'Wysłano nowy link weryfikacyjny — sprawdź skrzynkę.': 'U dërgua një lidhje e re verifikimi - kontrollo email-in.',
+  'Wysłano nowy link weryfikacyjny - sprawdź skrzynkę.': 'U dërgua një lidhje e re verifikimi - kontrollo email-in.',
   'Sprawdź skrzynkę i kliknij link, który wysłaliśmy przy rejestracji.':
     'Kontrollo email-in dhe kliko lidhjen që dërguam gjatë regjistrimit.',
   'Dodaj adres e-mail poniżej, żeby móc go potwierdzić i odzyskać konto w razie potrzeby.':
@@ -64,11 +64,11 @@ export const sq: Record<string, string> = {
   'Obligacje': 'Obligacionet',
   'Gotowe': 'Gati',
   'Dodaj posiadane rzeczy': 'Shto çfarë zotëron',
-  'Wprowadź to, co już posiadasz — z prawdziwą, wsteczną datą zakupu — żeby historia i zyski liczyły się poprawnie od początku.':
+  'Wprowadź to, co już posiadasz - z prawdziwą, wsteczną datą zakupu - żeby historia i zyski liczyły się poprawnie od początku.':
     'Shëno çfarë zotëron tashmë - me datën reale, të mëparshme të blerjes - që historiku dhe fitimet të llogariten saktë që në fillim.',
   'Zakończ teraz →': 'Përfundo tani →',
   'Gotowe!': 'Gati!',
-  'Możesz w każdej chwili dodać kolejne rzeczy z tego samego kreatora — link znajdziesz w górnym menu.':
+  'Możesz w każdej chwili dodać kolejne rzeczy z tego samego kreatora - link znajdziesz w górnym menu.':
     'Mund të shtosh gjëra të tjera në çdo kohë nga i njëjti asistent - lidhjen e gjen në menynë e sipërme.',
   'Przejdź do pulpitu': 'Shko te paneli',
   '← Wstecz': '← Prapa',
@@ -89,7 +89,7 @@ export const sq: Record<string, string> = {
   'Waluta': 'Monedha',
   'Obecne saldo': 'Bilanci aktual',
   '+ Dodaj konto': '+ Shto llogari',
-  'Nie masz jeszcze żadnego konta z gotówką na zakup akcji? Dodaj je tutaj z aktualnym saldem — w kolejnym kroku możesz z niego "kupić" akcje, które faktycznie posiadasz.':
+  'Nie masz jeszcze żadnego konta z gotówką na zakup akcji? Dodaj je tutaj z aktualnym saldem - w kolejnym kroku możesz z niego "kupić" akcje, które faktycznie posiadasz.':
     'Nuk ke ende një llogari me para gati për të blerë aksione? Shtoje këtu me bilancin aktual - në hapin tjetër mund të "blesh" prej saj aksionet që zotëron në të vërtetë.',
   'Wyszukaj spółkę': 'Kërko një kompani',
   'Ticker': 'Ticker',
@@ -101,16 +101,16 @@ export const sq: Record<string, string> = {
   '+ Dodaj pozycję': '+ Shto pozicion',
   'Dla każdej posiadanej spółki podaj ilość, cenę i': 'Për çdo kompani që zotëron, jep sasinë, çmimin dhe',
   'prawdziwą datę zakupu': 'datën reale të blerjes',
-  '— dzięki temu historia i wykresy będą liczone poprawnie.': '- kështu historiku dhe grafikët do të llogariten saktë.',
+  '- dzięki temu historia i wykresy będą liczone poprawnie.': '- kështu historiku dhe grafikët do të llogariten saktë.',
   'Nie udało się dodać pozycji.': 'Shtimi i pozicionit dështoi.',
   'Wybierz spółkę.': 'Zgjidh një kompani.',
-  'Jeśli wybierzesz konto, kwota zostanie od razu odjęta z jego salda — zostaw puste, jeśli tylko deklarujesz akcje, które już posiadasz.':
+  'Jeśli wybierzesz konto, kwota zostanie od razu odjęta z jego salda - zostaw puste, jeśli tylko deklarujesz akcje, które już posiadasz.':
     'Nëse zgjedh një llogari, shuma do të zbritet menjëherë nga bilanci i saj - lëre bosh nëse thjesht po deklaron aksione që zotëron tashmë.',
-  'To pozycja, którą już posiadam — nie odejmuj środków z konta (tylko zapisz powiązanie).':
+  'To pozycja, którą już posiadam - nie odejmuj środków z konta (tylko zapisz powiązanie).':
     'Ky është një pozicion që e zotëroj tashmë - mos zbrit fonde nga llogaria (thjesht ruaj lidhjen).',
-  'To lokata, którą już posiadam — nie odejmuj środków z konta (tylko zapisz powiązanie).':
+  'To lokata, którą już posiadam - nie odejmuj środków z konta (tylko zapisz powiązanie).':
     'Kjo është një depozitë që e zotëroj tashmë - mos zbrit fonde nga llogaria (thjesht ruaj lidhjen).',
-  'To obligacja, którą już posiadam — nie odejmuj środków z konta (tylko zapisz powiązanie).':
+  'To obligacja, którą już posiadam - nie odejmuj środków z konta (tylko zapisz powiązanie).':
     'Ky është një obligacion që e zotëroj tashmë - mos zbrit fonde nga llogaria (thjesht ruaj lidhjen).',
   'bez powiązania z kontem': 'pa lidhje me llogari',
   'Nie dodano jeszcze żadnych akcji.': 'Nuk ke shtuar ende asnjë aksion.',
@@ -183,7 +183,7 @@ export const sq: Record<string, string> = {
   '+ Konto': '+ Llogari',
   'Edytuj': 'Ndrysho',
   'Usuń': 'Fshi',
-  'Brak kont — dodaj pierwsze.': 'Nuk ka llogari - shto të parën.',
+  'Brak kont - dodaj pierwsze.': 'Nuk ka llogari - shto të parën.',
   'Historia przelewów': 'Historiku i transfertave',
   '+ Lokata': '+ Depozitë',
   'Oprocentowanie': 'Norma e interesit',
@@ -198,7 +198,7 @@ export const sq: Record<string, string> = {
   'Brak lokat.': 'Nuk ka depozita.',
   'Obligacje skarbowe': 'Obligacione shtetërore',
   '+ Obligacja': '+ Obligacion',
-  'Odsetki liczone metodą uproszczoną (proste, wg wpisanego bieżącego oprocentowania) — nie odwzorowuje dokładnie zmiennych/indeksowanych inflacją harmonogramów kapitalizacji poszczególnych serii.':
+  'Odsetki liczone metodą uproszczoną (proste, wg wpisanego bieżącego oprocentowania) - nie odwzorowuje dokładnie zmiennych/indeksowanych inflacją harmonogramów kapitalizacji poszczególnych serii.':
     'Interesat llogariten me një metodë të thjeshtuar (interes i thjeshtë, sipas normës aktuale që ke futur) - nuk përsërit saktësisht orarin e kapitalizimit të ndryshueshëm/të indeksuar me inflacion të secilës seri.',
   'Wykup': 'Maturimi',
   'wykupiona': 'e maturuar',
@@ -227,7 +227,7 @@ export const sq: Record<string, string> = {
 
   // Timeline
   'Timeline majątku': 'Kronologjia e pasurisë',
-  'Sprawdź, jak realnie pomnożyłeś wpłacone środki — niezależnie od tego, ile do systemu dołożyłeś':
+  'Sprawdź, jak realnie pomnożyłeś wpłacone środki - niezależnie od tego, ile do systemu dołożyłeś':
     'Shiko sa janë shumëzuar realisht fondet e tua të depozituara - pavarësisht sa ke shtuar në sistem',
   '+ Wpłata / wypłata': '+ Depozitim / tërheqje',
   'Obecna wartość majątku': 'Vlera aktuale e pasurisë',
@@ -269,7 +269,7 @@ export const sq: Record<string, string> = {
   'Portfel akcji i ETF-ów': 'Portofoli i aksioneve dhe ETF-ve',
   'Suma wartości akcji': 'Vlera totale e aksioneve',
   'Łączny zysk/strata': 'Fitimi/humbja totale',
-  'Kursy odświeżają się przy wejściu na tę stronę — kliknij "Odśwież kursy", by pobrać je ponownie':
+  'Kursy odświeżają się przy wejściu na tę stronę - kliknij "Odśwież kursy", by pobrać je ponownie':
     'Kurset rifreskohen kur hyni në këtë faqe - kliko "Rifresko kurset" për t\'i marrë përsëri',
   '⟳ Odśwież kursy': '⟳ Rifresko kurset',
   'Notatki': 'Shënime',
@@ -283,7 +283,7 @@ export const sq: Record<string, string> = {
   'Zysk/strata': 'Fitimi/humbja',
   'Aktualizacja': 'Përditësimi',
   'Sprzedaj': 'Shit',
-  'Brak pozycji — dodaj pierwszą transakcję.': 'Nuk ka pozicione - shto transaksionin e parë.',
+  'Brak pozycji - dodaj pierwszą transakcję.': 'Nuk ka pozicione - shto transaksionin e parë.',
   'Historia transakcji': 'Historiku i transaksioneve',
   'Kupno': 'Blerje',
   'Sprzedaż': 'Shitje',
@@ -292,7 +292,7 @@ export const sq: Record<string, string> = {
   'Nie udało się zapisać transakcji.': 'Ruajtja e transaksionit dështoi.',
   'Wybierz konto, z którego pobrane zostaną środki.': 'Zgjidh llogarinë nga e cila do të merren fondet.',
   'wybierz konto…': 'zgjidh një llogari…',
-  'Brak konta w walucie {0} — dodaj je w zakładce Konta i lokaty.': 'Nuk ka llogari në {0} - shtoje në skedën Llogaritë dhe Depozitat.',
+  'Brak konta w walucie {0} - dodaj je w zakładce Konta i lokaty.': 'Nuk ka llogari në {0} - shtoje në skedën Llogaritë dhe Depozitat.',
   'Zapisz kupno': 'Ruaj blerjen',
   'Nie udało się sprzedać akcji.': 'Shitja e aksionit dështoi.',
   'Posiadasz tylko {0} szt.': 'Zotëron vetëm {0} copë.',
@@ -308,9 +308,9 @@ export const sq: Record<string, string> = {
   'Niezainwestowany kapitał': 'Kapitali i painvestuar',
   'Ścieżki reinwestycji': 'Rrugët e riinvestimit',
   '+ Nowa ścieżka': '+ Rrugë e re',
-  'Śledź, do ilu pomnożyła się konkretna kwota — np. zysk ze sprzedaży jednej spółki rozdzielony na kilka kolejnych zakupów, z opcjonalną dodatkową gotówką i niezainwestowaną resztą.':
+  'Śledź, do ilu pomnożyła się konkretna kwota - np. zysk ze sprzedaży jednej spółki rozdzielony na kilka kolejnych zakupów, z opcjonalną dodatkową gotówką i niezainwestowaną resztą.':
     'Ndiq sa është shumëfishuar një shumë e caktuar - p.sh. fitimi nga shitja e një kompanie i ndarë në disa blerje pasuese, me para shtesë opsionale dhe pjesën e mbetur të painvestuar.',
-  'Brak ścieżek — utwórz pierwszą.': 'Nuk ka rrugë - krijo të parën.',
+  'Brak ścieżek - utwórz pierwszą.': 'Nuk ka rrugë - krijo të parën.',
   'Usunąć całą ścieżkę „{0}”? Tej operacji nie można cofnąć.': 'Të fshihet e gjithë rruga "{0}"? Ky veprim nuk mund të kthehet mbrapsht.',
   'Start:': 'Fillimi:',
   'Usuń ścieżkę': 'Fshi rrugën',
@@ -337,18 +337,18 @@ export const sq: Record<string, string> = {
   'Zapisz pozycję': 'Ruaj pozicionin',
   'Nie udało się zamknąć pozycji.': 'Mbyllja e pozicionit dështoi.',
   'auto: proporcjonalnie': 'auto: proporcionalisht',
-  'Brak jeszcze transakcji sprzedaży tej spółki — dodaj ją najpierw w portfelu.': 'Nuk ka ende transaksion shitjeje për këtë kompani - shtoje fillimisht në portofol.',
+  'Brak jeszcze transakcji sprzedaży tej spółki - dodaj ją najpierw w portfelu.': 'Nuk ka ende transaksion shitjeje për këtë kompani - shtoje fillimisht në portofol.',
   'Zamknij pozycję': 'Mbyll pozicionin',
 
   // Dywidendy
   'Profil dywidendowy': 'Profili i dividendëve',
   'Ile zarabiasz na dywidendach i jaki to procent zainwestowanego kapitału': 'Sa fiton nga dividendët dhe sa përqind e kapitalit të investuar përbën',
-  'Dywidendy wykrywane są automatycznie — nie musisz nic wpisywać ręcznie.':
+  'Dywidendy wykrywane są automatycznie - nie musisz nic wpisywać ręcznie.':
     'Dividendët zbulohen automatikisht - nuk të duhet të shkruash asgjë me dorë.',
   'wykrywam dywidendy…': 'duke zbuluar dividendët…',
   'Wykrywam…': 'Duke zbuluar…',
   '⟳ Wykryj dywidendy': '⟳ Zbulo dividendët',
-  'Automatyczne wykrywanie odświeża się samo przy wejściu na tę stronę — ten przycisk wymusza sprawdzenie od razu.':
+  'Automatyczne wykrywanie odświeża się samo przy wejściu na tę stronę - ten przycisk wymusza sprawdzenie od razu.':
     'Zbulimi automatik rifreskohet vetë kur hyn në këtë faqe - ky buton detyron një kontroll të menjëhershëm.',
   '+ Dywidenda': '+ Dividend',
   '+ Dodaj ręcznie': '+ Shto manualisht',
@@ -357,7 +357,7 @@ export const sq: Record<string, string> = {
   'Suma dywidend (wszystkie czasy)': 'Dividendët gjithsej (të gjitha kohërat)',
   'Projekcja rocznego dochodu (12 mies.)': 'Parashikimi i të ardhurave vjetore (12 muaj)',
   'Planowane dywidendy': 'Dividendët e planifikuara',
-  'Szacunek na podstawie historycznego rytmu wypłat tej spółki (ostatnia kwota + średni odstęp) — nie jest to oficjalna zapowiedź zarządu.':
+  'Szacunek na podstawie historycznego rytmu wypłat tej spółki (ostatnia kwota + średni odstęp) - nie jest to oficjalna zapowiedź zarządu.':
     'Vlerësim bazuar në ritmin historik të pagesave të kësaj kompanie (shuma e fundit + intervali mesatar) - nuk është një njoftim zyrtar nga menaxhimi.',
   'ok.': 'rreth',
   'Dywidendy miesiąc do miesiąca': 'Dividendët muaj pas muaji',
@@ -368,7 +368,7 @@ export const sq: Record<string, string> = {
   '{0} lat': '{0} vjet',
   'Suma dywidend': 'Dividendët gjithsej',
   'Ostatnie 12 mies.': '12 muajt e fundit',
-  'Brak dywidend — dodaj pierwszą wypłatę.': 'Nuk ka dividendë - shto pagesën e parë.',
+  'Brak dywidend - dodaj pierwszą wypłatę.': 'Nuk ka dividendë - shto pagesën e parë.',
   'Historia wypłat': 'Historiku i pagesave',
   'wykryta automatycznie': 'e zbuluar automatikisht',
   'Brak wypłat.': 'Nuk ka pagesa.',
@@ -379,14 +379,14 @@ export const sq: Record<string, string> = {
   'Zapisz dywidendę': 'Ruaj dividendin',
 
   // AnalizaSpolek
-  'Komunikaty ESPI/EBI (GPW) i ważne newsy (USA) dla spółek z Twojego portfela — sprawdzane raz dziennie.':
+  'Komunikaty ESPI/EBI (GPW) i ważne newsy (USA) dla spółek z Twojego portfela - sprawdzane raz dziennie.':
     'Njoftimet ESPI/EBI (GPW) dhe lajme të rëndësishme (SHBA) për kompanitë në portofolin tënd - kontrollohen një herë në ditë.',
   'Sprawdzam…': 'Duke kontrolluar…',
   '⟳ Sprawdź teraz': '⟳ Kontrollo tani',
   'Wszystkie spółki': 'Të gjitha kompanitë',
   'Pokaż tylko nowe': 'Shfaq vetëm të rejat',
   'Nowe': 'Të reja',
-  'Brak komunikatów — kliknij „Sprawdź teraz” albo poczekaj na codzienne automatyczne sprawdzenie.':
+  'Brak komunikatów - kliknij „Sprawdź teraz” albo poczekaj na codzienne automatyczne sprawdzenie.':
     'Nuk ka njoftime - kliko "Kontrollo tani" ose prit kontrollin automatik ditor.',
 
   // Budget shared
@@ -396,7 +396,7 @@ export const sq: Record<string, string> = {
   'Zakres własny': 'Interval i personalizuar',
   'Bez kategorii': 'Pa kategori',
   'Brak danych w tym okresie.': 'Nuk ka të dhëna për këtë periudhë.',
-  'wg kategorii — miesiąc do miesiąca': 'sipas kategorisë - muaj pas muaji',
+  'wg kategorii - miesiąc do miesiąca': 'sipas kategorisë - muaj pas muaji',
   'Kliknij kategorię poniżej, aby zobaczyć konkretne transakcje w wybranym okresie.': 'Kliko një kategori më poshtë për të parë transaksionet konkrete në periudhën e zgjedhur.',
   'Transakcje w okresie': 'Transaksionet në periudhë',
   '+ Kategoria': '+ Kategori',
@@ -415,18 +415,18 @@ export const sq: Record<string, string> = {
   'Sklepy': 'Dyqanet',
   '+ Dodaj sklep': '+ Shto dyqan',
   'Usuń sklep': 'Fshi dyqanin',
-  'Brak sklepów — dodaj pierwszy powyżej.': 'Nuk ka dyqane - shto të parin më sipër.',
+  'Brak sklepów - dodaj pierwszy powyżej.': 'Nuk ka dyqane - shto të parin më sipër.',
   'Wydatki wg sklepów': 'Shpenzimet sipas dyqaneve',
   'Tylko transakcje, którym przypisano sklep. Kliknij sklep, aby zobaczyć jego transakcje.': 'Vetëm transaksionet me dyqan të caktuar. Kliko një dyqan për të parë transaksionet e tij.',
   'Brak wydatków przypisanych do sklepów w tym okresie.': 'Nuk ka shpenzime të lidhura me dyqane në këtë periudhë.',
   'Bez sklepu': 'Pa dyqan',
 
   // Bilans / Przychody / Wydatki
-  'Przychody i wydatki razem — podział na kategorie i trend w czasie': 'Të ardhurat dhe shpenzimet së bashku - ndarje sipas kategorive dhe tendenca me kalimin e kohës',
+  'Przychody i wydatki razem - podział na kategorie i trend w czasie': 'Të ardhurat dhe shpenzimet së bashku - ndarje sipas kategorive dhe tendenca me kalimin e kohës',
   '+ Przychód / wydatek': '+ Të ardhur / shpenzim',
   'Przychody w okresie': 'Të ardhurat në periudhë',
   'Wydatki w okresie': 'Shpenzimet në periudhë',
-  'Przychody i wydatki — ostatnie 12 miesięcy': 'Të ardhurat dhe shpenzimet - 12 muajt e fundit',
+  'Przychody i wydatki - ostatnie 12 miesięcy': 'Të ardhurat dhe shpenzimet - 12 muajt e fundit',
   'Przychody i wydatki w czasie': 'Të ardhurat dhe shpenzimet me kalimin e kohës',
   'Słupki': 'Shtylla',
   'Linia': 'Vijë',
@@ -434,11 +434,11 @@ export const sq: Record<string, string> = {
   '{0} mies.': '{0} muaj',
   'Wybierz co najmniej jedną serię do wyświetlenia.': 'Zgjidh të paktën një seri për shfaqje.',
   'Skumulowany bilans (oszczędności)': 'Bilanci kumulativ (kursimet)',
-  'Suma miesięcznych bilansów narastająco — jak rósł Twój zaoszczędzony kapitał w tym okresie.':
+  'Suma miesięcznych bilansów narastająco - jak rósł Twój zaoszczędzony kapitał w tym okresie.':
     'Shuma kumulative e bilanceve mujore - si u rrit kapitali yt i kursyer në këtë periudhë.',
   'Wydatki wg tagów': 'Shpenzimet sipas etiketave',
   'Przychody wg tagów': 'Të ardhurat sipas etiketave',
-  'Tylko transakcje z co najmniej jednym tagiem — transakcja z kilkoma tagami liczy się do każdego z nich.':
+  'Tylko transakcje z co najmniej jednym tagiem - transakcja z kilkoma tagami liczy się do każdego z nich.':
     'Vetëm transaksionet me të paktën një etiketë - një transaksion me disa etiketa numërohet për secilën prej tyre.',
   'Brak transakcji z tagami w tym okresie.': 'Nuk ka transaksione me etiketa në këtë periudhë.',
   'Bez tagu': 'Pa etiketë',
@@ -504,7 +504,7 @@ export const sq: Record<string, string> = {
   '+ Dodaj tag': '+ Shto etiketë',
   'Usunąć tag "{0}"?': 'Të fshihet etiketa "{0}"?',
   'Usuń tag': 'Fshi etiketën',
-  'Brak tagów — dodaj pierwszy powyżej.': 'Nuk ka etiketa - shto të parën më sipër.',
+  'Brak tagów - dodaj pierwszy powyżej.': 'Nuk ka etiketa - shto të parën më sipër.',
 
   // Belka tax P/L
   'Po podatku od zysków kapitałowych (19%)': 'Pas tatimit mbi fitimet kapitale (19%)',
@@ -522,7 +522,7 @@ export const sq: Record<string, string> = {
   'Zarezerwowano na cele': 'Rezervuar për qëllime',
   'Cele oszczędnościowe': 'Qëllimet e kursimit',
   '+ Cel': '+ Qëllim',
-  'Brak celów — dodaj pierwszy.': 'Nuk ka qëllime - shto të parin.',
+  'Brak celów - dodaj pierwszy.': 'Nuk ka qëllime - shto të parin.',
   'Duże wydatki': 'Shpenzime të mëdha',
   'Brak zaplanowanych wydatków.': 'Nuk ka shpenzime të planifikuara.',
   'Cofnij': 'Zhbëj',
@@ -544,7 +544,7 @@ export const sq: Record<string, string> = {
 
   // Dividend simulation
   'Symulacja przyszłych dywidend (12 mies.)': 'Simulimi i dividendëve të ardhshëm (12 muaj)',
-  'Szacunek na podstawie obecnie posiadanych akcji i historycznego rytmu wypłat każdej spółki — nie jest to gwarancja przyszłych dywidend.':
+  'Szacunek na podstawie obecnie posiadanych akcji i historycznego rytmu wypłat każdej spółki - nie jest to gwarancja przyszłych dywidend.':
     'Vlerësim bazuar në aksionet që zotëron aktualisht dhe ritmin historik të pagesave të secilës kompani - nuk është garanci për dividendë të ardhshëm.',
   'Szacunkowe dywidendy w kolejnych latach': 'Dividendë të vlerësuar për vitet e ardhshme',
   'To samo założenie co powyżej (obecne akcje i historyczny rytm wypłat), zsumowane rok do roku na dłuższym horyzoncie.':
@@ -560,7 +560,7 @@ export const sq: Record<string, string> = {
 
   // Invite-only registration / streak / onboarding gate
   'Login lub e-mail': 'Emri i përdoruesit ose e-mail',
-  'Rejestracja jest dostępna tylko na zaproszenie od innego użytkownika — poproś o link lub zeskanuj kod QR.':
+  'Rejestracja jest dostępna tylko na zaproszenie od innego użytkownika - poproś o link lub zeskanuj kod QR.':
     'Regjistrimi bëhet vetëm me ftesë nga një përdorues tjetër - kërko një lidhje ose skano kodin QR.',
   'Masz już konto? Zaloguj się': 'Ke tashmë një llogari? Identifikohu',
   'Rejestracja jest dostępna tylko na zaproszenie od innego użytkownika.': 'Regjistrimi bëhet vetëm me ftesë nga një përdorues tjetër.',
@@ -569,14 +569,14 @@ export const sq: Record<string, string> = {
   'Limit: bez ograniczeń': 'Limiti: pa kufizim',
   'Pozostało w tym tygodniu: {0} z {1}': 'Mbetur këtë javë: {0} nga {1}',
   '+ Wygeneruj zaproszenie': '+ Gjenero ftesë',
-  'Wykorzystano limit zaproszeń na ten tydzień — odnawia się na bieżąco, 7 dni po każdym zaproszeniu.':
+  'Wykorzystano limit zaproszeń na ten tydzień - odnawia się na bieżąco, 7 dni po każdym zaproszeniu.':
     'Limiti i ftesave për këtë javë është përdorur - rinovohet vazhdimisht, 7 ditë pas çdo ftese.',
   'Skopiowano!': 'U kopjua!',
   'Kopiuj link': 'Kopjo lidhjen',
   'Pokaż QR': 'Shfaq QR',
   'Ukryj QR': 'Fshih QR',
   'Zaakceptowane przez {0} ({1})': 'Pranuar nga {0} ({1})',
-  'Oczekuje — wygenerowano {0}': 'Në pritje - gjeneruar {0}',
+  'Oczekuje - wygenerowano {0}': 'Në pritje - gjeneruar {0}',
   'Czy na pewno chcesz zmienić nazwę użytkownika? Można to zrobić tylko raz na 30 dni.':
     'Je i sigurt që dëshiron të ndryshosh emrin e përdoruesit? Kjo mund të bëhet vetëm një herë në 30 ditë.',
   'Dodaj co najmniej jedno konto bankowe, żeby przejść dalej.': 'Shto të paktën një llogari bankare për të vazhduar.',
@@ -592,7 +592,7 @@ export const sq: Record<string, string> = {
 
   // Editor role / article CRM / admin role assignment
   'Redakcja': 'Redaksia',
-  'Masz uprawnienia redaktora — możesz dodawać i edytować artykuły.':
+  'Masz uprawnienia redaktora - możesz dodawać i edytować artykuły.':
     'Ke të drejta redaktori - mund të shtosh dhe redaktosh artikuj.',
   'Przejdź do redakcji': 'Shko te redaksia',
   'Redakcja artykułów': 'Redaksia e artikujve',
@@ -618,7 +618,7 @@ export const sq: Record<string, string> = {
   'Czy na pewno chcesz usunąć tę lokatę?': 'Je i sigurt që dëshiron ta fshish këtë depozitë?',
   'Czy na pewno chcesz usunąć tę obligację?': 'Je i sigurt që dëshiron ta fshish këtë obligacion?',
   'Kategorie, sklepy i tagi': 'Kategoritë, dyqanet dhe etiketat',
-  'Zarządzaj tu wszystkimi kategoriami, sklepami i tagami używanymi w budżecie — w jednym miejscu.':
+  'Zarządzaj tu wszystkimi kategoriami, sklepami i tagami używanymi w budżecie - w jednym miejscu.':
     'Menaxho këtu të gjitha kategoritë, dyqanet dhe etiketat e përdorura në buxhet - në një vend të vetëm.',
   'Kategorie przychodów': 'Kategoritë e të ardhurave',
   'Kategorie wydatków': 'Kategoritë e shpenzimeve',
@@ -634,7 +634,7 @@ export const sq: Record<string, string> = {
 
   // Feature-interest onboarding + account settings
   'Zainteresowania': 'Interesat',
-  'Z czego chcesz korzystać? Odznacz to, czego nie potrzebujesz — zawsze możesz to zmienić później w ustawieniach konta.':
+  'Z czego chcesz korzystać? Odznacz to, czego nie potrzebujesz - zawsze możesz to zmienić później w ustawieniach konta.':
     'Çfarë dëshiron të përdorësh? Hiq zgjedhjen nga ato që nuk të duhen - gjithmonë mund ta ndryshosh më vonë te cilësimet e llogarisë.',
   'Budżet': 'Buxheti',
   'Portfel akcji, dywidendy, analiza spółek': 'Portofoli i aksioneve, dividendët, analiza e kompanive',
@@ -642,7 +642,7 @@ export const sq: Record<string, string> = {
   'Cele oszczędnościowe i planowane wydatki': 'Qëllimet e kursimit dhe shpenzimet e planifikuara',
   'Kalkulator inwestycyjny - obligacje, lokaty, giełda': 'Kalkulatori i investimeve - obligacione, depozita, bursë',
   'Z czego korzystasz': 'Çfarë përdor',
-  'Odznaczone opcje znikają z górnego menu — możesz je włączyć z powrotem w każdej chwili.':
+  'Odznaczone opcje znikają z górnego menu - możesz je włączyć z powrotem w każdej chwili.':
     'Opsionet e hequra zhduken nga menyja e sipërme - mund të aktivizohen përsëri në çdo kohë.',
 
   // Chart type switcher
@@ -676,7 +676,7 @@ export const sq: Record<string, string> = {
   '+ Wyślij zaproszenie mailem': '+ Dërgo ftesë me e-mail',
 
   // Growth summary "no data" state
-  'Brak danych — zarejestruj pierwszą wpłatę, aby zobaczyć realny zwrot.':
+  'Brak danych - zarejestruj pierwszą wpłatę, aby zobaczyć realny zwrot.':
     'Nuk ka të dhëna - regjistro depozitimin e parë për të parë kthimin real.',
 
   // Admin user detail page
@@ -721,7 +721,7 @@ export const sq: Record<string, string> = {
   'To, co zarobiłeś: odsetki na lokatach i obligacjach, zysk na akcjach oraz dywidendy (po podatku Belki).':
     'Ajo që ke fituar: interesat nga depozitat dhe obligacionet, fitimi nga aksionet dhe dividendët (pas tatimit mbi fitimet kapitale).',
 
-  // Zmiana wartości majątku — expandable breakdown
+  // Zmiana wartości majątku - expandable breakdown
   'Kliknij, aby zobaczyć podział zmiany na akcje, lokaty, obligacje i gotówkę':
     'Kliko për të parë ndarjen e ndryshimit sipas aksioneve, depozitave, obligacioneve dhe parave në dorë',
   'Brak zmian w poszczególnych składnikach.': 'Nuk ka ndryshime në komponentët individualë.',
@@ -768,13 +768,13 @@ export const sq: Record<string, string> = {
   'Kolor roli': 'Ngjyra e rolit',
   'Utwórz rolę': 'Krijo rol',
   '+ Nowa rola': '+ Rol i ri',
-  'Twórz role z wybranym zestawem uprawnień i nadawaj je użytkownikom w ich profilu — niezależnie od statusu administratora/redaktora.':
+  'Twórz role z wybranym zestawem uprawnień i nadawaj je użytkownikom w ich profilu - niezależnie od statusu administratora/redaktora.':
     'Krijo role me një grup të zgjedhur lejesh dhe jepua përdoruesve në profilin e tyre - pavarësisht statusit të administratorit/redaktorit.',
   '{0} uprawnień, {1} użytkowników': '{0} leje, {1} përdorues',
   'Usunąć rolę {0}? Zostanie odebrana wszystkim {1} przypisanym użytkownikom.':
     'Të fshihet roli {0}? Do të hiqet nga të gjithë {1} përdoruesit e caktuar.',
   'Brak ról.': 'Nuk ka role.',
-  'Brak ról — utwórz je w zakładce "Role".': 'Nuk ka role - krijoji te skeda "Rolet".',
+  'Brak ról - utwórz je w zakładce "Role".': 'Nuk ka role - krijoji te skeda "Rolet".',
   'Podgląd statystyk aplikacji': 'Shikimi i statistikave të aplikacionit',
   'Podgląd listy użytkowników': 'Shikimi i listës së përdoruesve',
   'Zarządzanie użytkownikami (aktywacja, archiwizacja)': 'Menaxhimi i përdoruesve (aktivizim, arkivim)',
@@ -783,14 +783,14 @@ export const sq: Record<string, string> = {
   'Zarządzanie zgłoszeniami feedbacku': 'Menaxhimi i raportimeve të feedback-ut',
   'Tworzenie i edycja ról': 'Krijimi dhe redaktimi i roleve',
 
-  // Invite friends — delete, sub-tabs, expiry
+  // Invite friends - delete, sub-tabs, expiry
   'Oczekujące zaproszenia': 'Ftesat në pritje',
   'Przyjęte zaproszenia': 'Ftesat e pranuara',
   'Brak oczekujących zaproszeń.': 'Nuk ka ftesa në pritje.',
   'Brak przyjętych zaproszeń.': 'Nuk ka ftesa të pranuara.',
   'Usunąć ten link z zaproszeniem?': 'Të fshihet kjo lidhje ftese?',
-  'Wygasło — wygenerowano {0}': 'Skaduar - gjeneruar {0}',
-  'Oczekuje — wygenerowano {0}, wygasa po 48h': 'Në pritje - gjeneruar {0}, skadon pas 48 orësh',
+  'Wygasło - wygenerowano {0}': 'Skaduar - gjeneruar {0}',
+  'Oczekuje - wygenerowano {0}, wygasa po 48h': 'Në pritje - gjeneruar {0}, skadon pas 48 orësh',
 
   // Login history
   'Historia logowań': 'Historiku i identifikimeve',
@@ -804,7 +804,7 @@ export const sq: Record<string, string> = {
   // Username change lock
   'Można zmienić od {0}': 'Mund të ndryshohet përsëri nga {0}',
 
-  // Savings goals — reserve from savings, multi-month payday reservations
+  // Savings goals - reserve from savings, multi-month payday reservations
   'Zarezerwuj z oszczędności': 'Rezervo nga kursimet',
   'Zarezerwuj część pensji z jednego lub kilku konkretnych miesięcy naraz.':
     'Rezervo një pjesë të pagës nga një ose disa muaj konkretë njëherësh.',
@@ -835,21 +835,21 @@ export const sq: Record<string, string> = {
   'Panuj nad': 'Merr kontrollin e',
   'swoimi finansami': 'financave të tua',
   'Zbudowane, żeby faktycznie z tego korzystać': 'Ndërtuar që ta përdorësh vërtet',
-  'Nie kolejny arkusz kalkulacyjny — narzędzie, które samo liczy to, co dla Ciebie ważne.':
+  'Nie kolejny arkusz kalkulacyjny - narzędzie, które samo liczy to, co dla Ciebie ważne.':
     'Jo edhe një fletëllogaritëse tjetër - një mjet që llogarit vetë çfarë ka rëndësi për ty.',
   'Wszystko w jednym miejscu': 'Gjithçka në një vend',
-  'Konta bankowe, akcje, obligacje i lokaty — jeden widok na cały Twój majątek, bez przełączania się między aplikacjami banków i domów maklerskich.':
+  'Konta bankowe, akcje, obligacje i lokaty - jeden widok na cały Twój majątek, bez przełączania się między aplikacjami banków i domów maklerskich.':
     'Llogaritë bankare, aksionet, obligacionet dhe depozitat - një pamje e vetme mbi gjithë pasurinë tënde, pa kaluar nga një aplikacion në tjetrin i bankave dhe brokerave.',
   'Realny zwrot z inwestycji': 'Kthimi real nga investimet',
-  'Zysk liczony osobno od wpłaconego kapitału — zobaczysz dokładnie, ile realnie zarobiłeś na lokatach, obligacjach i akcjach, po podatku Belki.':
+  'Zysk liczony osobno od wpłaconego kapitału - zobaczysz dokładnie, ile realnie zarobiłeś na lokatach, obligacjach i akcjach, po podatku Belki.':
     'Fitimi llogaritet veç nga kapitali i depozituar - do të shohësh saktësisht sa ke fituar realisht nga depozitat, obligacionet dhe aksionet, pas tatimit mbi fitimet kapitale.',
   'Budżet pod kontrolą': 'Buxheti nën kontroll',
-  'Automatyczny import wyciągów, kategorie, sklepy i tagi — analiza przychodów i wydatków, która sama się aktualizuje.':
+  'Automatyczny import wyciągów, kategorie, sklepy i tagi - analiza przychodów i wydatków, która sama się aktualizuje.':
     'Importim automatik i ekstrakteve bankare, kategori, dyqane dhe etiketa - analizë e të ardhurave dhe shpenzimeve që përditësohet vetë.',
   'Ustaw cel, rezerwuj kwoty z konkretnych wypłat lub z bieżących oszczędności i śledź postęp na żywo.':
     'Vendos një qëllim, rezervo shuma nga paga konkrete ose nga kursimet aktuale, dhe ndiq ecurinë në kohë reale.',
   'Dywidendy i podatki': 'Dividendët dhe tatimet',
-  'Historia i prognoza wypłat dywidend, szacowany podatek Belki do zapłaty — żadnych niespodzianek przy rozliczeniu.':
+  'Historia i prognoza wypłat dywidend, szacowany podatek Belki do zapłaty - żadnych niespodzianek przy rozliczeniu.':
     'Historiku dhe parashikimi i pagesave të dividendëve, tatimi i vlerësuar për pagesë - asnjë befasi kur vjen koha e llogarive.',
   'Twoje dane, Twoja kontrola': 'Të dhënat e tua, kontrolli yt',
   'Dostęp wyłącznie na zaproszenie, bez reklam i bez śledzenia. Historia logowań pokazuje dokładnie, kto i kiedy wchodził na Twoje konto.':
@@ -862,17 +862,17 @@ export const sq: Record<string, string> = {
   'Kilka minut wystarczy, żeby dodać konta bankowe, portfel akcji, lokaty i obligacje.':
     'Mjaftojnë pak minuta për të shtuar llogaritë bankare, portofolin e aksioneve, depozitat dhe obligacionet.',
   'Widzisz cały obraz': 'Shikon pamjen e plotë',
-  'Dashboard aktualizuje się na bieżąco — majątek, zwrot z inwestycji i budżet w jednym miejscu.':
+  'Dashboard aktualizuje się na bieżąco - majątek, zwrot z inwestycji i budżet w jednym miejscu.':
     'Paneli përditësohet vazhdimisht - pasuria, kthimi nga investimet dhe buxheti në një vend.',
   'Masz już zaproszenie?': 'Ke tashmë një ftesë?',
-  'Zaloguj się i zobacz cały swój majątek w jednym miejscu — od razu po pierwszym dodaniu konta.':
+  'Zaloguj się i zobacz cały swój majątek w jednym miejscu - od razu po pierwszym dodaniu konta.':
     'Identifikohu dhe shiko gjithë pasurinë tënde në një vend - menjëherë pas shtimit të llogarisë së parë.',
 
-  // Request access — landing page form + admin review
+  // Request access - landing page form + admin review
   'Nie masz zaproszenia? Poproś o dostęp →': 'Nuk ke ftesë? Kërko akses →',
   'Twój adres e-mail': 'Adresa jote e-mail',
   'Poproś o dostęp': 'Kërko akses',
-  'Dziękujemy! Sprawdź skrzynkę e-mail — napiszemy, gdy administrator rozpatrzy Twoją prośbę.':
+  'Dziękujemy! Sprawdź skrzynkę e-mail - napiszemy, gdy administrator rozpatrzy Twoją prośbę.':
     'Faleminderit! Kontrollo email-in - do të shkruajmë kur administratori ta shqyrtojë kërkesën tënde.',
   'Prośby o dostęp': 'Kërkesat për akses',
   'Oczekujące': 'Në pritje',
@@ -880,7 +880,7 @@ export const sq: Record<string, string> = {
   'Zaakceptowano': 'U pranua',
   'Odrzucono': 'U refuzua',
   'Zaakceptuj losowy procent oczekujących': 'Prano një përqindje të rastësishme të kërkesave në pritje',
-  'Przydatne przy stopniowym otwieraniu dostępu — zamiast rozpatrywać każdą prośbę osobno.':
+  'Przydatne przy stopniowym otwieraniu dostępu - zamiast rozpatrywać każdą prośbę osobno.':
     'E dobishme kur hapja e aksesit bëhet gradualisht - në vend që të shqyrtosh çdo kërkesë veç e veç.',
   'Zaakceptuj': 'Prano',
   'Zaakceptowano {0} z {1} oczekujących próśb.': 'U pranuan {0} nga {1} kërkesa në pritje.',
@@ -891,24 +891,24 @@ export const sq: Record<string, string> = {
   'Odrzuć': 'Refuzo',
 
   // Role acceptance workflow
-  'Kliknięcie oferuje rolę — zaczyna obowiązywać dopiero, gdy użytkownik ją zaakceptuje.':
+  'Kliknięcie oferuje rolę - zaczyna obowiązywać dopiero, gdy użytkownik ją zaakceptuje.':
     'Klikimi ofron rolin - hyn në fuqi vetëm kur përdoruesi e pranon.',
-  'Oczekuje na akceptację użytkownika — kliknij, aby wycofać ofertę': 'Në pritje të pranimit nga përdoruesi - kliko për të tërhequr ofertën',
-  'Zaakceptowana — kliknij, aby odebrać': 'E pranuar - kliko për ta hequr',
+  'Oczekuje na akceptację użytkownika - kliknij, aby wycofać ofertę': 'Në pritje të pranimit nga përdoruesi - kliko për të tërhequr ofertën',
+  'Zaakceptowana - kliknij, aby odebrać': 'E pranuar - kliko për ta hequr',
   'Kliknij, aby zaoferować tę rolę': 'Kliko për ta ofruar këtë rol',
   '(oczekuje)': '(në pritje)',
   'Nowe role do zaakceptowania': 'Role të reja për pranim',
-  'Administrator zaproponował Ci nowe uprawnienia — nie zaczną obowiązywać, dopóki ich nie zaakceptujesz.':
+  'Administrator zaproponował Ci nowe uprawnienia - nie zaczną obowiązywać, dopóki ich nie zaakceptujesz.':
     'Administratori të ka propozuar leje të reja - nuk do të hyjnë në fuqi derisa i pranon.',
   'od {0}': 'nga {0}',
 
   // Login back-link, updated budget feature card
   '← Strona główna': '← Faqja kryesore',
   'Przychody, wydatki i budżet': 'Të ardhurat, shpenzimet dhe buxheti',
-  'Zarządzaj przychodami i wydatkami, monitoruj budżet miesiąc po miesiącu i sprawdzaj bilans — automatyczny import wyciągów, kategorie, sklepy i tagi robią to za Ciebie.':
+  'Zarządzaj przychodami i wydatkami, monitoruj budżet miesiąc po miesiącu i sprawdzaj bilans - automatyczny import wyciągów, kategorie, sklepy i tagi robią to za Ciebie.':
     'Menaxho të ardhurat dhe shpenzimet, monitoro buxhetin muaj pas muaji dhe kontrollo bilancin - importimi automatik i ekstrakteve, kategoritë, dyqanet dhe etiketat e bëjnë këtë punë për ty.',
 
-  // Translation coverage sweep — everything a distinct-strings audit found
+  // Translation coverage sweep - everything a distinct-strings audit found
   // with no English entry yet, across Planowanie, AdminUsers, AnalizaSpolek,
   // StatementImportPanel, PrivacyPolicy, Landing, and assorted small labels.
   '+ Przychód/Wydatek': '+ Të ardhur/Shpenzim',
@@ -918,14 +918,14 @@ export const sq: Record<string, string> = {
   'Aktywni dzisiaj': 'Aktivë sot',
   'Aktywni użytkownicy dziennie (30 dni)': 'Përdorues aktivë ditorë (30 ditë)',
   'Artykuły o finansach osobistych': 'Artikuj mbi financat personale',
-  'Brak stałych kosztów — dodaj pierwszy.': 'Nuk ka kosto fikse - shto të parën.',
+  'Brak stałych kosztów - dodaj pierwszy.': 'Nuk ka kosto fikse - shto të parën.',
   'Brak użytkowników spełniających kryteria.': 'Nuk ka përdorues që përputhen me kriteret.',
   'Brak wycenionych pozycji w portfelu.': 'Nuk ka pozicione të vlerësuara në portofol.',
   'Brak zarezerwowanych wypłat.': 'Nuk ka paga të rezervuara ende.',
-  'Czynsz, subskrypcje, ubezpieczenia — cykliczne opłaty co miesiąc, niezależnie od tego, czy już je zapłaciłeś w tym miesiącu.':
+  'Czynsz, subskrypcje, ubezpieczenia - cykliczne opłaty co miesiąc, niezależnie od tego, czy już je zapłaciłeś w tym miesiącu.':
     'Qira, abonime, sigurime - pagesa ciklike çdo muaj, pavarësisht nëse i ke paguar tashmë këtë muaj.',
   'Czytaj więcej →': 'Lexo më shumë →',
-  'Dane konta przechowujemy tak długo, jak konto jest aktywne. Administrator może zarchiwizować konto (dezaktywacja z zachowaniem danych) zamiast je usuwać. Obecnie usunięcie danych na stałe odbywa się na indywidualną prośbę, wysłaną administratorowi — w aplikacji nie ma jeszcze samoobsługowego przycisku "usuń konto".':
+  'Dane konta przechowujemy tak długo, jak konto jest aktywne. Administrator może zarchiwizować konto (dezaktywacja z zachowaniem danych) zamiast je usuwać. Obecnie usunięcie danych na stałe odbywa się na indywidualną prośbę, wysłaną administratorowi - w aplikacji nie ma jeszcze samoobsługowego przycisku "usuń konto".':
     'Të dhënat e llogarisë i ruajmë për aq kohë sa llogaria është aktive. Administratori mund ta arkivojë llogarinë (çaktivizim duke ruajtur të dhënat) në vend që ta fshijë. Aktualisht, fshirja e përhershme e të dhënave bëhet me kërkesë individuale drejtuar administratorit - aplikacioni nuk ka ende një buton vetë-shërbimi "fshi llogarinë".',
   'Danych nie sprzedajemy i nie udostępniamy w celach marketingowych. Współpracujemy wyłącznie z dostawcami niezbędnymi do działania serwisu:':
     'Nuk i shesim të dhënat dhe nuk i ndajmë për qëllime marketingu. Bashkëpunojmë vetëm me ofrues të domosdoshëm për funksionimin e shërbimit:',
@@ -936,20 +936,20 @@ export const sq: Record<string, string> = {
   'Dołączył(a)': 'U regjistrua',
   'Dzień wypłaty pozwala policzyć, ile wypłat zostało do terminu każdego celu oszczędnościowego.':
     'Dita e pagës lejon të llogaritet sa paga kanë mbetur deri në afatin e çdo qëllimi kursimi.',
-  'Google Analytics — statystyki odwiedzin strony (patrz sekcja wyżej),': 'Google Analytics - statistika vizitash të faqes (shih seksionin më sipër),',
-  'Hasła są haszowane, komunikacja z aplikacją odbywa się przez HTTPS, a dostęp do panelu administratora mają wyłącznie konta z uprawnieniami administratora lub odpowiednią rolą — i nawet ten panel nie pokazuje treści Twoich transakcji ani sald, tylko zbiorcze statystyki. Treść danych finansowych nie jest też dostępna przez wbudowany panel Django — do bazy danych dociera się wyłącznie bezpośrednim, świadomym dostępem administracyjnym do infrastruktury, nie jednym kliknięciem w aplikacji.':
+  'Google Analytics - statystyki odwiedzin strony (patrz sekcja wyżej),': 'Google Analytics - statistika vizitash të faqes (shih seksionin më sipër),',
+  'Hasła są haszowane, komunikacja z aplikacją odbywa się przez HTTPS, a dostęp do panelu administratora mają wyłącznie konta z uprawnieniami administratora lub odpowiednią rolą - i nawet ten panel nie pokazuje treści Twoich transakcji ani sald, tylko zbiorcze statystyki. Treść danych finansowych nie jest też dostępna przez wbudowany panel Django - do bazy danych dociera się wyłącznie bezpośrednim, świadomym dostępem administracyjnym do infrastruktury, nie jednym kliknięciem w aplikacji.':
     'Fjalëkalimet ruhen të hashuara, komunikimi me aplikacionin bëhet përmes HTTPS, dhe akses në panelin e administratorit kanë vetëm llogaritë me të drejta administratori ose me rolin përkatës - dhe as ky panel nuk shfaq përmbajtjen e transaksioneve apo bilanceve të tua, vetëm statistika të përgjithshme. Përmbajtja e të dhënave financiare nuk është e arritshme as përmes panelit të integruar të Django-s - baza e të dhënave arrihet vetëm me akses administrativ të drejtpërdrejtë dhe të vetëdijshëm në infrastrukturë, jo me një klikim të vetëm në aplikacion.',
   'Historia': 'Historiku',
   'Importuj wyciąg z konta': 'Importo ekstraktin e llogarisë',
   'Kategoria widoczna tylko dla tego konta': 'Kategori e dukshme vetëm për këtë llogari',
   'Koncentracja portfela': 'Përqendrimi i portofolit',
-  'Konta bankowe i ich salda, transakcje budżetowe, kategorie/sklepy/tagi, posiadane akcje i transakcje giełdowe, lokaty, obligacje, dywidendy, cele oszczędnościowe i plany budżetowe — czyli wszystko, co wpisujesz, żeby aplikacja mogła śledzić Twój majątek. Te dane widzisz tylko Ty — inni użytkownicy nie mają do nich dostępu, a panel administratora pokazuje wyłącznie zbiorcze liczby i aktywność konta (np. liczbę transakcji), nigdy treść Twoich transakcji czy sald.':
+  'Konta bankowe i ich salda, transakcje budżetowe, kategorie/sklepy/tagi, posiadane akcje i transakcje giełdowe, lokaty, obligacje, dywidendy, cele oszczędnościowe i plany budżetowe - czyli wszystko, co wpisujesz, żeby aplikacja mogła śledzić Twój majątek. Te dane widzisz tylko Ty - inni użytkownicy nie mają do nich dostępu, a panel administratora pokazuje wyłącznie zbiorcze liczby i aktywność konta (np. liczbę transakcji), nigdy treść Twoich transakcji czy sald.':
     'Llogaritë bankare dhe bilancet e tyre, transaksionet e buxhetit, kategoritë/dyqanet/etiketat, aksionet dhe transaksionet e bursës që zotëron, depozitat, obligacionet, dividendët, qëllimet e kursimit dhe planet e buxhetit - pra gjithçka që fut që aplikacioni të mund të gjurmojë pasurinë tënde. Këto të dhëna i sheh vetëm ti - përdoruesit e tjerë nuk kanë akses tek to, dhe paneli i administratorit shfaq vetëm shifra të përgjithshme dhe aktivitetin e llogarisë (p.sh. numrin e transaksioneve), asnjëherë përmbajtjen e transaksioneve apo bilanceve të tua.',
-  'Konta w innej walucie będą oznaczone jako walutowe — to tylko etykieta, nie wpływa na przeliczenia.':
+  'Konta w innej walucie będą oznaczone jako walutowe - to tylko etykieta, nie wpływa na przeliczenia.':
     'Llogaritë në një monedhë tjetër shënohen si valutore - kjo është vetëm një etiketë, nuk ndikon në konvertime.',
-  'Logowanie działa w oparciu o tokeny JWT przechowywane w local storage przeglądarki — to samo miejsce przechowuje wybrany motyw kolorystyczny i język, zanim zostaną zapisane na koncie. Nie ma żadnych skryptów reklamowych ani śledzących w celach marketingowych.':
+  'Logowanie działa w oparciu o tokeny JWT przechowywane w local storage przeglądarki - to samo miejsce przechowuje wybrany motyw kolorystyczny i język, zanim zostaną zapisane na koncie. Nie ma żadnych skryptów reklamowych ani śledzących w celach marketingowych.':
     'Identifikimi bazohet në tokena JWT të ruajtur në ruajtjen lokale (local storage) të shfletuesit - i njëjti vend ruan temën e ngjyrave dhe gjuhën e zgjedhur, para se të ruhen në llogari. Nuk ka asnjë skript reklamash apo gjurmimi për qëllime marketingu.',
-  'Masz prawo do wglądu w swoje dane, ich poprawienia (większość — bezpośrednio w ustawieniach konta) oraz do żądania ich usunięcia. W tym celu napisz do nas na adres podany niżej albo skorzystaj z widgetu "Zostaw feedback" w aplikacji.':
+  'Masz prawo do wglądu w swoje dane, ich poprawienia (większość - bezpośrednio w ustawieniach konta) oraz do żądania ich usunięcia. W tym celu napisz do nas na adres podany niżej albo skorzystaj z widgetu "Zostaw feedback" w aplikacji.':
     'Ke të drejtë të shikosh të dhënat e tua, të kërkosh korrigjimin e tyre (shumica - direkt te cilësimet e llogarisë) dhe të kërkosh fshirjen e tyre. Për këtë na shkruaj në adresën e dhënë më poshtë ose përdor widget-in "Lër feedback" në aplikacion.',
   'Na plusie / na minusie / bez zmian': 'Në fitim / në humbje / pa ndryshim',
   'Najgorsza pozycja': 'Pozicioni më i keq',
@@ -959,7 +959,7 @@ export const sq: Record<string, string> = {
     'Emri i përdoruesit, emri dhe mbiemri, adresa e-mail (nëse jepet) dhe fjalëkalimi (i ruajtur vetëm i hashuar, kurrë si tekst i thjeshtë). Gjatë regjistrimit ruajmë edhe ftesën e kujt u përdor për krijimin e llogarisë.',
   'Nie udało się dodać tagu.': 'Shtimi i etiketës dështoi.',
   'Nie udało się przetworzyć pliku.': 'Përpunimi i skedarit dështoi.',
-  'Nie udało się zaimportować transakcji — spróbuj wgrać plik ponownie.': 'Importimi i transaksioneve dështoi - provo të ngarkosh skedarin përsëri.',
+  'Nie udało się zaimportować transakcji - spróbuj wgrać plik ponownie.': 'Importimi i transaksioneve dështoi - provo të ngarkosh skedarin përsëri.',
   'Nie znaleziono artykułu.': 'Artikulli nuk u gjet.',
   'Nowi w tym tygodniu': 'Të rinj këtë javë',
   'Odblokuj': 'Zhblloko',
@@ -970,7 +970,7 @@ export const sq: Record<string, string> = {
   'Ostatnie IP': 'IP-ja e fundit',
   'Ostatnie logowanie': 'Identifikimi i fundit',
   'Panel administratora': 'Paneli i administratorit',
-  'Pensja i dzień wypłaty ({0}. dnia miesiąca) — zmień': 'Paga dhe dita e pagesës (dita {0} e muajit) - ndrysho',
+  'Pensja i dzień wypłaty ({0}. dnia miesiąca) - zmień': 'Paga dhe dita e pagesës (dita {0} e muajit) - ndrysho',
   'Plik PDF': 'Skedar PDF',
   'Podgląd wyciągu': 'Pamja paraprake e ekstraktit',
   'Podział wg rynku': 'Ndarja sipas tregut',
@@ -982,17 +982,17 @@ export const sq: Record<string, string> = {
   'Zmiana wartości względem wpłaconego kapitału na tym koncie': 'Ndryshimi i vlerës në raport me kapitalin e depozituar në këtë llogari',
   'Zainwestowano': 'Investuar',
   'Pozostałe ({0})': 'Të tjera ({0})',
-  'Przy każdym logowaniu zapisujemy adres IP oraz podstawowe informacje o przeglądarce/systemie (User-Agent) — to podstawa historii logowań widocznej w Twoim koncie oraz ochrony przed nieautoryzowanym dostępem. Zapisujemy też, w które dni byłeś/aś aktywny(a) (do serii logowań i statystyk).':
+  'Przy każdym logowaniu zapisujemy adres IP oraz podstawowe informacje o przeglądarce/systemie (User-Agent) - to podstawa historii logowań widocznej w Twoim koncie oraz ochrony przed nieautoryzowanym dostępem. Zapisujemy też, w które dni byłeś/aś aktywny(a) (do serii logowań i statystyk).':
     'Në çdo identifikim ruajmë adresën IP dhe informacione bazë mbi shfletuesin/sistemin (User-Agent) - kjo është baza e historikut të identifikimeve që shihet në llogarinë tënde dhe e mbrojtjes nga aksesi i paautorizuar. Ruajmë gjithashtu në cilat ditë ke qenë aktiv/e (për seritë e identifikimit dhe statistikat).',
   'Rola': 'Roli',
-  'Skład, koncentracja i wyniki Twoich pozycji — przeliczone do jednej waluty, żeby dało się je sensownie porównać.':
+  'Skład, koncentracja i wyniki Twoich pozycji - przeliczone do jednej waluty, żeby dało się je sensownie porównać.':
     'Përbërja, përqendrimi dhe performanca e pozicioneve të tua - konvertuar në një monedhë të vetme, që të mund të krahasohen në mënyrë kuptimplote.',
   'Statystyki portfela': 'Statistikat e portofolit',
   'Stałe koszty': 'Kostot fikse',
   'Stałe koszty / mies.': 'Kostot fikse / muaj',
   'Suma': 'Totali',
   'Szukaj': 'Kërko',
-  'Termin wypłaty minął przed celem — dodaj więcej lub przesuń termin': 'Afati i pagesës ka kaluar para qëllimit - shto më shumë ose shty afatin',
+  'Termin wypłaty minął przed celem - dodaj więcej lub przesuń termin': 'Afati i pagesës ka kaluar para qëllimit - shto më shumë ose shty afatin',
   'Transakcje akcji': 'Transaksionet e aksioneve',
   'Transakcje budżetu': 'Transaksionet e buxhetit',
   'Treść zgłoszeń wysłanych przez widget "Zostaw feedback" oraz historia wysłanych zaproszeń (komu, kiedy, czy zostało przyjęte).':
@@ -1003,7 +1003,7 @@ export const sq: Record<string, string> = {
   'Uwagi': 'Vërejtje',
   'Użytkownicy aplikacji i ich aktywność': 'Përdoruesit e aplikacionit dhe aktiviteti i tyre',
   'Użytkownicy łącznie': 'Përdorues gjithsej',
-  'Używamy Google Analytics do liczenia odwiedzin i podstawowej analityki ruchu na stronie — Google ustawia w tym celu własne ciasteczka i przetwarza dane takie jak adres IP, rodzaj urządzenia i przeglądarki oraz odwiedzane podstrony. Więcej o tym, jak Google przetwarza te dane, znajdziesz w polityce prywatności Google.':
+  'Używamy Google Analytics do liczenia odwiedzin i podstawowej analityki ruchu na stronie - Google ustawia w tym celu własne ciasteczka i przetwarza dane takie jak adres IP, rodzaj urządzenia i przeglądarki oraz odwiedzane podstrony. Więcej o tym, jak Google przetwarza te dane, znajdziesz w polityce prywatności Google.':
     'Përdorim Google Analytics për të numëruar vizitat dhe për analitikë bazë të trafikut në faqe - Google vendos cookies-t e veta për këtë qëllim dhe përpunon të dhëna si adresa IP, lloji i pajisjes dhe shfletuesit, si dhe faqet e vizituara. Më shumë rreth mënyrës si Google i përpunon këto të dhëna gjen te politika e privatësisë e Google-it.',
   'W miarę rozwoju aplikacji ta strona będzie aktualizowana, a data ostatniej zmiany widoczna jest na górze strony.':
     'Ndërsa aplikacioni zhvillohet, kjo faqe do të përditësohet, dhe data e ndryshimit të fundit shfaqet në krye të faqes.',
@@ -1011,7 +1011,7 @@ export const sq: Record<string, string> = {
   'Waluta inna niż domyślna ({0})': 'Monedhë e ndryshme nga e parazgjedhura ({0})',
   'Wczytywanie…': 'Duke ngarkuar…',
   'Wgraj i pokaż podgląd': 'Ngarko dhe shfaq paraprakisht',
-  'Wgraj wyciąg w formacie PDF (obecnie obsługiwane: PKO Bank Polski). Zanim cokolwiek zapiszemy, pokażemy podgląd transakcji do zatwierdzenia — i sprawdzimy, czy już ich kiedyś nie zaimportowano.':
+  'Wgraj wyciąg w formacie PDF (obecnie obsługiwane: PKO Bank Polski). Zanim cokolwiek zapiszemy, pokażemy podgląd transakcji do zatwierdzenia - i sprawdzimy, czy już ich kiedyś nie zaimportowano.':
     'Ngarko ekstraktin në format PDF (aktualisht mbështetet: PKO Bank Polski). Para se të ruajmë çdo gjë, do të shfaqim një pamje paraprake të transaksioneve për konfirmim - dhe do të kontrollojmë nëse janë importuar tashmë ndonjëherë.',
   'Wkrótce pojawią się tu pierwsze artykuły.': 'Së shpejti do të shfaqen këtu artikujt e parë.',
   'Wznów': 'Rifillo',
@@ -1021,7 +1021,7 @@ export const sq: Record<string, string> = {
   'Zaloguj się do aplikacji': 'Identifikohu në aplikacion',
   'Wejdź do aplikacji': 'Hyr në aplikacion',
   'Wróć do swojego majątku': 'Kthehu te pasuria jote',
-  'Kontynuuj tam, gdzie skończyłeś/aś — Twój dashboard czeka.': 'Vazhdo aty ku ke lënë - paneli yt po pret.',
+  'Kontynuuj tam, gdzie skończyłeś/aś - Twój dashboard czeka.': 'Vazhdo aty ku ke lënë - paneli yt po pret.',
   'Zarezerwowano na duże wydatki': 'Rezervuar për shpenzime të mëdha',
   'Zarezerwuj z wypłaty': 'Rezervo nga paga',
   'Zatrzymaj': 'Ndalo',
@@ -1029,13 +1029,13 @@ export const sq: Record<string, string> = {
   'Zaznacz wszystkie': 'Zgjidh të gjitha',
   'Zaznaczono {0} z {1} transakcji do importu.': 'U zgjodhën {0} nga {1} transaksione për importim.',
   'Zostaje po rezerwacjach i odkładaniu': 'Mbetet pas rezervimeve dhe kursimeve',
-  'Zostało {0} wypłat — odkładaj ~{1} z każdej, żeby zdążyć': 'Kanë mbetur {0} paga - kurse ~{1} nga secila, që ta arrish në kohë',
+  'Zostało {0} wypłat - odkładaj ~{1} z każdej, żeby zdążyć': 'Kanë mbetur {0} paga - kurse ~{1} nga secila, që ta arrish në kohë',
   'Zrealizowany zysk/strata wg roku (po podatku Belki)': 'Fitimi/humbja e realizuar sipas vitit (pas tatimit mbi fitimet kapitale)',
   'Zweryfikowany e-mail': 'E-mail i verifikuar',
   'administratorzy': 'administratorët',
   'aktywne': 'aktive',
   'bardzo rozproszony': 'shumë i shpërndarë',
-  'dostawca poczty e-mail — do wysyłki e-maili weryfikacyjnych, resetu hasła i zaproszeń,': 'ofrues i shërbimit e-mail - për dërgimin e e-maileve të verifikimit, rivendosjes së fjalëkalimit dhe ftesave,',
+  'dostawca poczty e-mail - do wysyłki e-maili weryfikacyjnych, resetu hasła i zaproszeń,': 'ofrues i shërbimit e-mail - për dërgimin e e-maileve të verifikimit, rivendosjes së fjalëkalimit dhe ftesave,',
   'hosting aplikacji i baza danych (Microsoft Azure),': 'strehimi (hosting) i aplikacionit dhe baza e të dhënave (Microsoft Azure),',
   'już zaimportowano': 'i importuar tashmë',
   'login lub e-mail': 'emri i përdoruesit ose e-mail',
@@ -1046,13 +1046,13 @@ export const sq: Record<string, string> = {
   'np. mBank': 'p.sh. mBank',
   'np. wakacje': 'p.sh. pushime',
   'odświeżanie…': 'duke rifreskuar…',
-  'publiczne źródła danych rynkowych (np. Stooq, Yahoo Finance) — zapytania dotyczą wyłącznie tickerów giełdowych i kursów walut, nigdy Twoich danych osobowych.':
+  'publiczne źródła danych rynkowych (np. Stooq, Yahoo Finance) - zapytania dotyczą wyłącznie tickerów giełdowych i kursów walut, nigdy Twoich danych osobowych.':
     'burime publike të të dhënave të tregut (p.sh. Stooq, Yahoo Finance) - kërkesat kanë të bëjnë vetëm me tikerat e bursës dhe kurset e këmbimit, kurrë me të dhënat e tua personale.',
-  'skieta to osobisty tracker finansowy — aplikacja dostępna wyłącznie na zaproszenie, bez reklam i bez sprzedaży danych osobom trzecim. Administratorem danych jest osoba prowadząca serwis skieta, z którą można się skontaktować pod adresem podanym na dole tej strony.':
+  'skieta to osobisty tracker finansowy - aplikacja dostępna wyłącznie na zaproszenie, bez reklam i bez sprzedaży danych osobom trzecim. Administratorem danych jest osoba prowadząca serwis skieta, z którą można się skontaktować pod adresem podanym na dole tej strony.':
     'skieta është një gjurmues personal financiar - një aplikacion i disponueshëm vetëm me ftesë, pa reklama dhe pa shitje të dhënash palëve të treta. Kontrolluesi i të dhënave është personi që drejton shërbimin skieta, i cili mund të kontaktohet në adresën e dhënë në fund të kësaj faqeje.',
-  'skieta łączy konta bankowe, inwestycje, lokaty i obligacje w jednym miejscu — zobacz, jak naprawdę rośnie Twój majątek, bez arkusza kalkulacyjnego i bez zgadywania.':
+  'skieta łączy konta bankowe, inwestycje, lokaty i obligacje w jednym miejscu - zobacz, jak naprawdę rośnie Twój majątek, bez arkusza kalkulacyjnego i bez zgadywania.':
     'skieta bashkon llogaritë bankare, investimet, depozitat dhe obligacionet në një vend - shiko si rritet vërtet pasuria jote, pa fletëllogaritëse dhe pa hamendësime.',
-  'sprawdź — może to transfer własny': 'kontrollo - mund të jetë një transfertë mes llogarive të tua',
+  'sprawdź - może to transfer własny': 'kontrollo - mund të jetë një transfertë mes llogarive të tua',
   'umiarkowanie skoncentrowany': 'mesatarisht i përqendruar',
   'walutowe': 'valutore',
   'wszyscy': 'të gjithë',
@@ -1131,13 +1131,13 @@ export const sq: Record<string, string> = {
   'Wizyty wg wariantu językowego': 'Vizitat sipas variantit gjuhësor',
   'Zaproszenia wysłane wg języka': 'Ftesat e dërguara sipas gjuhës',
   'Nowy baner na stronie głównej': 'Baner i ri në faqen kryesore',
-  'Wskaż istniejące zaproszenie grupowe — baner pokaże jego link/kod QR i odliczanie do podanej daty. Liczba wykorzystań to liczba osób zarejestrowanych przez to zaproszenie.':
+  'Wskaż istniejące zaproszenie grupowe - baner pokaże jego link/kod QR i odliczanie do podanej daty. Liczba wykorzystań to liczba osób zarejestrowanych przez to zaproszenie.':
     'Zgjidh një ftesë ekzistuese në grup - baneri do të shfaqë lidhjen/kodin QR të saj dhe një numërim mbrapsht deri në datën e caktuar. Numri i përdorimeve është numri i personave që janë regjistruar përmes kësaj ftese.',
   'Zaproszenie grupowe': 'Ftesë në grup',
   'Wybierz…': 'Zgjidh…',
   'Wiadomość (opcjonalnie)': 'Mesazhi (opsional)',
   'Koniec odliczania': 'Fundi i numërimit mbrapsht',
-  'Nie udało się utworzyć promocji — sprawdź dane.': 'Dështoi krijimi i promocionit - kontrollo të dhënat.',
+  'Nie udało się utworzyć promocji - sprawdź dane.': 'Dështoi krijimi i promocionit - kontrollo të dhënat.',
   'Brak promocji.': 'Nuk ka promocione.',
   'Wyłączona': 'Çaktivizuar',
   'Wygasła': 'Skaduar',

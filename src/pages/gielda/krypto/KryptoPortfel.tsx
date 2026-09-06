@@ -157,7 +157,7 @@ export default function KryptoPortfel() {
         <div>
           <h1 className="text-2xl font-bold text-slate-900 dark:text-slate-100">{t('Portfel kryptowalut')}</h1>
           <p className="flex flex-wrap items-center gap-1.5 text-sm text-slate-500 dark:text-slate-400">
-            {t('Kursy odświeżają się przy wejściu na tę stronę — kliknij "Odśwież kursy", by pobrać je ponownie')}
+            {t('Kursy odświeżają się przy wejściu na tę stronę - kliknij "Odśwież kursy", by pobrać je ponownie')}
             {(isFetching || refreshPrices.isPending) && (
               <span className="inline-flex items-center gap-1">
                 <Spinner size="sm" /> {t('odświeżanie…')}
@@ -373,7 +373,7 @@ export default function KryptoPortfel() {
                 {holdings?.length === 0 && (
                   <tr>
                     <td colSpan={9} className="px-4 py-6 text-center text-slate-400 dark:text-slate-500">
-                      {t('Brak pozycji — dodaj pierwszą transakcję.')}
+                      {t('Brak pozycji - dodaj pierwszą transakcję.')}
                     </td>
                   </tr>
                 )}
@@ -870,19 +870,19 @@ function BuyForm({ assets, accounts, onDone }: { assets: CryptoAsset[]; accounts
         </select>
         {eligibleAccounts.length === 0 && (
           <span className="mt-1 block text-xs text-amber-600 dark:text-amber-400">
-            {t('Brak konta w walucie {0} — dodaj je w zakładce Konta i lokaty.', currency)}
+            {t('Brak konta w walucie {0} - dodaj je w zakładce Konta i lokaty.', currency)}
           </span>
         )}
       </Field>
       {account ? (
         <label className="col-span-2 flex items-center gap-2 text-xs text-slate-500 dark:text-slate-400 sm:col-span-7">
           <input type="checkbox" checked={alreadyOwned} onChange={(e) => setAlreadyOwned(e.target.checked)} />
-          {t('To pozycja, którą już posiadam — nie odejmuj środków z konta (tylko zapisz powiązanie).')}
+          {t('To pozycja, którą już posiadam - nie odejmuj środków z konta (tylko zapisz powiązanie).')}
         </label>
       ) : (
         <p className="col-span-2 text-xs text-slate-400 dark:text-slate-500 sm:col-span-7">
           {t(
-            'Jeśli wybierzesz konto, kwota zostanie od razu odjęta z jego salda — zostaw puste, jeśli tylko deklarujesz monety, które już posiadasz.',
+            'Jeśli wybierzesz konto, kwota zostanie od razu odjęta z jego salda - zostaw puste, jeśli tylko deklarujesz monety, które już posiadasz.',
           )}
         </p>
       )}
@@ -956,7 +956,7 @@ function SellForm({
   return (
     <form onSubmit={onSubmit} className="space-y-3">
       <p className="text-sm text-slate-600 dark:text-slate-400">
-        {t('Sprzedaż')} <span className="font-medium">{holding.asset.symbol}</span> — {t('posiadasz')}{' '}
+        {t('Sprzedaż')} <span className="font-medium">{holding.asset.symbol}</span> - {t('posiadasz')}{' '}
         {formatNumber(holding.quantity, 6)} {t('szt.')}
       </p>
       <div className="grid grid-cols-2 gap-3 sm:grid-cols-7">

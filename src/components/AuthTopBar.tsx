@@ -9,7 +9,7 @@ const LANGUAGE_CODE_LABELS: Record<Language, string> = {
 }
 
 /** Theme/language switcher shown on the pre-login pages (login, register, password
- * reset, email verification) — these render outside <Layout>, which is the only
+ * reset, email verification) - these render outside <Layout>, which is the only
  * place these toggles used to live, so signed-out visitors had no way to switch
  * to dark mode or a different language before creating an account. */
 export default function AuthTopBar() {

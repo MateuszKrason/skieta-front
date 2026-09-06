@@ -1,6 +1,6 @@
 import { useTheme } from '../theme/ThemeContext'
 
-/** Shared recharts <Tooltip> styling — recharts' own defaults leave the label
+/** Shared recharts <Tooltip> styling - recharts' own defaults leave the label
  * (the date/category text) with no explicit color, so it inherits the page's
  * text color while the tooltip background stays hardcoded white, making the
  * label illegible in dark mode. Spread the result onto every <Tooltip/>. */

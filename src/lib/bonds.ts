@@ -8,7 +8,7 @@ export interface CurrentBondOfferEntry {
 export type CurrentBondOffer = Record<string, CurrentBondOfferEntry>
 
 /** Adds `months` calendar months to an ISO date string (YYYY-MM-DD).
- * Builds the result from local date parts rather than toISOString() — that
+ * Builds the result from local date parts rather than toISOString() - that
  * converts through UTC, which shifts the date by a day for any timezone
  * with a negative UTC offset. */
 export function addMonths(isoDate: string, months: number): string {

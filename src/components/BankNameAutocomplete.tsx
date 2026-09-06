@@ -3,7 +3,7 @@ import { api } from '../api/client'
 import { useLanguage } from '../i18n/LanguageContext'
 
 // Unlike StockAutocomplete (search → pick → clear), this stays a plain free-
-// text field the whole time — suggestions are just a convenience, any typed
+// text field the whole time - suggestions are just a convenience, any typed
 // name is accepted and kept as the value.
 export default function BankNameAutocomplete({
   value,

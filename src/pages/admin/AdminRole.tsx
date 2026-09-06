@@ -143,7 +143,7 @@ export default function AdminRole() {
           )}
         </div>
         <p className="mb-3 text-xs text-slate-400 dark:text-slate-500">
-          {t('Twórz role z wybranym zestawem uprawnień i nadawaj je użytkownikom w ich profilu — niezależnie od statusu administratora/redaktora.')}
+          {t('Twórz role z wybranym zestawem uprawnień i nadawaj je użytkownikom w ich profilu - niezależnie od statusu administratora/redaktora.')}
         </p>
 
         {creating && permissions && (

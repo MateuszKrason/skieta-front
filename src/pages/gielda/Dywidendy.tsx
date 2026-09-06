@@ -281,15 +281,15 @@ export default function Dywidendy() {
         <div>
           <h1 className="text-2xl font-bold text-slate-900 dark:text-slate-100">{t('Profil dywidendowy')}</h1>
           <p className="text-sm text-slate-500 dark:text-slate-400">
-            {t('Dywidendy wykrywane są automatycznie — nie musisz nic wpisywać ręcznie.')}
-            {sync.isPending && ` — ${t('wykrywam dywidendy…')}`}
+            {t('Dywidendy wykrywane są automatycznie - nie musisz nic wpisywać ręcznie.')}
+            {sync.isPending && ` - ${t('wykrywam dywidendy…')}`}
           </p>
         </div>
         <div className="flex flex-wrap gap-2">
           <button
             onClick={() => sync.mutate()}
             disabled={sync.isPending}
-            title={t('Automatyczne wykrywanie odświeża się samo przy wejściu na tę stronę — ten przycisk wymusza sprawdzenie od razu.')}
+            title={t('Automatyczne wykrywanie odświeża się samo przy wejściu na tę stronę - ten przycisk wymusza sprawdzenie od razu.')}
             className="rounded-md border border-slate-300 dark:border-slate-600 px-3 py-1.5 text-sm font-medium text-slate-700 dark:text-slate-300 hover:bg-slate-100 dark:hover:bg-slate-700 disabled:opacity-60"
           >
             {sync.isPending ? t('Wykrywam…') : t('⟳ Sprawdź teraz')}
@@ -358,7 +358,7 @@ export default function Dywidendy() {
           <h2 className="mb-1 text-sm font-semibold text-amber-800 dark:text-amber-300">{t('Planowane dywidendy')}</h2>
           <p className="mb-3 text-xs text-amber-700 dark:text-amber-400">
             {t(
-              'Szacunek na podstawie historycznego rytmu wypłat tej spółki (ostatnia kwota + średni odstęp) — nie jest to oficjalna zapowiedź zarządu.',
+              'Szacunek na podstawie historycznego rytmu wypłat tej spółki (ostatnia kwota + średni odstęp) - nie jest to oficjalna zapowiedź zarządu.',
             )}
           </p>
           <div className="space-y-2">
@@ -477,7 +477,7 @@ export default function Dywidendy() {
         <h2 className="mb-1 text-sm font-semibold text-slate-700 dark:text-slate-300">{t('Symulacja przyszłych dywidend (12 mies.)')}</h2>
         <p className="mb-3 text-xs text-slate-400 dark:text-slate-500">
           {t(
-            'Szacunek na podstawie obecnie posiadanych akcji i historycznego rytmu wypłat każdej spółki — nie jest to gwarancja przyszłych dywidend.',
+            'Szacunek na podstawie obecnie posiadanych akcji i historycznego rytmu wypłat każdej spółki - nie jest to gwarancja przyszłych dywidend.',
           )}
           {' '}
           {t(
@@ -632,7 +632,7 @@ export default function Dywidendy() {
             {summary?.rows.length === 0 && (
               <tr>
                 <td colSpan={4} className="px-4 py-6 text-center text-slate-400 dark:text-slate-500">
-                  {t('Brak dywidend — dodaj pierwszą wypłatę.')}
+                  {t('Brak dywidend - dodaj pierwszą wypłatę.')}
                 </td>
               </tr>
             )}

@@ -201,7 +201,7 @@ export default function ReinvestmentThreads() {
       </div>
       <p className="mb-4 text-xs text-slate-400 dark:text-slate-500">
         {t(
-          'Śledź, do ilu pomnożyła się konkretna kwota — np. zysk ze sprzedaży jednej spółki rozdzielony na kilka kolejnych zakupów, z opcjonalną dodatkową gotówką i niezainwestowaną resztą.',
+          'Śledź, do ilu pomnożyła się konkretna kwota - np. zysk ze sprzedaży jednej spółki rozdzielony na kilka kolejnych zakupów, z opcjonalną dodatkową gotówką i niezainwestowaną resztą.',
         )}
       </p>
 
@@ -221,7 +221,7 @@ export default function ReinvestmentThreads() {
         {(threads ?? []).map((thread) => (
           <ThreadCard key={thread.id} thread={thread} transactions={transactions ?? []} onChange={invalidate} />
         ))}
-        {threads?.length === 0 && <p className="text-slate-400 dark:text-slate-500">{t('Brak ścieżek — utwórz pierwszą.')}</p>}
+        {threads?.length === 0 && <p className="text-slate-400 dark:text-slate-500">{t('Brak ścieżek - utwórz pierwszą.')}</p>}
       </div>
     </div>
   )
@@ -578,7 +578,7 @@ function AddNodeForm({
           <option value="">{t('wybierz…')}</option>
           {eligibleBuys.map((tx) => (
             <option key={tx.id} value={tx.id}>
-              {tx.stock_detail.ticker} — {formatNumber(tx.quantity, 4)}x @ {tx.price_per_share} ({formatDate(tx.executed_at)}) · {t('koszt')}{' '}
+              {tx.stock_detail.ticker} - {formatNumber(tx.quantity, 4)}x @ {tx.price_per_share} ({formatDate(tx.executed_at)}) · {t('koszt')}{' '}
               {formatMoney(txCost(tx), tx.currency)}
             </option>
           ))}
@@ -691,7 +691,7 @@ function CloseNodeForm({
       </Field>
       {eligibleSells.length === 0 && (
         <p className="col-span-2 text-xs text-amber-600 dark:text-amber-400 sm:col-span-4">
-          {t('Brak jeszcze transakcji sprzedaży tej spółki — dodaj ją najpierw w portfelu.')}
+          {t('Brak jeszcze transakcji sprzedaży tej spółki - dodaj ją najpierw w portfelu.')}
         </p>
       )}
       {error && <p className="col-span-2 text-sm text-red-600 dark:text-red-400 sm:col-span-4">{error}</p>}

@@ -46,7 +46,7 @@ export default function ResetPassword() {
           skieta
         </h1>
         {!uid || !token ? (
-          <p className="mt-4 text-sm text-red-600 dark:text-red-400">{t('Link resetu hasła jest niepełny — otwórz go bezpośrednio z wiadomości e-mail.')}</p>
+          <p className="mt-4 text-sm text-red-600 dark:text-red-400">{t('Link resetu hasła jest niepełny - otwórz go bezpośrednio z wiadomości e-mail.')}</p>
         ) : success ? (
           <p className="mt-4 rounded-md bg-accent-50 dark:bg-accent-900/30 px-3 py-2 text-sm text-accent-800 dark:text-accent-300">
             {t('Hasło zostało zresetowane. Przekierowuję do logowania…')}

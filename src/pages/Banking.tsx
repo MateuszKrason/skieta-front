@@ -342,7 +342,7 @@ export default function Banking() {
             </div>
             )
           })}
-          {accounts?.length === 0 && <p className="text-slate-400 dark:text-slate-500">{t('Brak kont — dodaj pierwsze.')}</p>}
+          {accounts?.length === 0 && <p className="text-slate-400 dark:text-slate-500">{t('Brak kont - dodaj pierwsze.')}</p>}
         </div>
 
         {transfers.length > 0 && (
@@ -354,7 +354,7 @@ export default function Banking() {
                   <span>
                     {t.from_account_detail.name} → {t.to_account_detail.name}:{' '}
                     <span className="font-medium">{formatMoney(t.amount, t.from_account_detail.currency)}</span>
-                    {t.note && ` — ${t.note}`}
+                    {t.note && ` - ${t.note}`}
                   </span>
                   <span className="text-slate-400 dark:text-slate-500">{formatDate(t.date)}</span>
                 </div>
@@ -544,7 +544,7 @@ export default function Banking() {
         </p>
         <p className="mt-1 text-xs text-slate-400 dark:text-slate-500">
           {t(
-            'Odsetki liczone metodą uproszczoną (proste, wg wpisanego bieżącego oprocentowania) — nie odwzorowuje dokładnie zmiennych/indeksowanych inflacją harmonogramów kapitalizacji poszczególnych serii.',
+            'Odsetki liczone metodą uproszczoną (proste, wg wpisanego bieżącego oprocentowania) - nie odwzorowuje dokładnie zmiennych/indeksowanych inflacją harmonogramów kapitalizacji poszczególnych serii.',
           )}
         </p>
 
@@ -980,7 +980,7 @@ function AddDepositForm({ accounts, onDone }: { accounts: BankAccount[]; onDone:
       {account ? (
         <label className="col-span-2 flex items-center gap-2 text-xs text-slate-500 dark:text-slate-400 sm:col-span-4">
           <input type="checkbox" checked={alreadyOwned} onChange={(e) => setAlreadyOwned(e.target.checked)} />
-          {t('To lokata, którą już posiadam — nie odejmuj środków z konta (tylko zapisz powiązanie).')}
+          {t('To lokata, którą już posiadam - nie odejmuj środków z konta (tylko zapisz powiązanie).')}
         </label>
       ) : (
         <p className="col-span-2 text-xs text-slate-400 dark:text-slate-500 sm:col-span-4">
@@ -1203,7 +1203,7 @@ function AddBondForm({ accounts, onDone }: { accounts: BankAccount[]; onDone: ()
   const [purchaseDate, setPurchaseDate] = useState(() => new Date().toISOString().slice(0, 10))
   const [maturityDate, setMaturityDate] = useState('')
   // Whether each field still holds an auto-filled value (true) or the user
-  // has typed their own (false) — auto-fill only ever overwrites fields the
+  // has typed their own (false) - auto-fill only ever overwrites fields the
   // user hasn't touched yet, so picking a different bond type after manually
   // editing the rate/date doesn't clobber it.
   const [seriesAuto, setSeriesAuto] = useState(true)
@@ -1330,7 +1330,7 @@ function AddBondForm({ accounts, onDone }: { accounts: BankAccount[]; onDone: ()
       {account && (
         <label className="col-span-2 flex items-center gap-2 text-xs text-slate-500 dark:text-slate-400 sm:col-span-4">
           <input type="checkbox" checked={alreadyOwned} onChange={(e) => setAlreadyOwned(e.target.checked)} />
-          {t('To obligacja, którą już posiadam — nie odejmuj środków z konta (tylko zapisz powiązanie).')}
+          {t('To obligacja, którą już posiadam - nie odejmuj środków z konta (tylko zapisz powiązanie).')}
         </label>
       )}
     </form>

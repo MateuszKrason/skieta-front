@@ -18,7 +18,7 @@ export const LANGUAGE_LABELS: Record<Language, string> = {
 }
 
 // Default account currency per language, mirrored server-side in
-// Profile.CURRENCY_BY_LANGUAGE (backend/accounts/models.py) — used to
+// Profile.CURRENCY_BY_LANGUAGE (backend/accounts/models.py) - used to
 // pre-fill the currency picker at registration when the user changes
 // language, without forcing it (they can still override it freely).
 export const CURRENCY_BY_LANGUAGE: Record<Language, string> = {
@@ -33,7 +33,7 @@ const STORAGE_KEY = 'myfaj_language'
 type Dictionary = Record<string, string>
 
 // Fetched on demand, one language at a time. These three files are ~90 KB
-// gzipped between them, and they used to be static imports — which put all of
+// gzipped between them, and they used to be static imports - which put all of
 // them in the chunk every single visitor downloads before anything renders,
 // on a site whose source language is Polish and whose default (and fallback
 // for any unrecognised browser locale) is therefore the one language with no
@@ -65,7 +65,7 @@ const LanguageContext = createContext<LanguageContextValue | undefined>(undefine
 
 // Best-effort browser-locale -> supported Language mapping, used only when
 // nothing has been saved yet (fresh visitor, incl. the logged-out landing
-// page — LanguageProvider is the outermost provider, see main.tsx). Matches
+// page - LanguageProvider is the outermost provider, see main.tsx). Matches
 // on the primary subtag (e.g. "de-AT" -> "de").
 function detectBrowserLanguage(): Language {
   const candidates = typeof navigator !== 'undefined' ? navigator.languages ?? [navigator.language] : []
@@ -84,7 +84,7 @@ function readInitialLanguage(): Language {
     const stored = localStorage.getItem(STORAGE_KEY)
     if (stored && (LANGUAGES as string[]).includes(stored)) return stored as Language
   } catch {
-    // Storage can be unreadable (Safari private mode, blocked site data) —
+    // Storage can be unreadable (Safari private mode, blocked site data) -
     // fall back to the browser locale rather than failing to boot.
   }
   return detectBrowserLanguage()
@@ -99,7 +99,7 @@ const INITIAL_DICTIONARY = loadDictionary(INITIAL_LANGUAGE)
 /** The language currently on screen together with the dictionary it is read
  * from. They are one value because they must change together: setting the
  * language first would leave `t()` briefly translating through the previous
- * language's dictionary — or, worse, through no dictionary at all, flashing
+ * language's dictionary - or, worse, through no dictionary at all, flashing
  * raw Polish at someone who asked for German. */
 interface ActiveLanguage {
   language: Language
@@ -135,7 +135,7 @@ export function LanguageProvider({ children }: { children: ReactNode }) {
       // A rejected write only costs the choice being remembered next visit.
     }
     // The page keeps showing the old language until the new dictionary is in
-    // hand, then swaps in one go — no half-translated intermediate state.
+    // hand, then swaps in one go - no half-translated intermediate state.
     void loadDictionary(lang).then((dictionary) => setActive({ language: lang, dictionary }))
   }
 

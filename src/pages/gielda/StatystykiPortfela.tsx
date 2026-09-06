@@ -32,7 +32,7 @@ function PortfolioAnalyticsSection() {
   return (
     <div className="rounded-xl border border-slate-200 dark:border-slate-700 bg-white dark:bg-slate-800 p-5 shadow-sm">
       <p className="mb-3 text-xs text-slate-400 dark:text-slate-500">
-        {t('Skład, koncentracja i wyniki Twoich pozycji — przeliczone do jednej waluty, żeby dało się je sensownie porównać.')}
+        {t('Skład, koncentracja i wyniki Twoich pozycji - przeliczone do jednej waluty, żeby dało się je sensownie porównać.')}
       </p>
       {isLoading ? (
         <CardLoader />
@@ -93,7 +93,7 @@ function PortfolioAnalyticsBody({ data }: { data: PortfolioAnalytics }) {
         <div className="lg:col-span-2">
           <p className="mb-2 text-xs text-slate-400 dark:text-slate-500">
             {t(
-              'Wykres pokazuje udział wartości każdej spółki w całym portfelu akcji. Przy każdej pozycji: pierwszy % to jej udział w portfelu, drugi (kolorowy) to zysk/strata PO PODATKU BELKI na tej pozycji — niżej niż w tabeli w Portfelu, która pokazuje wynik przed opodatkowaniem.',
+              'Wykres pokazuje udział wartości każdej spółki w całym portfelu akcji. Przy każdej pozycji: pierwszy % to jej udział w portfelu, drugi (kolorowy) to zysk/strata PO PODATKU BELKI na tej pozycji - niżej niż w tabeli w Portfelu, która pokazuje wynik przed opodatkowaniem.',
             )}
           </p>
           <div className="h-64">
@@ -144,7 +144,7 @@ function PortfolioAnalyticsBody({ data }: { data: PortfolioAnalytics }) {
           {data.top_holding && (
             <MiniStat
               label={t('Największa pozycja')}
-              value={`${data.top_holding.stock.ticker} — ${formatPct(data.top_holding.pct)}`}
+              value={`${data.top_holding.stock.ticker} - ${formatPct(data.top_holding.pct)}`}
             />
           )}
           <MiniStat
@@ -247,7 +247,7 @@ function PortfolioAnalyticsBody({ data }: { data: PortfolioAnalytics }) {
           <div className="grid grid-cols-1 gap-4 lg:grid-cols-3">
             <div className="lg:col-span-2">
               <p className="mb-2 text-xs text-slate-400 dark:text-slate-500">
-                {t('Zielony/czerwony słupek to zysk lub strata po podatku Belki, bursztynowy to sam podatek — razem dają wynik przed opodatkowaniem.')}
+                {t('Zielony/czerwony słupek to zysk lub strata po podatku Belki, bursztynowy to sam podatek - razem dają wynik przed opodatkowaniem.')}
               </p>
               <div className="h-48">
                 <ResponsiveContainer width="100%" height="100%">
@@ -292,7 +292,7 @@ function PortfolioAnalyticsBody({ data }: { data: PortfolioAnalytics }) {
               <MiniStat
                 label={t('Podatek Belki do zapłaty w tym roku')}
                 value={formatMoney(data.realized_belka_tax_this_year, base)}
-                hint={t('Od transakcji sprzedaży zamkniętych w tym roku podatkowym — nie licząc niezrealizowanych pozycji.')}
+                hint={t('Od transakcji sprzedaży zamkniętych w tym roku podatkowym - nie licząc niezrealizowanych pozycji.')}
               />
             </div>
           </div>
@@ -436,7 +436,7 @@ function ClosedPositionsSection() {
     <div className="rounded-xl border border-slate-200 dark:border-slate-700 bg-white dark:bg-slate-800 p-5 shadow-sm">
       <h2 className="mb-1 text-sm font-semibold text-slate-700 dark:text-slate-300">{t('Zamknięte pozycje')}</h2>
       <p className="mb-3 text-xs text-slate-400 dark:text-slate-500">
-        {t('Spółki, które sprzedałeś(-aś) w całości przynajmniej raz — z zyskiem lub stratą faktycznie zrealizowanym, po podatku Belki.')}
+        {t('Spółki, które sprzedałeś(-aś) w całości przynajmniej raz - z zyskiem lub stratą faktycznie zrealizowanym, po podatku Belki.')}
       </p>
       {isLoading ? (
         <CardLoader />
@@ -493,7 +493,7 @@ export default function StatystykiPortfela() {
       <div>
         <h1 className="text-2xl font-bold text-slate-900 dark:text-slate-100">{t('Statystyki portfela')}</h1>
         <p className="text-sm text-slate-500 dark:text-slate-400">
-          {t('Skład, koncentracja i wyniki Twoich pozycji akcyjnych — otwartych i zamkniętych.')}
+          {t('Skład, koncentracja i wyniki Twoich pozycji akcyjnych - otwartych i zamkniętych.')}
         </p>
       </div>
       <PortfolioAnalyticsSection />

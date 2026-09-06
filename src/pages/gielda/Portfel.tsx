@@ -87,7 +87,7 @@ export default function Portfel() {
     queryKey: ['holdings'],
     queryFn: async () => (await api.get<Holding[]>('/stocks/holdings/')).data,
     refetchInterval: 60_000,
-    // Otherwise this silently stops polling whenever the tab isn't focused —
+    // Otherwise this silently stops polling whenever the tab isn't focused -
     // see the same fix + explanation in Dashboard.tsx.
     refetchIntervalInBackground: true,
   })
@@ -149,7 +149,7 @@ export default function Portfel() {
 
   // Force a live quote fetch once whenever this tab is opened, instead of
   // polling Yahoo on a timer (that would hit the provider every 60s per
-  // open tab — see get_latest_stock_price's docstring in market_data).
+  // open tab - see get_latest_stock_price's docstring in market_data).
   useEffect(() => {
     refreshPrices.mutate()
     // eslint-disable-next-line react-hooks/exhaustive-deps
@@ -165,7 +165,7 @@ export default function Portfel() {
         <div>
           <h1 className="text-2xl font-bold text-slate-900 dark:text-slate-100">{t('Portfel akcji i ETF-ów')}</h1>
           <p className="flex flex-wrap items-center gap-1.5 text-sm text-slate-500 dark:text-slate-400">
-            {t('Kursy odświeżają się przy wejściu na tę stronę — kliknij "Odśwież kursy", by pobrać je ponownie')}
+            {t('Kursy odświeżają się przy wejściu na tę stronę - kliknij "Odśwież kursy", by pobrać je ponownie')}
             {(isFetching || refreshPrices.isPending) && (
               <span className="inline-flex items-center gap-1">
                 <Spinner size="sm" /> {t('odświeżanie…')}
@@ -400,7 +400,7 @@ export default function Portfel() {
                 {holdings?.length === 0 && (
                   <tr>
                     <td colSpan={9} className="px-4 py-6 text-center text-slate-400 dark:text-slate-500">
-                      {t('Brak pozycji — dodaj pierwszą transakcję.')}
+                      {t('Brak pozycji - dodaj pierwszą transakcję.')}
                     </td>
                   </tr>
                 )}
@@ -958,12 +958,12 @@ function BuyForm({ stocks, accounts, onDone }: { stocks: Stock[]; accounts: Bank
       {account ? (
         <label className="flex items-center gap-2 text-xs text-slate-500 dark:text-slate-400">
           <input type="checkbox" checked={alreadyOwned} onChange={(e) => setAlreadyOwned(e.target.checked)} />
-          {t('To pozycja, którą już posiadam — nie odejmuj środków z konta (tylko zapisz powiązanie).')}
+          {t('To pozycja, którą już posiadam - nie odejmuj środków z konta (tylko zapisz powiązanie).')}
         </label>
       ) : (
         <p className="text-xs text-slate-400 dark:text-slate-500">
           {t(
-            'Jeśli wybierzesz konto, kwota zostanie od razu odjęta z jego salda — zostaw puste, jeśli tylko deklarujesz akcje, które już posiadasz.',
+            'Jeśli wybierzesz konto, kwota zostanie od razu odjęta z jego salda - zostaw puste, jeśli tylko deklarujesz akcje, które już posiadasz.',
           )}
         </p>
       )}
@@ -1036,7 +1036,7 @@ function SellForm({
   return (
     <form onSubmit={onSubmit} className="space-y-3">
       <p className="text-sm text-slate-600 dark:text-slate-400">
-        {t('Sprzedaż')} <span className="font-medium">{holding.stock.ticker}</span> — {t('posiadasz')}{' '}
+        {t('Sprzedaż')} <span className="font-medium">{holding.stock.ticker}</span> - {t('posiadasz')}{' '}
         {formatNumber(holding.quantity, 4)} {t('szt.')}
       </p>
       <div className="flex flex-wrap gap-3">

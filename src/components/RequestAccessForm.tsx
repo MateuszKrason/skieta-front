@@ -48,7 +48,7 @@ export default function RequestAccessForm({
         {/* Says when, not just that. "We'll write when an admin reviews it"
             was an open-ended wait in exchange for an email address, which is
             a weak trade to offer a stranger. */}
-        {t('Dziękujemy! Odpowiadamy zwykle w ciągu kilku dni — napiszemy na podany adres, gdy administrator rozpatrzy prośbę.')}
+        {t('Dziękujemy! Odpowiadamy zwykle w ciągu kilku dni - napiszemy na podany adres, gdy administrator rozpatrzy prośbę.')}
       </p>
     )
   }

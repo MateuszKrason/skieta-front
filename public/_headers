@@ -1,6 +1,6 @@
 # Security headers for the whole site. Netlify applies these to every
 # response matching the path pattern, on top of (not instead of) whatever
-# _redirects proxies through — see that file for the /api/* -> Azure rule.
+# _redirects proxies through - see that file for the /api/* -> Azure rule.
 #
 # CSP is scoped to what the app actually loads: same-origin scripts/styles/
 # fonts/images, plus the cookieless analytics provider and the Sentry ingest

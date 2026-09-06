@@ -87,7 +87,7 @@ export default function AdminUserDetail() {
   })
 
   function toggleRole(roleId: number) {
-    // "Currently offered" = anything not revoked — pending offers still
+    // "Currently offered" = anything not revoked - pending offers still
     // count, since clicking again should withdraw the offer, not silently
     // leave it dangling for the user to accept later.
     const current = new Set(
@@ -225,7 +225,7 @@ export default function AdminUserDetail() {
             )
             if (typed === null) return
             if (typed === user.username) deleteUser.mutate()
-            else window.alert(t('Nazwa użytkownika się nie zgadza — anulowano.'))
+            else window.alert(t('Nazwa użytkownika się nie zgadza - anulowano.'))
           }}
           disabled={deleteUser.isPending}
           className="rounded-md bg-red-600 px-3 py-1.5 text-sm font-medium text-white hover:bg-red-700 disabled:opacity-50"
@@ -237,7 +237,7 @@ export default function AdminUserDetail() {
       <div className="rounded-xl border border-slate-200 dark:border-slate-700 bg-white dark:bg-slate-800 p-5 shadow-sm">
         <h2 className="text-sm font-semibold text-slate-700 dark:text-slate-300">{t('Role niestandardowe')}</h2>
         <p className="mb-3 mt-1 text-xs text-slate-400 dark:text-slate-500">
-          {t('Kliknięcie oferuje rolę — zaczyna obowiązywać dopiero, gdy użytkownik ją zaakceptuje.')}
+          {t('Kliknięcie oferuje rolę - zaczyna obowiązywać dopiero, gdy użytkownik ją zaakceptuje.')}
         </p>
         <div className="flex flex-wrap gap-2">
           {(allRoles ?? []).map((role) => {
@@ -251,9 +251,9 @@ export default function AdminUserDetail() {
                 disabled={setRoles.isPending}
                 title={
                   isPending
-                    ? t('Oczekuje na akceptację użytkownika — kliknij, aby wycofać ofertę')
+                    ? t('Oczekuje na akceptację użytkownika - kliknij, aby wycofać ofertę')
                     : isAccepted
-                      ? t('Zaakceptowana — kliknij, aby odebrać')
+                      ? t('Zaakceptowana - kliknij, aby odebrać')
                       : t('Kliknij, aby zaoferować tę rolę')
                 }
                 className={`flex items-center gap-1.5 rounded-full border px-2.5 py-1 text-xs font-medium transition disabled:opacity-50 ${
@@ -276,7 +276,7 @@ export default function AdminUserDetail() {
           })}
           {(allRoles ?? []).length === 0 && (
             <p className="text-sm text-slate-400 dark:text-slate-500">
-              {t('Brak ról — utwórz je w zakładce "Role".')}
+              {t('Brak ról - utwórz je w zakładce "Role".')}
             </p>
           )}
         </div>

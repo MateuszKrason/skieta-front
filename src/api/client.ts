@@ -67,7 +67,7 @@ api.interceptors.response.use(
   (response) => response,
   async (error: AxiosError) => {
     const original = error.config as (InternalAxiosRequestConfig & { _retry?: boolean }) | undefined
-    // Only a request that actually carried a token can have "expired" — a 401
+    // Only a request that actually carried a token can have "expired" - a 401
     // from an unauthenticated call (e.g. a wrong-password login attempt) is a
     // normal rejection, not a session timeout, and must reach the caller's
     // own catch block instead of forcing a hard redirect to /logowanie.

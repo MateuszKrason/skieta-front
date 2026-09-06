@@ -33,12 +33,12 @@ export const es: Record<string, string> = {
   '← Powrót do logowania': '← Volver al inicio de sesión',
   'Adres e-mail': 'Correo electrónico',
   'Wysyłanie…': 'Enviando…',
-  'Podaj adres e-mail przypisany do konta — wyślemy link do resetu hasła.':
+  'Podaj adres e-mail przypisany do konta - wyślemy link do resetu hasła.':
     'Indica el correo electrónico asociado a tu cuenta - te enviaremos un enlace para restablecer la contraseña.',
   'Jeśli podany adres e-mail istnieje w naszej bazie, wysłaliśmy na niego link do resetu hasła.':
     'Si ese correo electrónico existe en nuestra base de datos, te hemos enviado un enlace para restablecer la contraseña.',
   'Wyślij link do resetu': 'Enviar enlace de restablecimiento',
-  'Link resetu hasła jest niepełny — otwórz go bezpośrednio z wiadomości e-mail.':
+  'Link resetu hasła jest niepełny - otwórz go bezpośrednio z wiadomości e-mail.':
     'El enlace para restablecer la contraseña está incompleto - ábrelo directamente desde el correo electrónico.',
   'Hasło zostało zresetowane. Przekierowuję do logowania…': 'Contraseña restablecida. Redirigiendo al inicio de sesión…',
   'Ustaw nowe hasło do swojego konta.': 'Establece una nueva contraseña para tu cuenta.',
@@ -50,7 +50,7 @@ export const es: Record<string, string> = {
   'Nie udało się potwierdzić adresu e-mail.': 'No se pudo verificar el correo electrónico.',
   'Przejdź do aplikacji →': 'Ir a la aplicación →',
   'Adres e-mail nie jest jeszcze potwierdzony': 'Tu correo electrónico aún no está verificado',
-  'Wysłano nowy link weryfikacyjny — sprawdź skrzynkę.': 'Se envió un nuevo enlace de verificación - revisa tu bandeja de entrada.',
+  'Wysłano nowy link weryfikacyjny - sprawdź skrzynkę.': 'Se envió un nuevo enlace de verificación - revisa tu bandeja de entrada.',
   'Sprawdź skrzynkę i kliknij link, który wysłaliśmy przy rejestracji.':
     'Revisa tu bandeja de entrada y haz clic en el enlace que te enviamos al registrarte.',
   'Dodaj adres e-mail poniżej, żeby móc go potwierdzić i odzyskać konto w razie potrzeby.':
@@ -64,11 +64,11 @@ export const es: Record<string, string> = {
   'Obligacje': 'Obligaciones',
   'Gotowe': 'Listo',
   'Dodaj posiadane rzeczy': 'Añade lo que ya tienes',
-  'Wprowadź to, co już posiadasz — z prawdziwą, wsteczną datą zakupu — żeby historia i zyski liczyły się poprawnie od początku.':
+  'Wprowadź to, co już posiadasz - z prawdziwą, wsteczną datą zakupu - żeby historia i zyski liczyły się poprawnie od początku.':
     'Introduce lo que ya tienes - con la fecha de compra real y retroactiva - para que el historial y las ganancias se calculen correctamente desde el principio.',
   'Zakończ teraz →': 'Terminar ahora →',
   'Gotowe!': '¡Listo!',
-  'Możesz w każdej chwili dodać kolejne rzeczy z tego samego kreatora — link znajdziesz w górnym menu.':
+  'Możesz w każdej chwili dodać kolejne rzeczy z tego samego kreatora - link znajdziesz w górnym menu.':
     'Puedes añadir más cosas con este mismo asistente en cualquier momento - encontrarás el enlace en el menú superior.',
   'Przejdź do pulpitu': 'Ir al panel',
   '← Wstecz': '← Atrás',
@@ -89,7 +89,7 @@ export const es: Record<string, string> = {
   'Waluta': 'Moneda',
   'Obecne saldo': 'Saldo actual',
   '+ Dodaj konto': '+ Añadir cuenta',
-  'Nie masz jeszcze żadnego konta z gotówką na zakup akcji? Dodaj je tutaj z aktualnym saldem — w kolejnym kroku możesz z niego "kupić" akcje, które faktycznie posiadasz.':
+  'Nie masz jeszcze żadnego konta z gotówką na zakup akcji? Dodaj je tutaj z aktualnym saldem - w kolejnym kroku możesz z niego "kupić" akcje, które faktycznie posiadasz.':
     '¿Todavía no tienes una cuenta con efectivo para comprar acciones? Añádela aquí con su saldo actual - en el siguiente paso podrás "comprar" desde ella las acciones que ya tienes.',
   'Wyszukaj spółkę': 'Buscar una empresa',
   'Ticker': 'Ticker',
@@ -101,16 +101,16 @@ export const es: Record<string, string> = {
   '+ Dodaj pozycję': '+ Añadir posición',
   'Dla każdej posiadanej spółki podaj ilość, cenę i': 'Para cada empresa que poseas, indica la cantidad, el precio y',
   'prawdziwą datę zakupu': 'la fecha de compra real',
-  '— dzięki temu historia i wykresy będą liczone poprawnie.': '- así el historial y los gráficos se calcularán correctamente.',
+  '- dzięki temu historia i wykresy będą liczone poprawnie.': '- así el historial y los gráficos se calcularán correctamente.',
   'Nie udało się dodać pozycji.': 'No se pudo añadir la posición.',
   'Wybierz spółkę.': 'Selecciona una empresa.',
-  'Jeśli wybierzesz konto, kwota zostanie od razu odjęta z jego salda — zostaw puste, jeśli tylko deklarujesz akcje, które już posiadasz.':
+  'Jeśli wybierzesz konto, kwota zostanie od razu odjęta z jego salda - zostaw puste, jeśli tylko deklarujesz akcje, które już posiadasz.':
     'Si eliges una cuenta, el importe se descontará de su saldo de inmediato - déjalo en blanco si solo estás declarando acciones que ya posees.',
-  'To pozycja, którą już posiadam — nie odejmuj środków z konta (tylko zapisz powiązanie).':
+  'To pozycja, którą już posiadam - nie odejmuj środków z konta (tylko zapisz powiązanie).':
     'Esta es una posición que ya poseo - no descuentes fondos de la cuenta (solo guarda el vínculo).',
-  'To lokata, którą już posiadam — nie odejmuj środków z konta (tylko zapisz powiązanie).':
+  'To lokata, którą już posiadam - nie odejmuj środków z konta (tylko zapisz powiązanie).':
     'Este es un depósito que ya poseo - no descuentes fondos de la cuenta (solo guarda el vínculo).',
-  'To obligacja, którą już posiadam — nie odejmuj środków z konta (tylko zapisz powiązanie).':
+  'To obligacja, którą już posiadam - nie odejmuj środków z konta (tylko zapisz powiązanie).':
     'Esta es una obligación que ya poseo - no descuentes fondos de la cuenta (solo guarda el vínculo).',
   'bez powiązania z kontem': 'sin vínculo con una cuenta',
   'Nie dodano jeszcze żadnych akcji.': 'Todavía no has añadido ninguna acción.',
@@ -183,7 +183,7 @@ export const es: Record<string, string> = {
   '+ Konto': '+ Cuenta',
   'Edytuj': 'Editar',
   'Usuń': 'Eliminar',
-  'Brak kont — dodaj pierwsze.': 'Todavía no hay cuentas - añade la primera.',
+  'Brak kont - dodaj pierwsze.': 'Todavía no hay cuentas - añade la primera.',
   'Historia przelewów': 'Historial de transferencias',
   '+ Lokata': '+ Depósito',
   'Oprocentowanie': 'Tasa de interés',
@@ -198,7 +198,7 @@ export const es: Record<string, string> = {
   'Brak lokat.': 'No hay depósitos.',
   'Obligacje skarbowe': 'Obligaciones del Tesoro',
   '+ Obligacja': '+ Obligación',
-  'Odsetki liczone metodą uproszczoną (proste, wg wpisanego bieżącego oprocentowania) — nie odwzorowuje dokładnie zmiennych/indeksowanych inflacją harmonogramów kapitalizacji poszczególnych serii.':
+  'Odsetki liczone metodą uproszczoną (proste, wg wpisanego bieżącego oprocentowania) - nie odwzorowuje dokładnie zmiennych/indeksowanych inflacją harmonogramów kapitalizacji poszczególnych serii.':
     'Los intereses se calculan con un método simplificado (interés simple, según la tasa actual que introduciste) - no reproduce con exactitud los calendarios de capitalización variables o indexados a la inflación de cada serie.',
   'Wykup': 'Vencimiento',
   'wykupiona': 'amortizada',
@@ -227,7 +227,7 @@ export const es: Record<string, string> = {
 
   // Timeline
   'Timeline majątku': 'Cronología del patrimonio',
-  'Sprawdź, jak realnie pomnożyłeś wpłacone środki — niezależnie od tego, ile do systemu dołożyłeś':
+  'Sprawdź, jak realnie pomnożyłeś wpłacone środki - niezależnie od tego, ile do systemu dołożyłeś':
     'Comprueba cuánto has multiplicado realmente los fondos aportados - sin importar cuánto hayas añadido al sistema',
   '+ Wpłata / wypłata': '+ Ingreso / retiro',
   'Obecna wartość majątku': 'Patrimonio actual',
@@ -269,7 +269,7 @@ export const es: Record<string, string> = {
   'Portfel akcji i ETF-ów': 'Cartera de acciones y ETF',
   'Suma wartości akcji': 'Valor total de acciones',
   'Łączny zysk/strata': 'Ganancia/pérdida total',
-  'Kursy odświeżają się przy wejściu na tę stronę — kliknij "Odśwież kursy", by pobrać je ponownie':
+  'Kursy odświeżają się przy wejściu na tę stronę - kliknij "Odśwież kursy", by pobrać je ponownie':
     'Las cotizaciones se actualizan al entrar en esta página - haz clic en "Actualizar cotizaciones" para volver a obtenerlas',
   '⟳ Odśwież kursy': '⟳ Actualizar cotizaciones',
   'Notatki': 'Notas',
@@ -283,7 +283,7 @@ export const es: Record<string, string> = {
   'Zysk/strata': 'Ganancia/pérdida',
   'Aktualizacja': 'Actualizado',
   'Sprzedaj': 'Vender',
-  'Brak pozycji — dodaj pierwszą transakcję.': 'No hay posiciones - añade tu primera transacción.',
+  'Brak pozycji - dodaj pierwszą transakcję.': 'No hay posiciones - añade tu primera transacción.',
   'Historia transakcji': 'Historial de transacciones',
   'Kupno': 'Compra',
   'Sprzedaż': 'Venta',
@@ -292,7 +292,7 @@ export const es: Record<string, string> = {
   'Nie udało się zapisać transakcji.': 'No se pudo guardar la transacción.',
   'Wybierz konto, z którego pobrane zostaną środki.': 'Selecciona la cuenta de la que se tomarán los fondos.',
   'wybierz konto…': 'selecciona una cuenta…',
-  'Brak konta w walucie {0} — dodaj je w zakładce Konta i lokaty.': 'No hay ninguna cuenta en {0} - añade una en la pestaña Cuentas y depósitos.',
+  'Brak konta w walucie {0} - dodaj je w zakładce Konta i lokaty.': 'No hay ninguna cuenta en {0} - añade una en la pestaña Cuentas y depósitos.',
   'Zapisz kupno': 'Guardar compra',
   'Nie udało się sprzedać akcji.': 'No se pudo vender la acción.',
   'Posiadasz tylko {0} szt.': 'Solo tienes {0} unidades.',
@@ -308,9 +308,9 @@ export const es: Record<string, string> = {
   'Niezainwestowany kapitał': 'Capital sin invertir',
   'Ścieżki reinwestycji': 'Hilos de reinversión',
   '+ Nowa ścieżka': '+ Nuevo hilo',
-  'Śledź, do ilu pomnożyła się konkretna kwota — np. zysk ze sprzedaży jednej spółki rozdzielony na kilka kolejnych zakupów, z opcjonalną dodatkową gotówką i niezainwestowaną resztą.':
+  'Śledź, do ilu pomnożyła się konkretna kwota - np. zysk ze sprzedaży jednej spółki rozdzielony na kilka kolejnych zakupów, z opcjonalną dodatkową gotówką i niezainwestowaną resztą.':
     'Sigue cuánto se ha multiplicado una cantidad concreta - por ejemplo, la ganancia de la venta de una empresa repartida en varias compras posteriores, con efectivo adicional opcional y el resto sin invertir.',
-  'Brak ścieżek — utwórz pierwszą.': 'Todavía no hay hilos - crea el primero.',
+  'Brak ścieżek - utwórz pierwszą.': 'Todavía no hay hilos - crea el primero.',
   'Usunąć całą ścieżkę „{0}”? Tej operacji nie można cofnąć.': '¿Eliminar todo el hilo "{0}"? Esta acción no se puede deshacer.',
   'Start:': 'Inicio:',
   'Usuń ścieżkę': 'Eliminar hilo',
@@ -337,18 +337,18 @@ export const es: Record<string, string> = {
   'Zapisz pozycję': 'Guardar posición',
   'Nie udało się zamknąć pozycji.': 'No se pudo cerrar la posición.',
   'auto: proporcjonalnie': 'auto: proporcional',
-  'Brak jeszcze transakcji sprzedaży tej spółki — dodaj ją najpierw w portfelu.': 'Todavía no hay ninguna venta de esta empresa - añádela primero en la cartera.',
+  'Brak jeszcze transakcji sprzedaży tej spółki - dodaj ją najpierw w portfelu.': 'Todavía no hay ninguna venta de esta empresa - añádela primero en la cartera.',
   'Zamknij pozycję': 'Cerrar posición',
 
   // Dywidendy
   'Profil dywidendowy': 'Perfil de dividendos',
   'Ile zarabiasz na dywidendach i jaki to procent zainwestowanego kapitału': 'Cuánto ganas con los dividendos y qué porcentaje representa del capital invertido',
-  'Dywidendy wykrywane są automatycznie — nie musisz nic wpisywać ręcznie.':
+  'Dywidendy wykrywane są automatycznie - nie musisz nic wpisywać ręcznie.':
     'Los dividendos se detectan automáticamente - no tienes que introducir nada a mano.',
   'wykrywam dywidendy…': 'detectando dividendos…',
   'Wykrywam…': 'Detectando…',
   '⟳ Wykryj dywidendy': '⟳ Detectar dividendos',
-  'Automatyczne wykrywanie odświeża się samo przy wejściu na tę stronę — ten przycisk wymusza sprawdzenie od razu.':
+  'Automatyczne wykrywanie odświeża się samo przy wejściu na tę stronę - ten przycisk wymusza sprawdzenie od razu.':
     'La detección automática se actualiza sola al entrar en esta página - este botón fuerza una comprobación inmediata.',
   '+ Dywidenda': '+ Dividendo',
   '+ Dodaj ręcznie': '+ Añadir manualmente',
@@ -357,7 +357,7 @@ export const es: Record<string, string> = {
   'Suma dywidend (wszystkie czasy)': 'Total de dividendos (histórico)',
   'Projekcja rocznego dochodu (12 mies.)': 'Proyección de ingresos anuales (12 meses)',
   'Planowane dywidendy': 'Próximos dividendos',
-  'Szacunek na podstawie historycznego rytmu wypłat tej spółki (ostatnia kwota + średni odstęp) — nie jest to oficjalna zapowiedź zarządu.':
+  'Szacunek na podstawie historycznego rytmu wypłat tej spółki (ostatnia kwota + średni odstęp) - nie jest to oficjalna zapowiedź zarządu.':
     'Estimación basada en el ritmo histórico de pagos de esta empresa (último importe + intervalo medio) - no es un anuncio oficial de la dirección.',
   'ok.': 'aprox.',
   'Dywidendy miesiąc do miesiąca': 'Dividendos mes a mes',
@@ -368,7 +368,7 @@ export const es: Record<string, string> = {
   '{0} lat': '{0} años',
   'Suma dywidend': 'Total de dividendos',
   'Ostatnie 12 mies.': 'Últimos 12 meses',
-  'Brak dywidend — dodaj pierwszą wypłatę.': 'Todavía no hay dividendos - añade el primer pago.',
+  'Brak dywidend - dodaj pierwszą wypłatę.': 'Todavía no hay dividendos - añade el primer pago.',
   'Historia wypłat': 'Historial de pagos',
   'wykryta automatycznie': 'detectado automáticamente',
   'Brak wypłat.': 'No hay pagos.',
@@ -379,14 +379,14 @@ export const es: Record<string, string> = {
   'Zapisz dywidendę': 'Guardar dividendo',
 
   // AnalizaSpolek
-  'Komunikaty ESPI/EBI (GPW) i ważne newsy (USA) dla spółek z Twojego portfela — sprawdzane raz dziennie.':
+  'Komunikaty ESPI/EBI (GPW) i ważne newsy (USA) dla spółek z Twojego portfela - sprawdzane raz dziennie.':
     'Comunicados ESPI/EBI (GPW) y noticias importantes (EE. UU.) de las empresas de tu cartera - revisados una vez al día.',
   'Sprawdzam…': 'Comprobando…',
   '⟳ Sprawdź teraz': '⟳ Comprobar ahora',
   'Wszystkie spółki': 'Todas las empresas',
   'Pokaż tylko nowe': 'Mostrar solo las nuevas',
   'Nowe': 'Nuevas',
-  'Brak komunikatów — kliknij „Sprawdź teraz” albo poczekaj na codzienne automatyczne sprawdzenie.':
+  'Brak komunikatów - kliknij „Sprawdź teraz” albo poczekaj na codzienne automatyczne sprawdzenie.':
     'Todavía no hay comunicados - haz clic en "Comprobar ahora" o espera a la comprobación automática diaria.',
 
   // Budget shared
@@ -396,7 +396,7 @@ export const es: Record<string, string> = {
   'Zakres własny': 'Rango personalizado',
   'Bez kategorii': 'Sin categoría',
   'Brak danych w tym okresie.': 'No hay datos en este período.',
-  'wg kategorii — miesiąc do miesiąca': 'por categoría - mes a mes',
+  'wg kategorii - miesiąc do miesiąca': 'por categoría - mes a mes',
   'Kliknij kategorię poniżej, aby zobaczyć konkretne transakcje w wybranym okresie.': 'Haz clic en una categoría de abajo para ver sus transacciones concretas en el período seleccionado.',
   'Transakcje w okresie': 'Transacciones en el período',
   '+ Kategoria': '+ Categoría',
@@ -415,18 +415,18 @@ export const es: Record<string, string> = {
   'Sklepy': 'Comercios',
   '+ Dodaj sklep': '+ Añadir comercio',
   'Usuń sklep': 'Eliminar comercio',
-  'Brak sklepów — dodaj pierwszy powyżej.': 'Todavía no hay comercios - añade el primero arriba.',
+  'Brak sklepów - dodaj pierwszy powyżej.': 'Todavía no hay comercios - añade el primero arriba.',
   'Wydatki wg sklepów': 'Gastos por comercio',
   'Tylko transakcje, którym przypisano sklep. Kliknij sklep, aby zobaczyć jego transakcje.': 'Solo las transacciones con un comercio asignado. Haz clic en un comercio para ver sus transacciones.',
   'Brak wydatków przypisanych do sklepów w tym okresie.': 'No hay gastos asignados a comercios en este período.',
   'Bez sklepu': 'Sin comercio',
 
   // Bilans / Przychody / Wydatki
-  'Przychody i wydatki razem — podział na kategorie i trend w czasie': 'Ingresos y gastos juntos - desglose por categoría y tendencia en el tiempo',
+  'Przychody i wydatki razem - podział na kategorie i trend w czasie': 'Ingresos y gastos juntos - desglose por categoría y tendencia en el tiempo',
   '+ Przychód / wydatek': '+ Ingreso / gasto',
   'Przychody w okresie': 'Ingresos en el período',
   'Wydatki w okresie': 'Gastos en el período',
-  'Przychody i wydatki — ostatnie 12 miesięcy': 'Ingresos y gastos - últimos 12 meses',
+  'Przychody i wydatki - ostatnie 12 miesięcy': 'Ingresos y gastos - últimos 12 meses',
   'Przychody i wydatki w czasie': 'Ingresos y gastos a lo largo del tiempo',
   'Słupki': 'Barras',
   'Linia': 'Línea',
@@ -434,11 +434,11 @@ export const es: Record<string, string> = {
   '{0} mies.': '{0} meses',
   'Wybierz co najmniej jedną serię do wyświetlenia.': 'Selecciona al menos una serie para mostrar.',
   'Skumulowany bilans (oszczędności)': 'Balance acumulado (ahorro)',
-  'Suma miesięcznych bilansów narastająco — jak rósł Twój zaoszczędzony kapitał w tym okresie.':
+  'Suma miesięcznych bilansów narastająco - jak rósł Twój zaoszczędzony kapitał w tym okresie.':
     'Suma acumulada de los balances mensuales - cómo creció tu capital ahorrado en este período.',
   'Wydatki wg tagów': 'Gastos por etiqueta',
   'Przychody wg tagów': 'Ingresos por etiqueta',
-  'Tylko transakcje z co najmniej jednym tagiem — transakcja z kilkoma tagami liczy się do każdego z nich.':
+  'Tylko transakcje z co najmniej jednym tagiem - transakcja z kilkoma tagami liczy się do każdego z nich.':
     'Solo las transacciones con al menos una etiqueta - una transacción con varias etiquetas cuenta para cada una de ellas.',
   'Brak transakcji z tagami w tym okresie.': 'No hay transacciones con etiquetas en este período.',
   'Bez tagu': 'Sin etiqueta',
@@ -504,7 +504,7 @@ export const es: Record<string, string> = {
   '+ Dodaj tag': '+ Añadir etiqueta',
   'Usunąć tag "{0}"?': '¿Eliminar la etiqueta "{0}"?',
   'Usuń tag': 'Eliminar etiqueta',
-  'Brak tagów — dodaj pierwszy powyżej.': 'Todavía no hay etiquetas - añade la primera arriba.',
+  'Brak tagów - dodaj pierwszy powyżej.': 'Todavía no hay etiquetas - añade la primera arriba.',
 
   // Belka tax P/L
   'Po podatku od zysków kapitałowych (19%)': 'Después del impuesto sobre ganancias de capital (19%)',
@@ -522,7 +522,7 @@ export const es: Record<string, string> = {
   'Zarezerwowano na cele': 'Reservado para metas',
   'Cele oszczędnościowe': 'Metas de ahorro',
   '+ Cel': '+ Meta',
-  'Brak celów — dodaj pierwszy.': 'Todavía no hay metas - añade la primera.',
+  'Brak celów - dodaj pierwszy.': 'Todavía no hay metas - añade la primera.',
   'Duże wydatki': 'Gastos grandes',
   'Brak zaplanowanych wydatków.': 'No hay gastos planificados.',
   'Cofnij': 'Deshacer',
@@ -544,7 +544,7 @@ export const es: Record<string, string> = {
 
   // Dividend simulation
   'Symulacja przyszłych dywidend (12 mies.)': 'Simulación de dividendos futuros (12 meses)',
-  'Szacunek na podstawie obecnie posiadanych akcji i historycznego rytmu wypłat każdej spółki — nie jest to gwarancja przyszłych dywidend.':
+  'Szacunek na podstawie obecnie posiadanych akcji i historycznego rytmu wypłat każdej spółki - nie jest to gwarancja przyszłych dywidend.':
     'Estimación basada en las acciones que tienes actualmente y el ritmo histórico de pagos de cada empresa - no es una garantía de dividendos futuros.',
   'Szacunkowe dywidendy w kolejnych latach': 'Dividendos estimados en los próximos años',
   'To samo założenie co powyżej (obecne akcje i historyczny rytm wypłat), zsumowane rok do roku na dłuższym horyzoncie.':
@@ -560,7 +560,7 @@ export const es: Record<string, string> = {
 
   // Invite-only registration / streak / onboarding gate
   'Login lub e-mail': 'Usuario o correo electrónico',
-  'Rejestracja jest dostępna tylko na zaproszenie od innego użytkownika — poproś o link lub zeskanuj kod QR.':
+  'Rejestracja jest dostępna tylko na zaproszenie od innego użytkownika - poproś o link lub zeskanuj kod QR.':
     'El registro es solo por invitación de otro usuario - pide un enlace o escanea un código QR.',
   'Masz już konto? Zaloguj się': '¿Ya tienes cuenta? Inicia sesión',
   'Rejestracja jest dostępna tylko na zaproszenie od innego użytkownika.': 'El registro es solo por invitación de otro usuario.',
@@ -569,14 +569,14 @@ export const es: Record<string, string> = {
   'Limit: bez ograniczeń': 'Límite: sin restricciones',
   'Pozostało w tym tygodniu: {0} z {1}': 'Quedan esta semana: {0} de {1}',
   '+ Wygeneruj zaproszenie': '+ Generar invitación',
-  'Wykorzystano limit zaproszeń na ten tydzień — odnawia się na bieżąco, 7 dni po każdym zaproszeniu.':
+  'Wykorzystano limit zaproszeń na ten tydzień - odnawia się na bieżąco, 7 dni po każdym zaproszeniu.':
     'Has agotado el límite de invitaciones de esta semana - se renueva de forma continua, 7 días después de cada invitación.',
   'Skopiowano!': '¡Copiado!',
   'Kopiuj link': 'Copiar enlace',
   'Pokaż QR': 'Mostrar QR',
   'Ukryj QR': 'Ocultar QR',
   'Zaakceptowane przez {0} ({1})': 'Aceptada por {0} ({1})',
-  'Oczekuje — wygenerowano {0}': 'Pendiente - generada {0}',
+  'Oczekuje - wygenerowano {0}': 'Pendiente - generada {0}',
   'Czy na pewno chcesz zmienić nazwę użytkownika? Można to zrobić tylko raz na 30 dni.':
     '¿Seguro que quieres cambiar tu nombre de usuario? Solo se puede hacer una vez cada 30 días.',
   'Dodaj co najmniej jedno konto bankowe, żeby przejść dalej.': 'Añade al menos una cuenta bancaria para continuar.',
@@ -592,7 +592,7 @@ export const es: Record<string, string> = {
 
   // Editor role / article CRM / admin role assignment
   'Redakcja': 'Redacción',
-  'Masz uprawnienia redaktora — możesz dodawać i edytować artykuły.':
+  'Masz uprawnienia redaktora - możesz dodawać i edytować artykuły.':
     'Tienes permisos de editor - puedes añadir y editar artículos.',
   'Przejdź do redakcji': 'Ir a la redacción',
   'Redakcja artykułów': 'Redacción de artículos',
@@ -618,7 +618,7 @@ export const es: Record<string, string> = {
   'Czy na pewno chcesz usunąć tę lokatę?': '¿Seguro que quieres eliminar este depósito?',
   'Czy na pewno chcesz usunąć tę obligację?': '¿Seguro que quieres eliminar esta obligación?',
   'Kategorie, sklepy i tagi': 'Categorías, comercios y etiquetas',
-  'Zarządzaj tu wszystkimi kategoriami, sklepami i tagami używanymi w budżecie — w jednym miejscu.':
+  'Zarządzaj tu wszystkimi kategoriami, sklepami i tagami używanymi w budżecie - w jednym miejscu.':
     'Gestiona aquí todas las categorías, comercios y etiquetas usadas en tu presupuesto - en un solo lugar.',
   'Kategorie przychodów': 'Categorías de ingresos',
   'Kategorie wydatków': 'Categorías de gastos',
@@ -634,7 +634,7 @@ export const es: Record<string, string> = {
 
   // Feature-interest onboarding + account settings
   'Zainteresowania': 'Intereses',
-  'Z czego chcesz korzystać? Odznacz to, czego nie potrzebujesz — zawsze możesz to zmienić później w ustawieniach konta.':
+  'Z czego chcesz korzystać? Odznacz to, czego nie potrzebujesz - zawsze możesz to zmienić później w ustawieniach konta.':
     '¿Qué quieres usar? Desmarca lo que no necesites - siempre puedes cambiarlo más tarde en la configuración de la cuenta.',
   'Budżet': 'Presupuesto',
   'Portfel akcji, dywidendy, analiza spółek': 'Cartera de acciones, dividendos, análisis de empresas',
@@ -642,7 +642,7 @@ export const es: Record<string, string> = {
   'Cele oszczędnościowe i planowane wydatki': 'Metas de ahorro y gastos planificados',
   'Kalkulator inwestycyjny - obligacje, lokaty, giełda': 'Calculadora de inversión - obligaciones, depósitos, bolsa',
   'Z czego korzystasz': 'Lo que usas',
-  'Odznaczone opcje znikają z górnego menu — możesz je włączyć z powrotem w każdej chwili.':
+  'Odznaczone opcje znikają z górnego menu - możesz je włączyć z powrotem w każdej chwili.':
     'Las opciones desmarcadas desaparecen del menú superior - puedes volver a activarlas en cualquier momento.',
 
   // Chart type switcher
@@ -676,7 +676,7 @@ export const es: Record<string, string> = {
   '+ Wyślij zaproszenie mailem': '+ Enviar invitación por correo',
 
   // Growth summary "no data" state
-  'Brak danych — zarejestruj pierwszą wpłatę, aby zobaczyć realny zwrot.':
+  'Brak danych - zarejestruj pierwszą wpłatę, aby zobaczyć realny zwrot.':
     'No hay datos - registra tu primer ingreso para ver la rentabilidad real.',
 
   // Admin user detail page
@@ -721,7 +721,7 @@ export const es: Record<string, string> = {
   'To, co zarobiłeś: odsetki na lokatach i obligacjach, zysk na akcjach oraz dywidendy (po podatku Belki).':
     'Lo que ganaste: intereses de depósitos y obligaciones, ganancias en acciones y dividendos (después del impuesto sobre ganancias de capital).',
 
-  // Zmiana wartości majątku — expandable breakdown
+  // Zmiana wartości majątku - expandable breakdown
   'Kliknij, aby zobaczyć podział zmiany na akcje, lokaty, obligacje i gotówkę':
     'Haz clic para ver el desglose de la variación por acciones, depósitos, obligaciones y efectivo',
   'Brak zmian w poszczególnych składnikach.': 'No hay cambios en los componentes individuales.',
@@ -768,13 +768,13 @@ export const es: Record<string, string> = {
   'Kolor roli': 'Color del rol',
   'Utwórz rolę': 'Crear rol',
   '+ Nowa rola': '+ Nuevo rol',
-  'Twórz role z wybranym zestawem uprawnień i nadawaj je użytkownikom w ich profilu — niezależnie od statusu administratora/redaktora.':
+  'Twórz role z wybranym zestawem uprawnień i nadawaj je użytkownikom w ich profilu - niezależnie od statusu administratora/redaktora.':
     'Crea roles con el conjunto de permisos que elijas y asígnalos a los usuarios desde su perfil - de forma independiente al estado de administrador/editor.',
   '{0} uprawnień, {1} użytkowników': '{0} permisos, {1} usuarios',
   'Usunąć rolę {0}? Zostanie odebrana wszystkim {1} przypisanym użytkownikom.':
     '¿Eliminar el rol {0}? Se retirará a los {1} usuarios que lo tienen asignado.',
   'Brak ról.': 'No hay roles.',
-  'Brak ról — utwórz je w zakładce "Role".': 'Todavía no hay roles - créalos en la pestaña "Roles".',
+  'Brak ról - utwórz je w zakładce "Role".': 'Todavía no hay roles - créalos en la pestaña "Roles".',
   'Podgląd statystyk aplikacji': 'Ver estadísticas de la aplicación',
   'Podgląd listy użytkowników': 'Ver lista de usuarios',
   'Zarządzanie użytkownikami (aktywacja, archiwizacja)': 'Gestionar usuarios (activación, archivado)',
@@ -783,14 +783,14 @@ export const es: Record<string, string> = {
   'Zarządzanie zgłoszeniami feedbacku': 'Gestionar solicitudes de comentarios',
   'Tworzenie i edycja ról': 'Crear y editar roles',
 
-  // Invite friends — delete, sub-tabs, expiry
+  // Invite friends - delete, sub-tabs, expiry
   'Oczekujące zaproszenia': 'Invitaciones pendientes',
   'Przyjęte zaproszenia': 'Invitaciones aceptadas',
   'Brak oczekujących zaproszeń.': 'No hay invitaciones pendientes.',
   'Brak przyjętych zaproszeń.': 'No hay invitaciones aceptadas.',
   'Usunąć ten link z zaproszeniem?': '¿Eliminar este enlace de invitación?',
-  'Wygasło — wygenerowano {0}': 'Caducada - generada {0}',
-  'Oczekuje — wygenerowano {0}, wygasa po 48h': 'Pendiente - generada {0}, caduca a las 48h',
+  'Wygasło - wygenerowano {0}': 'Caducada - generada {0}',
+  'Oczekuje - wygenerowano {0}, wygasa po 48h': 'Pendiente - generada {0}, caduca a las 48h',
 
   // Login history
   'Historia logowań': 'Historial de inicios de sesión',
@@ -804,7 +804,7 @@ export const es: Record<string, string> = {
   // Username change lock
   'Można zmienić od {0}': 'Se puede cambiar de nuevo a partir del {0}',
 
-  // Savings goals — reserve from savings, multi-month payday reservations
+  // Savings goals - reserve from savings, multi-month payday reservations
   'Zarezerwuj z oszczędności': 'Reservar de los ahorros',
   'Zarezerwuj część pensji z jednego lub kilku konkretnych miesięcy naraz.':
     'Reserva parte de tu sueldo de uno o varios meses concretos a la vez.',
@@ -835,21 +835,21 @@ export const es: Record<string, string> = {
   'Panuj nad': 'Toma el control de',
   'swoimi finansami': 'tus finanzas',
   'Zbudowane, żeby faktycznie z tego korzystać': 'Creada para que realmente la uses',
-  'Nie kolejny arkusz kalkulacyjny — narzędzie, które samo liczy to, co dla Ciebie ważne.':
+  'Nie kolejny arkusz kalkulacyjny - narzędzie, które samo liczy to, co dla Ciebie ważne.':
     'No es otra hoja de cálculo más - es una herramienta que calcula por ti lo que de verdad importa.',
   'Wszystko w jednym miejscu': 'Todo en un solo lugar',
-  'Konta bankowe, akcje, obligacje i lokaty — jeden widok na cały Twój majątek, bez przełączania się między aplikacjami banków i domów maklerskich.':
+  'Konta bankowe, akcje, obligacje i lokaty - jeden widok na cały Twój majątek, bez przełączania się między aplikacjami banków i domów maklerskich.':
     'Cuentas bancarias, acciones, obligaciones y depósitos - una sola vista de todo tu patrimonio, sin cambiar entre las apps de tu banco y tu bróker.',
   'Realny zwrot z inwestycji': 'Rentabilidad real de la inversión',
-  'Zysk liczony osobno od wpłaconego kapitału — zobaczysz dokładnie, ile realnie zarobiłeś na lokatach, obligacjach i akcjach, po podatku Belki.':
+  'Zysk liczony osobno od wpłaconego kapitału - zobaczysz dokładnie, ile realnie zarobiłeś na lokatach, obligacjach i akcjach, po podatku Belki.':
     'Ganancia calculada por separado del capital aportado - verás exactamente cuánto has ganado de verdad con depósitos, obligaciones y acciones, después de impuestos.',
   'Budżet pod kontrolą': 'Presupuesto bajo control',
-  'Automatyczny import wyciągów, kategorie, sklepy i tagi — analiza przychodów i wydatków, która sama się aktualizuje.':
+  'Automatyczny import wyciągów, kategorie, sklepy i tagi - analiza przychodów i wydatków, która sama się aktualizuje.':
     'Importación automática de extractos, categorías, comercios y etiquetas - un análisis de ingresos y gastos que se actualiza solo.',
   'Ustaw cel, rezerwuj kwoty z konkretnych wypłat lub z bieżących oszczędności i śledź postęp na żywo.':
     'Fija una meta, reserva importes de nóminas concretas o de tus ahorros actuales, y sigue el progreso en tiempo real.',
   'Dywidendy i podatki': 'Dividendos e impuestos',
-  'Historia i prognoza wypłat dywidend, szacowany podatek Belki do zapłaty — żadnych niespodzianek przy rozliczeniu.':
+  'Historia i prognoza wypłat dywidend, szacowany podatek Belki do zapłaty - żadnych niespodzianek przy rozliczeniu.':
     'Historial y previsión de pagos de dividendos, impuesto estimado a pagar - sin sorpresas a la hora de declarar.',
   'Twoje dane, Twoja kontrola': 'Tus datos, tu control',
   'Dostęp wyłącznie na zaproszenie, bez reklam i bez śledzenia. Historia logowań pokazuje dokładnie, kto i kiedy wchodził na Twoje konto.':
@@ -862,17 +862,17 @@ export const es: Record<string, string> = {
   'Kilka minut wystarczy, żeby dodać konta bankowe, portfel akcji, lokaty i obligacje.':
     'Bastan unos minutos para añadir tus cuentas bancarias, tu cartera de acciones, depósitos y obligaciones.',
   'Widzisz cały obraz': 'Ves el panorama completo',
-  'Dashboard aktualizuje się na bieżąco — majątek, zwrot z inwestycji i budżet w jednym miejscu.':
+  'Dashboard aktualizuje się na bieżąco - majątek, zwrot z inwestycji i budżet w jednym miejscu.':
     'El panel se actualiza en tiempo real - patrimonio, rentabilidad de la inversión y presupuesto en un solo lugar.',
   'Masz już zaproszenie?': '¿Ya tienes una invitación?',
-  'Zaloguj się i zobacz cały swój majątek w jednym miejscu — od razu po pierwszym dodaniu konta.':
+  'Zaloguj się i zobacz cały swój majątek w jednym miejscu - od razu po pierwszym dodaniu konta.':
     'Inicia sesión y ve todo tu patrimonio en un solo lugar - justo después de añadir tu primera cuenta.',
 
-  // Request access — landing page form + admin review
+  // Request access - landing page form + admin review
   'Nie masz zaproszenia? Poproś o dostęp →': '¿No tienes invitación? Solicita acceso →',
   'Twój adres e-mail': 'Tu correo electrónico',
   'Poproś o dostęp': 'Solicitar acceso',
-  'Dziękujemy! Odpowiadamy zwykle w ciągu kilku dni — napiszemy na podany adres, gdy administrator rozpatrzy prośbę.':
+  'Dziękujemy! Odpowiadamy zwykle w ciągu kilku dni - napiszemy na podany adres, gdy administrator rozpatrzy prośbę.':
     '¡Gracias! Solemos responder en unos días: te escribiremos a la dirección indicada en cuanto un administrador revise la solicitud.',
   'Prośby o dostęp': 'Solicitudes de acceso',
   'Oczekujące': 'Pendientes',
@@ -880,7 +880,7 @@ export const es: Record<string, string> = {
   'Zaakceptowano': 'Aceptada',
   'Odrzucono': 'Rechazada',
   'Zaakceptuj losowy procent oczekujących': 'Aceptar un porcentaje aleatorio de las pendientes',
-  'Przydatne przy stopniowym otwieraniu dostępu — zamiast rozpatrywać każdą prośbę osobno.':
+  'Przydatne przy stopniowym otwieraniu dostępu - zamiast rozpatrywać każdą prośbę osobno.':
     'Útil para abrir el acceso de forma gradual - en lugar de revisar cada solicitud una por una.',
   'Zaakceptuj': 'Aceptar',
   'Zaakceptowano {0} z {1} oczekujących próśb.': 'Se aceptaron {0} de {1} solicitudes pendientes.',
@@ -891,24 +891,24 @@ export const es: Record<string, string> = {
   'Odrzuć': 'Rechazar',
 
   // Role acceptance workflow
-  'Kliknięcie oferuje rolę — zaczyna obowiązywać dopiero, gdy użytkownik ją zaakceptuje.':
+  'Kliknięcie oferuje rolę - zaczyna obowiązywać dopiero, gdy użytkownik ją zaakceptuje.':
     'Al hacer clic se ofrece el rol - no entra en vigor hasta que el usuario lo acepta.',
-  'Oczekuje na akceptację użytkownika — kliknij, aby wycofać ofertę': 'Esperando la aceptación del usuario - haz clic para retirar la oferta',
-  'Zaakceptowana — kliknij, aby odebrać': 'Aceptado - haz clic para revocar',
+  'Oczekuje na akceptację użytkownika - kliknij, aby wycofać ofertę': 'Esperando la aceptación del usuario - haz clic para retirar la oferta',
+  'Zaakceptowana - kliknij, aby odebrać': 'Aceptado - haz clic para revocar',
   'Kliknij, aby zaoferować tę rolę': 'Haz clic para ofrecer este rol',
   '(oczekuje)': '(pendiente)',
   'Nowe role do zaakceptowania': 'Nuevos roles por aceptar',
-  'Administrator zaproponował Ci nowe uprawnienia — nie zaczną obowiązywać, dopóki ich nie zaakceptujesz.':
+  'Administrator zaproponował Ci nowe uprawnienia - nie zaczną obowiązywać, dopóki ich nie zaakceptujesz.':
     'Un administrador te ha propuesto nuevos permisos - no entrarán en vigor hasta que los aceptes.',
   'od {0}': 'de {0}',
 
   // Login back-link, updated budget feature card
   '← Strona główna': '← Página principal',
   'Przychody, wydatki i budżet': 'Ingresos, gastos y presupuesto',
-  'Zarządzaj przychodami i wydatkami, monitoruj budżet miesiąc po miesiącu i sprawdzaj bilans — automatyczny import wyciągów, kategorie, sklepy i tagi robią to za Ciebie.':
+  'Zarządzaj przychodami i wydatkami, monitoruj budżet miesiąc po miesiącu i sprawdzaj bilans - automatyczny import wyciągów, kategorie, sklepy i tagi robią to za Ciebie.':
     'Gestiona tus ingresos y gastos, controla tu presupuesto mes a mes y revisa tu balance - la importación automática de extractos, las categorías, los comercios y las etiquetas lo hacen por ti.',
 
-  // Translation coverage sweep — everything a distinct-strings audit found
+  // Translation coverage sweep - everything a distinct-strings audit found
   // with no English entry yet, across Planowanie, AdminUsers, AnalizaSpolek,
   // StatementImportPanel, PrivacyPolicy, Landing, and assorted small labels.
   '+ Przychód/Wydatek': '+ Ingreso/Gasto',
@@ -918,14 +918,14 @@ export const es: Record<string, string> = {
   'Aktywni dzisiaj': 'Activos hoy',
   'Aktywni użytkownicy dziennie (30 dni)': 'Usuarios activos diarios (30 días)',
   'Artykuły o finansach osobistych': 'Artículos sobre finanzas personales',
-  'Brak stałych kosztów — dodaj pierwszy.': 'Todavía no hay gastos fijos - añade el primero.',
+  'Brak stałych kosztów - dodaj pierwszy.': 'Todavía no hay gastos fijos - añade el primero.',
   'Brak użytkowników spełniających kryteria.': 'No hay usuarios que cumplan los filtros.',
   'Brak wycenionych pozycji w portfelu.': 'No hay posiciones valoradas en la cartera.',
   'Brak zarezerwowanych wypłat.': 'Todavía no hay nóminas reservadas.',
-  'Czynsz, subskrypcje, ubezpieczenia — cykliczne opłaty co miesiąc, niezależnie od tego, czy już je zapłaciłeś w tym miesiącu.':
+  'Czynsz, subskrypcje, ubezpieczenia - cykliczne opłaty co miesiąc, niezależnie od tego, czy już je zapłaciłeś w tym miesiącu.':
     'Alquiler, suscripciones, seguros - gastos recurrentes cada mes, los hayas pagado ya este mes o no.',
   'Czytaj więcej →': 'Leer más →',
-  'Dane konta przechowujemy tak długo, jak konto jest aktywne. Kiedy usuniesz konto w ustawieniach, blokujemy je od razu, a po 30 dniach trwale kasujemy wszystkie Twoje dane. Przez te 30 dni możesz cofnąć decyzję linkiem z maila, który wysyłamy przy usuwaniu. Osobno administrator może zarchiwizować konto, czyli je zdezaktywować z zachowaniem danych — takie konto czeka, aż zdecydujesz, co dalej, i nie jest kasowane automatycznie.':
+  'Dane konta przechowujemy tak długo, jak konto jest aktywne. Kiedy usuniesz konto w ustawieniach, blokujemy je od razu, a po 30 dniach trwale kasujemy wszystkie Twoje dane. Przez te 30 dni możesz cofnąć decyzję linkiem z maila, który wysyłamy przy usuwaniu. Osobno administrator może zarchiwizować konto, czyli je zdezaktywować z zachowaniem danych - takie konto czeka, aż zdecydujesz, co dalej, i nie jest kasowane automatycznie.':
     'Conservamos los datos de tu cuenta mientras la cuenta esté activa. Cuando eliminas la cuenta desde los ajustes, la bloqueamos de inmediato y, pasados 30 días, borramos definitivamente todos tus datos. Durante esos 30 días puedes deshacerlo con el enlace del correo que te enviamos. Aparte de eso, un administrador puede archivar una cuenta, es decir, desactivarla conservando los datos: esa cuenta espera tu decisión y nunca se borra automáticamente.',
   'Danych nie sprzedajemy i nie udostępniamy w celach marketingowych. Współpracujemy wyłącznie z dostawcami niezbędnymi do działania serwisu:':
     'No vendemos tus datos ni los compartimos con fines de marketing. Solo trabajamos con los proveedores necesarios para el funcionamiento del servicio:',
@@ -936,19 +936,19 @@ export const es: Record<string, string> = {
   'Dołączył(a)': 'Se unió',
   'Dzień wypłaty pozwala policzyć, ile wypłat zostało do terminu każdego celu oszczędnościowego.':
     'El día de la nómina permite calcular cuántas nóminas quedan hasta la fecha límite de cada meta de ahorro.',
-  'dostawca analityki bez ciasteczek — zbiorcze statystyki odwiedzin (patrz sekcja wyżej),':
+  'dostawca analityki bez ciasteczek - zbiorcze statystyki odwiedzin (patrz sekcja wyżej),':
     'un proveedor de analítica sin cookies - estadísticas agregadas de visitas (ver la sección anterior),',
-  'Hasła są haszowane, komunikacja z aplikacją odbywa się przez HTTPS, a dostęp do panelu administratora mają wyłącznie konta z uprawnieniami administratora lub odpowiednią rolą — i nawet ten panel nie pokazuje treści Twoich transakcji ani sald, tylko zbiorcze statystyki. Treść danych finansowych nie jest też dostępna przez wbudowany panel Django — do bazy danych dociera się wyłącznie bezpośrednim, świadomym dostępem administracyjnym do infrastruktury, nie jednym kliknięciem w aplikacji.':
+  'Hasła są haszowane, komunikacja z aplikacją odbywa się przez HTTPS, a dostęp do panelu administratora mają wyłącznie konta z uprawnieniami administratora lub odpowiednią rolą - i nawet ten panel nie pokazuje treści Twoich transakcji ani sald, tylko zbiorcze statystyki. Treść danych finansowych nie jest też dostępna przez wbudowany panel Django - do bazy danych dociera się wyłącznie bezpośrednim, świadomym dostępem administracyjnym do infrastruktury, nie jednym kliknięciem w aplikacji.':
     'Las contraseñas se almacenan cifradas (hash), la comunicación con la aplicación se realiza por HTTPS, y solo las cuentas con permisos de administrador o un rol adecuado pueden acceder al panel de administración - e incluso ese panel nunca muestra el contenido de tus transacciones ni de tus saldos, solo estadísticas agregadas. El contenido de los datos financieros tampoco es accesible a través del panel integrado de Django - a la base de datos solo se llega mediante un acceso administrativo directo y deliberado a la infraestructura, no con un solo clic en la aplicación.',
   'Historia': 'Historial',
   'Importuj wyciąg z konta': 'Importar extracto de cuenta',
   'Kategoria widoczna tylko dla tego konta': 'Categoría visible solo para esta cuenta',
   'Koncentracja portfela': 'Concentración de la cartera',
-  'Konta bankowe i ich salda, transakcje budżetowe, kategorie/sklepy/tagi, posiadane akcje i transakcje giełdowe, lokaty, obligacje, dywidendy, cele oszczędnościowe i plany budżetowe — czyli wszystko, co wpisujesz, żeby aplikacja mogła śledzić Twój majątek. Te dane widzisz tylko Ty — inni użytkownicy nie mają do nich dostępu, a panel administratora pokazuje wyłącznie zbiorcze liczby i aktywność konta (np. liczbę transakcji), nigdy treść Twoich transakcji czy sald.':
+  'Konta bankowe i ich salda, transakcje budżetowe, kategorie/sklepy/tagi, posiadane akcje i transakcje giełdowe, lokaty, obligacje, dywidendy, cele oszczędnościowe i plany budżetowe - czyli wszystko, co wpisujesz, żeby aplikacja mogła śledzić Twój majątek. Te dane widzisz tylko Ty - inni użytkownicy nie mają do nich dostępu, a panel administratora pokazuje wyłącznie zbiorcze liczby i aktywność konta (np. liczbę transakcji), nigdy treść Twoich transakcji czy sald.':
     'Cuentas bancarias y sus saldos, transacciones del presupuesto, categorías/comercios/etiquetas, las acciones que posees y sus transacciones bursátiles, depósitos, obligaciones, dividendos, metas de ahorro y planes de presupuesto - es decir, todo lo que introduces para que la aplicación pueda seguir tu patrimonio. Solo tú ves estos datos - otros usuarios no tienen acceso a ellos, y el panel de administración solo muestra cifras agregadas y actividad de la cuenta (por ejemplo, el número de transacciones), nunca el contenido de tus transacciones o saldos.',
-  'Konta w innej walucie będą oznaczone jako walutowe — to tylko etykieta, nie wpływa na przeliczenia.':
+  'Konta w innej walucie będą oznaczone jako walutowe - to tylko etykieta, nie wpływa na przeliczenia.':
     'Las cuentas en otra moneda se marcarán como "en moneda extranjera" - es solo una etiqueta, no afecta a las conversiones.',
-  'Logowanie działa w oparciu o tokeny JWT przechowywane w local storage przeglądarki — to samo miejsce przechowuje wybrany motyw kolorystyczny i język, zanim zostaną zapisane na koncie. Nie ma żadnych skryptów reklamowych ani śledzących w celach marketingowych.':
+  'Logowanie działa w oparciu o tokeny JWT przechowywane w local storage przeglądarki - to samo miejsce przechowuje wybrany motyw kolorystyczny i język, zanim zostaną zapisane na koncie. Nie ma żadnych skryptów reklamowych ani śledzących w celach marketingowych.':
     'El inicio de sesión funciona con tokens JWT guardados en el almacenamiento local del navegador - ese mismo lugar guarda el tema de color y el idioma elegidos antes de que se guarden en tu cuenta. No hay ningún script publicitario ni de rastreo con fines de marketing.',
   'Masz prawo do wglądu w swoje dane, ich poprawienia, przeniesienia i usunięcia. Dwa z nich załatwisz sam(a) w ustawieniach konta: "Pobierz swoje dane" daje pełną kopię wszystkiego, co przechowujemy (JSON plus tabele CSV do Excela), a "Usuń konto" uruchamia trwałe skasowanie danych. Większość informacji poprawisz bezpośrednio w ustawieniach. W pozostałych sprawach napisz na adres podany niżej albo skorzystaj z widgetu "Zostaw feedback" w aplikacji.':
     'Tienes derecho a consultar tus datos, corregirlos, llevártelos y solicitar su eliminación. Dos de esas cosas las haces tú mismo en los ajustes de la cuenta: "Descarga tus datos" te da una copia completa de todo lo que guardamos (JSON más tablas CSV para Excel) y "Eliminar cuenta" inicia el borrado definitivo. La mayoría de los datos los corriges directamente en los ajustes. Para cualquier otra cosa, escríbenos a la dirección de abajo o usa el widget de comentarios de la aplicación.',
@@ -960,7 +960,7 @@ export const es: Record<string, string> = {
     'Nombre de usuario, nombre y apellido, correo electrónico (si lo indicas) y contraseña (almacenada únicamente cifrada, nunca en texto plano). Al registrarte también guardamos con la invitación de quién se creó la cuenta.',
   'Nie udało się dodać tagu.': 'No se pudo añadir la etiqueta.',
   'Nie udało się przetworzyć pliku.': 'No se pudo procesar el archivo.',
-  'Nie udało się zaimportować transakcji — spróbuj wgrać plik ponownie.': 'No se pudieron importar las transacciones - intenta subir el archivo de nuevo.',
+  'Nie udało się zaimportować transakcji - spróbuj wgrać plik ponownie.': 'No se pudieron importar las transacciones - intenta subir el archivo de nuevo.',
   'Nie znaleziono artykułu.': 'Artículo no encontrado.',
   'Nowi w tym tygodniu': 'Nuevos esta semana',
   'Odblokuj': 'Desbloquear',
@@ -972,7 +972,7 @@ export const es: Record<string, string> = {
   'Ostatnie IP': 'Última IP',
   'Ostatnie logowanie': 'Último inicio de sesión',
   'Panel administratora': 'Panel de administración',
-  'Pensja i dzień wypłaty ({0}. dnia miesiąca) — zmień': 'Sueldo y día de la nómina (día {0} del mes) - cambiar',
+  'Pensja i dzień wypłaty ({0}. dnia miesiąca) - zmień': 'Sueldo y día de la nómina (día {0} del mes) - cambiar',
   'Plik PDF': 'Archivo PDF',
   'Podgląd wyciągu': 'Vista previa del extracto',
   'Podział wg rynku': 'Desglose por mercado',
@@ -984,17 +984,17 @@ export const es: Record<string, string> = {
   'Zmiana wartości względem wpłaconego kapitału na tym koncie': 'Cambio de valor respecto al capital aportado en esta cuenta',
   'Zainwestowano': 'Invertido',
   'Pozostałe ({0})': 'Otros ({0})',
-  'Przy każdym logowaniu zapisujemy adres IP oraz podstawowe informacje o przeglądarce/systemie (User-Agent) — to podstawa historii logowań widocznej w Twoim koncie oraz ochrony przed nieautoryzowanym dostępem. Zapisujemy też, w które dni byłeś/aś aktywny(a) (do serii logowań i statystyk).':
+  'Przy każdym logowaniu zapisujemy adres IP oraz podstawowe informacje o przeglądarce/systemie (User-Agent) - to podstawa historii logowań widocznej w Twoim koncie oraz ochrony przed nieautoryzowanym dostępem. Zapisujemy też, w które dni byłeś/aś aktywny(a) (do serii logowań i statystyk).':
     'En cada inicio de sesión registramos la dirección IP y datos básicos del navegador/sistema (User-Agent) - esto es la base del historial de inicios de sesión de tu cuenta y de la protección contra accesos no autorizados. También registramos en qué días estuviste activo/a (para las rachas y las estadísticas).',
   'Rola': 'Rol',
-  'Skład, koncentracja i wyniki Twoich pozycji — przeliczone do jednej waluty, żeby dało się je sensownie porównać.':
+  'Skład, koncentracja i wyniki Twoich pozycji - przeliczone do jednej waluty, żeby dało się je sensownie porównać.':
     'La composición, la concentración y el rendimiento de tus posiciones - convertidos a una sola moneda para que se puedan comparar de forma coherente.',
   'Statystyki portfela': 'Estadísticas de la cartera',
   'Stałe koszty': 'Gastos fijos',
   'Stałe koszty / mies.': 'Gastos fijos / mes',
   'Suma': 'Total',
   'Szukaj': 'Buscar',
-  'Termin wypłaty minął przed celem — dodaj więcej lub przesuń termin': 'La fecha de la nómina es anterior a la meta - añade más o retrasa la fecha límite',
+  'Termin wypłaty minął przed celem - dodaj więcej lub przesuń termin': 'La fecha de la nómina es anterior a la meta - añade más o retrasa la fecha límite',
   'Transakcje akcji': 'Transacciones de acciones',
   'Transakcje budżetu': 'Transacciones del presupuesto',
   'Treść zgłoszeń wysłanych przez widget "Zostaw feedback" oraz historia wysłanych zaproszeń (komu, kiedy, czy zostało przyjęte).':
@@ -1014,7 +1014,7 @@ export const es: Record<string, string> = {
   'Waluta inna niż domyślna ({0})': 'Moneda distinta de la predeterminada ({0})',
   'Wczytywanie…': 'Cargando…',
   'Wgraj i pokaż podgląd': 'Subir y mostrar vista previa',
-  'Wgraj wyciąg w formacie PDF (obecnie obsługiwane: PKO Bank Polski). Zanim cokolwiek zapiszemy, pokażemy podgląd transakcji do zatwierdzenia — i sprawdzimy, czy już ich kiedyś nie zaimportowano.':
+  'Wgraj wyciąg w formacie PDF (obecnie obsługiwane: PKO Bank Polski). Zanim cokolwiek zapiszemy, pokażemy podgląd transakcji do zatwierdzenia - i sprawdzimy, czy już ich kiedyś nie zaimportowano.':
     'Sube un extracto en formato PDF (actualmente compatible: PKO Bank Polski). Antes de guardar nada, te mostraremos una vista previa de las transacciones para que las confirmes - y comprobaremos si ya se habían importado antes.',
   'Wkrótce pojawią się tu pierwsze artykuły.': 'Pronto aparecerán aquí los primeros artículos.',
   'Wznów': 'Reanudar',
@@ -1024,7 +1024,7 @@ export const es: Record<string, string> = {
   'Zaloguj się do aplikacji': 'Inicia sesión en la aplicación',
   'Wejdź do aplikacji': 'Entrar en la aplicación',
   'Wróć do swojego majątku': 'Vuelve a tu patrimonio',
-  'Kontynuuj tam, gdzie skończyłeś/aś — Twój dashboard czeka.': 'Continúa donde lo dejaste - tu panel te está esperando.',
+  'Kontynuuj tam, gdzie skończyłeś/aś - Twój dashboard czeka.': 'Continúa donde lo dejaste - tu panel te está esperando.',
   'Zarezerwowano na duże wydatki': 'Reservado para gastos grandes',
   'Zarezerwuj z wypłaty': 'Reservar de la nómina',
   'Zatrzymaj': 'Detener',
@@ -1032,13 +1032,13 @@ export const es: Record<string, string> = {
   'Zaznacz wszystkie': 'Seleccionar todo',
   'Zaznaczono {0} z {1} transakcji do importu.': 'Seleccionadas {0} de {1} transacciones para importar.',
   'Zostaje po rezerwacjach i odkładaniu': 'Queda después de reservas y ahorro',
-  'Zostało {0} wypłat — odkładaj ~{1} z każdej, żeby zdążyć': 'Quedan {0} nóminas - aparta ~{1} de cada una para llegar a tiempo',
+  'Zostało {0} wypłat - odkładaj ~{1} z każdej, żeby zdążyć': 'Quedan {0} nóminas - aparta ~{1} de cada una para llegar a tiempo',
   'Zrealizowany zysk/strata wg roku (po podatku Belki)': 'Ganancia/pérdida realizada por año (después de impuestos)',
   'Zweryfikowany e-mail': 'Correo verificado',
   'administratorzy': 'administradores',
   'aktywne': 'activo',
   'bardzo rozproszony': 'muy diversificado',
-  'dostawca poczty e-mail — do wysyłki e-maili weryfikacyjnych, resetu hasła i zaproszeń,':
+  'dostawca poczty e-mail - do wysyłki e-maili weryfikacyjnych, resetu hasła i zaproszeń,':
     'proveedor de correo electrónico - para enviar correos de verificación, restablecimiento de contraseña e invitaciones,',
   'hosting aplikacji i baza danych (Microsoft Azure),': 'alojamiento de la aplicación y base de datos (Microsoft Azure),',
   'już zaimportowano': 'ya importado',
@@ -1050,13 +1050,13 @@ export const es: Record<string, string> = {
   'np. mBank': 'p. ej. mBank',
   'np. wakacje': 'p. ej. vacaciones',
   'odświeżanie…': 'actualizando…',
-  'publiczne źródła danych rynkowych (np. Stooq, Yahoo Finance) — zapytania dotyczą wyłącznie tickerów giełdowych i kursów walut, nigdy Twoich danych osobowych.':
+  'publiczne źródła danych rynkowych (np. Stooq, Yahoo Finance) - zapytania dotyczą wyłącznie tickerów giełdowych i kursów walut, nigdy Twoich danych osobowych.':
     'fuentes públicas de datos de mercado (p. ej. Stooq, Yahoo Finance) - las consultas se refieren únicamente a tickers bursátiles y tipos de cambio, nunca a tus datos personales.',
-  'skieta to osobisty tracker finansowy — aplikacja dostępna wyłącznie na zaproszenie, bez reklam i bez sprzedaży danych osobom trzecim. Administratorem danych jest osoba prowadząca serwis skieta, z którą można się skontaktować pod adresem podanym na dole tej strony.':
+  'skieta to osobisty tracker finansowy - aplikacja dostępna wyłącznie na zaproszenie, bez reklam i bez sprzedaży danych osobom trzecim. Administratorem danych jest osoba prowadząca serwis skieta, z którą można się skontaktować pod adresem podanym na dole tej strony.':
     'skieta es un rastreador financiero personal - una aplicación disponible solo por invitación, sin anuncios y sin venta de datos a terceros. El responsable de los datos es la persona que administra skieta, con quien puedes ponerte en contacto en la dirección indicada al final de esta página.',
-  'skieta łączy konta bankowe, inwestycje, lokaty i obligacje w jednym miejscu — zobacz, jak naprawdę rośnie Twój majątek, bez arkusza kalkulacyjnego i bez zgadywania.':
+  'skieta łączy konta bankowe, inwestycje, lokaty i obligacje w jednym miejscu - zobacz, jak naprawdę rośnie Twój majątek, bez arkusza kalkulacyjnego i bez zgadywania.':
     'skieta reúne cuentas bancarias, inversiones, depósitos y obligaciones en un solo lugar - descubre cómo crece de verdad tu patrimonio, sin hojas de cálculo y sin adivinar.',
-  'sprawdź — może to transfer własny': 'revisa - podría ser una transferencia entre tus propias cuentas',
+  'sprawdź - może to transfer własny': 'revisa - podría ser una transferencia entre tus propias cuentas',
   'umiarkowanie skoncentrowany': 'moderadamente concentrado',
   'walutowe': 'en moneda extranjera',
   'wszyscy': 'todos',
@@ -1135,13 +1135,13 @@ export const es: Record<string, string> = {
   'Wizyty wg wariantu językowego': 'Visitas por variante de idioma',
   'Zaproszenia wysłane wg języka': 'Invitaciones enviadas por idioma',
   'Nowy baner na stronie głównej': 'Nuevo banner en la página de inicio',
-  'Wskaż istniejące zaproszenie grupowe — baner pokaże jego link/kod QR i odliczanie do podanej daty. Liczba wykorzystań to liczba osób zarejestrowanych przez to zaproszenie.':
+  'Wskaż istniejące zaproszenie grupowe - baner pokaże jego link/kod QR i odliczanie do podanej daty. Liczba wykorzystań to liczba osób zarejestrowanych przez to zaproszenie.':
     'Selecciona una invitación grupal existente - el banner mostrará su enlace/código QR y una cuenta regresiva hasta la fecha indicada. El número de usos es la cantidad de personas que se registraron mediante esa invitación.',
   'Zaproszenie grupowe': 'Invitación grupal',
   'Wybierz…': 'Selecciona…',
   'Wiadomość (opcjonalnie)': 'Mensaje (opcional)',
   'Koniec odliczania': 'Fin de la cuenta regresiva',
-  'Nie udało się utworzyć promocji — sprawdź dane.': 'No se pudo crear la promoción - comprueba los datos.',
+  'Nie udało się utworzyć promocji - sprawdź dane.': 'No se pudo crear la promoción - comprueba los datos.',
   'Brak promocji.': 'Sin promociones.',
   'Wyłączona': 'Desactivada',
   'Wygasła': 'Caducada',
@@ -1189,9 +1189,9 @@ export const es: Record<string, string> = {
   'Wylogowywanie…':
     'Cerrando sesión…',
   // Pusty dashboard - baner z zachetą
-  'Zera poniżej to nie błąd — po prostu jeszcze nic nie dodałeś(-aś)':
+  'Zera poniżej to nie błąd - po prostu jeszcze nic nie dodałeś(-aś)':
     'Los ceros de abajo no son un error - simplemente aún no has añadido nada',
-  'Dodaj konto bankowe, akcje, obligacje albo lokatę, a ten pulpit zacznie liczyć Twój prawdziwy majątek — zysk osobno od wpłaconego kapitału, po podatku Belki.':
+  'Dodaj konto bankowe, akcje, obligacje albo lokatę, a ten pulpit zacznie liczyć Twój prawdziwy majątek - zysk osobno od wpłaconego kapitału, po podatku Belki.':
     'Añade una cuenta bancaria, acciones, bonos o un depósito, y este panel empezará a calcular tu patrimonio real - la ganancia calculada aparte del capital aportado, después de impuestos.',
   'Dodaj pierwsze dane →':
     'Añade tus primeros datos →',
@@ -1213,7 +1213,7 @@ export const es: Record<string, string> = {
   // Polityka prywatności - analityka bez ciasteczek
   'Aplikacja i baza danych stoją w centrum danych Microsoft Azure w Polsce (region Poland Central), a serwer pocztowy w Polsce. Zgłoszenia o awariach trafiają do europejskiego regionu dostawcy monitoringu. Twoje dane finansowe nie opuszczają Europejskiego Obszaru Gospodarczego.':
     'La aplicación y la base de datos están en un centro de datos de Microsoft Azure en Polonia (la región Poland Central), y el servidor de correo también está en Polonia. Los informes de fallos van a la región europea de nuestro proveedor de monitorización. Tus datos financieros no salen del Espacio Económico Europeo.',
-  'dostawca monitoringu błędów — dostaje techniczne zgłoszenie awarii (adres strony i ślad błędu w kodzie), nigdy treści Twoich danych finansowych ani zawartości formularzy,':
+  'dostawca monitoringu błędów - dostaje techniczne zgłoszenie awarii (adres strony i ślad błędu w kodzie), nigdy treści Twoich danych finansowych ani zawartości formularzy,':
     'un proveedor de monitorización de errores - recibe un informe técnico del fallo (la dirección de la página y la traza del error), nunca el contenido de tus datos financieros ni de los formularios,',
   'Analityka odwiedzin':
     'Analítica de visitas',
@@ -1279,7 +1279,7 @@ export const es: Record<string, string> = {
   'Usuń trwale z bazy': 'Eliminar permanentemente de la base de datos',
   'Ta operacja jest nieodwracalna i trwale usunie konto oraz wszystkie dane użytkownika z bazy danych. Wpisz nazwę użytkownika "{0}", żeby potwierdzić.':
     'Esta acción es irreversible y eliminará permanentemente la cuenta y todos los datos de este usuario de la base de datos. Escribe el nombre de usuario "{0}" para confirmar.',
-  'Nazwa użytkownika się nie zgadza — anulowano.': 'El nombre de usuario no coincide — cancelado.',
+  'Nazwa użytkownika się nie zgadza - anulowano.': 'El nombre de usuario no coincide - cancelado.',
 
   // Footer / landing mock card
   'Regulamin': 'Términos de servicio',
@@ -1301,7 +1301,7 @@ export const es: Record<string, string> = {
 
   // Landing - precio y solicitud de acceso
   'Bezpłatnie, bez reklam i bez podawania karty.': 'Gratis, sin anuncios y sin datos de tarjeta.',
-  'Rejestracja jest na zaproszenie — nie masz go? Zostaw e-mail.':
+  'Rejestracja jest na zaproszenie - nie masz go? Zostaw e-mail.':
     'El registro es solo por invitación: ¿no tienes una? Deja tu correo.',
   'Ile to kosztuje?': '¿Cuánto cuesta?',
   'Nic. skieta jest bezpłatna - bez abonamentu, bez płatnych funkcji i bez reklam. Nie podajesz numeru karty ani przy zakładaniu konta, ani później.':
@@ -1312,10 +1312,10 @@ export const es: Record<string, string> = {
   'Dashboard skiety: wartość majątku, podział na akcje, gotówkę, lokaty i obligacje oraz wykres majątku w czasie':
     'El panel de skieta: patrimonio, el reparto entre acciones, efectivo, depósitos y bonos, y un gráfico del patrimonio en el tiempo',
   'Zobacz, jak to wygląda w środku': 'Mira cómo es por dentro',
-  'Poniżej prawdziwe ekrany aplikacji — te same, które zobaczysz po zalogowaniu.':
+  'Poniżej prawdziwe ekrany aplikacji - te same, które zobaczysz po zalogowaniu.':
     'Abajo, pantallas reales de la aplicación: las mismas que verás al iniciar sesión.',
   'Zysk, a nie tylko saldo': 'Beneficio, no solo un saldo',
-  'Portfel pokazuje osobno wpłacony kapitał i osobno zysk — brutto oraz po podatku Belki. Przy akcjach kupionych w obcej walucie widzisz dodatkowo, ile z wyniku zrobił sam kurs, a nie kurs spółki.':
+  'Portfel pokazuje osobno wpłacony kapitał i osobno zysk - brutto oraz po podatku Belki. Przy akcjach kupionych w obcej walucie widzisz dodatkowo, ile z wyniku zrobił sam kurs, a nie kurs spółki.':
     'La cartera muestra por separado el capital aportado y el beneficio, antes y después del impuesto sobre ganancias de capital. En acciones compradas en otra moneda ves además cuánto del resultado vino del tipo de cambio y no del precio de la acción.',
   'Portfel akcji w skiecie z kolumnami zysku brutto i po podatku Belki oraz wpływem kursu waluty':
     'La cartera de acciones en skieta, con columnas de beneficio antes y después del impuesto sobre ganancias de capital y el efecto del tipo de cambio',

@@ -38,7 +38,7 @@ export function AuthProvider({ children }: { children: ReactNode }) {
   const { setTheme } = useTheme()
   const { setLanguage } = useLanguage()
   // Only apply the account's configured color variant/language once per
-  // session (app load, or right after login/register) — not on every later
+  // session (app load, or right after login/register) - not on every later
   // refreshUser() call, so a quick local toggle mid-session isn't silently
   // overwritten by an unrelated profile save.
   const hasSyncedPreferences = useRef(false)
@@ -154,7 +154,7 @@ export function AuthProvider({ children }: { children: ReactNode }) {
   // to local state instead of waiting on a PATCH-then-refetch round trip.
   // Quick-toggle buttons used to re-fetch `/auth/me/` after saving, but two
   // clicks close together fire two independent request pairs with no
-  // guaranteed resolution order — whichever GET happens to land last "wins",
+  // guaranteed resolution order - whichever GET happens to land last "wins",
   // which isn't necessarily the last thing the user actually clicked. Since
   // the caller already knows the exact value it just asked the server to
   // save, applying it locally (via the functional setState form, so rapid

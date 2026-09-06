@@ -1,4 +1,4 @@
-// Mirrors i18n/LanguageContext's STORAGE_KEY — read directly rather than
+// Mirrors i18n/LanguageContext's STORAGE_KEY - read directly rather than
 // importing the context here, since format.ts is a plain utility module used
 // from ~25 places that don't (and shouldn't need to) thread a `language`
 // argument through every call.
@@ -100,7 +100,7 @@ export function formatNumber(value: string | number | null | undefined, digits =
 }
 
 /** Share count as a whole number, with any fractional remainder shown in
- * parentheses (and omitted entirely when the holding is a whole number) —
+ * parentheses (and omitted entirely when the holding is a whole number) -
  * e.g. 12.345 -> "12 (0.345)", 12 -> "12", 0.5 -> "0 (0.5)". */
 export function formatShareQuantity(value: string | number | null | undefined): string {
   if (value === null || value === undefined) return '—'
@@ -135,7 +135,7 @@ export function formatDateTime(value: string | null | undefined): string {
 }
 
 /** Countdown like "2d 04:15:32" once the target is more than a day away, else
- * just "04:15:32" — shared by the landing-page promotion banner and the
+ * just "04:15:32" - shared by the landing-page promotion banner and the
  * personal-invite QR countdown (both count down to a fixed instant). Returns
  * null once the deadline has passed, so callers know to stop rendering it. */
 export function formatCountdown(target: Date, now: Date = new Date()): string | null {
@@ -198,7 +198,7 @@ export function bondTypeLabel(type: string): string {
 // Groups accounts by bank for an <optgroup>-based dropdown - used wherever a
 // form lets you link a transaction to any account regardless of its currency
 // (e.g. buying a USD stock from a PLN brokerage account), so the list stays
-// readable instead of one long flat list of "Bank — Nazwa konta" options.
+// readable instead of one long flat list of "Bank - Nazwa konta" options.
 export function groupAccountsByBank<T extends { id: number; bank_name: string }>(accounts: T[]): [string, T[]][] {
   const groups = new Map<string, T[]>()
   for (const account of accounts) {

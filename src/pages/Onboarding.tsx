@@ -119,7 +119,7 @@ export default function Onboarding() {
         <h1 className="text-2xl font-bold text-slate-900 dark:text-slate-100">{t('Dodaj posiadane rzeczy')}</h1>
         <p className="text-sm text-slate-500 dark:text-slate-400">
           {t(
-            'Wprowadź to, co już posiadasz — z prawdziwą, wsteczną datą zakupu — żeby historia i zyski liczyły się poprawnie od początku.',
+            'Wprowadź to, co już posiadasz - z prawdziwą, wsteczną datą zakupu - żeby historia i zyski liczyły się poprawnie od początku.',
           )}
         </p>
       </div>
@@ -158,7 +158,7 @@ export default function Onboarding() {
         <div className="rounded-xl border border-slate-200 dark:border-slate-700 bg-white dark:bg-slate-800 p-8 text-center shadow-sm">
           <p className="text-lg font-semibold text-slate-800 dark:text-slate-200">{t('Gotowe!')}</p>
           <p className="mt-1 text-sm text-slate-500 dark:text-slate-400">
-            {t('Możesz w każdej chwili dodać kolejne rzeczy z tego samego kreatora — link znajdziesz w górnym menu.')}
+            {t('Możesz w każdej chwili dodać kolejne rzeczy z tego samego kreatora - link znajdziesz w górnym menu.')}
           </p>
           <button onClick={finish} className="btn-primary mt-4">
             {t('Przejdź do pulpitu')}
@@ -226,7 +226,7 @@ function InterestsStep() {
   return (
     <div className="space-y-3 rounded-xl border border-slate-200 dark:border-slate-700 bg-white dark:bg-slate-800 p-4 shadow-sm">
       <p className="text-sm text-slate-500 dark:text-slate-400">
-        {t('Z czego chcesz korzystać? Odznacz to, czego nie potrzebujesz — zawsze możesz to zmienić później w ustawieniach konta.')}
+        {t('Z czego chcesz korzystać? Odznacz to, czego nie potrzebujesz - zawsze możesz to zmienić później w ustawieniach konta.')}
       </p>
       {INTEREST_OPTIONS.map((opt) => (
         <label key={opt.field} className="flex items-start gap-3">
@@ -288,7 +288,7 @@ const AccountsStep = forwardRef<StepHandle>(function AccountsStep(_props, ref) {
           {accounts!.map((a) => (
             <li key={a.id} className="flex justify-between rounded-md bg-slate-50 dark:bg-slate-900 px-3 py-2">
               <span>
-                {a.bank_name} — {a.name} <span className="text-xs text-slate-400 dark:text-slate-500">({t(accountTypeLabel(a.account_type))})</span>
+                {a.bank_name} - {a.name} <span className="text-xs text-slate-400 dark:text-slate-500">({t(accountTypeLabel(a.account_type))})</span>
               </span>
               <span className="font-medium">{formatMoney(a.current_balance, a.currency)}</span>
             </li>
@@ -338,7 +338,7 @@ const AccountsStep = forwardRef<StepHandle>(function AccountsStep(_props, ref) {
       </form>
       <p className="text-xs text-slate-400 dark:text-slate-500">
         {t(
-          'Nie masz jeszcze żadnego konta z gotówką na zakup akcji? Dodaj je tutaj z aktualnym saldem — w kolejnym kroku możesz z niego "kupić" akcje, które faktycznie posiadasz.',
+          'Nie masz jeszcze żadnego konta z gotówką na zakup akcji? Dodaj je tutaj z aktualnym saldem - w kolejnym kroku możesz z niego "kupić" akcje, które faktycznie posiadasz.',
         )}
       </p>
     </div>
@@ -448,7 +448,7 @@ const StocksStep = forwardRef<StepHandle>(function StocksStep(_props, ref) {
     <div className="space-y-4">
       <p className="text-sm text-slate-500 dark:text-slate-400">
         {t('Dla każdej posiadanej spółki podaj ilość, cenę i')} <strong>{t('prawdziwą datę zakupu')}</strong>{' '}
-        {t('— dzięki temu historia i wykresy będą liczone poprawnie.')}
+        {t('- dzięki temu historia i wykresy będą liczone poprawnie.')}
       </p>
       <form
         ref={formRef}
@@ -501,12 +501,12 @@ const StocksStep = forwardRef<StepHandle>(function StocksStep(_props, ref) {
         {account ? (
           <label className="flex items-center gap-2 text-xs text-slate-500 dark:text-slate-400">
             <input type="checkbox" checked={alreadyOwned} onChange={(e) => setAlreadyOwned(e.target.checked)} />
-            {t('To pozycja, którą już posiadam — nie odejmuj środków z konta (tylko zapisz powiązanie).')}
+            {t('To pozycja, którą już posiadam - nie odejmuj środków z konta (tylko zapisz powiązanie).')}
           </label>
         ) : (
           <p className="text-xs text-slate-400 dark:text-slate-500">
             {t(
-              'Jeśli wybierzesz konto, kwota zostanie od razu odjęta z jego salda — zostaw puste, jeśli tylko deklarujesz akcje, które już posiadasz.',
+              'Jeśli wybierzesz konto, kwota zostanie od razu odjęta z jego salda - zostaw puste, jeśli tylko deklarujesz akcje, które już posiadasz.',
             )}
           </p>
         )}
@@ -517,11 +517,11 @@ const StocksStep = forwardRef<StepHandle>(function StocksStep(_props, ref) {
           {transactions!.map((tx) => (
             <li key={tx.id} className="flex justify-between rounded-md bg-slate-50 dark:bg-slate-900 px-3 py-1.5">
               <span>
-                {tx.stock_detail.ticker} ({tx.stock_detail.market}) — {formatNumber(tx.quantity, 4)} {t('szt.')} @{' '}
+                {tx.stock_detail.ticker} ({tx.stock_detail.market}) - {formatNumber(tx.quantity, 4)} {t('szt.')} @{' '}
                 {formatMoney(tx.price_per_share, tx.currency)}
                 <span className="ml-2 text-xs text-slate-400 dark:text-slate-500">
                   {formatDate(tx.executed_at)}
-                  {tx.account_detail ? ` — ${tx.account_detail.bank_name} ${tx.account_detail.name}` : ` — ${t('bez powiązania z kontem')}`}
+                  {tx.account_detail ? ` - ${tx.account_detail.bank_name} ${tx.account_detail.name}` : ` - ${t('bez powiązania z kontem')}`}
                 </span>
               </span>
             </li>
@@ -635,7 +635,7 @@ const CryptoStep = forwardRef<StepHandle>(function CryptoStep(_props, ref) {
     <div className="space-y-4">
       <p className="text-sm text-slate-500 dark:text-slate-400">
         {t('Dla każdej posiadanej monety podaj ilość, cenę i')} <strong>{t('prawdziwą datę zakupu')}</strong>{' '}
-        {t('— dzięki temu historia i wykresy będą liczone poprawnie.')}
+        {t('- dzięki temu historia i wykresy będą liczone poprawnie.')}
       </p>
       <form
         ref={formRef}
@@ -693,12 +693,12 @@ const CryptoStep = forwardRef<StepHandle>(function CryptoStep(_props, ref) {
         {account ? (
           <label className="flex items-center gap-2 text-xs text-slate-500 dark:text-slate-400">
             <input type="checkbox" checked={alreadyOwned} onChange={(e) => setAlreadyOwned(e.target.checked)} />
-            {t('To pozycja, którą już posiadam — nie odejmuj środków z konta (tylko zapisz powiązanie).')}
+            {t('To pozycja, którą już posiadam - nie odejmuj środków z konta (tylko zapisz powiązanie).')}
           </label>
         ) : (
           <p className="text-xs text-slate-400 dark:text-slate-500">
             {t(
-              'Jeśli wybierzesz konto, kwota zostanie od razu odjęta z jego salda — zostaw puste, jeśli tylko deklarujesz monety, które już posiadasz.',
+              'Jeśli wybierzesz konto, kwota zostanie od razu odjęta z jego salda - zostaw puste, jeśli tylko deklarujesz monety, które już posiadasz.',
             )}
           </p>
         )}
@@ -709,11 +709,11 @@ const CryptoStep = forwardRef<StepHandle>(function CryptoStep(_props, ref) {
           {transactions!.map((tx) => (
             <li key={tx.id} className="flex justify-between rounded-md bg-slate-50 dark:bg-slate-900 px-3 py-1.5">
               <span>
-                {tx.asset_detail.symbol} — {formatNumber(tx.quantity, 6)} {t('szt.')} @{' '}
+                {tx.asset_detail.symbol} - {formatNumber(tx.quantity, 6)} {t('szt.')} @{' '}
                 {formatMoney(tx.price_per_unit, tx.currency)}
                 <span className="ml-2 text-xs text-slate-400 dark:text-slate-500">
                   {formatDate(tx.executed_at)}
-                  {tx.account_detail ? ` — ${tx.account_detail.bank_name} ${tx.account_detail.name}` : ` — ${t('bez powiązania z kontem')}`}
+                  {tx.account_detail ? ` - ${tx.account_detail.bank_name} ${tx.account_detail.name}` : ` - ${t('bez powiązania z kontem')}`}
                 </span>
               </span>
             </li>
@@ -789,7 +789,7 @@ const DepositsStep = forwardRef<StepHandle>(function DepositsStep(_props, ref) {
         <ul className="space-y-1 text-sm">
           {deposits!.map((d) => (
             <li key={d.id} className="rounded-md bg-slate-50 dark:bg-slate-900 px-3 py-1.5">
-              {d.bank_name} — {formatMoney(d.principal, d.currency)} @ {formatNumber(d.interest_rate, 2)}%
+              {d.bank_name} - {formatMoney(d.principal, d.currency)} @ {formatNumber(d.interest_rate, 2)}%
             </li>
           ))}
         </ul>
@@ -846,7 +846,7 @@ const DepositsStep = forwardRef<StepHandle>(function DepositsStep(_props, ref) {
         {account && (
           <label className="flex w-full items-center gap-2 text-xs text-slate-500 dark:text-slate-400">
             <input type="checkbox" checked={alreadyOwned} onChange={(e) => setAlreadyOwned(e.target.checked)} />
-            {t('To lokata, którą już posiadam — nie odejmuj środków z konta (tylko zapisz powiązanie).')}
+            {t('To lokata, którą już posiadam - nie odejmuj środków z konta (tylko zapisz powiązanie).')}
           </label>
         )}
       </form>
@@ -917,7 +917,7 @@ const BondsStep = forwardRef<StepHandle>(function BondsStep(_props, ref) {
         <ul className="space-y-1 text-sm">
           {bonds!.map((b) => (
             <li key={b.id} className="rounded-md bg-slate-50 dark:bg-slate-900 px-3 py-1.5">
-              {b.series || b.bond_type} — {formatMoney(b.nominal_value, b.currency)}
+              {b.series || b.bond_type} - {formatMoney(b.nominal_value, b.currency)}
             </li>
           ))}
         </ul>
@@ -983,7 +983,7 @@ const BondsStep = forwardRef<StepHandle>(function BondsStep(_props, ref) {
         {account && (
           <label className="flex w-full items-center gap-2 text-xs text-slate-500 dark:text-slate-400">
             <input type="checkbox" checked={alreadyOwned} onChange={(e) => setAlreadyOwned(e.target.checked)} />
-            {t('To obligacja, którą już posiadam — nie odejmuj środków z konta (tylko zapisz powiązanie).')}
+            {t('To obligacja, którą już posiadam - nie odejmuj środków z konta (tylko zapisz powiązanie).')}
           </label>
         )}
       </form>

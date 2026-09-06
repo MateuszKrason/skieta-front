@@ -80,7 +80,7 @@ const FIELD_KEYS: Record<Language, { title: keyof PromotionFormState; message: k
 }
 
 // Same idea, but keyed to LandingPromotion's own (snake_case, API) field
-// names — used when reading an already-fetched promotion, as opposed to
+// names - used when reading an already-fetched promotion, as opposed to
 // PromotionFormState's camelCase form fields above.
 const PROMOTION_TITLE_KEYS: Record<Language, keyof LandingPromotion> = {
   pl: 'title_pl',
@@ -89,7 +89,7 @@ const PROMOTION_TITLE_KEYS: Record<Language, keyof LandingPromotion> = {
   es: 'title_es',
 }
 
-// Shared by the create form and the inline edit form — one title/message
+// Shared by the create form and the inline edit form - one title/message
 // pair per supported language. Polish is the required source text (mirrors
 // the rest of the app's i18n convention); the others fall back to it on the
 // public landing page when left blank, so they're optional here.
@@ -169,7 +169,7 @@ interface TranslationResult {
 }
 
 // Shared by the create and edit forms - calls the backend's machine
-// translation endpoint (free Google Translate web endpoint, no API key —
+// translation endpoint (free Google Translate web endpoint, no API key -
 // best-effort, see accounts/translate.py) and fills in whichever EN/DE/ES
 // fields it got a non-empty result for, leaving anything already typed (or
 // any failed language) untouched.
@@ -272,7 +272,7 @@ export default function AdminLandingPromotions() {
         </h2>
         <p className="mb-3 text-xs text-slate-400 dark:text-slate-500">
           {t(
-            'Wskaż istniejące zaproszenie grupowe — baner pokaże jego link/kod QR i odliczanie do podanej daty. Liczba wykorzystań to liczba osób zarejestrowanych przez to zaproszenie.',
+            'Wskaż istniejące zaproszenie grupowe - baner pokaże jego link/kod QR i odliczanie do podanej daty. Liczba wykorzystań to liczba osób zarejestrowanych przez to zaproszenie.',
           )}
         </p>
         <div className="mb-3 flex flex-wrap items-end gap-3">
@@ -317,7 +317,7 @@ export default function AdminLandingPromotions() {
         </button>
         {create.isError && (
           <p className="mt-2 text-xs text-red-600 dark:text-red-400">
-            {t('Nie udało się utworzyć promocji — sprawdź dane.')}
+            {t('Nie udało się utworzyć promocji - sprawdź dane.')}
           </p>
         )}
       </div>

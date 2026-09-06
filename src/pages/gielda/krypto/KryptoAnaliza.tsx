@@ -32,7 +32,7 @@ function PortfolioAnalyticsSection() {
     <div className="rounded-xl border border-slate-200 dark:border-slate-700 bg-white dark:bg-slate-800 p-5 shadow-sm">
       <h2 className="text-sm font-semibold text-slate-700 dark:text-slate-300">{t('Statystyki portfela')}</h2>
       <p className="mb-3 text-xs text-slate-400 dark:text-slate-500">
-        {t('Skład, koncentracja i wyniki Twoich pozycji krypto — przeliczone do jednej waluty, żeby dało się je sensownie porównać.')}
+        {t('Skład, koncentracja i wyniki Twoich pozycji krypto - przeliczone do jednej waluty, żeby dało się je sensownie porównać.')}
       </p>
       {isLoading ? (
         <CardLoader />
@@ -144,7 +144,7 @@ function PortfolioAnalyticsBody({ data }: { data: CryptoPortfolioAnalytics }) {
           {data.top_holding && (
             <MiniStat
               label={t('Największa pozycja')}
-              value={`${data.top_holding.asset.symbol} — ${formatPct(data.top_holding.pct)}`}
+              value={`${data.top_holding.asset.symbol} - ${formatPct(data.top_holding.pct)}`}
             />
           )}
           <MiniStat

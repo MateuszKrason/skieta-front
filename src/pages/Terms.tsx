@@ -48,11 +48,11 @@ export default function Terms() {
           </p>
           <p className="font-medium text-slate-700 dark:text-slate-300">{t('Definicje')}</p>
           <ul className="list-disc space-y-1 pl-5">
-            <li>{t('Użytkownik — osoba fizyczna posiadająca Konto w Usłudze.')}</li>
-            <li>{t('Konto — indywidualne konto Użytkownika, założone po skorzystaniu z Zaproszenia.')}</li>
+            <li>{t('Użytkownik - osoba fizyczna posiadająca Konto w Usłudze.')}</li>
+            <li>{t('Konto - indywidualne konto Użytkownika, założone po skorzystaniu z Zaproszenia.')}</li>
             <li>
               {t(
-                'Zaproszenie — jednorazowy lub grupowy link/kod umożliwiający rejestrację, wygenerowany przez Użytkownika, administratora lub osobę do tego uprawnioną.',
+                'Zaproszenie - jednorazowy lub grupowy link/kod umożliwiający rejestrację, wygenerowany przez Użytkownika, administratora lub osobę do tego uprawnioną.',
               )}
             </li>
           </ul>
@@ -61,12 +61,12 @@ export default function Terms() {
         <Section title="2. Charakter usługi">
           <p>
             {t(
-              'skieta to osobisty tracker finansowy — narzędzie do samodzielnego zapisywania i wizualizowania własnych danych finansowych (konta, transakcje, inwestycje, budżet, plany oszczędnościowe). Usługa działa w modelu zaproszeń — rejestracja jest możliwa wyłącznie przy użyciu ważnego Zaproszenia.',
+              'skieta to osobisty tracker finansowy - narzędzie do samodzielnego zapisywania i wizualizowania własnych danych finansowych (konta, transakcje, inwestycje, budżet, plany oszczędnościowe). Usługa działa w modelu zaproszeń - rejestracja jest możliwa wyłącznie przy użyciu ważnego Zaproszenia.',
             )}
           </p>
           <p>
             {t(
-              'Usługa nie jest instytucją finansową, biurem maklerskim, doradcą inwestycyjnym ani podmiotem świadczącym usługi płatnicze. Kursy walut, notowania giełdowe i inne dane rynkowe pobierane są z publicznie dostępnych źródeł zewnętrznych (np. NBP, Stooq, Yahoo Finance) wyłącznie w celach informacyjnych — Usługodawca nie gwarantuje ich aktualności ani dokładności i nie ponosi odpowiedzialności za decyzje finansowe podjęte na ich podstawie.',
+              'Usługa nie jest instytucją finansową, biurem maklerskim, doradcą inwestycyjnym ani podmiotem świadczącym usługi płatnicze. Kursy walut, notowania giełdowe i inne dane rynkowe pobierane są z publicznie dostępnych źródeł zewnętrznych (np. NBP, Stooq, Yahoo Finance) wyłącznie w celach informacyjnych - Usługodawca nie gwarantuje ich aktualności ani dokładności i nie ponosi odpowiedzialności za decyzje finansowe podjęte na ich podstawie.',
             )}
           </p>
           <p>
@@ -102,7 +102,7 @@ export default function Terms() {
           </p>
           <p>
             {t(
-              'Użytkownik odpowiada za prawdziwość i poprawność danych finansowych, które samodzielnie wprowadza do Usługi — Usługodawca nie weryfikuje ich zgodności ze stanem faktycznym.',
+              'Użytkownik odpowiada za prawdziwość i poprawność danych finansowych, które samodzielnie wprowadza do Usługi - Usługodawca nie weryfikuje ich zgodności ze stanem faktycznym.',
             )}
           </p>
           <p>
@@ -151,7 +151,7 @@ export default function Terms() {
         <Section title="8. Własność intelektualna">
           <p>
             {t(
-              'Kod źródłowy, wygląd, nazwa, logo i treści redakcyjne publikowane w Usłudze stanowią własność Usługodawcy lub są wykorzystywane na podstawie odpowiednich licencji i podlegają ochronie prawnoautorskiej. Dane finansowe wprowadzone przez Użytkownika pozostają jego własnością — Usługodawca wykorzystuje je wyłącznie w celu świadczenia Usługi, zgodnie z Polityką prywatności.',
+              'Kod źródłowy, wygląd, nazwa, logo i treści redakcyjne publikowane w Usłudze stanowią własność Usługodawcy lub są wykorzystywane na podstawie odpowiednich licencji i podlegają ochronie prawnoautorskiej. Dane finansowe wprowadzone przez Użytkownika pozostają jego własnością - Usługodawca wykorzystuje je wyłącznie w celu świadczenia Usługi, zgodnie z Polityką prywatności.',
             )}
           </p>
         </Section>
@@ -164,7 +164,7 @@ export default function Terms() {
           </p>
           <p>
             {t(
-              'Użytkownik może w każdej chwili zrezygnować z korzystania z Usługi i zażądać usunięcia swojego Konta oraz danych, kontaktując się z Usługodawcą — zgodnie z zasadami opisanymi w Polityce prywatności.',
+              'Użytkownik może w każdej chwili zrezygnować z korzystania z Usługi i zażądać usunięcia swojego Konta oraz danych, kontaktując się z Usługodawcą - zgodnie z zasadami opisanymi w Polityce prywatności.',
             )}
           </p>
         </Section>

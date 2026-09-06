@@ -16,7 +16,7 @@ export function Spinner({ size = 'md', className = '' }: { size?: keyof typeof S
   )
 }
 
-// Whole-page/whole-section placeholder — swap in for the entire content area
+// Whole-page/whole-section placeholder - swap in for the entire content area
 // while its first query is still in flight, so a slow response reads as
 // "loading" instead of "empty".
 export function PageLoader({ label }: { label?: string }) {

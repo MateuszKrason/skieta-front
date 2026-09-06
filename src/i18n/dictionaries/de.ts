@@ -33,13 +33,13 @@ export const de: Record<string, string> = {
   '← Powrót do logowania': '← Zurück zur Anmeldung',
   'Adres e-mail': 'E-Mail-Adresse',
   'Wysyłanie…': 'Wird gesendet…',
-  'Podaj adres e-mail przypisany do konta — wyślemy link do resetu hasła.':
-    'Gib die mit deinem Konto verknüpfte E-Mail-Adresse ein — wir senden dir einen Link zum Zurücksetzen des Passworts.',
+  'Podaj adres e-mail przypisany do konta - wyślemy link do resetu hasła.':
+    'Gib die mit deinem Konto verknüpfte E-Mail-Adresse ein - wir senden dir einen Link zum Zurücksetzen des Passworts.',
   'Jeśli podany adres e-mail istnieje w naszej bazie, wysłaliśmy na niego link do resetu hasła.':
     'Falls diese E-Mail-Adresse in unserem System existiert, haben wir einen Link zum Zurücksetzen des Passworts dorthin gesendet.',
   'Wyślij link do resetu': 'Reset-Link senden',
-  'Link resetu hasła jest niepełny — otwórz go bezpośrednio z wiadomości e-mail.':
-    'Dieser Link zum Zurücksetzen des Passworts ist unvollständig — öffne ihn direkt aus der E-Mail.',
+  'Link resetu hasła jest niepełny - otwórz go bezpośrednio z wiadomości e-mail.':
+    'Dieser Link zum Zurücksetzen des Passworts ist unvollständig - öffne ihn direkt aus der E-Mail.',
   'Hasło zostało zresetowane. Przekierowuję do logowania…': 'Passwort wurde zurückgesetzt. Du wirst zur Anmeldung weitergeleitet…',
   'Ustaw nowe hasło do swojego konta.': 'Lege ein neues Passwort für dein Konto fest.',
   'Zapisywanie…': 'Wird gespeichert…',
@@ -50,7 +50,7 @@ export const de: Record<string, string> = {
   'Nie udało się potwierdzić adresu e-mail.': 'Die E-Mail-Adresse konnte nicht bestätigt werden.',
   'Przejdź do aplikacji →': 'Zur App →',
   'Adres e-mail nie jest jeszcze potwierdzony': 'Deine E-Mail-Adresse ist noch nicht bestätigt',
-  'Wysłano nowy link weryfikacyjny — sprawdź skrzynkę.': 'Ein neuer Bestätigungslink wurde gesendet — schau in dein Postfach.',
+  'Wysłano nowy link weryfikacyjny - sprawdź skrzynkę.': 'Ein neuer Bestätigungslink wurde gesendet - schau in dein Postfach.',
   'Sprawdź skrzynkę i kliknij link, który wysłaliśmy przy rejestracji.':
     'Schau in dein Postfach und klicke auf den Link, den wir dir bei der Registrierung gesendet haben.',
   'Dodaj adres e-mail poniżej, żeby móc go potwierdzić i odzyskać konto w razie potrzeby.':
@@ -64,12 +64,12 @@ export const de: Record<string, string> = {
   'Obligacje': 'Anleihen',
   'Gotowe': 'Fertig',
   'Dodaj posiadane rzeczy': 'Füge hinzu, was du besitzt',
-  'Wprowadź to, co już posiadasz — z prawdziwą, wsteczną datą zakupu — żeby historia i zyski liczyły się poprawnie od początku.':
-    'Trage ein, was du bereits besitzt — mit dem echten, rückwirkenden Kaufdatum — damit Verlauf und Gewinne von Anfang an korrekt berechnet werden.',
+  'Wprowadź to, co już posiadasz - z prawdziwą, wsteczną datą zakupu - żeby historia i zyski liczyły się poprawnie od początku.':
+    'Trage ein, was du bereits besitzt - mit dem echten, rückwirkenden Kaufdatum - damit Verlauf und Gewinne von Anfang an korrekt berechnet werden.',
   'Zakończ teraz →': 'Jetzt abschließen →',
   'Gotowe!': 'Fertig!',
-  'Możesz w każdej chwili dodać kolejne rzeczy z tego samego kreatora — link znajdziesz w górnym menu.':
-    'Du kannst jederzeit über denselben Assistenten weitere Dinge hinzufügen — den Link findest du im oberen Menü.',
+  'Możesz w każdej chwili dodać kolejne rzeczy z tego samego kreatora - link znajdziesz w górnym menu.':
+    'Du kannst jederzeit über denselben Assistenten weitere Dinge hinzufügen - den Link findest du im oberen Menü.',
   'Przejdź do pulpitu': 'Zum Dashboard',
   '← Wstecz': '← Zurück',
   'Dalej →': 'Weiter →',
@@ -89,8 +89,8 @@ export const de: Record<string, string> = {
   'Waluta': 'Währung',
   'Obecne saldo': 'Aktueller Kontostand',
   '+ Dodaj konto': '+ Konto hinzufügen',
-  'Nie masz jeszcze żadnego konta z gotówką na zakup akcji? Dodaj je tutaj z aktualnym saldem — w kolejnym kroku możesz z niego "kupić" akcje, które faktycznie posiadasz.':
-    'Hast du noch kein Konto mit Bargeld für Aktienkäufe? Füge es hier mit dem aktuellen Kontostand hinzu — im nächsten Schritt kannst du damit die Aktien "kaufen", die du bereits besitzt.',
+  'Nie masz jeszcze żadnego konta z gotówką na zakup akcji? Dodaj je tutaj z aktualnym saldem - w kolejnym kroku możesz z niego "kupić" akcje, które faktycznie posiadasz.':
+    'Hast du noch kein Konto mit Bargeld für Aktienkäufe? Füge es hier mit dem aktuellen Kontostand hinzu - im nächsten Schritt kannst du damit die Aktien "kaufen", die du bereits besitzt.',
   'Wyszukaj spółkę': 'Aktie suchen',
   'Ticker': 'Ticker',
   'Rynek': 'Markt',
@@ -101,17 +101,17 @@ export const de: Record<string, string> = {
   '+ Dodaj pozycję': '+ Position hinzufügen',
   'Dla każdej posiadanej spółki podaj ilość, cenę i': 'Gib für jede Aktie, die du besitzt, die Menge, den Preis und',
   'prawdziwą datę zakupu': 'das echte Kaufdatum an',
-  '— dzięki temu historia i wykresy będą liczone poprawnie.': '— so werden Verlauf und Diagramme korrekt berechnet.',
+  '- dzięki temu historia i wykresy będą liczone poprawnie.': '- so werden Verlauf und Diagramme korrekt berechnet.',
   'Nie udało się dodać pozycji.': 'Die Position konnte nicht hinzugefügt werden.',
   'Wybierz spółkę.': 'Wähle eine Aktie aus.',
-  'Jeśli wybierzesz konto, kwota zostanie od razu odjęta z jego salda — zostaw puste, jeśli tylko deklarujesz akcje, które już posiadasz.':
-    'Wenn du ein Konto auswählst, wird der Betrag sofort von dessen Saldo abgezogen — lass das Feld leer, wenn du nur Aktien angibst, die du bereits besitzt.',
-  'To pozycja, którą już posiadam — nie odejmuj środków z konta (tylko zapisz powiązanie).':
-    'Das ist eine Position, die ich bereits besitze — kein Geld vom Konto abziehen (nur die Verknüpfung speichern).',
-  'To lokata, którą już posiadam — nie odejmuj środków z konta (tylko zapisz powiązanie).':
-    'Das ist ein Festgeld, das ich bereits besitze — kein Geld vom Konto abziehen (nur die Verknüpfung speichern).',
-  'To obligacja, którą już posiadam — nie odejmuj środków z konta (tylko zapisz powiązanie).':
-    'Das ist eine Anleihe, die ich bereits besitze — kein Geld vom Konto abziehen (nur die Verknüpfung speichern).',
+  'Jeśli wybierzesz konto, kwota zostanie od razu odjęta z jego salda - zostaw puste, jeśli tylko deklarujesz akcje, które już posiadasz.':
+    'Wenn du ein Konto auswählst, wird der Betrag sofort von dessen Saldo abgezogen - lass das Feld leer, wenn du nur Aktien angibst, die du bereits besitzt.',
+  'To pozycja, którą już posiadam - nie odejmuj środków z konta (tylko zapisz powiązanie).':
+    'Das ist eine Position, die ich bereits besitze - kein Geld vom Konto abziehen (nur die Verknüpfung speichern).',
+  'To lokata, którą już posiadam - nie odejmuj środków z konta (tylko zapisz powiązanie).':
+    'Das ist ein Festgeld, das ich bereits besitze - kein Geld vom Konto abziehen (nur die Verknüpfung speichern).',
+  'To obligacja, którą już posiadam - nie odejmuj środków z konta (tylko zapisz powiązanie).':
+    'Das ist eine Anleihe, die ich bereits besitze - kein Geld vom Konto abziehen (nur die Verknüpfung speichern).',
   'bez powiązania z kontem': 'ohne Kontoverknüpfung',
   'Nie dodano jeszcze żadnych akcji.': 'Du hast noch keine Aktien hinzugefügt.',
   'wybierz…': 'auswählen…',
@@ -183,7 +183,7 @@ export const de: Record<string, string> = {
   '+ Konto': '+ Konto',
   'Edytuj': 'Bearbeiten',
   'Usuń': 'Löschen',
-  'Brak kont — dodaj pierwsze.': 'Noch keine Konten — füge dein erstes hinzu.',
+  'Brak kont - dodaj pierwsze.': 'Noch keine Konten - füge dein erstes hinzu.',
   'Historia przelewów': 'Überweisungsverlauf',
   '+ Lokata': '+ Festgeld',
   'Oprocentowanie': 'Zinssatz',
@@ -198,8 +198,8 @@ export const de: Record<string, string> = {
   'Brak lokat.': 'Keine Festgelder.',
   'Obligacje skarbowe': 'Staatsanleihen',
   '+ Obligacja': '+ Anleihe',
-  'Odsetki liczone metodą uproszczoną (proste, wg wpisanego bieżącego oprocentowania) — nie odwzorowuje dokładnie zmiennych/indeksowanych inflacją harmonogramów kapitalizacji poszczególnych serii.':
-    'Die Zinsen werden mit einer vereinfachten Methode berechnet (einfache Verzinsung mit dem eingegebenen aktuellen Zinssatz) — dies bildet die variablen/inflationsindexierten Verzinsungspläne der einzelnen Serien nicht exakt ab.',
+  'Odsetki liczone metodą uproszczoną (proste, wg wpisanego bieżącego oprocentowania) - nie odwzorowuje dokładnie zmiennych/indeksowanych inflacją harmonogramów kapitalizacji poszczególnych serii.':
+    'Die Zinsen werden mit einer vereinfachten Methode berechnet (einfache Verzinsung mit dem eingegebenen aktuellen Zinssatz) - dies bildet die variablen/inflationsindexierten Verzinsungspläne der einzelnen Serien nicht exakt ab.',
   'Wykup': 'Fälligkeit',
   'wykupiona': 'eingelöst',
   'Wykup wcześniej': 'Vorzeitig einlösen',
@@ -227,8 +227,8 @@ export const de: Record<string, string> = {
 
   // Timeline
   'Timeline majątku': 'Vermögens-Timeline',
-  'Sprawdź, jak realnie pomnożyłeś wpłacone środki — niezależnie od tego, ile do systemu dołożyłeś':
-    'Sieh, wie stark sich dein eingezahltes Kapital tatsächlich vermehrt hat — unabhängig davon, wie viel du eingezahlt hast',
+  'Sprawdź, jak realnie pomnożyłeś wpłacone środki - niezależnie od tego, ile do systemu dołożyłeś':
+    'Sieh, wie stark sich dein eingezahltes Kapital tatsächlich vermehrt hat - unabhängig davon, wie viel du eingezahlt hast',
   '+ Wpłata / wypłata': '+ Einzahlung / Auszahlung',
   'Obecna wartość majątku': 'Aktuelles Nettovermögen',
   'Wpłacone środki netto': 'Netto eingezahltes Kapital',
@@ -269,8 +269,8 @@ export const de: Record<string, string> = {
   'Portfel akcji i ETF-ów': 'Aktien- & ETF-Portfolio',
   'Suma wartości akcji': 'Gesamtwert der Aktien',
   'Łączny zysk/strata': 'Gesamtgewinn/-verlust',
-  'Kursy odświeżają się przy wejściu na tę stronę — kliknij "Odśwież kursy", by pobrać je ponownie':
-    'Die Kurse werden beim Aufrufen dieser Seite aktualisiert — klicke auf "Kurse aktualisieren", um sie erneut abzurufen',
+  'Kursy odświeżają się przy wejściu na tę stronę - kliknij "Odśwież kursy", by pobrać je ponownie':
+    'Die Kurse werden beim Aufrufen dieser Seite aktualisiert - klicke auf "Kurse aktualisieren", um sie erneut abzurufen',
   '⟳ Odśwież kursy': '⟳ Kurse aktualisieren',
   'Notatki': 'Notizen',
   '(odświeżanie…)': '(wird aktualisiert…)',
@@ -283,7 +283,7 @@ export const de: Record<string, string> = {
   'Zysk/strata': 'Gewinn/Verlust',
   'Aktualizacja': 'Aktualisiert',
   'Sprzedaj': 'Verkaufen',
-  'Brak pozycji — dodaj pierwszą transakcję.': 'Keine Positionen — füge deine erste Transaktion hinzu.',
+  'Brak pozycji - dodaj pierwszą transakcję.': 'Keine Positionen - füge deine erste Transaktion hinzu.',
   'Historia transakcji': 'Transaktionsverlauf',
   'Kupno': 'Kauf',
   'Sprzedaż': 'Verkauf',
@@ -292,7 +292,7 @@ export const de: Record<string, string> = {
   'Nie udało się zapisać transakcji.': 'Die Transaktion konnte nicht gespeichert werden.',
   'Wybierz konto, z którego pobrane zostaną środki.': 'Wähle das Konto, von dem die Mittel abgebucht werden.',
   'wybierz konto…': 'Konto auswählen…',
-  'Brak konta w walucie {0} — dodaj je w zakładce Konta i lokaty.': 'Kein Konto in {0} — füge eines im Tab Konten & Festgelder hinzu.',
+  'Brak konta w walucie {0} - dodaj je w zakładce Konta i lokaty.': 'Kein Konto in {0} - füge eines im Tab Konten & Festgelder hinzu.',
   'Zapisz kupno': 'Kauf speichern',
   'Nie udało się sprzedać akcji.': 'Der Verkauf der Aktie ist fehlgeschlagen.',
   'Posiadasz tylko {0} szt.': 'Du besitzt nur {0} Stück.',
@@ -308,9 +308,9 @@ export const de: Record<string, string> = {
   'Niezainwestowany kapitał': 'Nicht investiertes Kapital',
   'Ścieżki reinwestycji': 'Reinvestitionspfade',
   '+ Nowa ścieżka': '+ Neuer Pfad',
-  'Śledź, do ilu pomnożyła się konkretna kwota — np. zysk ze sprzedaży jednej spółki rozdzielony na kilka kolejnych zakupów, z opcjonalną dodatkową gotówką i niezainwestowaną resztą.':
-    'Verfolge, wie stark sich ein bestimmter Betrag vermehrt hat — z. B. der Erlös aus dem Verkauf einer Aktie, aufgeteilt auf mehrere Folgekäufe, mit optionalem zusätzlichem Bargeld und nicht investiertem Restbetrag.',
-  'Brak ścieżek — utwórz pierwszą.': 'Noch keine Pfade — erstelle deinen ersten.',
+  'Śledź, do ilu pomnożyła się konkretna kwota - np. zysk ze sprzedaży jednej spółki rozdzielony na kilka kolejnych zakupów, z opcjonalną dodatkową gotówką i niezainwestowaną resztą.':
+    'Verfolge, wie stark sich ein bestimmter Betrag vermehrt hat - z. B. der Erlös aus dem Verkauf einer Aktie, aufgeteilt auf mehrere Folgekäufe, mit optionalem zusätzlichem Bargeld und nicht investiertem Restbetrag.',
+  'Brak ścieżek - utwórz pierwszą.': 'Noch keine Pfade - erstelle deinen ersten.',
   'Usunąć całą ścieżkę „{0}”? Tej operacji nie można cofnąć.': 'Den gesamten Pfad „{0}" löschen? Dieser Vorgang kann nicht rückgängig gemacht werden.',
   'Start:': 'Start:',
   'Usuń ścieżkę': 'Pfad löschen',
@@ -337,19 +337,19 @@ export const de: Record<string, string> = {
   'Zapisz pozycję': 'Position speichern',
   'Nie udało się zamknąć pozycji.': 'Die Position konnte nicht geschlossen werden.',
   'auto: proporcjonalnie': 'automatisch: proportional',
-  'Brak jeszcze transakcji sprzedaży tej spółki — dodaj ją najpierw w portfelu.': 'Noch keine Verkaufstransaktion für diese Aktie — füge sie zuerst im Portfolio hinzu.',
+  'Brak jeszcze transakcji sprzedaży tej spółki - dodaj ją najpierw w portfelu.': 'Noch keine Verkaufstransaktion für diese Aktie - füge sie zuerst im Portfolio hinzu.',
   'Zamknij pozycję': 'Position schließen',
 
   // Dywidendy
   'Profil dywidendowy': 'Dividendenprofil',
   'Ile zarabiasz na dywidendach i jaki to procent zainwestowanego kapitału': 'Wie viel du mit Dividenden verdienst und wie viel Prozent des investierten Kapitals das ausmacht',
-  'Dywidendy wykrywane są automatycznie — nie musisz nic wpisywać ręcznie.':
-    'Dividenden werden automatisch erkannt — du musst nichts manuell eintragen.',
+  'Dywidendy wykrywane są automatycznie - nie musisz nic wpisywać ręcznie.':
+    'Dividenden werden automatisch erkannt - du musst nichts manuell eintragen.',
   'wykrywam dywidendy…': 'Dividenden werden erkannt…',
   'Wykrywam…': 'Wird erkannt…',
   '⟳ Wykryj dywidendy': '⟳ Dividenden erkennen',
-  'Automatyczne wykrywanie odświeża się samo przy wejściu na tę stronę — ten przycisk wymusza sprawdzenie od razu.':
-    'Die automatische Erkennung aktualisiert sich beim Öffnen dieser Seite von selbst — dieser Button erzwingt eine sofortige Prüfung.',
+  'Automatyczne wykrywanie odświeża się samo przy wejściu na tę stronę - ten przycisk wymusza sprawdzenie od razu.':
+    'Die automatische Erkennung aktualisiert sich beim Öffnen dieser Seite von selbst - dieser Button erzwingt eine sofortige Prüfung.',
   '+ Dywidenda': '+ Dividende',
   '+ Dodaj ręcznie': '+ Manuell hinzufügen',
   'Tylko dla wypłat, których automatyczne wykrywanie nie złapało (np. spółka spoza Yahoo Finance).':
@@ -357,8 +357,8 @@ export const de: Record<string, string> = {
   'Suma dywidend (wszystkie czasy)': 'Dividenden gesamt (alle Zeit)',
   'Projekcja rocznego dochodu (12 mies.)': 'Prognose des Jahreseinkommens (12 Mon.)',
   'Planowane dywidendy': 'Anstehende Dividenden',
-  'Szacunek na podstawie historycznego rytmu wypłat tej spółki (ostatnia kwota + średni odstęp) — nie jest to oficjalna zapowiedź zarządu.':
-    'Eine Schätzung basierend auf dem historischen Ausschüttungsrhythmus dieser Aktie (letzter Betrag + durchschnittlicher Abstand) — keine offizielle Ankündigung des Managements.',
+  'Szacunek na podstawie historycznego rytmu wypłat tej spółki (ostatnia kwota + średni odstęp) - nie jest to oficjalna zapowiedź zarządu.':
+    'Eine Schätzung basierend auf dem historischen Ausschüttungsrhythmus dieser Aktie (letzter Betrag + durchschnittlicher Abstand) - keine offizielle Ankündigung des Managements.',
   'ok.': 'ca.',
   'Dywidendy miesiąc do miesiąca': 'Dividenden Monat für Monat',
   'Udział spółek': 'Anteil je Aktie',
@@ -368,7 +368,7 @@ export const de: Record<string, string> = {
   '{0} lat': '{0} Jahre',
   'Suma dywidend': 'Dividenden gesamt',
   'Ostatnie 12 mies.': 'Letzte 12 Mon.',
-  'Brak dywidend — dodaj pierwszą wypłatę.': 'Noch keine Dividenden — füge deine erste Ausschüttung hinzu.',
+  'Brak dywidend - dodaj pierwszą wypłatę.': 'Noch keine Dividenden - füge deine erste Ausschüttung hinzu.',
   'Historia wypłat': 'Ausschüttungsverlauf',
   'wykryta automatycznie': 'automatisch erkannt',
   'Brak wypłat.': 'Keine Ausschüttungen.',
@@ -379,15 +379,15 @@ export const de: Record<string, string> = {
   'Zapisz dywidendę': 'Dividende speichern',
 
   // AnalizaSpolek
-  'Komunikaty ESPI/EBI (GPW) i ważne newsy (USA) dla spółek z Twojego portfela — sprawdzane raz dziennie.':
-    'ESPI/EBI-Meldungen (GPW) und wichtige Nachrichten (USA) für die Aktien in deinem Portfolio — einmal täglich geprüft.',
+  'Komunikaty ESPI/EBI (GPW) i ważne newsy (USA) dla spółek z Twojego portfela - sprawdzane raz dziennie.':
+    'ESPI/EBI-Meldungen (GPW) und wichtige Nachrichten (USA) für die Aktien in deinem Portfolio - einmal täglich geprüft.',
   'Sprawdzam…': 'Wird geprüft…',
   '⟳ Sprawdź teraz': '⟳ Jetzt prüfen',
   'Wszystkie spółki': 'Alle Aktien',
   'Pokaż tylko nowe': 'Nur neue anzeigen',
   'Nowe': 'Neu',
-  'Brak komunikatów — kliknij „Sprawdź teraz” albo poczekaj na codzienne automatyczne sprawdzenie.':
-    'Noch keine Meldungen — klicke auf „Jetzt prüfen” oder warte auf die tägliche automatische Prüfung.',
+  'Brak komunikatów - kliknij „Sprawdź teraz” albo poczekaj na codzienne automatyczne sprawdzenie.':
+    'Noch keine Meldungen - klicke auf „Jetzt prüfen” oder warte auf die tägliche automatische Prüfung.',
 
   // Budget shared
   'Ten miesiąc': 'Dieser Monat',
@@ -396,7 +396,7 @@ export const de: Record<string, string> = {
   'Zakres własny': 'Eigener Zeitraum',
   'Bez kategorii': 'Ohne Kategorie',
   'Brak danych w tym okresie.': 'Keine Daten für diesen Zeitraum.',
-  'wg kategorii — miesiąc do miesiąca': 'nach Kategorie — Monat für Monat',
+  'wg kategorii - miesiąc do miesiąca': 'nach Kategorie - Monat für Monat',
   'Kliknij kategorię poniżej, aby zobaczyć konkretne transakcje w wybranym okresie.': 'Klicke unten auf eine Kategorie, um die zugehörigen Transaktionen im gewählten Zeitraum zu sehen.',
   'Transakcje w okresie': 'Transaktionen im Zeitraum',
   '+ Kategoria': '+ Kategorie',
@@ -415,18 +415,18 @@ export const de: Record<string, string> = {
   'Sklepy': 'Geschäfte',
   '+ Dodaj sklep': '+ Geschäft hinzufügen',
   'Usuń sklep': 'Geschäft löschen',
-  'Brak sklepów — dodaj pierwszy powyżej.': 'Noch keine Geschäfte — füge oben dein erstes hinzu.',
+  'Brak sklepów - dodaj pierwszy powyżej.': 'Noch keine Geschäfte - füge oben dein erstes hinzu.',
   'Wydatki wg sklepów': 'Ausgaben nach Geschäft',
   'Tylko transakcje, którym przypisano sklep. Kliknij sklep, aby zobaczyć jego transakcje.': 'Nur Transaktionen mit zugewiesenem Geschäft. Klicke auf ein Geschäft, um dessen Transaktionen zu sehen.',
   'Brak wydatków przypisanych do sklepów w tym okresie.': 'Keine Ausgaben mit zugewiesenem Geschäft in diesem Zeitraum.',
   'Bez sklepu': 'Ohne Geschäft',
 
   // Bilans / Przychody / Wydatki
-  'Przychody i wydatki razem — podział na kategorie i trend w czasie': 'Einnahmen und Ausgaben zusammen — Aufschlüsselung nach Kategorie und Trend im Zeitverlauf',
+  'Przychody i wydatki razem - podział na kategorie i trend w czasie': 'Einnahmen und Ausgaben zusammen - Aufschlüsselung nach Kategorie und Trend im Zeitverlauf',
   '+ Przychód / wydatek': '+ Einnahme / Ausgabe',
   'Przychody w okresie': 'Einnahmen im Zeitraum',
   'Wydatki w okresie': 'Ausgaben im Zeitraum',
-  'Przychody i wydatki — ostatnie 12 miesięcy': 'Einnahmen & Ausgaben — letzte 12 Monate',
+  'Przychody i wydatki - ostatnie 12 miesięcy': 'Einnahmen & Ausgaben - letzte 12 Monate',
   'Przychody i wydatki w czasie': 'Einnahmen & Ausgaben im Zeitverlauf',
   'Słupki': 'Balken',
   'Linia': 'Linie',
@@ -434,12 +434,12 @@ export const de: Record<string, string> = {
   '{0} mies.': '{0} Mon.',
   'Wybierz co najmniej jedną serię do wyświetlenia.': 'Wähle mindestens eine Serie zur Anzeige aus.',
   'Skumulowany bilans (oszczędności)': 'Kumulierte Bilanz (Ersparnisse)',
-  'Suma miesięcznych bilansów narastająco — jak rósł Twój zaoszczędzony kapitał w tym okresie.':
-    'Kumulierte Summe der monatlichen Bilanzen — wie dein Erspartes in diesem Zeitraum gewachsen ist.',
+  'Suma miesięcznych bilansów narastająco - jak rósł Twój zaoszczędzony kapitał w tym okresie.':
+    'Kumulierte Summe der monatlichen Bilanzen - wie dein Erspartes in diesem Zeitraum gewachsen ist.',
   'Wydatki wg tagów': 'Ausgaben nach Tag',
   'Przychody wg tagów': 'Einnahmen nach Tag',
-  'Tylko transakcje z co najmniej jednym tagiem — transakcja z kilkoma tagami liczy się do każdego z nich.':
-    'Nur Transaktionen mit mindestens einem Tag — eine Transaktion mit mehreren Tags zählt zu jedem davon.',
+  'Tylko transakcje z co najmniej jednym tagiem - transakcja z kilkoma tagami liczy się do każdego z nich.':
+    'Nur Transaktionen mit mindestens einem Tag - eine Transaktion mit mehreren Tags zählt zu jedem davon.',
   'Brak transakcji z tagami w tym okresie.': 'Keine getaggten Transaktionen in diesem Zeitraum.',
   'Bez tagu': 'Ohne Tag',
   'Skąd biorą się Twoje przychody i jak zmieniają się w czasie': 'Woher deine Einnahmen kommen und wie sie sich im Zeitverlauf ändern',
@@ -504,7 +504,7 @@ export const de: Record<string, string> = {
   '+ Dodaj tag': '+ Tag hinzufügen',
   'Usunąć tag "{0}"?': 'Tag "{0}" löschen?',
   'Usuń tag': 'Tag löschen',
-  'Brak tagów — dodaj pierwszy powyżej.': 'Noch keine Tags — füge oben deinen ersten hinzu.',
+  'Brak tagów - dodaj pierwszy powyżej.': 'Noch keine Tags - füge oben deinen ersten hinzu.',
 
   // Belka tax P/L
   'Po podatku od zysków kapitałowych (19%)': 'Nach Kapitalertragsteuer (19%)',
@@ -522,7 +522,7 @@ export const de: Record<string, string> = {
   'Zarezerwowano na cele': 'Für Ziele reserviert',
   'Cele oszczędnościowe': 'Sparziele',
   '+ Cel': '+ Ziel',
-  'Brak celów — dodaj pierwszy.': 'Noch keine Ziele — füge dein erstes hinzu.',
+  'Brak celów - dodaj pierwszy.': 'Noch keine Ziele - füge dein erstes hinzu.',
   'Duże wydatki': 'Große Ausgaben',
   'Brak zaplanowanych wydatków.': 'Keine geplanten Ausgaben.',
   'Cofnij': 'Rückgängig',
@@ -544,8 +544,8 @@ export const de: Record<string, string> = {
 
   // Dividend simulation
   'Symulacja przyszłych dywidend (12 mies.)': 'Simulation zukünftiger Dividenden (12 Mon.)',
-  'Szacunek na podstawie obecnie posiadanych akcji i historycznego rytmu wypłat każdej spółki — nie jest to gwarancja przyszłych dywidend.':
-    'Eine Schätzung basierend auf deinen aktuellen Aktien und dem historischen Ausschüttungsrhythmus jeder Aktie — keine Garantie für zukünftige Dividenden.',
+  'Szacunek na podstawie obecnie posiadanych akcji i historycznego rytmu wypłat każdej spółki - nie jest to gwarancja przyszłych dywidend.':
+    'Eine Schätzung basierend auf deinen aktuellen Aktien und dem historischen Ausschüttungsrhythmus jeder Aktie - keine Garantie für zukünftige Dividenden.',
   'Szacunkowe dywidendy w kolejnych latach': 'Geschätzte Dividenden in den kommenden Jahren',
   'To samo założenie co powyżej (obecne akcje i historyczny rytm wypłat), zsumowane rok do roku na dłuższym horyzoncie.':
     'Dieselbe Annahme wie oben (aktuelle Aktien und historischer Ausschüttungsrhythmus), Jahr für Jahr über einen längeren Zeithorizont summiert.',
@@ -560,8 +560,8 @@ export const de: Record<string, string> = {
 
   // Invite-only registration / streak / onboarding gate
   'Login lub e-mail': 'Benutzername oder E-Mail',
-  'Rejestracja jest dostępna tylko na zaproszenie od innego użytkownika — poproś o link lub zeskanuj kod QR.':
-    'Die Registrierung ist nur auf Einladung eines anderen Nutzers möglich — bitte um einen Link oder scanne einen QR-Code.',
+  'Rejestracja jest dostępna tylko na zaproszenie od innego użytkownika - poproś o link lub zeskanuj kod QR.':
+    'Die Registrierung ist nur auf Einladung eines anderen Nutzers möglich - bitte um einen Link oder scanne einen QR-Code.',
   'Masz już konto? Zaloguj się': 'Hast du schon ein Konto? Anmelden',
   'Rejestracja jest dostępna tylko na zaproszenie od innego użytkownika.': 'Die Registrierung ist nur auf Einladung eines anderen Nutzers möglich.',
   'Seria logowań: {0} dni': '{0}-Tage-Anmeldeserie',
@@ -569,14 +569,14 @@ export const de: Record<string, string> = {
   'Limit: bez ograniczeń': 'Limit: unbegrenzt',
   'Pozostało w tym tygodniu: {0} z {1}': 'Diese Woche verbleibend: {0} von {1}',
   '+ Wygeneruj zaproszenie': '+ Einladung erstellen',
-  'Wykorzystano limit zaproszeń na ten tydzień — odnawia się na bieżąco, 7 dni po każdym zaproszeniu.':
-    'Das Einladungslimit für diese Woche ist ausgeschöpft — es erneuert sich fortlaufend, 7 Tage nach jeder Einladung.',
+  'Wykorzystano limit zaproszeń na ten tydzień - odnawia się na bieżąco, 7 dni po każdym zaproszeniu.':
+    'Das Einladungslimit für diese Woche ist ausgeschöpft - es erneuert sich fortlaufend, 7 Tage nach jeder Einladung.',
   'Skopiowano!': 'Kopiert!',
   'Kopiuj link': 'Link kopieren',
   'Pokaż QR': 'QR anzeigen',
   'Ukryj QR': 'QR ausblenden',
   'Zaakceptowane przez {0} ({1})': 'Angenommen von {0} ({1})',
-  'Oczekuje — wygenerowano {0}': 'Ausstehend — erstellt {0}',
+  'Oczekuje - wygenerowano {0}': 'Ausstehend - erstellt {0}',
   'Czy na pewno chcesz zmienić nazwę użytkownika? Można to zrobić tylko raz na 30 dni.':
     'Möchtest du deinen Benutzernamen wirklich ändern? Das ist nur einmal alle 30 Tage möglich.',
   'Dodaj co najmniej jedno konto bankowe, żeby przejść dalej.': 'Füge mindestens ein Bankkonto hinzu, um fortzufahren.',
@@ -592,8 +592,8 @@ export const de: Record<string, string> = {
 
   // Editor role / article CRM / admin role assignment
   'Redakcja': 'Redaktion',
-  'Masz uprawnienia redaktora — możesz dodawać i edytować artykuły.':
-    'Du hast Redakteursrechte — du kannst Artikel hinzufügen und bearbeiten.',
+  'Masz uprawnienia redaktora - możesz dodawać i edytować artykuły.':
+    'Du hast Redakteursrechte - du kannst Artikel hinzufügen und bearbeiten.',
   'Przejdź do redakcji': 'Zur Redaktion',
   'Redakcja artykułów': 'Artikelredaktion',
   'Dodawaj i edytuj artykuły widoczne na stronie głównej.': 'Füge Artikel hinzu und bearbeite sie, die auf der Startseite angezeigt werden.',
@@ -618,8 +618,8 @@ export const de: Record<string, string> = {
   'Czy na pewno chcesz usunąć tę lokatę?': 'Möchtest du dieses Festgeld wirklich löschen?',
   'Czy na pewno chcesz usunąć tę obligację?': 'Möchtest du diese Anleihe wirklich löschen?',
   'Kategorie, sklepy i tagi': 'Kategorien, Geschäfte & Tags',
-  'Zarządzaj tu wszystkimi kategoriami, sklepami i tagami używanymi w budżecie — w jednym miejscu.':
-    'Verwalte hier alle im Budget verwendeten Kategorien, Geschäfte und Tags — an einem Ort.',
+  'Zarządzaj tu wszystkimi kategoriami, sklepami i tagami używanymi w budżecie - w jednym miejscu.':
+    'Verwalte hier alle im Budget verwendeten Kategorien, Geschäfte und Tags - an einem Ort.',
   'Kategorie przychodów': 'Einnahmenkategorien',
   'Kategorie wydatków': 'Ausgabenkategorien',
   'po Belce': 'nach Steuer',
@@ -634,16 +634,16 @@ export const de: Record<string, string> = {
 
   // Feature-interest onboarding + account settings
   'Zainteresowania': 'Interessen',
-  'Z czego chcesz korzystać? Odznacz to, czego nie potrzebujesz — zawsze możesz to zmienić później w ustawieniach konta.':
-    'Was möchtest du nutzen? Deaktiviere, was du nicht brauchst — du kannst das jederzeit später in den Kontoeinstellungen ändern.',
+  'Z czego chcesz korzystać? Odznacz to, czego nie potrzebujesz - zawsze możesz to zmienić później w ustawieniach konta.':
+    'Was möchtest du nutzen? Deaktiviere, was du nicht brauchst - du kannst das jederzeit später in den Kontoeinstellungen ändern.',
   'Budżet': 'Budget',
   'Portfel akcji, dywidendy, analiza spółek': 'Aktienportfolio, Dividenden, Aktienanalyse',
   'Notowanie przychodów i wydatków': 'Erfassung von Einnahmen und Ausgaben',
   'Cele oszczędnościowe i planowane wydatki': 'Sparziele und geplante Ausgaben',
   'Kalkulator inwestycyjny - obligacje, lokaty, giełda': 'Investitionsrechner - Anleihen, Festgelder, Börse',
   'Z czego korzystasz': 'Was du nutzt',
-  'Odznaczone opcje znikają z górnego menu — możesz je włączyć z powrotem w każdej chwili.':
-    'Deaktivierte Optionen verschwinden aus dem oberen Menü — du kannst sie jederzeit wieder aktivieren.',
+  'Odznaczone opcje znikają z górnego menu - możesz je włączyć z powrotem w każdej chwili.':
+    'Deaktivierte Optionen verschwinden aus dem oberen Menü - du kannst sie jederzeit wieder aktivieren.',
 
   // Chart type switcher
   'Wykres kołowy': 'Kreisdiagramm',
@@ -676,8 +676,8 @@ export const de: Record<string, string> = {
   '+ Wyślij zaproszenie mailem': '+ Einladung per E-Mail senden',
 
   // Growth summary "no data" state
-  'Brak danych — zarejestruj pierwszą wpłatę, aby zobaczyć realny zwrot.':
-    'Keine Daten — erfasse deine erste Einzahlung, um die reale Rendite zu sehen.',
+  'Brak danych - zarejestruj pierwszą wpłatę, aby zobaczyć realny zwrot.':
+    'Keine Daten - erfasse deine erste Einzahlung, um die reale Rendite zu sehen.',
 
   // Admin user detail page
   'Szczegóły': 'Details',
@@ -721,7 +721,7 @@ export const de: Record<string, string> = {
   'To, co zarobiłeś: odsetki na lokatach i obligacjach, zysk na akcjach oraz dywidendy (po podatku Belki).':
     'Das, was du verdient hast: Zinsen auf Festgelder und Anleihen, Gewinne aus Aktien sowie Dividenden (nach Kapitalertragsteuer).',
 
-  // Zmiana wartości majątku — expandable breakdown
+  // Zmiana wartości majątku - expandable breakdown
   'Kliknij, aby zobaczyć podział zmiany na akcje, lokaty, obligacje i gotówkę':
     'Klicke, um die Änderung nach Aktien, Festgeldern, Anleihen und Bargeld aufgeschlüsselt zu sehen',
   'Brak zmian w poszczególnych składnikach.': 'Keine Änderung bei den einzelnen Komponenten.',
@@ -768,13 +768,13 @@ export const de: Record<string, string> = {
   'Kolor roli': 'Rollenfarbe',
   'Utwórz rolę': 'Rolle erstellen',
   '+ Nowa rola': '+ Neue Rolle',
-  'Twórz role z wybranym zestawem uprawnień i nadawaj je użytkownikom w ich profilu — niezależnie od statusu administratora/redaktora.':
-    'Erstelle Rollen mit einem gewählten Satz an Berechtigungen und weise sie Nutzern in deren Profil zu — unabhängig vom Admin-/Redakteursstatus.',
+  'Twórz role z wybranym zestawem uprawnień i nadawaj je użytkownikom w ich profilu - niezależnie od statusu administratora/redaktora.':
+    'Erstelle Rollen mit einem gewählten Satz an Berechtigungen und weise sie Nutzern in deren Profil zu - unabhängig vom Admin-/Redakteursstatus.',
   '{0} uprawnień, {1} użytkowników': '{0} Berechtigungen, {1} Nutzer',
   'Usunąć rolę {0}? Zostanie odebrana wszystkim {1} przypisanym użytkownikom.':
     'Rolle {0} löschen? Sie wird allen {1} zugewiesenen Nutzern entzogen.',
   'Brak ról.': 'Noch keine Rollen.',
-  'Brak ról — utwórz je w zakładce "Role".': 'Noch keine Rollen — erstelle sie im Tab "Rollen".',
+  'Brak ról - utwórz je w zakładce "Role".': 'Noch keine Rollen - erstelle sie im Tab "Rollen".',
   'Podgląd statystyk aplikacji': 'App-Statistiken ansehen',
   'Podgląd listy użytkowników': 'Nutzerliste ansehen',
   'Zarządzanie użytkownikami (aktywacja, archiwizacja)': 'Nutzerverwaltung (Aktivierung, Archivierung)',
@@ -783,14 +783,14 @@ export const de: Record<string, string> = {
   'Zarządzanie zgłoszeniami feedbacku': 'Feedback-Meldungen verwalten',
   'Tworzenie i edycja ról': 'Rollen erstellen und bearbeiten',
 
-  // Invite friends — delete, sub-tabs, expiry
+  // Invite friends - delete, sub-tabs, expiry
   'Oczekujące zaproszenia': 'Ausstehende Einladungen',
   'Przyjęte zaproszenia': 'Angenommene Einladungen',
   'Brak oczekujących zaproszeń.': 'Keine ausstehenden Einladungen.',
   'Brak przyjętych zaproszeń.': 'Keine angenommenen Einladungen.',
   'Usunąć ten link z zaproszeniem?': 'Diesen Einladungslink löschen?',
-  'Wygasło — wygenerowano {0}': 'Abgelaufen — erstellt {0}',
-  'Oczekuje — wygenerowano {0}, wygasa po 48h': 'Ausstehend — erstellt {0}, läuft nach 48h ab',
+  'Wygasło - wygenerowano {0}': 'Abgelaufen - erstellt {0}',
+  'Oczekuje - wygenerowano {0}, wygasa po 48h': 'Ausstehend - erstellt {0}, läuft nach 48h ab',
 
   // Login history
   'Historia logowań': 'Anmeldeverlauf',
@@ -804,7 +804,7 @@ export const de: Record<string, string> = {
   // Username change lock
   'Można zmienić od {0}': 'Wieder änderbar ab {0}',
 
-  // Savings goals — reserve from savings, multi-month payday reservations
+  // Savings goals - reserve from savings, multi-month payday reservations
   'Zarezerwuj z oszczędności': 'Aus Ersparnissen reservieren',
   'Zarezerwuj część pensji z jednego lub kilku konkretnych miesięcy naraz.':
     'Reserviere einen Teil deines Gehalts aus einem oder mehreren bestimmten Monaten gleichzeitig.',
@@ -835,22 +835,22 @@ export const de: Record<string, string> = {
   'Panuj nad': 'Behalte',
   'swoimi finansami': 'deine Finanzen im Griff',
   'Zbudowane, żeby faktycznie z tego korzystać': 'Gebaut, damit du es wirklich nutzt',
-  'Nie kolejny arkusz kalkulacyjny — narzędzie, które samo liczy to, co dla Ciebie ważne.':
-    'Keine weitere Tabellenkalkulation — ein Tool, das selbst berechnet, was für dich wichtig ist.',
+  'Nie kolejny arkusz kalkulacyjny - narzędzie, które samo liczy to, co dla Ciebie ważne.':
+    'Keine weitere Tabellenkalkulation - ein Tool, das selbst berechnet, was für dich wichtig ist.',
   'Wszystko w jednym miejscu': 'Alles an einem Ort',
-  'Konta bankowe, akcje, obligacje i lokaty — jeden widok na cały Twój majątek, bez przełączania się między aplikacjami banków i domów maklerskich.':
-    'Bankkonten, Aktien, Anleihen und Festgelder — ein Überblick über dein gesamtes Vermögen, ohne zwischen Bank- und Broker-Apps zu wechseln.',
+  'Konta bankowe, akcje, obligacje i lokaty - jeden widok na cały Twój majątek, bez przełączania się między aplikacjami banków i domów maklerskich.':
+    'Bankkonten, Aktien, Anleihen und Festgelder - ein Überblick über dein gesamtes Vermögen, ohne zwischen Bank- und Broker-Apps zu wechseln.',
   'Realny zwrot z inwestycji': 'Reale Rendite deiner Investitionen',
-  'Zysk liczony osobno od wpłaconego kapitału — zobaczysz dokładnie, ile realnie zarobiłeś na lokatach, obligacjach i akcjach, po podatku Belki.':
-    'Gewinn getrennt vom eingezahlten Kapital berechnet — du siehst genau, wie viel du mit Festgeldern, Anleihen und Aktien nach Kapitalertragsteuer wirklich verdient hast.',
+  'Zysk liczony osobno od wpłaconego kapitału - zobaczysz dokładnie, ile realnie zarobiłeś na lokatach, obligacjach i akcjach, po podatku Belki.':
+    'Gewinn getrennt vom eingezahlten Kapital berechnet - du siehst genau, wie viel du mit Festgeldern, Anleihen und Aktien nach Kapitalertragsteuer wirklich verdient hast.',
   'Budżet pod kontrolą': 'Budget unter Kontrolle',
-  'Automatyczny import wyciągów, kategorie, sklepy i tagi — analiza przychodów i wydatków, która sama się aktualizuje.':
-    'Automatischer Kontoauszugsimport, Kategorien, Geschäfte und Tags — eine Einnahmen-/Ausgabenanalyse, die sich selbst aktualisiert.',
+  'Automatyczny import wyciągów, kategorie, sklepy i tagi - analiza przychodów i wydatków, która sama się aktualizuje.':
+    'Automatischer Kontoauszugsimport, Kategorien, Geschäfte und Tags - eine Einnahmen-/Ausgabenanalyse, die sich selbst aktualisiert.',
   'Ustaw cel, rezerwuj kwoty z konkretnych wypłat lub z bieżących oszczędności i śledź postęp na żywo.':
     'Setze ein Ziel, reserviere Beträge aus bestimmten Gehältern oder deinen aktuellen Ersparnissen und verfolge den Fortschritt live.',
   'Dywidendy i podatki': 'Dividenden und Steuern',
-  'Historia i prognoza wypłat dywidend, szacowany podatek Belki do zapłaty — żadnych niespodzianek przy rozliczeniu.':
-    'Dividendenhistorie und -prognose, geschätzte fällige Kapitalertragsteuer — keine Überraschungen bei der Steuererklärung.',
+  'Historia i prognoza wypłat dywidend, szacowany podatek Belki do zapłaty - żadnych niespodzianek przy rozliczeniu.':
+    'Dividendenhistorie und -prognose, geschätzte fällige Kapitalertragsteuer - keine Überraschungen bei der Steuererklärung.',
   'Twoje dane, Twoja kontrola': 'Deine Daten, deine Kontrolle',
   'Dostęp wyłącznie na zaproszenie, bez reklam i bez śledzenia. Historia logowań pokazuje dokładnie, kto i kiedy wchodził na Twoje konto.':
     'Zugang nur auf Einladung, keine Werbung und kein Tracking. Der Anmeldeverlauf zeigt genau, wer wann auf dein Konto zugegriffen hat.',
@@ -862,26 +862,26 @@ export const de: Record<string, string> = {
   'Kilka minut wystarczy, żeby dodać konta bankowe, portfel akcji, lokaty i obligacje.':
     'Ein paar Minuten reichen, um Bankkonten, dein Aktienportfolio, Festgelder und Anleihen hinzuzufügen.',
   'Widzisz cały obraz': 'Du siehst das große Ganze',
-  'Dashboard aktualizuje się na bieżąco — majątek, zwrot z inwestycji i budżet w jednym miejscu.':
-    'Das Dashboard aktualisiert sich laufend — Vermögen, Anlagerendite und Budget an einem Ort.',
+  'Dashboard aktualizuje się na bieżąco - majątek, zwrot z inwestycji i budżet w jednym miejscu.':
+    'Das Dashboard aktualisiert sich laufend - Vermögen, Anlagerendite und Budget an einem Ort.',
   'Masz już zaproszenie?': 'Hast du schon eine Einladung?',
-  'Zaloguj się i zobacz cały swój majątek w jednym miejscu — od razu po pierwszym dodaniu konta.':
-    'Melde dich an und sieh dein gesamtes Vermögen an einem Ort — direkt nachdem du dein erstes Konto hinzugefügt hast.',
+  'Zaloguj się i zobacz cały swój majątek w jednym miejscu - od razu po pierwszym dodaniu konta.':
+    'Melde dich an und sieh dein gesamtes Vermögen an einem Ort - direkt nachdem du dein erstes Konto hinzugefügt hast.',
 
-  // Request access — landing page form + admin review
+  // Request access - landing page form + admin review
   'Nie masz zaproszenia? Poproś o dostęp →': 'Keine Einladung? Zugang anfragen →',
   'Twój adres e-mail': 'Deine E-Mail-Adresse',
   'Poproś o dostęp': 'Zugang anfragen',
-  'Dziękujemy! Odpowiadamy zwykle w ciągu kilku dni — napiszemy na podany adres, gdy administrator rozpatrzy prośbę.':
-    'Danke! Wir antworten meist innerhalb weniger Tage — wir schreiben an die angegebene Adresse, sobald ein Administrator die Anfrage geprüft hat.',
+  'Dziękujemy! Odpowiadamy zwykle w ciągu kilku dni - napiszemy na podany adres, gdy administrator rozpatrzy prośbę.':
+    'Danke! Wir antworten meist innerhalb weniger Tage - wir schreiben an die angegebene Adresse, sobald ein Administrator die Anfrage geprüft hat.',
   'Prośby o dostęp': 'Zugangsanfragen',
   'Oczekujące': 'Ausstehend',
   'Zaakceptowane': 'Angenommen',
   'Zaakceptowano': 'Angenommen',
   'Odrzucono': 'Abgelehnt',
   'Zaakceptuj losowy procent oczekujących': 'Einen zufälligen Prozentsatz der Ausstehenden annehmen',
-  'Przydatne przy stopniowym otwieraniu dostępu — zamiast rozpatrywać każdą prośbę osobno.':
-    'Nützlich für eine schrittweise Zugangsöffnung — statt jede Anfrage einzeln zu bearbeiten.',
+  'Przydatne przy stopniowym otwieraniu dostępu - zamiast rozpatrywać każdą prośbę osobno.':
+    'Nützlich für eine schrittweise Zugangsöffnung - statt jede Anfrage einzeln zu bearbeiten.',
   'Zaakceptuj': 'Annehmen',
   'Zaakceptowano {0} z {1} oczekujących próśb.': '{0} von {1} ausstehenden Anfragen angenommen.',
   'Brak próśb w tej kategorii.': 'Keine Anfragen in dieser Kategorie.',
@@ -891,24 +891,24 @@ export const de: Record<string, string> = {
   'Odrzuć': 'Ablehnen',
 
   // Role acceptance workflow
-  'Kliknięcie oferuje rolę — zaczyna obowiązywać dopiero, gdy użytkownik ją zaakceptuje.':
-    'Ein Klick bietet die Rolle an — sie tritt erst in Kraft, wenn der Nutzer sie annimmt.',
-  'Oczekuje na akceptację użytkownika — kliknij, aby wycofać ofertę': 'Wartet auf die Annahme durch den Nutzer — klicke, um das Angebot zurückzuziehen',
-  'Zaakceptowana — kliknij, aby odebrać': 'Angenommen — klicke, um sie zu entziehen',
+  'Kliknięcie oferuje rolę - zaczyna obowiązywać dopiero, gdy użytkownik ją zaakceptuje.':
+    'Ein Klick bietet die Rolle an - sie tritt erst in Kraft, wenn der Nutzer sie annimmt.',
+  'Oczekuje na akceptację użytkownika - kliknij, aby wycofać ofertę': 'Wartet auf die Annahme durch den Nutzer - klicke, um das Angebot zurückzuziehen',
+  'Zaakceptowana - kliknij, aby odebrać': 'Angenommen - klicke, um sie zu entziehen',
   'Kliknij, aby zaoferować tę rolę': 'Klicke, um diese Rolle anzubieten',
   '(oczekuje)': '(ausstehend)',
   'Nowe role do zaakceptowania': 'Neue Rollen zur Annahme',
-  'Administrator zaproponował Ci nowe uprawnienia — nie zaczną obowiązywać, dopóki ich nie zaakceptujesz.':
-    'Ein Administrator hat dir neue Berechtigungen angeboten — sie treten erst in Kraft, wenn du sie annimmst.',
+  'Administrator zaproponował Ci nowe uprawnienia - nie zaczną obowiązywać, dopóki ich nie zaakceptujesz.':
+    'Ein Administrator hat dir neue Berechtigungen angeboten - sie treten erst in Kraft, wenn du sie annimmst.',
   'od {0}': 'von {0}',
 
   // Login back-link, updated budget feature card
   '← Strona główna': '← Startseite',
   'Przychody, wydatki i budżet': 'Einnahmen, Ausgaben und Budget',
-  'Zarządzaj przychodami i wydatkami, monitoruj budżet miesiąc po miesiącu i sprawdzaj bilans — automatyczny import wyciągów, kategorie, sklepy i tagi robią to za Ciebie.':
-    'Verwalte deine Einnahmen und Ausgaben, behalte dein Budget Monat für Monat im Blick und prüfe deine Bilanz — automatischer Kontoauszugsimport, Kategorien, Geschäfte und Tags erledigen das für dich.',
+  'Zarządzaj przychodami i wydatkami, monitoruj budżet miesiąc po miesiącu i sprawdzaj bilans - automatyczny import wyciągów, kategorie, sklepy i tagi robią to za Ciebie.':
+    'Verwalte deine Einnahmen und Ausgaben, behalte dein Budget Monat für Monat im Blick und prüfe deine Bilanz - automatischer Kontoauszugsimport, Kategorien, Geschäfte und Tags erledigen das für dich.',
 
-  // Translation coverage sweep — everything a distinct-strings audit found
+  // Translation coverage sweep - everything a distinct-strings audit found
   // with no English entry yet, across Planowanie, AdminUsers, AnalizaSpolek,
   // StatementImportPanel, PrivacyPolicy, Landing, and assorted small labels.
   '+ Przychód/Wydatek': '+ Einnahme/Ausgabe',
@@ -918,14 +918,14 @@ export const de: Record<string, string> = {
   'Aktywni dzisiaj': 'Heute aktiv',
   'Aktywni użytkownicy dziennie (30 dni)': 'Täglich aktive Nutzer (30 Tage)',
   'Artykuły o finansach osobistych': 'Artikel über persönliche Finanzen',
-  'Brak stałych kosztów — dodaj pierwszy.': 'Noch keine Fixkosten — füge deinen ersten hinzu.',
+  'Brak stałych kosztów - dodaj pierwszy.': 'Noch keine Fixkosten - füge deinen ersten hinzu.',
   'Brak użytkowników spełniających kryteria.': 'Keine Nutzer erfüllen die Filterkriterien.',
   'Brak wycenionych pozycji w portfelu.': 'Keine bewerteten Positionen im Portfolio.',
   'Brak zarezerwowanych wypłat.': 'Noch keine reservierten Gehälter.',
-  'Czynsz, subskrypcje, ubezpieczenia — cykliczne opłaty co miesiąc, niezależnie od tego, czy już je zapłaciłeś w tym miesiącu.':
-    'Miete, Abos, Versicherungen — wiederkehrende monatliche Zahlungen, unabhängig davon, ob du sie diesen Monat schon bezahlt hast.',
+  'Czynsz, subskrypcje, ubezpieczenia - cykliczne opłaty co miesiąc, niezależnie od tego, czy już je zapłaciłeś w tym miesiącu.':
+    'Miete, Abos, Versicherungen - wiederkehrende monatliche Zahlungen, unabhängig davon, ob du sie diesen Monat schon bezahlt hast.',
   'Czytaj więcej →': 'Weiterlesen →',
-  'Dane konta przechowujemy tak długo, jak konto jest aktywne. Kiedy usuniesz konto w ustawieniach, blokujemy je od razu, a po 30 dniach trwale kasujemy wszystkie Twoje dane. Przez te 30 dni możesz cofnąć decyzję linkiem z maila, który wysyłamy przy usuwaniu. Osobno administrator może zarchiwizować konto, czyli je zdezaktywować z zachowaniem danych — takie konto czeka, aż zdecydujesz, co dalej, i nie jest kasowane automatycznie.':
+  'Dane konta przechowujemy tak długo, jak konto jest aktywne. Kiedy usuniesz konto w ustawieniach, blokujemy je od razu, a po 30 dniach trwale kasujemy wszystkie Twoje dane. Przez te 30 dni możesz cofnąć decyzję linkiem z maila, który wysyłamy przy usuwaniu. Osobno administrator może zarchiwizować konto, czyli je zdezaktywować z zachowaniem danych - takie konto czeka, aż zdecydujesz, co dalej, i nie jest kasowane automatycznie.':
     'Wir speichern deine Kontodaten, solange das Konto aktiv ist. Wenn du dein Konto in den Einstellungen löschst, sperren wir es sofort und löschen nach 30 Tagen alle deine Daten endgültig. In diesen 30 Tagen kannst du das mit dem Link aus unserer E-Mail rückgängig machen. Davon getrennt kann ein Administrator ein Konto archivieren, also deaktivieren und die Daten behalten - so ein Konto wartet auf deine Entscheidung und wird nie automatisch gelöscht.',
   'Danych nie sprzedajemy i nie udostępniamy w celach marketingowych. Współpracujemy wyłącznie z dostawcami niezbędnymi do działania serwisu:':
     'Wir verkaufen deine Daten nicht und geben sie nicht zu Marketingzwecken weiter. Wir arbeiten ausschließlich mit Anbietern zusammen, die für den Betrieb des Dienstes notwendig sind:',
@@ -936,20 +936,20 @@ export const de: Record<string, string> = {
   'Dołączył(a)': 'Beigetreten',
   'Dzień wypłaty pozwala policzyć, ile wypłat zostało do terminu każdego celu oszczędnościowego.':
     'Der Gehaltstag ermöglicht die Berechnung, wie viele Gehälter bis zum Termin jedes Sparziels noch übrig sind.',
-  'dostawca analityki bez ciasteczek — zbiorcze statystyki odwiedzin (patrz sekcja wyżej),':
+  'dostawca analityki bez ciasteczek - zbiorcze statystyki odwiedzin (patrz sekcja wyżej),':
     'ein Analyseanbieter ohne Cookies - aggregierte Besuchsstatistiken (siehe Abschnitt oben),',
-  'Hasła są haszowane, komunikacja z aplikacją odbywa się przez HTTPS, a dostęp do panelu administratora mają wyłącznie konta z uprawnieniami administratora lub odpowiednią rolą — i nawet ten panel nie pokazuje treści Twoich transakcji ani sald, tylko zbiorcze statystyki. Treść danych finansowych nie jest też dostępna przez wbudowany panel Django — do bazy danych dociera się wyłącznie bezpośrednim, świadomym dostępem administracyjnym do infrastruktury, nie jednym kliknięciem w aplikacji.':
-    'Passwörter werden gehasht, die Kommunikation mit der App erfolgt über HTTPS, und nur Konten mit Administratorrechten oder einer entsprechenden Rolle haben Zugriff auf das Admin-Panel — und selbst dieses Panel zeigt niemals den Inhalt deiner Transaktionen oder Salden, sondern nur aggregierte Statistiken. Der Inhalt der Finanzdaten ist auch nicht über das integrierte Django-Admin-Panel zugänglich — die Datenbank ist nur durch bewussten, direkten administrativen Zugriff auf die Infrastruktur erreichbar, nicht mit einem einzigen Klick in der App.',
+  'Hasła są haszowane, komunikacja z aplikacją odbywa się przez HTTPS, a dostęp do panelu administratora mają wyłącznie konta z uprawnieniami administratora lub odpowiednią rolą - i nawet ten panel nie pokazuje treści Twoich transakcji ani sald, tylko zbiorcze statystyki. Treść danych finansowych nie jest też dostępna przez wbudowany panel Django - do bazy danych dociera się wyłącznie bezpośrednim, świadomym dostępem administracyjnym do infrastruktury, nie jednym kliknięciem w aplikacji.':
+    'Passwörter werden gehasht, die Kommunikation mit der App erfolgt über HTTPS, und nur Konten mit Administratorrechten oder einer entsprechenden Rolle haben Zugriff auf das Admin-Panel - und selbst dieses Panel zeigt niemals den Inhalt deiner Transaktionen oder Salden, sondern nur aggregierte Statistiken. Der Inhalt der Finanzdaten ist auch nicht über das integrierte Django-Admin-Panel zugänglich - die Datenbank ist nur durch bewussten, direkten administrativen Zugriff auf die Infrastruktur erreichbar, nicht mit einem einzigen Klick in der App.',
   'Historia': 'Verlauf',
   'Importuj wyciąg z konta': 'Kontoauszug importieren',
   'Kategoria widoczna tylko dla tego konta': 'Kategorie nur für dieses Konto sichtbar',
   'Koncentracja portfela': 'Portfoliokonzentration',
-  'Konta bankowe i ich salda, transakcje budżetowe, kategorie/sklepy/tagi, posiadane akcje i transakcje giełdowe, lokaty, obligacje, dywidendy, cele oszczędnościowe i plany budżetowe — czyli wszystko, co wpisujesz, żeby aplikacja mogła śledzić Twój majątek. Te dane widzisz tylko Ty — inni użytkownicy nie mają do nich dostępu, a panel administratora pokazuje wyłącznie zbiorcze liczby i aktywność konta (np. liczbę transakcji), nigdy treść Twoich transakcji czy sald.':
-    'Bankkonten und ihre Salden, Budgettransaktionen, Kategorien/Geschäfte/Tags, deine Aktien und Börsentransaktionen, Festgelder, Anleihen, Dividenden, Sparziele und Budgetpläne — also alles, was du einträgst, damit die App dein Vermögen verfolgen kann. Diese Daten siehst nur du — andere Nutzer haben keinen Zugriff darauf, und das Admin-Panel zeigt nur aggregierte Zahlen und Kontoaktivität (z. B. eine Transaktionsanzahl), niemals den Inhalt deiner Transaktionen oder Salden.',
-  'Konta w innej walucie będą oznaczone jako walutowe — to tylko etykieta, nie wpływa na przeliczenia.':
-    'Konten in einer anderen Währung werden als Fremdwährungskonten markiert — das ist nur eine Kennzeichnung, sie beeinflusst keine Umrechnungen.',
-  'Logowanie działa w oparciu o tokeny JWT przechowywane w local storage przeglądarki — to samo miejsce przechowuje wybrany motyw kolorystyczny i język, zanim zostaną zapisane na koncie. Nie ma żadnych skryptów reklamowych ani śledzących w celach marketingowych.':
-    'Die Anmeldung basiert auf JWT-Tokens, die im lokalen Speicher des Browsers abgelegt werden — derselbe Ort speichert auch das gewählte Farbschema und die Sprache, bevor sie im Konto gespeichert werden. Es gibt keine Werbe- oder Marketing-Tracking-Skripte.',
+  'Konta bankowe i ich salda, transakcje budżetowe, kategorie/sklepy/tagi, posiadane akcje i transakcje giełdowe, lokaty, obligacje, dywidendy, cele oszczędnościowe i plany budżetowe - czyli wszystko, co wpisujesz, żeby aplikacja mogła śledzić Twój majątek. Te dane widzisz tylko Ty - inni użytkownicy nie mają do nich dostępu, a panel administratora pokazuje wyłącznie zbiorcze liczby i aktywność konta (np. liczbę transakcji), nigdy treść Twoich transakcji czy sald.':
+    'Bankkonten und ihre Salden, Budgettransaktionen, Kategorien/Geschäfte/Tags, deine Aktien und Börsentransaktionen, Festgelder, Anleihen, Dividenden, Sparziele und Budgetpläne - also alles, was du einträgst, damit die App dein Vermögen verfolgen kann. Diese Daten siehst nur du - andere Nutzer haben keinen Zugriff darauf, und das Admin-Panel zeigt nur aggregierte Zahlen und Kontoaktivität (z. B. eine Transaktionsanzahl), niemals den Inhalt deiner Transaktionen oder Salden.',
+  'Konta w innej walucie będą oznaczone jako walutowe - to tylko etykieta, nie wpływa na przeliczenia.':
+    'Konten in einer anderen Währung werden als Fremdwährungskonten markiert - das ist nur eine Kennzeichnung, sie beeinflusst keine Umrechnungen.',
+  'Logowanie działa w oparciu o tokeny JWT przechowywane w local storage przeglądarki - to samo miejsce przechowuje wybrany motyw kolorystyczny i język, zanim zostaną zapisane na koncie. Nie ma żadnych skryptów reklamowych ani śledzących w celach marketingowych.':
+    'Die Anmeldung basiert auf JWT-Tokens, die im lokalen Speicher des Browsers abgelegt werden - derselbe Ort speichert auch das gewählte Farbschema und die Sprache, bevor sie im Konto gespeichert werden. Es gibt keine Werbe- oder Marketing-Tracking-Skripte.',
   'Masz prawo do wglądu w swoje dane, ich poprawienia, przeniesienia i usunięcia. Dwa z nich załatwisz sam(a) w ustawieniach konta: "Pobierz swoje dane" daje pełną kopię wszystkiego, co przechowujemy (JSON plus tabele CSV do Excela), a "Usuń konto" uruchamia trwałe skasowanie danych. Większość informacji poprawisz bezpośrednio w ustawieniach. W pozostałych sprawach napisz na adres podany niżej albo skorzystaj z widgetu "Zostaw feedback" w aplikacji.':
     'Du hast das Recht, deine Daten einzusehen, zu berichtigen, mitzunehmen und löschen zu lassen. Zwei davon erledigst du selbst in den Kontoeinstellungen: "Deine Daten herunterladen" liefert eine vollständige Kopie von allem, was wir speichern (JSON plus CSV-Tabellen für Excel), und "Konto löschen" startet die endgültige Löschung. Die meisten Angaben korrigierst du direkt in den Einstellungen. Für alles Weitere schreib an die Adresse unten oder nutze das Feedback-Widget in der App.',
   'Na plusie / na minusie / bez zmian': 'Im Plus / im Minus / unverändert',
@@ -960,7 +960,7 @@ export const de: Record<string, string> = {
     'Benutzername, Vor- und Nachname, E-Mail-Adresse (falls angegeben) und Passwort (nur gehasht gespeichert, niemals im Klartext). Bei der Registrierung speichern wir außerdem, auf wessen Einladung hin das Konto erstellt wurde.',
   'Nie udało się dodać tagu.': 'Der Tag konnte nicht hinzugefügt werden.',
   'Nie udało się przetworzyć pliku.': 'Die Datei konnte nicht verarbeitet werden.',
-  'Nie udało się zaimportować transakcji — spróbuj wgrać plik ponownie.': 'Die Transaktionen konnten nicht importiert werden — versuche, die Datei erneut hochzuladen.',
+  'Nie udało się zaimportować transakcji - spróbuj wgrać plik ponownie.': 'Die Transaktionen konnten nicht importiert werden - versuche, die Datei erneut hochzuladen.',
   'Nie znaleziono artykułu.': 'Artikel nicht gefunden.',
   'Nowi w tym tygodniu': 'Neu diese Woche',
   'Odblokuj': 'Entsperren',
@@ -972,7 +972,7 @@ export const de: Record<string, string> = {
   'Ostatnie IP': 'Letzte IP',
   'Ostatnie logowanie': 'Letzte Anmeldung',
   'Panel administratora': 'Admin-Panel',
-  'Pensja i dzień wypłaty ({0}. dnia miesiąca) — zmień': 'Gehalt und Gehaltstag ({0}. des Monats) — ändern',
+  'Pensja i dzień wypłaty ({0}. dnia miesiąca) - zmień': 'Gehalt und Gehaltstag ({0}. des Monats) - ändern',
   'Plik PDF': 'PDF-Datei',
   'Podgląd wyciągu': 'Kontoauszugsvorschau',
   'Podział wg rynku': 'Aufteilung nach Markt',
@@ -984,17 +984,17 @@ export const de: Record<string, string> = {
   'Zmiana wartości względem wpłaconego kapitału na tym koncie': 'Wertänderung im Verhältnis zum in dieses Konto eingezahlten Kapital',
   'Zainwestowano': 'Investiert',
   'Pozostałe ({0})': 'Übrige ({0})',
-  'Przy każdym logowaniu zapisujemy adres IP oraz podstawowe informacje o przeglądarce/systemie (User-Agent) — to podstawa historii logowań widocznej w Twoim koncie oraz ochrony przed nieautoryzowanym dostępem. Zapisujemy też, w które dni byłeś/aś aktywny(a) (do serii logowań i statystyk).':
-    'Bei jeder Anmeldung speichern wir die IP-Adresse sowie grundlegende Browser-/Systeminformationen (User-Agent) — das ist die Grundlage für den Anmeldeverlauf in deinem Konto und den Schutz vor unbefugtem Zugriff. Wir speichern auch, an welchen Tagen du aktiv warst (für Serien und Statistiken).',
+  'Przy każdym logowaniu zapisujemy adres IP oraz podstawowe informacje o przeglądarce/systemie (User-Agent) - to podstawa historii logowań widocznej w Twoim koncie oraz ochrony przed nieautoryzowanym dostępem. Zapisujemy też, w które dni byłeś/aś aktywny(a) (do serii logowań i statystyk).':
+    'Bei jeder Anmeldung speichern wir die IP-Adresse sowie grundlegende Browser-/Systeminformationen (User-Agent) - das ist die Grundlage für den Anmeldeverlauf in deinem Konto und den Schutz vor unbefugtem Zugriff. Wir speichern auch, an welchen Tagen du aktiv warst (für Serien und Statistiken).',
   'Rola': 'Rolle',
-  'Skład, koncentracja i wyniki Twoich pozycji — przeliczone do jednej waluty, żeby dało się je sensownie porównać.':
-    'Zusammensetzung, Konzentration und Performance deiner Positionen — in eine Währung umgerechnet, damit sie sinnvoll vergleichbar sind.',
+  'Skład, koncentracja i wyniki Twoich pozycji - przeliczone do jednej waluty, żeby dało się je sensownie porównać.':
+    'Zusammensetzung, Konzentration und Performance deiner Positionen - in eine Währung umgerechnet, damit sie sinnvoll vergleichbar sind.',
   'Statystyki portfela': 'Portfoliostatistiken',
   'Stałe koszty': 'Fixkosten',
   'Stałe koszty / mies.': 'Fixkosten / Mon.',
   'Suma': 'Summe',
   'Szukaj': 'Suchen',
-  'Termin wypłaty minął przed celem — dodaj więcej lub przesuń termin': 'Der Gehaltstermin liegt vor dem Ziel — füge mehr hinzu oder verschiebe den Termin',
+  'Termin wypłaty minął przed celem - dodaj więcej lub przesuń termin': 'Der Gehaltstermin liegt vor dem Ziel - füge mehr hinzu oder verschiebe den Termin',
   'Transakcje akcji': 'Aktientransaktionen',
   'Transakcje budżetu': 'Budgettransaktionen',
   'Treść zgłoszeń wysłanych przez widget "Zostaw feedback" oraz historia wysłanych zaproszeń (komu, kiedy, czy zostało przyjęte).':
@@ -1013,8 +1013,8 @@ export const de: Record<string, string> = {
   'Waluta inna niż domyślna ({0})': 'Andere Währung als die Standardwährung ({0})',
   'Wczytywanie…': 'Wird geladen…',
   'Wgraj i pokaż podgląd': 'Hochladen und Vorschau anzeigen',
-  'Wgraj wyciąg w formacie PDF (obecnie obsługiwane: PKO Bank Polski). Zanim cokolwiek zapiszemy, pokażemy podgląd transakcji do zatwierdzenia — i sprawdzimy, czy już ich kiedyś nie zaimportowano.':
-    'Lade einen Kontoauszug im PDF-Format hoch (derzeit unterstützt: PKO Bank Polski). Bevor wir etwas speichern, zeigen wir dir eine Vorschau der Transaktionen zur Bestätigung — und prüfen, ob sie nicht schon einmal importiert wurden.',
+  'Wgraj wyciąg w formacie PDF (obecnie obsługiwane: PKO Bank Polski). Zanim cokolwiek zapiszemy, pokażemy podgląd transakcji do zatwierdzenia - i sprawdzimy, czy już ich kiedyś nie zaimportowano.':
+    'Lade einen Kontoauszug im PDF-Format hoch (derzeit unterstützt: PKO Bank Polski). Bevor wir etwas speichern, zeigen wir dir eine Vorschau der Transaktionen zur Bestätigung - und prüfen, ob sie nicht schon einmal importiert wurden.',
   'Wkrótce pojawią się tu pierwsze artykuły.': 'Die ersten Artikel erscheinen hier bald.',
   'Wznów': 'Fortsetzen',
   'Zablokuj': 'Sperren',
@@ -1023,7 +1023,7 @@ export const de: Record<string, string> = {
   'Zaloguj się do aplikacji': 'Bei der App anmelden',
   'Wejdź do aplikacji': 'Zur App',
   'Wróć do swojego majątku': 'Zurück zu deinem Vermögen',
-  'Kontynuuj tam, gdzie skończyłeś/aś — Twój dashboard czeka.': 'Mach dort weiter, wo du aufgehört hast — dein Dashboard wartet.',
+  'Kontynuuj tam, gdzie skończyłeś/aś - Twój dashboard czeka.': 'Mach dort weiter, wo du aufgehört hast - dein Dashboard wartet.',
   'Zarezerwowano na duże wydatki': 'Für große Ausgaben reserviert',
   'Zarezerwuj z wypłaty': 'Vom Gehalt reservieren',
   'Zatrzymaj': 'Pausieren',
@@ -1031,13 +1031,13 @@ export const de: Record<string, string> = {
   'Zaznacz wszystkie': 'Alle auswählen',
   'Zaznaczono {0} z {1} transakcji do importu.': '{0} von {1} Transaktionen zum Import ausgewählt.',
   'Zostaje po rezerwacjach i odkładaniu': 'Übrig nach Reservierungen und Sparen',
-  'Zostało {0} wypłat — odkładaj ~{1} z każdej, żeby zdążyć': 'Noch {0} Gehälter übrig — lege ~{1} von jedem zurück, um es zu schaffen',
+  'Zostało {0} wypłat - odkładaj ~{1} z każdej, żeby zdążyć': 'Noch {0} Gehälter übrig - lege ~{1} von jedem zurück, um es zu schaffen',
   'Zrealizowany zysk/strata wg roku (po podatku Belki)': 'Realisierter Gewinn/Verlust nach Jahr (nach Kapitalertragsteuer)',
   'Zweryfikowany e-mail': 'Bestätigte E-Mail',
   'administratorzy': 'Administratoren',
   'aktywne': 'aktiv',
   'bardzo rozproszony': 'sehr diversifiziert',
-  'dostawca poczty e-mail — do wysyłki e-maili weryfikacyjnych, resetu hasła i zaproszeń,': 'E-Mail-Anbieter — zum Versand von Bestätigungs-, Passwort-Reset- und Einladungs-E-Mails,',
+  'dostawca poczty e-mail - do wysyłki e-maili weryfikacyjnych, resetu hasła i zaproszeń,': 'E-Mail-Anbieter - zum Versand von Bestätigungs-, Passwort-Reset- und Einladungs-E-Mails,',
   'hosting aplikacji i baza danych (Microsoft Azure),': 'App-Hosting und Datenbank (Microsoft Azure),',
   'już zaimportowano': 'bereits importiert',
   'login lub e-mail': 'Benutzername oder E-Mail',
@@ -1048,13 +1048,13 @@ export const de: Record<string, string> = {
   'np. mBank': 'z. B. mBank',
   'np. wakacje': 'z. B. Urlaub',
   'odświeżanie…': 'wird aktualisiert…',
-  'publiczne źródła danych rynkowych (np. Stooq, Yahoo Finance) — zapytania dotyczą wyłącznie tickerów giełdowych i kursów walut, nigdy Twoich danych osobowych.':
-    'öffentliche Marktdatenquellen (z. B. Stooq, Yahoo Finance) — die Abfragen betreffen ausschließlich Börsenticker und Wechselkurse, niemals deine persönlichen Daten.',
-  'skieta to osobisty tracker finansowy — aplikacja dostępna wyłącznie na zaproszenie, bez reklam i bez sprzedaży danych osobom trzecim. Administratorem danych jest osoba prowadząca serwis skieta, z którą można się skontaktować pod adresem podanym na dole tej strony.':
-    'skieta ist ein persönlicher Finanz-Tracker — eine nur auf Einladung zugängliche App, ohne Werbung und ohne Weitergabe von Daten an Dritte. Verantwortlicher für die Daten ist die Person, die skieta betreibt und die unter der am Ende dieser Seite angegebenen Adresse erreichbar ist.',
-  'skieta łączy konta bankowe, inwestycje, lokaty i obligacje w jednym miejscu — zobacz, jak naprawdę rośnie Twój majątek, bez arkusza kalkulacyjnego i bez zgadywania.':
-    'skieta bringt Bankkonten, Investitionen, Festgelder und Anleihen an einem Ort zusammen — sieh, wie dein Vermögen wirklich wächst, ohne Tabellenkalkulation und ohne Rätselraten.',
-  'sprawdź — może to transfer własny': 'prüfen — könnte eine Überweisung zwischen eigenen Konten sein',
+  'publiczne źródła danych rynkowych (np. Stooq, Yahoo Finance) - zapytania dotyczą wyłącznie tickerów giełdowych i kursów walut, nigdy Twoich danych osobowych.':
+    'öffentliche Marktdatenquellen (z. B. Stooq, Yahoo Finance) - die Abfragen betreffen ausschließlich Börsenticker und Wechselkurse, niemals deine persönlichen Daten.',
+  'skieta to osobisty tracker finansowy - aplikacja dostępna wyłącznie na zaproszenie, bez reklam i bez sprzedaży danych osobom trzecim. Administratorem danych jest osoba prowadząca serwis skieta, z którą można się skontaktować pod adresem podanym na dole tej strony.':
+    'skieta ist ein persönlicher Finanz-Tracker - eine nur auf Einladung zugängliche App, ohne Werbung und ohne Weitergabe von Daten an Dritte. Verantwortlicher für die Daten ist die Person, die skieta betreibt und die unter der am Ende dieser Seite angegebenen Adresse erreichbar ist.',
+  'skieta łączy konta bankowe, inwestycje, lokaty i obligacje w jednym miejscu - zobacz, jak naprawdę rośnie Twój majątek, bez arkusza kalkulacyjnego i bez zgadywania.':
+    'skieta bringt Bankkonten, Investitionen, Festgelder und Anleihen an einem Ort zusammen - sieh, wie dein Vermögen wirklich wächst, ohne Tabellenkalkulation und ohne Rätselraten.',
+  'sprawdź - może to transfer własny': 'prüfen - könnte eine Überweisung zwischen eigenen Konten sein',
   'umiarkowanie skoncentrowany': 'mäßig konzentriert',
   'walutowe': 'Fremdwährung',
   'wszyscy': 'alle',
@@ -1133,13 +1133,13 @@ export const de: Record<string, string> = {
   'Wizyty wg wariantu językowego': 'Besuche nach Sprachvariante',
   'Zaproszenia wysłane wg języka': 'Gesendete Einladungen nach Sprache',
   'Nowy baner na stronie głównej': 'Neuer Banner auf der Startseite',
-  'Wskaż istniejące zaproszenie grupowe — baner pokaże jego link/kod QR i odliczanie do podanej daty. Liczba wykorzystań to liczba osób zarejestrowanych przez to zaproszenie.':
+  'Wskaż istniejące zaproszenie grupowe - baner pokaże jego link/kod QR i odliczanie do podanej daty. Liczba wykorzystań to liczba osób zarejestrowanych przez to zaproszenie.':
     'Wähle eine bestehende Gruppeneinladung aus - der Banner zeigt deren Link/QR-Code und einen Countdown bis zum angegebenen Datum. Die Nutzungszahl ist die Anzahl der Personen, die sich über diese Einladung registriert haben.',
   'Zaproszenie grupowe': 'Gruppeneinladung',
   'Wybierz…': 'Auswählen…',
   'Wiadomość (opcjonalnie)': 'Nachricht (optional)',
   'Koniec odliczania': 'Ende des Countdowns',
-  'Nie udało się utworzyć promocji — sprawdź dane.': 'Aktion konnte nicht erstellt werden - überprüfe die Angaben.',
+  'Nie udało się utworzyć promocji - sprawdź dane.': 'Aktion konnte nicht erstellt werden - überprüfe die Angaben.',
   'Brak promocji.': 'Keine Aktionen.',
   'Wyłączona': 'Deaktiviert',
   'Wygasła': 'Abgelaufen',
@@ -1187,9 +1187,9 @@ export const de: Record<string, string> = {
   'Wylogowywanie…':
     'Wird abgemeldet…',
   // Pusty dashboard - baner z zachetą
-  'Zera poniżej to nie błąd — po prostu jeszcze nic nie dodałeś(-aś)':
+  'Zera poniżej to nie błąd - po prostu jeszcze nic nie dodałeś(-aś)':
     'Die Nullen unten sind kein Fehler - du hast einfach noch nichts hinzugefügt',
-  'Dodaj konto bankowe, akcje, obligacje albo lokatę, a ten pulpit zacznie liczyć Twój prawdziwy majątek — zysk osobno od wpłaconego kapitału, po podatku Belki.':
+  'Dodaj konto bankowe, akcje, obligacje albo lokatę, a ten pulpit zacznie liczyć Twój prawdziwy majątek - zysk osobno od wpłaconego kapitału, po podatku Belki.':
     'Füge ein Bankkonto, Aktien, Anleihen oder eine Termineinlage hinzu, und dieses Dashboard beginnt, dein echtes Vermögen zu berechnen - Gewinn getrennt vom eingezahlten Kapital, nach Steuer.',
   'Dodaj pierwsze dane →':
     'Erste Daten hinzufügen →',
@@ -1211,7 +1211,7 @@ export const de: Record<string, string> = {
   // Polityka prywatności - analityka bez ciasteczek
   'Aplikacja i baza danych stoją w centrum danych Microsoft Azure w Polsce (region Poland Central), a serwer pocztowy w Polsce. Zgłoszenia o awariach trafiają do europejskiego regionu dostawcy monitoringu. Twoje dane finansowe nie opuszczają Europejskiego Obszaru Gospodarczego.':
     'App und Datenbank laufen in einem Microsoft-Azure-Rechenzentrum in Polen (Region Poland Central), der Mailserver steht ebenfalls in Polen. Fehlerberichte gehen an die europäische Region unseres Monitoring-Anbieters. Deine Finanzdaten verlassen den Europäischen Wirtschaftsraum nicht.',
-  'dostawca monitoringu błędów — dostaje techniczne zgłoszenie awarii (adres strony i ślad błędu w kodzie), nigdy treści Twoich danych finansowych ani zawartości formularzy,':
+  'dostawca monitoringu błędów - dostaje techniczne zgłoszenie awarii (adres strony i ślad błędu w kodzie), nigdy treści Twoich danych finansowych ani zawartości formularzy,':
     'ein Anbieter für Fehler-Monitoring - erhält eine technische Fehlermeldung (Seitenadresse und Stacktrace), nie den Inhalt deiner Finanzdaten oder von Formularen,',
   'Analityka odwiedzin':
     'Besuchsanalyse',
@@ -1277,7 +1277,7 @@ export const de: Record<string, string> = {
   'Usuń trwale z bazy': 'Endgültig aus der Datenbank löschen',
   'Ta operacja jest nieodwracalna i trwale usunie konto oraz wszystkie dane użytkownika z bazy danych. Wpisz nazwę użytkownika "{0}", żeby potwierdzić.':
     'Diese Aktion ist unwiderruflich und löscht das Konto sowie alle Daten dieses Nutzers dauerhaft aus der Datenbank. Gib den Benutzernamen "{0}" ein, um zu bestätigen.',
-  'Nazwa użytkownika się nie zgadza — anulowano.': 'Benutzername stimmt nicht überein — abgebrochen.',
+  'Nazwa użytkownika się nie zgadza - anulowano.': 'Benutzername stimmt nicht überein - abgebrochen.',
 
   // Footer / landing mock card
   'Regulamin': 'Nutzungsbedingungen',
@@ -1299,8 +1299,8 @@ export const de: Record<string, string> = {
 
   // Landing - Preis und Zugangsanfrage
   'Bezpłatnie, bez reklam i bez podawania karty.': 'Kostenlos, ohne Werbung und ohne Kartendaten.',
-  'Rejestracja jest na zaproszenie — nie masz go? Zostaw e-mail.':
-    'Die Registrierung läuft nur über Einladung — keine? Hinterlass deine E-Mail-Adresse.',
+  'Rejestracja jest na zaproszenie - nie masz go? Zostaw e-mail.':
+    'Die Registrierung läuft nur über Einladung - keine? Hinterlass deine E-Mail-Adresse.',
   'Ile to kosztuje?': 'Was kostet das?',
   'Nic. skieta jest bezpłatna - bez abonamentu, bez płatnych funkcji i bez reklam. Nie podajesz numeru karty ani przy zakładaniu konta, ani później.':
     'Nichts. skieta ist kostenlos - kein Abo, keine kostenpflichtigen Funktionen und keine Werbung. Nach einer Kartennummer wirst du weder bei der Anmeldung noch später gefragt.',
@@ -1310,11 +1310,11 @@ export const de: Record<string, string> = {
   'Dashboard skiety: wartość majątku, podział na akcje, gotówkę, lokaty i obligacje oraz wykres majątku w czasie':
     'Das skieta-Dashboard: Nettovermögen, die Aufteilung auf Aktien, Bargeld, Festgelder und Anleihen sowie ein Diagramm des Vermögens im Zeitverlauf',
   'Zobacz, jak to wygląda w środku': 'Sieh, wie es von innen aussieht',
-  'Poniżej prawdziwe ekrany aplikacji — te same, które zobaczysz po zalogowaniu.':
-    'Unten echte Ansichten aus der App — dieselben, die du nach dem Anmelden siehst.',
+  'Poniżej prawdziwe ekrany aplikacji - te same, które zobaczysz po zalogowaniu.':
+    'Unten echte Ansichten aus der App - dieselben, die du nach dem Anmelden siehst.',
   'Zysk, a nie tylko saldo': 'Gewinn, nicht nur ein Kontostand',
-  'Portfel pokazuje osobno wpłacony kapitał i osobno zysk — brutto oraz po podatku Belki. Przy akcjach kupionych w obcej walucie widzisz dodatkowo, ile z wyniku zrobił sam kurs, a nie kurs spółki.':
-    'Das Depot zeigt eingezahltes Kapital und Gewinn getrennt — vor und nach Kapitalertragsteuer. Bei Aktien in Fremdwährung siehst du zusätzlich, wie viel vom Ergebnis der Wechselkurs ausgemacht hat und nicht der Aktienkurs.',
+  'Portfel pokazuje osobno wpłacony kapitał i osobno zysk - brutto oraz po podatku Belki. Przy akcjach kupionych w obcej walucie widzisz dodatkowo, ile z wyniku zrobił sam kurs, a nie kurs spółki.':
+    'Das Depot zeigt eingezahltes Kapital und Gewinn getrennt - vor und nach Kapitalertragsteuer. Bei Aktien in Fremdwährung siehst du zusätzlich, wie viel vom Ergebnis der Wechselkurs ausgemacht hat und nicht der Aktienkurs.',
   'Portfel akcji w skiecie z kolumnami zysku brutto i po podatku Belki oraz wpływem kursu waluty':
     'Das Aktiendepot in skieta mit Gewinnspalten vor und nach Kapitalertragsteuer sowie dem Wechselkurseffekt',
   'Dywidendy policzone w przód': 'Dividenden im Voraus berechnet',

@@ -9,7 +9,7 @@ interface PaginatedResponse<T> {
 }
 
 /** A DRF-paginated list (10 per page, see backend TenPerPagePagination) as an
- * infinite, "load more"-able array — used for transaction/transfer history
+ * infinite, "load more"-able array - used for transaction/transfer history
  * lists that can otherwise grow unbounded and would fetch the user's entire
  * history on every page load. */
 export function usePaginatedList<T>(queryKey: unknown[], url: string, params?: Record<string, unknown>) {

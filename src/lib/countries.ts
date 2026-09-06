@@ -1,5 +1,5 @@
 // Supported tax-residency countries (Profile.residency_country), mirrored
-// from backend/accounts/countries.py — kept deliberately small: these are
+// from backend/accounts/countries.py - kept deliberately small: these are
 // the only countries lib/format.ts's afterBelkaTax has actual rate rules
 // for. Blank/unset residency also means Poland (same as the explicit 'PL'
 // choice - both fall back to the flat 19% Belka tax).

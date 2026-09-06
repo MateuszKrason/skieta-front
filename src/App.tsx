@@ -22,7 +22,7 @@ import UnsubscribeReengagement from './pages/UnsubscribeReengagement'
 import NotFound from './pages/NotFound'
 
 // Lazy-loaded: everything below only renders behind a login, so none of it
-// needs to ship in the bundle a first-time (logged-out) visitor downloads —
+// needs to ship in the bundle a first-time (logged-out) visitor downloads -
 // PageSpeed flagged ~224 KiB of this chunk as unused on the public landing
 // page before this split.
 const Onboarding = lazy(() => import('./pages/Onboarding'))
@@ -115,7 +115,7 @@ function useDocumentTitle() {
 }
 
 // Only the routes that are actually public/crawlable (see robots.txt) get a
-// canonical tag pointing at themselves — everything else (the app itself,
+// canonical tag pointing at themselves - everything else (the app itself,
 // behind login) points back at the landing page, since that's the one real
 // entry point search engines should treat as canonical for those paths.
 const CANONICAL_SELF_PATHS = ['/', '/polityka-prywatnosci', '/regulamin', '/kalkulator']

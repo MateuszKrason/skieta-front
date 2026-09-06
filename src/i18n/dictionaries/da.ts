@@ -33,13 +33,13 @@ export const da: Record<string, string> = {
   '← Powrót do logowania': '← Tilbage til login',
   'Adres e-mail': 'E-mailadresse',
   'Wysyłanie…': 'Sender…',
-  'Podaj adres e-mail przypisany do konta — wyślemy link do resetu hasła.':
-    'Angiv den e-mailadresse, der er knyttet til kontoen — vi sender dig et link til nulstilling af adgangskode.',
+  'Podaj adres e-mail przypisany do konta - wyślemy link do resetu hasła.':
+    'Angiv den e-mailadresse, der er knyttet til kontoen - vi sender dig et link til nulstilling af adgangskode.',
   'Jeśli podany adres e-mail istnieje w naszej bazie, wysłaliśmy na niego link do resetu hasła.':
     'Hvis e-mailadressen findes i vores system, har vi sendt et link til nulstilling af adgangskode til den.',
   'Wyślij link do resetu': 'Send nulstillingslink',
-  'Link resetu hasła jest niepełny — otwórz go bezpośrednio z wiadomości e-mail.':
-    'Linket til nulstilling af adgangskode er ufuldstændigt — åbn det direkte fra e-mailen.',
+  'Link resetu hasła jest niepełny - otwórz go bezpośrednio z wiadomości e-mail.':
+    'Linket til nulstilling af adgangskode er ufuldstændigt - åbn det direkte fra e-mailen.',
   'Hasło zostało zresetowane. Przekierowuję do logowania…': 'Adgangskoden er nulstillet. Omdirigerer til login…',
   'Ustaw nowe hasło do swojego konta.': 'Angiv en ny adgangskode til din konto.',
   'Zapisywanie…': 'Gemmer…',
@@ -50,7 +50,7 @@ export const da: Record<string, string> = {
   'Nie udało się potwierdzić adresu e-mail.': 'Bekræftelse af e-mailadresse mislykkedes.',
   'Przejdź do aplikacji →': 'Gå til appen →',
   'Adres e-mail nie jest jeszcze potwierdzony': 'Din e-mailadresse er endnu ikke bekræftet',
-  'Wysłano nowy link weryfikacyjny — sprawdź skrzynkę.': 'Der er sendt et nyt bekræftelseslink — tjek din indbakke.',
+  'Wysłano nowy link weryfikacyjny - sprawdź skrzynkę.': 'Der er sendt et nyt bekræftelseslink - tjek din indbakke.',
   'Sprawdź skrzynkę i kliknij link, który wysłaliśmy przy rejestracji.':
     'Tjek din indbakke, og klik på linket, vi sendte, da du registrerede dig.',
   'Dodaj adres e-mail poniżej, żeby móc go potwierdzić i odzyskać konto w razie potrzeby.':
@@ -64,12 +64,12 @@ export const da: Record<string, string> = {
   'Obligacje': 'Obligationer',
   'Gotowe': 'Færdig',
   'Dodaj posiadane rzeczy': 'Tilføj det, du ejer',
-  'Wprowadź to, co już posiadasz — z prawdziwą, wsteczną datą zakupu — żeby historia i zyski liczyły się poprawnie od początku.':
-    'Indtast det, du allerede ejer — med den rigtige, tilbagedaterede købsdato — så historik og afkast beregnes korrekt fra starten.',
+  'Wprowadź to, co już posiadasz - z prawdziwą, wsteczną datą zakupu - żeby historia i zyski liczyły się poprawnie od początku.':
+    'Indtast det, du allerede ejer - med den rigtige, tilbagedaterede købsdato - så historik og afkast beregnes korrekt fra starten.',
   'Zakończ teraz →': 'Afslut nu →',
   'Gotowe!': 'Færdig!',
-  'Możesz w każdej chwili dodać kolejne rzeczy z tego samego kreatora — link znajdziesz w górnym menu.':
-    'Du kan altid tilføje flere ting via den samme guide — du finder linket i topmenuen.',
+  'Możesz w każdej chwili dodać kolejne rzeczy z tego samego kreatora - link znajdziesz w górnym menu.':
+    'Du kan altid tilføje flere ting via den samme guide - du finder linket i topmenuen.',
   'Przejdź do pulpitu': 'Gå til dashboard',
   '← Wstecz': '← Tilbage',
   'Dalej →': 'Næste →',
@@ -89,8 +89,8 @@ export const da: Record<string, string> = {
   'Waluta': 'Valuta',
   'Obecne saldo': 'Nuværende saldo',
   '+ Dodaj konto': '+ Tilføj konto',
-  'Nie masz jeszcze żadnego konta z gotówką na zakup akcji? Dodaj je tutaj z aktualnym saldem — w kolejnym kroku możesz z niego "kupić" akcje, które faktycznie posiadasz.':
-    'Har du ikke en konto med kontanter til aktiekøb endnu? Tilføj den her med den aktuelle saldo — i næste trin kan du "købe" de aktier, du allerede ejer, fra den.',
+  'Nie masz jeszcze żadnego konta z gotówką na zakup akcji? Dodaj je tutaj z aktualnym saldem - w kolejnym kroku możesz z niego "kupić" akcje, które faktycznie posiadasz.':
+    'Har du ikke en konto med kontanter til aktiekøb endnu? Tilføj den her med den aktuelle saldo - i næste trin kan du "købe" de aktier, du allerede ejer, fra den.',
   'Wyszukaj spółkę': 'Søg efter en aktie',
   'Ticker': 'Ticker',
   'Rynek': 'Marked',
@@ -101,17 +101,17 @@ export const da: Record<string, string> = {
   '+ Dodaj pozycję': '+ Tilføj position',
   'Dla każdej posiadanej spółki podaj ilość, cenę i': 'For hver aktie, du ejer, skal du angive antal, pris og',
   'prawdziwą datę zakupu': 'den rigtige købsdato',
-  '— dzięki temu historia i wykresy będą liczone poprawnie.': '— så bliver historik og grafer beregnet korrekt.',
+  '- dzięki temu historia i wykresy będą liczone poprawnie.': '- så bliver historik og grafer beregnet korrekt.',
   'Nie udało się dodać pozycji.': 'Positionen kunne ikke tilføjes.',
   'Wybierz spółkę.': 'Vælg en aktie.',
-  'Jeśli wybierzesz konto, kwota zostanie od razu odjęta z jego salda — zostaw puste, jeśli tylko deklarujesz akcje, które już posiadasz.':
-    'Hvis du vælger en konto, trækkes beløbet straks fra dens saldo — lad feltet stå tomt, hvis du kun angiver aktier, du allerede ejer.',
-  'To pozycja, którą już posiadam — nie odejmuj środków z konta (tylko zapisz powiązanie).':
-    'Dette er en position, jeg allerede ejer — træk ikke midler fra kontoen (registrer kun forbindelsen).',
-  'To lokata, którą już posiadam — nie odejmuj środków z konta (tylko zapisz powiązanie).':
-    'Dette er et indskud, jeg allerede ejer — træk ikke midler fra kontoen (registrer kun forbindelsen).',
-  'To obligacja, którą już posiadam — nie odejmuj środków z konta (tylko zapisz powiązanie).':
-    'Dette er en obligation, jeg allerede ejer — træk ikke midler fra kontoen (registrer kun forbindelsen).',
+  'Jeśli wybierzesz konto, kwota zostanie od razu odjęta z jego salda - zostaw puste, jeśli tylko deklarujesz akcje, które już posiadasz.':
+    'Hvis du vælger en konto, trækkes beløbet straks fra dens saldo - lad feltet stå tomt, hvis du kun angiver aktier, du allerede ejer.',
+  'To pozycja, którą już posiadam - nie odejmuj środków z konta (tylko zapisz powiązanie).':
+    'Dette er en position, jeg allerede ejer - træk ikke midler fra kontoen (registrer kun forbindelsen).',
+  'To lokata, którą już posiadam - nie odejmuj środków z konta (tylko zapisz powiązanie).':
+    'Dette er et indskud, jeg allerede ejer - træk ikke midler fra kontoen (registrer kun forbindelsen).',
+  'To obligacja, którą już posiadam - nie odejmuj środków z konta (tylko zapisz powiązanie).':
+    'Dette er en obligation, jeg allerede ejer - træk ikke midler fra kontoen (registrer kun forbindelsen).',
   'bez powiązania z kontem': 'ikke knyttet til en konto',
   'Nie dodano jeszcze żadnych akcji.': 'Du har ikke tilføjet nogen aktier endnu.',
   'wybierz…': 'vælg…',
@@ -183,7 +183,7 @@ export const da: Record<string, string> = {
   '+ Konto': '+ Konto',
   'Edytuj': 'Rediger',
   'Usuń': 'Slet',
-  'Brak kont — dodaj pierwsze.': 'Ingen konti endnu — tilføj din første.',
+  'Brak kont - dodaj pierwsze.': 'Ingen konti endnu - tilføj din første.',
   'Historia przelewów': 'Overførselshistorik',
   '+ Lokata': '+ Indskud',
   'Oprocentowanie': 'Rente',
@@ -198,8 +198,8 @@ export const da: Record<string, string> = {
   'Brak lokat.': 'Ingen indskud.',
   'Obligacje skarbowe': 'Statsobligationer',
   '+ Obligacja': '+ Obligation',
-  'Odsetki liczone metodą uproszczoną (proste, wg wpisanego bieżącego oprocentowania) — nie odwzorowuje dokładnie zmiennych/indeksowanych inflacją harmonogramów kapitalizacji poszczególnych serii.':
-    'Renten beregnes med en forenklet metode (simpel rente, ud fra den indtastede nuværende rentesats) — den gengiver ikke præcist de variable/inflationsindekserede rentetilskrivningsplaner for de enkelte serier.',
+  'Odsetki liczone metodą uproszczoną (proste, wg wpisanego bieżącego oprocentowania) - nie odwzorowuje dokładnie zmiennych/indeksowanych inflacją harmonogramów kapitalizacji poszczególnych serii.':
+    'Renten beregnes med en forenklet metode (simpel rente, ud fra den indtastede nuværende rentesats) - den gengiver ikke præcist de variable/inflationsindekserede rentetilskrivningsplaner for de enkelte serier.',
   'Wykup': 'Udløb',
   'wykupiona': 'indfriet',
   'Wykup wcześniej': 'Indfri før tid',
@@ -227,8 +227,8 @@ export const da: Record<string, string> = {
 
   // Timeline
   'Timeline majątku': 'Formue-tidslinje',
-  'Sprawdź, jak realnie pomnożyłeś wpłacone środki — niezależnie od tego, ile do systemu dołożyłeś':
-    'Se, hvor meget dine indbetalte midler reelt er blevet forøget — uanset hvor meget du har lagt i systemet',
+  'Sprawdź, jak realnie pomnożyłeś wpłacone środki - niezależnie od tego, ile do systemu dołożyłeś':
+    'Se, hvor meget dine indbetalte midler reelt er blevet forøget - uanset hvor meget du har lagt i systemet',
   '+ Wpłata / wypłata': '+ Indbetaling / udbetaling',
   'Obecna wartość majątku': 'Nuværende formue',
   'Wpłacone środki netto': 'Netto indbetalte midler',
@@ -269,8 +269,8 @@ export const da: Record<string, string> = {
   'Portfel akcji i ETF-ów': 'Aktie- & ETF-portefølje',
   'Suma wartości akcji': 'Samlet aktieværdi',
   'Łączny zysk/strata': 'Samlet gevinst/tab',
-  'Kursy odświeżają się przy wejściu na tę stronę — kliknij "Odśwież kursy", by pobrać je ponownie':
-    'Kurserne opdateres, når du åbner denne side — klik på "Opdater kurser" for at hente dem igen',
+  'Kursy odświeżają się przy wejściu na tę stronę - kliknij "Odśwież kursy", by pobrać je ponownie':
+    'Kurserne opdateres, når du åbner denne side - klik på "Opdater kurser" for at hente dem igen',
   '⟳ Odśwież kursy': '⟳ Opdater kurser',
   'Notatki': 'Noter',
   '(odświeżanie…)': '(opdaterer…)',
@@ -283,7 +283,7 @@ export const da: Record<string, string> = {
   'Zysk/strata': 'Gevinst/tab',
   'Aktualizacja': 'Opdateret',
   'Sprzedaj': 'Sælg',
-  'Brak pozycji — dodaj pierwszą transakcję.': 'Ingen positioner — tilføj din første transaktion.',
+  'Brak pozycji - dodaj pierwszą transakcję.': 'Ingen positioner - tilføj din første transaktion.',
   'Historia transakcji': 'Transaktionshistorik',
   'Kupno': 'Køb',
   'Sprzedaż': 'Salg',
@@ -292,7 +292,7 @@ export const da: Record<string, string> = {
   'Nie udało się zapisać transakcji.': 'Transaktionen kunne ikke gemmes.',
   'Wybierz konto, z którego pobrane zostaną środki.': 'Vælg den konto, midlerne skal trækkes fra.',
   'wybierz konto…': 'vælg en konto…',
-  'Brak konta w walucie {0} — dodaj je w zakładce Konta i lokaty.': 'Ingen konto i {0} — tilføj en under Konti & indskud.',
+  'Brak konta w walucie {0} - dodaj je w zakładce Konta i lokaty.': 'Ingen konto i {0} - tilføj en under Konti & indskud.',
   'Zapisz kupno': 'Gem køb',
   'Nie udało się sprzedać akcji.': 'Salget af aktien mislykkedes.',
   'Posiadasz tylko {0} szt.': 'Du ejer kun {0} stk.',
@@ -308,9 +308,9 @@ export const da: Record<string, string> = {
   'Niezainwestowany kapitał': 'Ikke-investeret kapital',
   'Ścieżki reinwestycji': 'Geninvesteringsforløb',
   '+ Nowa ścieżka': '+ Nyt forløb',
-  'Śledź, do ilu pomnożyła się konkretna kwota — np. zysk ze sprzedaży jednej spółki rozdzielony na kilka kolejnych zakupów, z opcjonalną dodatkową gotówką i niezainwestowaną resztą.':
-    'Følg, hvor meget et bestemt beløb er blevet forøget til — fx provenuet fra salg af én aktie fordelt på flere efterfølgende køb, med valgfri ekstra kontanter og eventuel urørt rest.',
-  'Brak ścieżek — utwórz pierwszą.': 'Ingen forløb endnu — opret dit første.',
+  'Śledź, do ilu pomnożyła się konkretna kwota - np. zysk ze sprzedaży jednej spółki rozdzielony na kilka kolejnych zakupów, z opcjonalną dodatkową gotówką i niezainwestowaną resztą.':
+    'Følg, hvor meget et bestemt beløb er blevet forøget til - fx provenuet fra salg af én aktie fordelt på flere efterfølgende køb, med valgfri ekstra kontanter og eventuel urørt rest.',
+  'Brak ścieżek - utwórz pierwszą.': 'Ingen forløb endnu - opret dit første.',
   'Usunąć całą ścieżkę „{0}”? Tej operacji nie można cofnąć.': 'Slette hele forløbet "{0}"? Denne handling kan ikke fortrydes.',
   'Start:': 'Start:',
   'Usuń ścieżkę': 'Slet forløb',
@@ -337,19 +337,19 @@ export const da: Record<string, string> = {
   'Zapisz pozycję': 'Gem position',
   'Nie udało się zamknąć pozycji.': 'Positionen kunne ikke lukkes.',
   'auto: proporcjonalnie': 'auto: proportionalt',
-  'Brak jeszcze transakcji sprzedaży tej spółki — dodaj ją najpierw w portfelu.': 'Ingen salgstransaktion for denne aktie endnu — tilføj den først i porteføljen.',
+  'Brak jeszcze transakcji sprzedaży tej spółki - dodaj ją najpierw w portfelu.': 'Ingen salgstransaktion for denne aktie endnu - tilføj den først i porteføljen.',
   'Zamknij pozycję': 'Luk position',
 
   // Dywidendy
   'Profil dywidendowy': 'Udbytteprofil',
   'Ile zarabiasz na dywidendach i jaki to procent zainwestowanego kapitału': 'Hvor meget du tjener på udbytte, og hvor stor en andel det udgør af den investerede kapital',
-  'Dywidendy wykrywane są automatycznie — nie musisz nic wpisywać ręcznie.':
-    'Udbytte registreres automatisk — du behøver ikke indtaste noget manuelt.',
+  'Dywidendy wykrywane są automatycznie - nie musisz nic wpisywać ręcznie.':
+    'Udbytte registreres automatisk - du behøver ikke indtaste noget manuelt.',
   'wykrywam dywidendy…': 'registrerer udbytte…',
   'Wykrywam…': 'Registrerer…',
   '⟳ Wykryj dywidendy': '⟳ Registrer udbytte',
-  'Automatyczne wykrywanie odświeża się samo przy wejściu na tę stronę — ten przycisk wymusza sprawdzenie od razu.':
-    'Automatisk registrering opdateres af sig selv, når du åbner denne side — denne knap tvinger et tjek igennem med det samme.',
+  'Automatyczne wykrywanie odświeża się samo przy wejściu na tę stronę - ten przycisk wymusza sprawdzenie od razu.':
+    'Automatisk registrering opdateres af sig selv, når du åbner denne side - denne knap tvinger et tjek igennem med det samme.',
   '+ Dywidenda': '+ Udbytte',
   '+ Dodaj ręcznie': '+ Tilføj manuelt',
   'Tylko dla wypłat, których automatyczne wykrywanie nie złapało (np. spółka spoza Yahoo Finance).':
@@ -357,8 +357,8 @@ export const da: Record<string, string> = {
   'Suma dywidend (wszystkie czasy)': 'Samlet udbytte (nogensinde)',
   'Projekcja rocznego dochodu (12 mies.)': 'Forventet årlig indkomst (12 mdr.)',
   'Planowane dywidendy': 'Kommende udbytter',
-  'Szacunek na podstawie historycznego rytmu wypłat tej spółki (ostatnia kwota + średni odstęp) — nie jest to oficjalna zapowiedź zarządu.':
-    'Et estimat baseret på aktiens historiske udbetalingsmønster (seneste beløb + gennemsnitligt interval) — dette er ikke en officiel udmelding fra ledelsen.',
+  'Szacunek na podstawie historycznego rytmu wypłat tej spółki (ostatnia kwota + średni odstęp) - nie jest to oficjalna zapowiedź zarządu.':
+    'Et estimat baseret på aktiens historiske udbetalingsmønster (seneste beløb + gennemsnitligt interval) - dette er ikke en officiel udmelding fra ledelsen.',
   'ok.': 'ca.',
   'Dywidendy miesiąc do miesiąca': 'Udbytte måned for måned',
   'Udział spółek': 'Fordeling på aktier',
@@ -368,7 +368,7 @@ export const da: Record<string, string> = {
   '{0} lat': '{0} år',
   'Suma dywidend': 'Samlet udbytte',
   'Ostatnie 12 mies.': 'Seneste 12 mdr.',
-  'Brak dywidend — dodaj pierwszą wypłatę.': 'Intet udbytte endnu — tilføj din første udbetaling.',
+  'Brak dywidend - dodaj pierwszą wypłatę.': 'Intet udbytte endnu - tilføj din første udbetaling.',
   'Historia wypłat': 'Udbetalingshistorik',
   'wykryta automatycznie': 'registreret automatisk',
   'Brak wypłat.': 'Ingen udbetalinger.',
@@ -379,15 +379,15 @@ export const da: Record<string, string> = {
   'Zapisz dywidendę': 'Gem udbytte',
 
   // AnalizaSpolek
-  'Komunikaty ESPI/EBI (GPW) i ważne newsy (USA) dla spółek z Twojego portfela — sprawdzane raz dziennie.':
-    'ESPI/EBI-meddelelser (GPW) og vigtige nyheder (USA) for aktierne i din portefølje — tjekket én gang dagligt.',
+  'Komunikaty ESPI/EBI (GPW) i ważne newsy (USA) dla spółek z Twojego portfela - sprawdzane raz dziennie.':
+    'ESPI/EBI-meddelelser (GPW) og vigtige nyheder (USA) for aktierne i din portefølje - tjekket én gang dagligt.',
   'Sprawdzam…': 'Tjekker…',
   '⟳ Sprawdź teraz': '⟳ Tjek nu',
   'Wszystkie spółki': 'Alle aktier',
   'Pokaż tylko nowe': 'Vis kun nye',
   'Nowe': 'Nye',
-  'Brak komunikatów — kliknij „Sprawdź teraz” albo poczekaj na codzienne automatyczne sprawdzenie.':
-    'Ingen meddelelser endnu — klik på "Tjek nu", eller vent på det daglige automatiske tjek.',
+  'Brak komunikatów - kliknij „Sprawdź teraz” albo poczekaj na codzienne automatyczne sprawdzenie.':
+    'Ingen meddelelser endnu - klik på "Tjek nu", eller vent på det daglige automatiske tjek.',
 
   // Budget shared
   'Ten miesiąc': 'Denne måned',
@@ -396,7 +396,7 @@ export const da: Record<string, string> = {
   'Zakres własny': 'Brugerdefineret periode',
   'Bez kategorii': 'Ingen kategori',
   'Brak danych w tym okresie.': 'Ingen data for denne periode.',
-  'wg kategorii — miesiąc do miesiąca': 'efter kategori — måned for måned',
+  'wg kategorii - miesiąc do miesiąca': 'efter kategori - måned for måned',
   'Kliknij kategorię poniżej, aby zobaczyć konkretne transakcje w wybranym okresie.': 'Klik på en kategori nedenfor for at se de konkrete transaktioner i den valgte periode.',
   'Transakcje w okresie': 'Transaktioner i perioden',
   '+ Kategoria': '+ Kategori',
@@ -415,18 +415,18 @@ export const da: Record<string, string> = {
   'Sklepy': 'Butikker',
   '+ Dodaj sklep': '+ Tilføj butik',
   'Usuń sklep': 'Slet butik',
-  'Brak sklepów — dodaj pierwszy powyżej.': 'Ingen butikker endnu — tilføj din første ovenfor.',
+  'Brak sklepów - dodaj pierwszy powyżej.': 'Ingen butikker endnu - tilføj din første ovenfor.',
   'Wydatki wg sklepów': 'Udgifter efter butik',
   'Tylko transakcje, którym przypisano sklep. Kliknij sklep, aby zobaczyć jego transakcje.': 'Kun transaktioner med en tilknyttet butik. Klik på en butik for at se dens transaktioner.',
   'Brak wydatków przypisanych do sklepów w tym okresie.': 'Ingen udgifter tilknyttet butikker i denne periode.',
   'Bez sklepu': 'Ingen butik',
 
   // Bilans / Przychody / Wydatki
-  'Przychody i wydatki razem — podział na kategorie i trend w czasie': 'Indtægter og udgifter samlet — fordelt på kategorier og udvikling over tid',
+  'Przychody i wydatki razem - podział na kategorie i trend w czasie': 'Indtægter og udgifter samlet - fordelt på kategorier og udvikling over tid',
   '+ Przychód / wydatek': '+ Indtægt / udgift',
   'Przychody w okresie': 'Indtægter i perioden',
   'Wydatki w okresie': 'Udgifter i perioden',
-  'Przychody i wydatki — ostatnie 12 miesięcy': 'Indtægter & udgifter — seneste 12 måneder',
+  'Przychody i wydatki - ostatnie 12 miesięcy': 'Indtægter & udgifter - seneste 12 måneder',
   'Przychody i wydatki w czasie': 'Indtægter & udgifter over tid',
   'Słupki': 'Søjler',
   'Linia': 'Linje',
@@ -434,12 +434,12 @@ export const da: Record<string, string> = {
   '{0} mies.': '{0} mdr.',
   'Wybierz co najmniej jedną serię do wyświetlenia.': 'Vælg mindst én serie, der skal vises.',
   'Skumulowany bilans (oszczędności)': 'Akkumuleret balance (opsparing)',
-  'Suma miesięcznych bilansów narastająco — jak rósł Twój zaoszczędzony kapitał w tym okresie.':
-    'Sum af de månedlige balancer akkumuleret — hvordan din opsparede kapital voksede i denne periode.',
+  'Suma miesięcznych bilansów narastająco - jak rósł Twój zaoszczędzony kapitał w tym okresie.':
+    'Sum af de månedlige balancer akkumuleret - hvordan din opsparede kapital voksede i denne periode.',
   'Wydatki wg tagów': 'Udgifter efter tag',
   'Przychody wg tagów': 'Indtægter efter tag',
-  'Tylko transakcje z co najmniej jednym tagiem — transakcja z kilkoma tagami liczy się do każdego z nich.':
-    'Kun transaktioner med mindst ét tag — en transaktion med flere tags tælles med i hver af dem.',
+  'Tylko transakcje z co najmniej jednym tagiem - transakcja z kilkoma tagami liczy się do każdego z nich.':
+    'Kun transaktioner med mindst ét tag - en transaktion med flere tags tælles med i hver af dem.',
   'Brak transakcji z tagami w tym okresie.': 'Ingen transaktioner med tags i denne periode.',
   'Bez tagu': 'Intet tag',
   'Skąd biorą się Twoje przychody i jak zmieniają się w czasie': 'Hvor dine indtægter kommer fra, og hvordan de udvikler sig over tid',
@@ -504,7 +504,7 @@ export const da: Record<string, string> = {
   '+ Dodaj tag': '+ Tilføj tag',
   'Usunąć tag "{0}"?': 'Slette tagget "{0}"?',
   'Usuń tag': 'Slet tag',
-  'Brak tagów — dodaj pierwszy powyżej.': 'Ingen tags endnu — tilføj dit første ovenfor.',
+  'Brak tagów - dodaj pierwszy powyżej.': 'Ingen tags endnu - tilføj dit første ovenfor.',
 
   // Belka tax P/L
   'Po podatku od zysków kapitałowych (19%)': 'Efter kapitalgevinstskat (19%)',
@@ -522,7 +522,7 @@ export const da: Record<string, string> = {
   'Zarezerwowano na cele': 'Reserveret til mål',
   'Cele oszczędnościowe': 'Opsparingsmål',
   '+ Cel': '+ Mål',
-  'Brak celów — dodaj pierwszy.': 'Ingen mål endnu — tilføj dit første.',
+  'Brak celów - dodaj pierwszy.': 'Ingen mål endnu - tilføj dit første.',
   'Duże wydatki': 'Store udgifter',
   'Brak zaplanowanych wydatków.': 'Ingen planlagte udgifter.',
   'Cofnij': 'Fortryd',
@@ -544,8 +544,8 @@ export const da: Record<string, string> = {
 
   // Dividend simulation
   'Symulacja przyszłych dywidend (12 mies.)': 'Simulering af fremtidigt udbytte (12 mdr.)',
-  'Szacunek na podstawie obecnie posiadanych akcji i historycznego rytmu wypłat każdej spółki — nie jest to gwarancja przyszłych dywidend.':
-    'Et estimat baseret på de aktier, du ejer nu, og hver akties historiske udbetalingsmønster — dette er ingen garanti for fremtidigt udbytte.',
+  'Szacunek na podstawie obecnie posiadanych akcji i historycznego rytmu wypłat każdej spółki - nie jest to gwarancja przyszłych dywidend.':
+    'Et estimat baseret på de aktier, du ejer nu, og hver akties historiske udbetalingsmønster - dette er ingen garanti for fremtidigt udbytte.',
   'Szacunkowe dywidendy w kolejnych latach': 'Estimeret udbytte i de kommende år',
   'To samo założenie co powyżej (obecne akcje i historyczny rytm wypłat), zsumowane rok do roku na dłuższym horyzoncie.':
     'Samme antagelse som ovenfor (nuværende beholdning og historisk udbetalingsmønster), summeret år for år over en længere horisont.',
@@ -560,8 +560,8 @@ export const da: Record<string, string> = {
 
   // Invite-only registration / streak / onboarding gate
   'Login lub e-mail': 'Brugernavn eller e-mail',
-  'Rejestracja jest dostępna tylko na zaproszenie od innego użytkownika — poproś o link lub zeskanuj kod QR.':
-    'Registrering sker kun via invitation fra en anden bruger — bed om et link, eller scan en QR-kode.',
+  'Rejestracja jest dostępna tylko na zaproszenie od innego użytkownika - poproś o link lub zeskanuj kod QR.':
+    'Registrering sker kun via invitation fra en anden bruger - bed om et link, eller scan en QR-kode.',
   'Masz już konto? Zaloguj się': 'Har du allerede en konto? Log ind',
   'Rejestracja jest dostępna tylko na zaproszenie od innego użytkownika.': 'Registrering sker kun via invitation fra en anden bruger.',
   'Seria logowań: {0} dni': '{0} dages login-stime',
@@ -569,14 +569,14 @@ export const da: Record<string, string> = {
   'Limit: bez ograniczeń': 'Grænse: ingen',
   'Pozostało w tym tygodniu: {0} z {1}': '{0} af {1} tilbage denne uge',
   '+ Wygeneruj zaproszenie': '+ Generer invitation',
-  'Wykorzystano limit zaproszeń na ten tydzień — odnawia się na bieżąco, 7 dni po każdym zaproszeniu.':
-    'Du har brugt ugens invitationsgrænse — den fornyes løbende, 7 dage efter hver invitation.',
+  'Wykorzystano limit zaproszeń na ten tydzień - odnawia się na bieżąco, 7 dni po każdym zaproszeniu.':
+    'Du har brugt ugens invitationsgrænse - den fornyes løbende, 7 dage efter hver invitation.',
   'Skopiowano!': 'Kopieret!',
   'Kopiuj link': 'Kopier link',
   'Pokaż QR': 'Vis QR',
   'Ukryj QR': 'Skjul QR',
   'Zaakceptowane przez {0} ({1})': 'Accepteret af {0} ({1})',
-  'Oczekuje — wygenerowano {0}': 'Afventer — oprettet {0}',
+  'Oczekuje - wygenerowano {0}': 'Afventer - oprettet {0}',
   'Czy na pewno chcesz zmienić nazwę użytkownika? Można to zrobić tylko raz na 30 dni.':
     'Er du sikker på, at du vil ændre dit brugernavn? Det kan kun gøres én gang hver 30. dag.',
   'Dodaj co najmniej jedno konto bankowe, żeby przejść dalej.': 'Tilføj mindst én bankkonto for at fortsætte.',
@@ -592,8 +592,8 @@ export const da: Record<string, string> = {
 
   // Editor role / article CRM / admin role assignment
   'Redakcja': 'Redaktion',
-  'Masz uprawnienia redaktora — możesz dodawać i edytować artykuły.':
-    'Du har redaktørrettigheder — du kan tilføje og redigere artikler.',
+  'Masz uprawnienia redaktora - możesz dodawać i edytować artykuły.':
+    'Du har redaktørrettigheder - du kan tilføje og redigere artikler.',
   'Przejdź do redakcji': 'Gå til redaktionen',
   'Redakcja artykułów': 'Artikelredaktion',
   'Dodawaj i edytuj artykuły widoczne na stronie głównej.': 'Tilføj og rediger artikler, der vises på forsiden.',
@@ -618,7 +618,7 @@ export const da: Record<string, string> = {
   'Czy na pewno chcesz usunąć tę lokatę?': 'Er du sikker på, at du vil slette dette indskud?',
   'Czy na pewno chcesz usunąć tę obligację?': 'Er du sikker på, at du vil slette denne obligation?',
   'Kategorie, sklepy i tagi': 'Kategorier, butikker & tags',
-  'Zarządzaj tu wszystkimi kategoriami, sklepami i tagami używanymi w budżecie — w jednym miejscu.':
+  'Zarządzaj tu wszystkimi kategoriami, sklepami i tagami używanymi w budżecie - w jednym miejscu.':
     'Administrer alle kategorier, butikker og tags, der bruges i dit budget, ét sted.',
   'Kategorie przychodów': 'Indtægtskategorier',
   'Kategorie wydatków': 'Udgiftskategorier',
@@ -634,16 +634,16 @@ export const da: Record<string, string> = {
 
   // Feature-interest onboarding + account settings
   'Zainteresowania': 'Interesser',
-  'Z czego chcesz korzystać? Odznacz to, czego nie potrzebujesz — zawsze możesz to zmienić później w ustawieniach konta.':
-    'Hvad vil du bruge? Fjern fluebenet ved det, du ikke har brug for — du kan altid ændre det senere i kontoindstillingerne.',
+  'Z czego chcesz korzystać? Odznacz to, czego nie potrzebujesz - zawsze możesz to zmienić później w ustawieniach konta.':
+    'Hvad vil du bruge? Fjern fluebenet ved det, du ikke har brug for - du kan altid ændre det senere i kontoindstillingerne.',
   'Budżet': 'Budget',
   'Portfel akcji, dywidendy, analiza spółek': 'Aktieportefølje, udbytte, aktieanalyse',
   'Notowanie przychodów i wydatków': 'Registrering af indtægter og udgifter',
   'Cele oszczędnościowe i planowane wydatki': 'Opsparingsmål og planlagte udgifter',
   'Kalkulator inwestycyjny - obligacje, lokaty, giełda': 'Investeringsberegner - obligationer, indskud, aktiemarked',
   'Z czego korzystasz': 'Hvad du bruger',
-  'Odznaczone opcje znikają z górnego menu — możesz je włączyć z powrotem w każdej chwili.':
-    'Fravalgte muligheder forsvinder fra topmenuen — du kan altid slå dem til igen.',
+  'Odznaczone opcje znikają z górnego menu - możesz je włączyć z powrotem w każdej chwili.':
+    'Fravalgte muligheder forsvinder fra topmenuen - du kan altid slå dem til igen.',
 
   // Chart type switcher
   'Wykres kołowy': 'Lagkagediagram',
@@ -676,8 +676,8 @@ export const da: Record<string, string> = {
   '+ Wyślij zaproszenie mailem': '+ Send invitation via e-mail',
 
   // Growth summary "no data" state
-  'Brak danych — zarejestruj pierwszą wpłatę, aby zobaczyć realny zwrot.':
-    'Ingen data — registrer din første indbetaling for at se dit reelle afkast.',
+  'Brak danych - zarejestruj pierwszą wpłatę, aby zobaczyć realny zwrot.':
+    'Ingen data - registrer din første indbetaling for at se dit reelle afkast.',
 
   // Admin user detail page
   'Szczegóły': 'Detaljer',
@@ -721,7 +721,7 @@ export const da: Record<string, string> = {
   'To, co zarobiłeś: odsetki na lokatach i obligacjach, zysk na akcjach oraz dywidendy (po podatku Belki).':
     'Det, du har tjent: renter på indskud og obligationer, gevinst på aktier samt udbytte (efter kapitalgevinstskat).',
 
-  // Zmiana wartości majątku — expandable breakdown
+  // Zmiana wartości majątku - expandable breakdown
   'Kliknij, aby zobaczyć podział zmiany na akcje, lokaty, obligacje i gotówkę':
     'Klik for at se ændringen fordelt på aktier, indskud, obligationer og kontanter',
   'Brak zmian w poszczególnych składnikach.': 'Ingen ændring i de enkelte komponenter.',
@@ -768,13 +768,13 @@ export const da: Record<string, string> = {
   'Kolor roli': 'Rollefarve',
   'Utwórz rolę': 'Opret rolle',
   '+ Nowa rola': '+ Ny rolle',
-  'Twórz role z wybranym zestawem uprawnień i nadawaj je użytkownikom w ich profilu — niezależnie od statusu administratora/redaktora.':
-    'Opret roller med et valgt sæt rettigheder, og tildel dem til brugere fra deres profil — uafhængigt af admin-/redaktørstatus.',
+  'Twórz role z wybranym zestawem uprawnień i nadawaj je użytkownikom w ich profilu - niezależnie od statusu administratora/redaktora.':
+    'Opret roller med et valgt sæt rettigheder, og tildel dem til brugere fra deres profil - uafhængigt af admin-/redaktørstatus.',
   '{0} uprawnień, {1} użytkowników': '{0} rettigheder, {1} brugere',
   'Usunąć rolę {0}? Zostanie odebrana wszystkim {1} przypisanym użytkownikom.':
     'Slette rollen {0}? Den fjernes fra alle {1} tildelte brugere.',
   'Brak ról.': 'Ingen roller endnu.',
-  'Brak ról — utwórz je w zakładce "Role".': 'Ingen roller endnu — opret dem under fanen "Roller".',
+  'Brak ról - utwórz je w zakładce "Role".': 'Ingen roller endnu - opret dem under fanen "Roller".',
   'Podgląd statystyk aplikacji': 'Se app-statistik',
   'Podgląd listy użytkowników': 'Se brugerliste',
   'Zarządzanie użytkownikami (aktywacja, archiwizacja)': 'Administrer brugere (aktivering, arkivering)',
@@ -783,14 +783,14 @@ export const da: Record<string, string> = {
   'Zarządzanie zgłoszeniami feedbacku': 'Administrere feedback-indsendelser',
   'Tworzenie i edycja ról': 'Oprette og redigere roller',
 
-  // Invite friends — delete, sub-tabs, expiry
+  // Invite friends - delete, sub-tabs, expiry
   'Oczekujące zaproszenia': 'Afventende invitationer',
   'Przyjęte zaproszenia': 'Accepterede invitationer',
   'Brak oczekujących zaproszeń.': 'Ingen afventende invitationer.',
   'Brak przyjętych zaproszeń.': 'Ingen accepterede invitationer.',
   'Usunąć ten link z zaproszeniem?': 'Slette dette invitationslink?',
-  'Wygasło — wygenerowano {0}': 'Udløbet — oprettet {0}',
-  'Oczekuje — wygenerowano {0}, wygasa po 48h': 'Afventer — oprettet {0}, udløber efter 48 timer',
+  'Wygasło - wygenerowano {0}': 'Udløbet - oprettet {0}',
+  'Oczekuje - wygenerowano {0}, wygasa po 48h': 'Afventer - oprettet {0}, udløber efter 48 timer',
 
   // Login history
   'Historia logowań': 'Login-historik',
@@ -804,7 +804,7 @@ export const da: Record<string, string> = {
   // Username change lock
   'Można zmienić od {0}': 'Kan ændres igen fra {0}',
 
-  // Savings goals — reserve from savings, multi-month payday reservations
+  // Savings goals - reserve from savings, multi-month payday reservations
   'Zarezerwuj z oszczędności': 'Reserver fra opsparing',
   'Zarezerwuj część pensji z jednego lub kilku konkretnych miesięcy naraz.':
     'Reserver en del af lønnen fra én eller flere konkrete måneder på én gang.',
@@ -835,22 +835,22 @@ export const da: Record<string, string> = {
   'Panuj nad': 'Få styr på',
   'swoimi finansami': 'din økonomi',
   'Zbudowane, żeby faktycznie z tego korzystać': 'Bygget til, at du rent faktisk bruger det',
-  'Nie kolejny arkusz kalkulacyjny — narzędzie, które samo liczy to, co dla Ciebie ważne.':
-    'Ikke endnu et regneark — et værktøj, der selv regner det ud, der betyder noget for dig.',
+  'Nie kolejny arkusz kalkulacyjny - narzędzie, które samo liczy to, co dla Ciebie ważne.':
+    'Ikke endnu et regneark - et værktøj, der selv regner det ud, der betyder noget for dig.',
   'Wszystko w jednym miejscu': 'Alt på ét sted',
-  'Konta bankowe, akcje, obligacje i lokaty — jeden widok na cały Twój majątek, bez przełączania się między aplikacjami banków i domów maklerskich.':
-    'Bankkonti, aktier, obligationer og indskud — ét samlet overblik over hele din formue, uden at skifte mellem bank- og mæglerapps.',
+  'Konta bankowe, akcje, obligacje i lokaty - jeden widok na cały Twój majątek, bez przełączania się między aplikacjami banków i domów maklerskich.':
+    'Bankkonti, aktier, obligationer og indskud - ét samlet overblik over hele din formue, uden at skifte mellem bank- og mæglerapps.',
   'Realny zwrot z inwestycji': 'Reelt investeringsafkast',
-  'Zysk liczony osobno od wpłaconego kapitału — zobaczysz dokładnie, ile realnie zarobiłeś na lokatach, obligacjach i akcjach, po podatku Belki.':
-    'Gevinsten beregnes adskilt fra den indbetalte kapital — du kan se præcis, hvad du reelt har tjent på indskud, obligationer og aktier, efter kapitalgevinstskat.',
+  'Zysk liczony osobno od wpłaconego kapitału - zobaczysz dokładnie, ile realnie zarobiłeś na lokatach, obligacjach i akcjach, po podatku Belki.':
+    'Gevinsten beregnes adskilt fra den indbetalte kapital - du kan se præcis, hvad du reelt har tjent på indskud, obligationer og aktier, efter kapitalgevinstskat.',
   'Budżet pod kontrolą': 'Budget under kontrol',
-  'Automatyczny import wyciągów, kategorie, sklepy i tagi — analiza przychodów i wydatków, która sama się aktualizuje.':
-    'Automatisk import af kontoudtog, kategorier, butikker og tags — en indtægts-/udgiftsanalyse, der opdaterer sig selv.',
+  'Automatyczny import wyciągów, kategorie, sklepy i tagi - analiza przychodów i wydatków, która sama się aktualizuje.':
+    'Automatisk import af kontoudtog, kategorier, butikker og tags - en indtægts-/udgiftsanalyse, der opdaterer sig selv.',
   'Ustaw cel, rezerwuj kwoty z konkretnych wypłat lub z bieżących oszczędności i śledź postęp na żywo.':
     'Sæt et mål, reserver beløb fra konkrete lønninger eller din nuværende opsparing, og følg fremskridtet live.',
   'Dywidendy i podatki': 'Udbytte og skat',
-  'Historia i prognoza wypłat dywidend, szacowany podatek Belki do zapłaty — żadnych niespodzianek przy rozliczeniu.':
-    'Historik og prognose for udbyttebetalinger, estimeret kapitalgevinstskat at betale — ingen overraskelser ved selvangivelsen.',
+  'Historia i prognoza wypłat dywidend, szacowany podatek Belki do zapłaty - żadnych niespodzianek przy rozliczeniu.':
+    'Historik og prognose for udbyttebetalinger, estimeret kapitalgevinstskat at betale - ingen overraskelser ved selvangivelsen.',
   'Twoje dane, Twoja kontrola': 'Dine data, din kontrol',
   'Dostęp wyłącznie na zaproszenie, bez reklam i bez śledzenia. Historia logowań pokazuje dokładnie, kto i kiedy wchodził na Twoje konto.':
     'Kun adgang via invitation, ingen reklamer og ingen sporing. Login-historikken viser præcis, hvem der har tilgået din konto, og hvornår.',
@@ -862,26 +862,26 @@ export const da: Record<string, string> = {
   'Kilka minut wystarczy, żeby dodać konta bankowe, portfel akcji, lokaty i obligacje.':
     'Et par minutter er nok til at tilføje bankkonti, aktieportefølje, indskud og obligationer.',
   'Widzisz cały obraz': 'Du ser hele billedet',
-  'Dashboard aktualizuje się na bieżąco — majątek, zwrot z inwestycji i budżet w jednym miejscu.':
-    'Dashboardet opdateres løbende — formue, investeringsafkast og budget ét sted.',
+  'Dashboard aktualizuje się na bieżąco - majątek, zwrot z inwestycji i budżet w jednym miejscu.':
+    'Dashboardet opdateres løbende - formue, investeringsafkast og budget ét sted.',
   'Masz już zaproszenie?': 'Har du allerede en invitation?',
-  'Zaloguj się i zobacz cały swój majątek w jednym miejscu — od razu po pierwszym dodaniu konta.':
-    'Log ind, og se hele din formue ét sted — lige efter du har tilføjet din første konto.',
+  'Zaloguj się i zobacz cały swój majątek w jednym miejscu - od razu po pierwszym dodaniu konta.':
+    'Log ind, og se hele din formue ét sted - lige efter du har tilføjet din første konto.',
 
-  // Request access — landing page form + admin review
+  // Request access - landing page form + admin review
   'Nie masz zaproszenia? Poproś o dostęp →': 'Har du ikke en invitation? Bed om adgang →',
   'Twój adres e-mail': 'Din e-mailadresse',
   'Poproś o dostęp': 'Bed om adgang',
-  'Dziękujemy! Sprawdź skrzynkę e-mail — napiszemy, gdy administrator rozpatrzy Twoją prośbę.':
-    'Tak! Tjek din indbakke — vi skriver til dig, når en administrator har behandlet din anmodning.',
+  'Dziękujemy! Sprawdź skrzynkę e-mail - napiszemy, gdy administrator rozpatrzy Twoją prośbę.':
+    'Tak! Tjek din indbakke - vi skriver til dig, når en administrator har behandlet din anmodning.',
   'Prośby o dostęp': 'Adgangsanmodninger',
   'Oczekujące': 'Afventende',
   'Zaakceptowane': 'Accepteret',
   'Zaakceptowano': 'Accepteret',
   'Odrzucono': 'Afvist',
   'Zaakceptuj losowy procent oczekujących': 'Accepter en tilfældig procentdel af de afventende',
-  'Przydatne przy stopniowym otwieraniu dostępu — zamiast rozpatrywać każdą prośbę osobno.':
-    'Nyttigt ved gradvis åbning af adgang — i stedet for at behandle hver anmodning enkeltvis.',
+  'Przydatne przy stopniowym otwieraniu dostępu - zamiast rozpatrywać każdą prośbę osobno.':
+    'Nyttigt ved gradvis åbning af adgang - i stedet for at behandle hver anmodning enkeltvis.',
   'Zaakceptuj': 'Accepter',
   'Zaakceptowano {0} z {1} oczekujących próśb.': 'Accepteret {0} af {1} afventende anmodninger.',
   'Brak próśb w tej kategorii.': 'Ingen anmodninger i denne kategori.',
@@ -891,24 +891,24 @@ export const da: Record<string, string> = {
   'Odrzuć': 'Afvis',
 
   // Role acceptance workflow
-  'Kliknięcie oferuje rolę — zaczyna obowiązywać dopiero, gdy użytkownik ją zaakceptuje.':
-    'Klik tilbyder rollen — den træder først i kraft, når brugeren accepterer den.',
-  'Oczekuje na akceptację użytkownika — kliknij, aby wycofać ofertę': 'Afventer brugerens accept — klik for at trække tilbuddet tilbage',
-  'Zaakceptowana — kliknij, aby odebrać': 'Accepteret — klik for at fjerne',
+  'Kliknięcie oferuje rolę - zaczyna obowiązywać dopiero, gdy użytkownik ją zaakceptuje.':
+    'Klik tilbyder rollen - den træder først i kraft, når brugeren accepterer den.',
+  'Oczekuje na akceptację użytkownika - kliknij, aby wycofać ofertę': 'Afventer brugerens accept - klik for at trække tilbuddet tilbage',
+  'Zaakceptowana - kliknij, aby odebrać': 'Accepteret - klik for at fjerne',
   'Kliknij, aby zaoferować tę rolę': 'Klik for at tilbyde denne rolle',
   '(oczekuje)': '(afventer)',
   'Nowe role do zaakceptowania': 'Nye roller til accept',
-  'Administrator zaproponował Ci nowe uprawnienia — nie zaczną obowiązywać, dopóki ich nie zaakceptujesz.':
-    'En administrator har tilbudt dig nye rettigheder — de træder ikke i kraft, før du accepterer dem.',
+  'Administrator zaproponował Ci nowe uprawnienia - nie zaczną obowiązywać, dopóki ich nie zaakceptujesz.':
+    'En administrator har tilbudt dig nye rettigheder - de træder ikke i kraft, før du accepterer dem.',
   'od {0}': 'fra {0}',
 
   // Login back-link, updated budget feature card
   '← Strona główna': '← Forside',
   'Przychody, wydatki i budżet': 'Indtægter, udgifter og budget',
-  'Zarządzaj przychodami i wydatkami, monitoruj budżet miesiąc po miesiącu i sprawdzaj bilans — automatyczny import wyciągów, kategorie, sklepy i tagi robią to za Ciebie.':
-    'Administrer dine indtægter og udgifter, følg dit budget måned for måned, og tjek din balance — automatisk import af kontoudtog, kategorier, butikker og tags klarer arbejdet for dig.',
+  'Zarządzaj przychodami i wydatkami, monitoruj budżet miesiąc po miesiącu i sprawdzaj bilans - automatyczny import wyciągów, kategorie, sklepy i tagi robią to za Ciebie.':
+    'Administrer dine indtægter og udgifter, følg dit budget måned for måned, og tjek din balance - automatisk import af kontoudtog, kategorier, butikker og tags klarer arbejdet for dig.',
 
-  // Translation coverage sweep — everything a distinct-strings audit found
+  // Translation coverage sweep - everything a distinct-strings audit found
   // with no English entry yet, across Planowanie, AdminUsers, AnalizaSpolek,
   // StatementImportPanel, PrivacyPolicy, Landing, and assorted small labels.
   '+ Przychód/Wydatek': '+ Indtægt/Udgift',
@@ -918,15 +918,15 @@ export const da: Record<string, string> = {
   'Aktywni dzisiaj': 'Aktive i dag',
   'Aktywni użytkownicy dziennie (30 dni)': 'Daglige aktive brugere (30 dage)',
   'Artykuły o finansach osobistych': 'Artikler om personlig økonomi',
-  'Brak stałych kosztów — dodaj pierwszy.': 'Ingen faste udgifter endnu — tilføj din første.',
+  'Brak stałych kosztów - dodaj pierwszy.': 'Ingen faste udgifter endnu - tilføj din første.',
   'Brak użytkowników spełniających kryteria.': 'Ingen brugere matcher filtrene.',
   'Brak wycenionych pozycji w portfelu.': 'Ingen prissatte positioner i porteføljen.',
   'Brak zarezerwowanych wypłat.': 'Ingen reserverede lønninger endnu.',
-  'Czynsz, subskrypcje, ubezpieczenia — cykliczne opłaty co miesiąc, niezależnie od tego, czy już je zapłaciłeś w tym miesiącu.':
-    'Husleje, abonnementer, forsikringer — tilbagevendende månedlige udgifter, uanset om du allerede har betalt dem denne måned.',
+  'Czynsz, subskrypcje, ubezpieczenia - cykliczne opłaty co miesiąc, niezależnie od tego, czy już je zapłaciłeś w tym miesiącu.':
+    'Husleje, abonnementer, forsikringer - tilbagevendende månedlige udgifter, uanset om du allerede har betalt dem denne måned.',
   'Czytaj więcej →': 'Læs mere →',
-  'Dane konta przechowujemy tak długo, jak konto jest aktywne. Administrator może zarchiwizować konto (dezaktywacja z zachowaniem danych) zamiast je usuwać. Obecnie usunięcie danych na stałe odbywa się na indywidualną prośbę, wysłaną administratorowi — w aplikacji nie ma jeszcze samoobsługowego przycisku "usuń konto".':
-    'Vi opbevarer kontodata, så længe kontoen er aktiv. En administrator kan arkivere en konto (deaktivere den, mens dataene bevares) i stedet for at slette den. I øjeblikket sker permanent sletning af data efter individuel anmodning til administratoren — appen har endnu ikke en selvbetjeningsknap til at "slette konto".',
+  'Dane konta przechowujemy tak długo, jak konto jest aktywne. Administrator może zarchiwizować konto (dezaktywacja z zachowaniem danych) zamiast je usuwać. Obecnie usunięcie danych na stałe odbywa się na indywidualną prośbę, wysłaną administratorowi - w aplikacji nie ma jeszcze samoobsługowego przycisku "usuń konto".':
+    'Vi opbevarer kontodata, så længe kontoen er aktiv. En administrator kan arkivere en konto (deaktivere den, mens dataene bevares) i stedet for at slette den. I øjeblikket sker permanent sletning af data efter individuel anmodning til administratoren - appen har endnu ikke en selvbetjeningsknap til at "slette konto".',
   'Danych nie sprzedajemy i nie udostępniamy w celach marketingowych. Współpracujemy wyłącznie z dostawcami niezbędnymi do działania serwisu:':
     'Vi sælger aldrig dine data eller deler dem til markedsføringsformål. Vi samarbejder kun med udbydere, der er nødvendige for at drive tjenesten:',
   'Dashboard': 'Dashboard',
@@ -936,21 +936,21 @@ export const da: Record<string, string> = {
   'Dołączył(a)': 'Tilmeldt',
   'Dzień wypłaty pozwala policzyć, ile wypłat zostało do terminu każdego celu oszczędnościowego.':
     'Lønudbetalingsdagen gør det muligt at beregne, hvor mange lønninger der er tilbage til fristen for hvert opsparingsmål.',
-  'Google Analytics — statystyki odwiedzin strony (patrz sekcja wyżej),': 'Google Analytics — statistik over sidebesøg (se afsnittet ovenfor),',
-  'Hasła są haszowane, komunikacja z aplikacją odbywa się przez HTTPS, a dostęp do panelu administratora mają wyłącznie konta z uprawnieniami administratora lub odpowiednią rolą — i nawet ten panel nie pokazuje treści Twoich transakcji ani sald, tylko zbiorcze statystyki. Treść danych finansowych nie jest też dostępna przez wbudowany panel Django — do bazy danych dociera się wyłącznie bezpośrednim, świadomym dostępem administracyjnym do infrastruktury, nie jednym kliknięciem w aplikacji.':
-    'Adgangskoder hashes, kommunikationen med appen foregår via HTTPS, og kun konti med administratorrettigheder eller en relevant rolle har adgang til administrationspanelet — og selv dette panel viser aldrig indholdet af dine transaktioner eller saldi, kun samlet statistik. Indholdet af finansielle data er heller ikke tilgængeligt via Djangos indbyggede administrationspanel — databasen kan kun tilgås gennem bevidst, direkte administrativ adgang til infrastrukturen, ikke ved et enkelt klik i appen.',
+  'Google Analytics - statystyki odwiedzin strony (patrz sekcja wyżej),': 'Google Analytics - statistik over sidebesøg (se afsnittet ovenfor),',
+  'Hasła są haszowane, komunikacja z aplikacją odbywa się przez HTTPS, a dostęp do panelu administratora mają wyłącznie konta z uprawnieniami administratora lub odpowiednią rolą - i nawet ten panel nie pokazuje treści Twoich transakcji ani sald, tylko zbiorcze statystyki. Treść danych finansowych nie jest też dostępna przez wbudowany panel Django - do bazy danych dociera się wyłącznie bezpośrednim, świadomym dostępem administracyjnym do infrastruktury, nie jednym kliknięciem w aplikacji.':
+    'Adgangskoder hashes, kommunikationen med appen foregår via HTTPS, og kun konti med administratorrettigheder eller en relevant rolle har adgang til administrationspanelet - og selv dette panel viser aldrig indholdet af dine transaktioner eller saldi, kun samlet statistik. Indholdet af finansielle data er heller ikke tilgængeligt via Djangos indbyggede administrationspanel - databasen kan kun tilgås gennem bevidst, direkte administrativ adgang til infrastrukturen, ikke ved et enkelt klik i appen.',
   'Historia': 'Historik',
   'Importuj wyciąg z konta': 'Importer kontoudtog',
   'Kategoria widoczna tylko dla tego konta': 'Kategori kun synlig for denne konto',
   'Koncentracja portfela': 'Porteføljekoncentration',
-  'Konta bankowe i ich salda, transakcje budżetowe, kategorie/sklepy/tagi, posiadane akcje i transakcje giełdowe, lokaty, obligacje, dywidendy, cele oszczędnościowe i plany budżetowe — czyli wszystko, co wpisujesz, żeby aplikacja mogła śledzić Twój majątek. Te dane widzisz tylko Ty — inni użytkownicy nie mają do nich dostępu, a panel administratora pokazuje wyłącznie zbiorcze liczby i aktywność konta (np. liczbę transakcji), nigdy treść Twoich transakcji czy sald.':
-    'Bankkonti og deres saldi, budgettransaktioner, kategorier/butikker/tags, aktier og aktietransaktioner du ejer, indskud, obligationer, udbytte, opsparingsmål og budgetplaner — altså alt det, du indtaster, for at appen kan følge din formue. Kun du kan se disse data — andre brugere har ikke adgang til dem, og administrationspanelet viser udelukkende samlede tal og kontoaktivitet (fx antal transaktioner), aldrig indholdet af dine transaktioner eller saldi.',
-  'Konta w innej walucie będą oznaczone jako walutowe — to tylko etykieta, nie wpływa na przeliczenia.':
-    'Konti i en anden valuta markeres som udenlandske — det er kun en etiket og påvirker ikke omregningerne.',
-  'Logowanie działa w oparciu o tokeny JWT przechowywane w local storage przeglądarki — to samo miejsce przechowuje wybrany motyw kolorystyczny i język, zanim zostaną zapisane na koncie. Nie ma żadnych skryptów reklamowych ani śledzących w celach marketingowych.':
-    'Login fungerer via JWT-tokens, der gemmes i browserens local storage — samme sted opbevares det valgte farvetema og sprog, før de gemmes på kontoen. Der er ingen reklame- eller sporingsscripts til markedsføringsformål.',
-  'Masz prawo do wglądu w swoje dane, ich poprawienia (większość — bezpośrednio w ustawieniach konta) oraz do żądania ich usunięcia. W tym celu napisz do nas na adres podany niżej albo skorzystaj z widgetu "Zostaw feedback" w aplikacji.':
-    'Du har ret til at se dine data, rette dem (de fleste — direkte i kontoindstillingerne) og anmode om, at de slettes. Skriv til os på adressen nedenfor, eller brug widgetten "Send feedback" i appen.',
+  'Konta bankowe i ich salda, transakcje budżetowe, kategorie/sklepy/tagi, posiadane akcje i transakcje giełdowe, lokaty, obligacje, dywidendy, cele oszczędnościowe i plany budżetowe - czyli wszystko, co wpisujesz, żeby aplikacja mogła śledzić Twój majątek. Te dane widzisz tylko Ty - inni użytkownicy nie mają do nich dostępu, a panel administratora pokazuje wyłącznie zbiorcze liczby i aktywność konta (np. liczbę transakcji), nigdy treść Twoich transakcji czy sald.':
+    'Bankkonti og deres saldi, budgettransaktioner, kategorier/butikker/tags, aktier og aktietransaktioner du ejer, indskud, obligationer, udbytte, opsparingsmål og budgetplaner - altså alt det, du indtaster, for at appen kan følge din formue. Kun du kan se disse data - andre brugere har ikke adgang til dem, og administrationspanelet viser udelukkende samlede tal og kontoaktivitet (fx antal transaktioner), aldrig indholdet af dine transaktioner eller saldi.',
+  'Konta w innej walucie będą oznaczone jako walutowe - to tylko etykieta, nie wpływa na przeliczenia.':
+    'Konti i en anden valuta markeres som udenlandske - det er kun en etiket og påvirker ikke omregningerne.',
+  'Logowanie działa w oparciu o tokeny JWT przechowywane w local storage przeglądarki - to samo miejsce przechowuje wybrany motyw kolorystyczny i język, zanim zostaną zapisane na koncie. Nie ma żadnych skryptów reklamowych ani śledzących w celach marketingowych.':
+    'Login fungerer via JWT-tokens, der gemmes i browserens local storage - samme sted opbevares det valgte farvetema og sprog, før de gemmes på kontoen. Der er ingen reklame- eller sporingsscripts til markedsføringsformål.',
+  'Masz prawo do wglądu w swoje dane, ich poprawienia (większość - bezpośrednio w ustawieniach konta) oraz do żądania ich usunięcia. W tym celu napisz do nas na adres podany niżej albo skorzystaj z widgetu "Zostaw feedback" w aplikacji.':
+    'Du har ret til at se dine data, rette dem (de fleste - direkte i kontoindstillingerne) og anmode om, at de slettes. Skriv til os på adressen nedenfor, eller brug widgetten "Send feedback" i appen.',
   'Na plusie / na minusie / bez zmian': 'I plus / i minus / uændret',
   'Najgorsza pozycja': 'Dårligste position',
   'Najlepsza pozycja': 'Bedste position',
@@ -959,7 +959,7 @@ export const da: Record<string, string> = {
     'Brugernavn, for- og efternavn, e-mailadresse (hvis angivet) og adgangskode (kun opbevaret hashet, aldrig i klartekst). Ved registrering registrerer vi også, hvis invitation kontoen blev oprettet fra.',
   'Nie udało się dodać tagu.': 'Tagget kunne ikke tilføjes.',
   'Nie udało się przetworzyć pliku.': 'Filen kunne ikke behandles.',
-  'Nie udało się zaimportować transakcji — spróbuj wgrać plik ponownie.': 'Transaktionerne kunne ikke importeres — prøv at uploade filen igen.',
+  'Nie udało się zaimportować transakcji - spróbuj wgrać plik ponownie.': 'Transaktionerne kunne ikke importeres - prøv at uploade filen igen.',
   'Nie znaleziono artykułu.': 'Artiklen blev ikke fundet.',
   'Nowi w tym tygodniu': 'Nye denne uge',
   'Odblokuj': 'Lås op',
@@ -970,7 +970,7 @@ export const da: Record<string, string> = {
   'Ostatnie IP': 'Seneste IP',
   'Ostatnie logowanie': 'Seneste login',
   'Panel administratora': 'Administrationspanel',
-  'Pensja i dzień wypłaty ({0}. dnia miesiąca) — zmień': 'Løn og lønningsdag (den {0}. i måneden) — skift',
+  'Pensja i dzień wypłaty ({0}. dnia miesiąca) - zmień': 'Løn og lønningsdag (den {0}. i måneden) - skift',
   'Plik PDF': 'PDF-fil',
   'Podgląd wyciągu': 'Forhåndsvisning af kontoudtog',
   'Podział wg rynku': 'Fordeling efter marked',
@@ -982,17 +982,17 @@ export const da: Record<string, string> = {
   'Zmiana wartości względem wpłaconego kapitału na tym koncie': 'Værdiændring i forhold til den indbetalte kapital på denne konto',
   'Zainwestowano': 'Investeret',
   'Pozostałe ({0})': 'Øvrige ({0})',
-  'Przy każdym logowaniu zapisujemy adres IP oraz podstawowe informacje o przeglądarce/systemie (User-Agent) — to podstawa historii logowań widocznej w Twoim koncie oraz ochrony przed nieautoryzowanym dostępem. Zapisujemy też, w które dni byłeś/aś aktywny(a) (do serii logowań i statystyk).':
-    'Ved hvert login registrerer vi IP-adressen samt grundlæggende oplysninger om browser/system (User-Agent) — dette danner grundlaget for login-historikken i din konto og beskyttelsen mod uautoriseret adgang. Vi registrerer også, hvilke dage du har været aktiv (til login-stimer og statistik).',
+  'Przy każdym logowaniu zapisujemy adres IP oraz podstawowe informacje o przeglądarce/systemie (User-Agent) - to podstawa historii logowań widocznej w Twoim koncie oraz ochrony przed nieautoryzowanym dostępem. Zapisujemy też, w które dni byłeś/aś aktywny(a) (do serii logowań i statystyk).':
+    'Ved hvert login registrerer vi IP-adressen samt grundlæggende oplysninger om browser/system (User-Agent) - dette danner grundlaget for login-historikken i din konto og beskyttelsen mod uautoriseret adgang. Vi registrerer også, hvilke dage du har været aktiv (til login-stimer og statistik).',
   'Rola': 'Rolle',
-  'Skład, koncentracja i wyniki Twoich pozycji — przeliczone do jednej waluty, żeby dało się je sensownie porównać.':
-    'Sammensætningen, koncentrationen og resultaterne af dine positioner — omregnet til én valuta, så de kan sammenlignes meningsfuldt.',
+  'Skład, koncentracja i wyniki Twoich pozycji - przeliczone do jednej waluty, żeby dało się je sensownie porównać.':
+    'Sammensætningen, koncentrationen og resultaterne af dine positioner - omregnet til én valuta, så de kan sammenlignes meningsfuldt.',
   'Statystyki portfela': 'Porteføljestatistik',
   'Stałe koszty': 'Faste udgifter',
   'Stałe koszty / mies.': 'Faste udgifter / md.',
   'Suma': 'I alt',
   'Szukaj': 'Søg',
-  'Termin wypłaty minął przed celem — dodaj więcej lub przesuń termin': 'Lønningsdagen ligger før målets frist — tilføj mere, eller udskyd fristen',
+  'Termin wypłaty minął przed celem - dodaj więcej lub przesuń termin': 'Lønningsdagen ligger før målets frist - tilføj mere, eller udskyd fristen',
   'Transakcje akcji': 'Aktietransaktioner',
   'Transakcje budżetu': 'Budgettransaktioner',
   'Treść zgłoszeń wysłanych przez widget "Zostaw feedback" oraz historia wysłanych zaproszeń (komu, kiedy, czy zostało przyjęte).':
@@ -1003,16 +1003,16 @@ export const da: Record<string, string> = {
   'Uwagi': 'Bemærkninger',
   'Użytkownicy aplikacji i ich aktywność': 'Appens brugere og deres aktivitet',
   'Użytkownicy łącznie': 'Brugere i alt',
-  'Używamy Google Analytics do liczenia odwiedzin i podstawowej analityki ruchu na stronie — Google ustawia w tym celu własne ciasteczka i przetwarza dane takie jak adres IP, rodzaj urządzenia i przeglądarki oraz odwiedzane podstrony. Więcej o tym, jak Google przetwarza te dane, znajdziesz w polityce prywatności Google.':
-    'Vi bruger Google Analytics til at tælle besøg og få grundlæggende trafikanalyse — Google sætter sine egne cookies til dette formål og behandler data som IP-adresse, enheds- og browsertype samt besøgte undersider. Du kan læse mere om, hvordan Google behandler disse data, i Googles egen privatlivspolitik.',
+  'Używamy Google Analytics do liczenia odwiedzin i podstawowej analityki ruchu na stronie - Google ustawia w tym celu własne ciasteczka i przetwarza dane takie jak adres IP, rodzaj urządzenia i przeglądarki oraz odwiedzane podstrony. Więcej o tym, jak Google przetwarza te dane, znajdziesz w polityce prywatności Google.':
+    'Vi bruger Google Analytics til at tælle besøg og få grundlæggende trafikanalyse - Google sætter sine egne cookies til dette formål og behandler data som IP-adresse, enheds- og browsertype samt besøgte undersider. Du kan læse mere om, hvordan Google behandler disse data, i Googles egen privatlivspolitik.',
   'W miarę rozwoju aplikacji ta strona będzie aktualizowana, a data ostatniej zmiany widoczna jest na górze strony.':
     'Efterhånden som appen udvikler sig, vil denne side blive opdateret, og datoen for den seneste ændring vises øverst på siden.',
   'W sprawach dotyczących danych osobowych napisz na:': 'I sager vedrørende personoplysninger, skriv til:',
   'Waluta inna niż domyślna ({0})': 'Anden valuta end standard ({0})',
   'Wczytywanie…': 'Indlæser…',
   'Wgraj i pokaż podgląd': 'Upload og vis forhåndsvisning',
-  'Wgraj wyciąg w formacie PDF (obecnie obsługiwane: PKO Bank Polski). Zanim cokolwiek zapiszemy, pokażemy podgląd transakcji do zatwierdzenia — i sprawdzimy, czy już ich kiedyś nie zaimportowano.':
-    'Upload et kontoudtog i PDF-format (i øjeblikket understøttet: PKO Bank Polski). Før vi gemmer noget, viser vi dig en forhåndsvisning af transaktionerne til godkendelse — og tjekker, om de allerede er blevet importeret tidligere.',
+  'Wgraj wyciąg w formacie PDF (obecnie obsługiwane: PKO Bank Polski). Zanim cokolwiek zapiszemy, pokażemy podgląd transakcji do zatwierdzenia - i sprawdzimy, czy już ich kiedyś nie zaimportowano.':
+    'Upload et kontoudtog i PDF-format (i øjeblikket understøttet: PKO Bank Polski). Før vi gemmer noget, viser vi dig en forhåndsvisning af transaktionerne til godkendelse - og tjekker, om de allerede er blevet importeret tidligere.',
   'Wkrótce pojawią się tu pierwsze artykuły.': 'De første artikler vises her snart.',
   'Wznów': 'Genoptag',
   'Zablokuj': 'Blokér',
@@ -1021,7 +1021,7 @@ export const da: Record<string, string> = {
   'Zaloguj się do aplikacji': 'Log ind på appen',
   'Wejdź do aplikacji': 'Gå til appen',
   'Wróć do swojego majątku': 'Vend tilbage til din formue',
-  'Kontynuuj tam, gdzie skończyłeś/aś — Twój dashboard czeka.': 'Fortsæt hvor du slap — dit dashboard venter.',
+  'Kontynuuj tam, gdzie skończyłeś/aś - Twój dashboard czeka.': 'Fortsæt hvor du slap - dit dashboard venter.',
   'Zarezerwowano na duże wydatki': 'Reserveret til store udgifter',
   'Zarezerwuj z wypłaty': 'Reserver fra lønnen',
   'Zatrzymaj': 'Sæt på pause',
@@ -1029,13 +1029,13 @@ export const da: Record<string, string> = {
   'Zaznacz wszystkie': 'Vælg alle',
   'Zaznaczono {0} z {1} transakcji do importu.': 'Valgt {0} af {1} transaktioner til import.',
   'Zostaje po rezerwacjach i odkładaniu': 'Tilbage efter reservationer og opsparing',
-  'Zostało {0} wypłat — odkładaj ~{1} z każdej, żeby zdążyć': '{0} lønninger tilbage — læg ca. {1} til side fra hver for at nå det',
+  'Zostało {0} wypłat - odkładaj ~{1} z każdej, żeby zdążyć': '{0} lønninger tilbage - læg ca. {1} til side fra hver for at nå det',
   'Zrealizowany zysk/strata wg roku (po podatku Belki)': 'Realiseret gevinst/tab efter år (efter kapitalgevinstskat)',
   'Zweryfikowany e-mail': 'Bekræftet e-mail',
   'administratorzy': 'administratorer',
   'aktywne': 'aktive',
   'bardzo rozproszony': 'meget spredt',
-  'dostawca poczty e-mail — do wysyłki e-maili weryfikacyjnych, resetu hasła i zaproszeń,': 'e-mailudbyder — til afsendelse af bekræftelses-, nulstillings- og invitationsmails,',
+  'dostawca poczty e-mail - do wysyłki e-maili weryfikacyjnych, resetu hasła i zaproszeń,': 'e-mailudbyder - til afsendelse af bekræftelses-, nulstillings- og invitationsmails,',
   'hosting aplikacji i baza danych (Microsoft Azure),': 'apphosting og database (Microsoft Azure),',
   'już zaimportowano': 'allerede importeret',
   'login lub e-mail': 'brugernavn eller e-mail',
@@ -1046,13 +1046,13 @@ export const da: Record<string, string> = {
   'np. mBank': 'fx mBank',
   'np. wakacje': 'fx ferie',
   'odświeżanie…': 'opdaterer…',
-  'publiczne źródła danych rynkowych (np. Stooq, Yahoo Finance) — zapytania dotyczą wyłącznie tickerów giełdowych i kursów walut, nigdy Twoich danych osobowych.':
-    'offentlige kilder til markedsdata (fx Stooq, Yahoo Finance) — forespørgslerne omfatter kun aktietickers og valutakurser, aldrig dine personlige data.',
-  'skieta to osobisty tracker finansowy — aplikacja dostępna wyłącznie na zaproszenie, bez reklam i bez sprzedaży danych osobom trzecim. Administratorem danych jest osoba prowadząca serwis skieta, z którą można się skontaktować pod adresem podanym na dole tej strony.':
-    'skieta er en personlig økonomi-tracker — en app, der kun er tilgængelig via invitation, uden reklamer og uden salg af data til tredjeparter. Dataansvarlig er den person, der driver skieta, som kan kontaktes på adressen nederst på denne side.',
-  'skieta łączy konta bankowe, inwestycje, lokaty i obligacje w jednym miejscu — zobacz, jak naprawdę rośnie Twój majątek, bez arkusza kalkulacyjnego i bez zgadywania.':
-    'skieta samler bankkonti, investeringer, indskud og obligationer ét sted — se, hvordan din formue reelt vokser, uden regneark og uden gætteri.',
-  'sprawdź — może to transfer własny': 'tjek — det kan være en overførsel mellem dine egne konti',
+  'publiczne źródła danych rynkowych (np. Stooq, Yahoo Finance) - zapytania dotyczą wyłącznie tickerów giełdowych i kursów walut, nigdy Twoich danych osobowych.':
+    'offentlige kilder til markedsdata (fx Stooq, Yahoo Finance) - forespørgslerne omfatter kun aktietickers og valutakurser, aldrig dine personlige data.',
+  'skieta to osobisty tracker finansowy - aplikacja dostępna wyłącznie na zaproszenie, bez reklam i bez sprzedaży danych osobom trzecim. Administratorem danych jest osoba prowadząca serwis skieta, z którą można się skontaktować pod adresem podanym na dole tej strony.':
+    'skieta er en personlig økonomi-tracker - en app, der kun er tilgængelig via invitation, uden reklamer og uden salg af data til tredjeparter. Dataansvarlig er den person, der driver skieta, som kan kontaktes på adressen nederst på denne side.',
+  'skieta łączy konta bankowe, inwestycje, lokaty i obligacje w jednym miejscu - zobacz, jak naprawdę rośnie Twój majątek, bez arkusza kalkulacyjnego i bez zgadywania.':
+    'skieta samler bankkonti, investeringer, indskud og obligationer ét sted - se, hvordan din formue reelt vokser, uden regneark og uden gætteri.',
+  'sprawdź - może to transfer własny': 'tjek - det kan være en overførsel mellem dine egne konti',
   'umiarkowanie skoncentrowany': 'moderat koncentreret',
   'walutowe': 'udenlandsk valuta',
   'wszyscy': 'alle',
@@ -1131,13 +1131,13 @@ export const da: Record<string, string> = {
   'Wizyty wg wariantu językowego': 'Besøg efter sprogvariant',
   'Zaproszenia wysłane wg języka': 'Invitationer sendt efter sprog',
   'Nowy baner na stronie głównej': 'Nyt banner på forsiden',
-  'Wskaż istniejące zaproszenie grupowe — baner pokaże jego link/kod QR i odliczanie do podanej daty. Liczba wykorzystań to liczba osób zarejestrowanych przez to zaproszenie.':
+  'Wskaż istniejące zaproszenie grupowe - baner pokaże jego link/kod QR i odliczanie do podanej daty. Liczba wykorzystań to liczba osób zarejestrowanych przez to zaproszenie.':
     'Peg på en eksisterende gruppeinvitation - banneret viser dens link/QR-kode og en nedtælling til den angivne dato. Antallet af anvendelser er antallet af personer, der har registreret sig via denne invitation.',
   'Zaproszenie grupowe': 'Gruppeinvitation',
   'Wybierz…': 'Vælg…',
   'Wiadomość (opcjonalnie)': 'Besked (valgfrit)',
   'Koniec odliczania': 'Nedtælling slutter',
-  'Nie udało się utworzyć promocji — sprawdź dane.': 'Kunne ikke oprette kampagnen - tjek oplysningerne.',
+  'Nie udało się utworzyć promocji - sprawdź dane.': 'Kunne ikke oprette kampagnen - tjek oplysningerne.',
   'Brak promocji.': 'Ingen kampagner.',
   'Wyłączona': 'Deaktiveret',
   'Wygasła': 'Udløbet',

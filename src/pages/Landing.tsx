@@ -11,16 +11,16 @@ import { formatCountdown, formatDateTime } from '../lib/format'
 import type { ActiveLandingPromotion, Article } from '../types'
 
 // Only rendered when an admin has an active promotion running, which is
-// almost never — so the QR library stays out of the chunk every visitor to
+// almost never - so the QR library stays out of the chunk every visitor to
 // the landing page downloads, and is fetched on the rare occasion a banner
 // actually shows.
 const QRCodeSVG = lazy(() => import('qrcode.react').then((m) => ({ default: m.QRCodeSVG })))
 
-// Public, works logged-in or out (same as RequestAccessForm below) — shows an
+// Public, works logged-in or out (same as RequestAccessForm below) - shows an
 // admin-created temporary banner (see AdminLandingPromotions.tsx) with a live
 // countdown, its invite QR/link, and hides itself once the countdown expires.
 // Title/message come back already resolved to the current site language
-// (server-side, see ActiveLandingPromotionSerializer) — `language` is part of
+// (server-side, see ActiveLandingPromotionSerializer) - `language` is part of
 // the query key so switching languages refetches instead of showing stale text.
 function PromotionBanner() {
   const { language, t } = useLanguage()
@@ -106,17 +106,17 @@ const FEATURES: { icon: keyof typeof ICONS; title: string; body: string }[] = [
   {
     icon: 'layers',
     title: 'Wszystko w jednym miejscu',
-    body: 'Konta bankowe, akcje, obligacje i lokaty — jeden widok na cały Twój majątek, bez przełączania się między aplikacjami banków i domów maklerskich.',
+    body: 'Konta bankowe, akcje, obligacje i lokaty - jeden widok na cały Twój majątek, bez przełączania się między aplikacjami banków i domów maklerskich.',
   },
   {
     icon: 'trending',
     title: 'Realny zwrot z inwestycji',
-    body: 'Zysk liczony osobno od wpłaconego kapitału — zobaczysz dokładnie, ile realnie zarobiłeś na lokatach, obligacjach i akcjach, po podatku Belki.',
+    body: 'Zysk liczony osobno od wpłaconego kapitału - zobaczysz dokładnie, ile realnie zarobiłeś na lokatach, obligacjach i akcjach, po podatku Belki.',
   },
   {
     icon: 'wallet',
     title: 'Przychody, wydatki i budżet',
-    body: 'Zarządzaj przychodami i wydatkami, monitoruj budżet miesiąc po miesiącu i sprawdzaj bilans — automatyczny import wyciągów, kategorie, sklepy i tagi robią to za Ciebie.',
+    body: 'Zarządzaj przychodami i wydatkami, monitoruj budżet miesiąc po miesiącu i sprawdzaj bilans - automatyczny import wyciągów, kategorie, sklepy i tagi robią to za Ciebie.',
   },
   {
     icon: 'target',
@@ -126,7 +126,7 @@ const FEATURES: { icon: keyof typeof ICONS; title: string; body: string }[] = [
   {
     icon: 'coins',
     title: 'Dywidendy i podatki',
-    body: 'Historia i prognoza wypłat dywidend, szacowany podatek Belki do zapłaty — żadnych niespodzianek przy rozliczeniu.',
+    body: 'Historia i prognoza wypłat dywidend, szacowany podatek Belki do zapłaty - żadnych niespodzianek przy rozliczeniu.',
   },
   {
     icon: 'shield',
@@ -134,7 +134,7 @@ const FEATURES: { icon: keyof typeof ICONS; title: string; body: string }[] = [
     // Says precisely what's true - nobody browses users' finances - instead of
     // a blanket "no tracking" claim, which would sit awkwardly next to the
     // site's own analytics on page views.
-    body: 'Dostęp wyłącznie na zaproszenie i bez reklam. Nikt nie zagląda w Twoje konta — Twoje liczby służą wyłącznie do wyliczeń, które widzisz w aplikacji. Historia logowań pokazuje, kto i kiedy wchodził na Twoje konto.',
+    body: 'Dostęp wyłącznie na zaproszenie i bez reklam. Nikt nie zagląda w Twoje konta - Twoje liczby służą wyłącznie do wyliczeń, które widzisz w aplikacji. Historia logowań pokazuje, kto i kiedy wchodził na Twoje konto.',
   },
 ]
 
@@ -147,7 +147,7 @@ const SHOWCASE: { name: 'portfel' | 'dywidendy' | 'planowanie'; title: string; b
   {
     name: 'portfel',
     title: 'Zysk, a nie tylko saldo',
-    body: 'Portfel pokazuje osobno wpłacony kapitał i osobno zysk — brutto oraz po podatku Belki. Przy akcjach kupionych w obcej walucie widzisz dodatkowo, ile z wyniku zrobił sam kurs, a nie kurs spółki.',
+    body: 'Portfel pokazuje osobno wpłacony kapitał i osobno zysk - brutto oraz po podatku Belki. Przy akcjach kupionych w obcej walucie widzisz dodatkowo, ile z wyniku zrobił sam kurs, a nie kurs spółki.',
     alt: 'Portfel akcji w skiecie z kolumnami zysku brutto i po podatku Belki oraz wpływem kursu waluty',
   },
   {
@@ -167,11 +167,11 @@ const SHOWCASE: { name: 'portfel' | 'dywidendy' | 'planowanie'; title: string; b
 const STEPS = [
   { n: '1', title: 'Dostajesz zaproszenie', body: 'Rejestracja jest możliwa tylko na zaproszenie od kogoś, kto już korzysta ze skieta.' },
   { n: '2', title: 'Dodajesz swoje konta', body: 'Kilka minut wystarczy, żeby dodać konta bankowe, portfel akcji, lokaty i obligacje.' },
-  { n: '3', title: 'Widzisz cały obraz', body: 'Dashboard aktualizuje się na bieżąco — majątek, zwrot z inwestycji i budżet w jednym miejscu.' },
+  { n: '3', title: 'Widzisz cały obraz', body: 'Dashboard aktualizuje się na bieżąco - majątek, zwrot z inwestycji i budżet w jednym miejscu.' },
 ]
 
 // The first question anyone arriving from a search engine has is why they
-// can't just sign up — leaving that unanswered on the page loses exactly the
+// can't just sign up - leaving that unanswered on the page loses exactly the
 // visitors the articles are meant to bring in. Invite-only is a deliberate
 // product decision, so it's stated as one rather than apologized for.
 const FAQ: { q: string; a: string }[] = [
@@ -275,7 +275,7 @@ export default function Landing() {
   const articlesEnabled = articlesVisibility?.[language] ?? true
 
   // A signed-in visitor still sees the landing page (e.g. clicking the logo
-  // from inside the app) — the CTAs below just point into the app instead of
+  // from inside the app) - the CTAs below just point into the app instead of
   // to the login form.
   const ctaHref = user ? '/dashboard' : '/logowanie'
   const ctaLabel = user ? t('Wejdź do aplikacji') : t('Zaloguj się')
@@ -339,7 +339,7 @@ export default function Landing() {
             </p>
             <p className="mx-auto mt-5 max-w-xl text-lg text-slate-600 dark:text-slate-400">
               {t(
-                'skieta łączy konta bankowe, inwestycje, lokaty i obligacje w jednym miejscu — zobacz, jak naprawdę rośnie Twój majątek, bez arkusza kalkulacyjnego i bez zgadywania.',
+                'skieta łączy konta bankowe, inwestycje, lokaty i obligacje w jednym miejscu - zobacz, jak naprawdę rośnie Twój majątek, bez arkusza kalkulacyjnego i bez zgadywania.',
               )}
             </p>
             {/* The order flips with who's reading. A signed-in visitor wants
@@ -379,7 +379,7 @@ export default function Landing() {
                     collapsed one hid the only action a new visitor can take
                     behind a text link they had to find and click first. */}
                 <p className="text-sm font-medium text-slate-700 dark:text-slate-200">
-                  {t('Rejestracja jest na zaproszenie — nie masz go? Zostaw e-mail.')}
+                  {t('Rejestracja jest na zaproszenie - nie masz go? Zostaw e-mail.')}
                 </p>
                 <div className="mt-3 flex justify-center">
                   <RequestAccessForm variant="prominent" source="landing_hero" />
@@ -405,7 +405,7 @@ export default function Landing() {
         <div className="mx-auto max-w-2xl text-center">
           <h2 className="text-3xl font-bold text-slate-900 dark:text-slate-100">{t('Zbudowane, żeby faktycznie z tego korzystać')}</h2>
           <p className="mt-3 text-slate-500 dark:text-slate-400">
-            {t('Nie kolejny arkusz kalkulacyjny — narzędzie, które samo liczy to, co dla Ciebie ważne.')}
+            {t('Nie kolejny arkusz kalkulacyjny - narzędzie, które samo liczy to, co dla Ciebie ważne.')}
           </p>
         </div>
         <div className="mt-12 grid grid-cols-1 gap-5 sm:grid-cols-2 lg:grid-cols-3">
@@ -424,7 +424,7 @@ export default function Landing() {
         </div>
       </section>
 
-      {/* Showcase — the claims above, shown rather than asserted. Left on the
+      {/* Showcase - the claims above, shown rather than asserted. Left on the
           page background so the white "Jak to działa" band below still reads
           as a change of section rather than two white blocks in a row. */}
       <section>
@@ -432,7 +432,7 @@ export default function Landing() {
           <div className="mx-auto max-w-2xl text-center">
             <h2 className="text-3xl font-bold text-slate-900 dark:text-slate-100">{t('Zobacz, jak to wygląda w środku')}</h2>
             <p className="mt-3 text-slate-500 dark:text-slate-400">
-              {t('Poniżej prawdziwe ekrany aplikacji — te same, które zobaczysz po zalogowaniu.')}
+              {t('Poniżej prawdziwe ekrany aplikacji - te same, które zobaczysz po zalogowaniu.')}
             </p>
           </div>
           <div className="mt-14 flex flex-col gap-16 sm:gap-20">
@@ -502,7 +502,7 @@ export default function Landing() {
             {/* Someone who read to the bottom of the FAQ has done the work of
                 being convinced - don't make them hunt for the field. */}
             <p className="text-sm font-medium text-slate-700 dark:text-slate-200">
-              {t('Rejestracja jest na zaproszenie — nie masz go? Zostaw e-mail.')}
+              {t('Rejestracja jest na zaproszenie - nie masz go? Zostaw e-mail.')}
             </p>
             <div className="mt-3 flex justify-center">
               <RequestAccessForm variant="prominent" source="landing_faq" />
@@ -554,8 +554,8 @@ export default function Landing() {
           </h2>
           <p className="mx-auto mt-2 max-w-md text-accent-50/90">
             {user
-              ? t('Kontynuuj tam, gdzie skończyłeś/aś — Twój dashboard czeka.')
-              : t('Zaloguj się i zobacz cały swój majątek w jednym miejscu — od razu po pierwszym dodaniu konta.')}
+              ? t('Kontynuuj tam, gdzie skończyłeś/aś - Twój dashboard czeka.')
+              : t('Zaloguj się i zobacz cały swój majątek w jednym miejscu - od razu po pierwszym dodaniu konta.')}
           </p>
           <Link
             to={ctaHref}

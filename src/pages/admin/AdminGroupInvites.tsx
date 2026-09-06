@@ -123,7 +123,7 @@ export default function AdminGroupInvites() {
         </div>
         {create.isError && (
           <p className="mt-2 text-xs text-red-600 dark:text-red-400">
-            {t('Nie udało się utworzyć zaproszenia — sprawdź dane.')}
+            {t('Nie udało się utworzyć zaproszenia - sprawdź dane.')}
           </p>
         )}
       </div>

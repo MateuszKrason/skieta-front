@@ -80,7 +80,7 @@ export default function StatementImportPanel({
       alert(t('Zaimportowano {0} transakcji, pominięto {1}.', String(result.imported), String(result.skipped)))
       onDone()
     },
-    onError: () => setError(t('Nie udało się zaimportować transakcji — spróbuj wgrać plik ponownie.')),
+    onError: () => setError(t('Nie udało się zaimportować transakcji - spróbuj wgrać plik ponownie.')),
   })
 
   const includedCount = Object.values(overrides).filter((o) => o.include).length
@@ -112,7 +112,7 @@ export default function StatementImportPanel({
         <h3 className="mb-1 text-sm font-semibold text-slate-700 dark:text-slate-300">{t('Importuj wyciąg z konta')}</h3>
         <p className="mb-3 text-xs text-slate-500 dark:text-slate-400">
           {t(
-            'Wgraj wyciąg w formacie PDF (obecnie obsługiwane: PKO Bank Polski). Zanim cokolwiek zapiszemy, pokażemy podgląd transakcji do zatwierdzenia — i sprawdzimy, czy już ich kiedyś nie zaimportowano.',
+            'Wgraj wyciąg w formacie PDF (obecnie obsługiwane: PKO Bank Polski). Zanim cokolwiek zapiszemy, pokażemy podgląd transakcji do zatwierdzenia - i sprawdzimy, czy już ich kiedyś nie zaimportowano.',
           )}
         </p>
         <div className="flex flex-wrap items-end gap-3">
@@ -267,7 +267,7 @@ export default function StatementImportPanel({
                       )}
                       {row.needs_review && !row.is_duplicate && (
                         <span className="rounded-full bg-amber-100 dark:bg-amber-900/40 px-1.5 py-0.5 text-[10px] font-medium text-amber-700 dark:text-amber-400">
-                          {t('sprawdź — może to transfer własny')}
+                          {t('sprawdź - może to transfer własny')}
                         </span>
                       )}
                     </div>

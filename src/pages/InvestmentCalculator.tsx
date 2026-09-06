@@ -432,7 +432,7 @@ export default function InvestmentCalculator({ publicMode = false }: { publicMod
             </p>
             {chartRows.length === 0 ? (
               <p className="py-8 text-center text-sm text-slate-400 dark:text-slate-500">
-                {t('Wszystkie instrumenty odznaczone — zaznacz przynajmniej jeden w tabeli poniżej.')}
+                {t('Wszystkie instrumenty odznaczone - zaznacz przynajmniej jeden w tabeli poniżej.')}
               </p>
             ) : (
               <div style={{ height: Math.max(256, chartRows.length * (isMobile ? 48 : 34)) }}>

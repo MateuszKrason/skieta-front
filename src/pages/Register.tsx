@@ -30,7 +30,7 @@ export default function Register() {
   const [email, setEmail] = useState('')
   const [password, setPassword] = useState('')
   // Defaults to the language the site was in when Register.tsx mounted (per
-  // requirement: "default language = registration language") — freely
+  // requirement: "default language = registration language") - freely
   // changeable below, same as currency.
   const [registerLanguage, setRegisterLanguage] = useState<Language>(siteLanguage)
   const [baseCurrency, setBaseCurrency] = useState(CURRENCY_BY_LANGUAGE[siteLanguage])
@@ -39,7 +39,7 @@ export default function Register() {
   const [submitting, setSubmitting] = useState(false)
 
   // Suggest the language's usual currency whenever the language picker
-  // changes — the currency dropdown right below stays fully user-editable.
+  // changes - the currency dropdown right below stays fully user-editable.
   function onLanguageChange(lang: Language) {
     setRegisterLanguage(lang)
     setBaseCurrency(CURRENCY_BY_LANGUAGE[lang])
@@ -85,7 +85,7 @@ export default function Register() {
             skieta
           </h1>
           <p className="mt-4 text-sm text-slate-600 dark:text-slate-300">
-            {t('Rejestracja jest dostępna tylko na zaproszenie od innego użytkownika — poproś o link lub zeskanuj kod QR.')}
+            {t('Rejestracja jest dostępna tylko na zaproszenie od innego użytkownika - poproś o link lub zeskanuj kod QR.')}
           </p>
           <Link to="/logowanie" className="mt-6 inline-block font-medium text-accent-700 dark:text-accent-400 hover:underline">
             {t('Masz już konto? Zaloguj się')}
@@ -180,7 +180,7 @@ export default function Register() {
             <option value="GBP">GBP</option>
           </select>
           <span className="mt-1 block text-xs text-slate-400 dark:text-slate-500">
-            {t('Konta w innej walucie będą oznaczone jako walutowe — to tylko etykieta, nie wpływa na przeliczenia.')}
+            {t('Konta w innej walucie będą oznaczone jako walutowe - to tylko etykieta, nie wpływa na przeliczenia.')}
           </span>
         </label>
         <label className="mb-4 flex items-start gap-2 text-sm text-slate-600 dark:text-slate-300">

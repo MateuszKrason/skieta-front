@@ -197,7 +197,7 @@ export default function Planowanie() {
               onChange={invalidateAll}
             />
           ))}
-          {goals?.length === 0 && <p className="text-slate-400 dark:text-slate-500">{t('Brak celów — dodaj pierwszy.')}</p>}
+          {goals?.length === 0 && <p className="text-slate-400 dark:text-slate-500">{t('Brak celów - dodaj pierwszy.')}</p>}
         </div>
       </div>
 
@@ -206,7 +206,7 @@ export default function Planowanie() {
           <div>
             <h2 className="text-sm font-semibold text-slate-700 dark:text-slate-300">{t('Stałe koszty')}</h2>
             <p className="text-xs text-slate-400 dark:text-slate-500">
-              {t('Czynsz, subskrypcje, ubezpieczenia — cykliczne opłaty co miesiąc, niezależnie od tego, czy już je zapłaciłeś w tym miesiącu.')}
+              {t('Czynsz, subskrypcje, ubezpieczenia - cykliczne opłaty co miesiąc, niezależnie od tego, czy już je zapłaciłeś w tym miesiącu.')}
             </p>
           </div>
           <button
@@ -238,7 +238,7 @@ export default function Planowanie() {
               onChange={invalidateAll}
             />
           ))}
-          {sortedFixedCosts.length === 0 && <p className="text-slate-400 dark:text-slate-500">{t('Brak stałych kosztów — dodaj pierwszy.')}</p>}
+          {sortedFixedCosts.length === 0 && <p className="text-slate-400 dark:text-slate-500">{t('Brak stałych kosztów - dodaj pierwszy.')}</p>}
         </div>
       </div>
 
@@ -281,7 +281,7 @@ export default function Planowanie() {
                     {e.name}
                   </span>{' '}
                   <span className="text-slate-500 dark:text-slate-400">{formatMoney(e.amount, e.currency)}</span>
-                  {e.notes && <span className="text-slate-400 dark:text-slate-500"> — {e.notes}</span>}
+                  {e.notes && <span className="text-slate-400 dark:text-slate-500"> - {e.notes}</span>}
                 </span>
                 <span className="flex items-center gap-3">
                   <span className={overdue && !e.is_paid ? 'font-medium text-red-600 dark:text-red-400' : 'text-slate-400 dark:text-slate-500'}>
@@ -351,7 +351,7 @@ function SalaryForm({ plan, onDone }: { plan: BudgetPlan | undefined; onDone: ()
     e.preventDefault()
     setError(null)
     if (!paydayDay) {
-      setError(t('Dzień wypłaty jest wymagany — bez niego nie da się policzyć planu.'))
+      setError(t('Dzień wypłaty jest wymagany - bez niego nie da się policzyć planu.'))
       return
     }
     mutation.mutate()
@@ -364,7 +364,7 @@ function SalaryForm({ plan, onDone }: { plan: BudgetPlan | undefined; onDone: ()
         className="text-xs font-medium text-accent-700 dark:text-accent-400 hover:underline"
       >
         {plan?.payday_day
-          ? t('Pensja i dzień wypłaty ({0}. dnia miesiąca) — zmień', plan.payday_day)
+          ? t('Pensja i dzień wypłaty ({0}. dnia miesiąca) - zmień', plan.payday_day)
           : t('Ustaw pensję miesięczną i dzień wypłaty')}
       </button>
     )
@@ -617,8 +617,8 @@ function GoalRow({
             <p className="mt-0.5 text-xs text-emerald-700 dark:text-emerald-400">
               {goal.paydays_remaining !== null
                 ? goal.paydays_remaining > 0
-                  ? t('Zostało {0} wypłat — odkładaj ~{1} z każdej, żeby zdążyć', goal.paydays_remaining, formatMoney(goal.suggested_contribution_per_payday, goal.currency))
-                  : t('Termin wypłaty minął przed celem — dodaj więcej lub przesuń termin')
+                  ? t('Zostało {0} wypłat - odkładaj ~{1} z każdej, żeby zdążyć', goal.paydays_remaining, formatMoney(goal.suggested_contribution_per_payday, goal.currency))
+                  : t('Termin wypłaty minął przed celem - dodaj więcej lub przesuń termin')
                 : t('Ustaw dzień wypłaty (u góry strony), żeby zobaczyć ile wypłat zostało do celu')}
             </p>
           )}
@@ -747,7 +747,7 @@ function GoalRow({
           {(contributions ?? []).map((c) => (
             <div key={c.id} className="flex items-center justify-between text-xs text-slate-500 dark:text-slate-400">
               <span>
-                + {formatMoney(c.amount, goal.currency)} · {formatDate(c.date)} {c.note && `— ${c.note}`}
+                + {formatMoney(c.amount, goal.currency)} · {formatDate(c.date)} {c.note && `- ${c.note}`}
               </span>
               <button
                 onClick={() => deleteContribution.mutate(c.id)}
@@ -1031,7 +1031,7 @@ function RecurringExpenseRow({
             {expense.category_detail.name}
           </span>
         )}
-        {expense.notes && <span className="text-slate-400 dark:text-slate-500"> — {expense.notes}</span>}
+        {expense.notes && <span className="text-slate-400 dark:text-slate-500"> - {expense.notes}</span>}
       </span>
       <span className="flex items-center gap-3">
         <button onClick={onToggleActive} className="text-xs font-medium text-accent-700 dark:text-accent-400 hover:underline">

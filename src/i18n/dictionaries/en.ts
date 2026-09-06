@@ -33,14 +33,14 @@ export const en: Record<string, string> = {
   '← Powrót do logowania': '← Back to login',
   'Adres e-mail': 'Email address',
   'Wysyłanie…': 'Sending…',
-  'Podaj adres e-mail przypisany do konta — wyślemy link do resetu hasła.':
-    'Enter the email address on your account — we’ll send a password reset link.',
+  'Podaj adres e-mail przypisany do konta - wyślemy link do resetu hasła.':
+    'Enter the email address on your account - we’ll send a password reset link.',
   'Jeśli podany adres e-mail istnieje w naszej bazie, wysłaliśmy na niego link do resetu hasła.':
     'If that email address is in our system, we’ve sent a password reset link to it.',
   'Wyślij link do resetu': 'Send reset link',
-  'Link resetu hasła jest niepełny — otwórz go bezpośrednio z wiadomości e-mail.':
-    'This password reset link is incomplete — open it directly from the email.',
-  'Hasło zostało zresetowane. Przekierowuję do logowania…': 'Password reset — redirecting you to login…',
+  'Link resetu hasła jest niepełny - otwórz go bezpośrednio z wiadomości e-mail.':
+    'This password reset link is incomplete - open it directly from the email.',
+  'Hasło zostało zresetowane. Przekierowuję do logowania…': 'Password reset - redirecting you to login…',
   'Ustaw nowe hasło do swojego konta.': 'Set a new password for your account.',
   'Zapisywanie…': 'Saving…',
   'Ustaw nowe hasło': 'Set new password',
@@ -50,7 +50,7 @@ export const en: Record<string, string> = {
   'Nie udało się potwierdzić adresu e-mail.': 'Failed to verify the email address.',
   'Przejdź do aplikacji →': 'Go to the app →',
   'Adres e-mail nie jest jeszcze potwierdzony': 'Your email address isn’t verified yet',
-  'Wysłano nowy link weryfikacyjny — sprawdź skrzynkę.': 'A new verification link was sent — check your inbox.',
+  'Wysłano nowy link weryfikacyjny - sprawdź skrzynkę.': 'A new verification link was sent - check your inbox.',
   'Sprawdź skrzynkę i kliknij link, który wysłaliśmy przy rejestracji.':
     'Check your inbox and click the link we sent when you registered.',
   'Dodaj adres e-mail poniżej, żeby móc go potwierdzić i odzyskać konto w razie potrzeby.':
@@ -64,12 +64,12 @@ export const en: Record<string, string> = {
   'Obligacje': 'Bonds',
   'Gotowe': 'Done',
   'Dodaj posiadane rzeczy': 'Add what you own',
-  'Wprowadź to, co już posiadasz — z prawdziwą, wsteczną datą zakupu — żeby historia i zyski liczyły się poprawnie od początku.':
-    'Enter what you already own — with the real, backdated purchase date — so history and gains are calculated correctly from the start.',
+  'Wprowadź to, co już posiadasz - z prawdziwą, wsteczną datą zakupu - żeby historia i zyski liczyły się poprawnie od początku.':
+    'Enter what you already own - with the real, backdated purchase date - so history and gains are calculated correctly from the start.',
   'Zakończ teraz →': 'Finish now →',
   'Gotowe!': 'Done!',
-  'Możesz w każdej chwili dodać kolejne rzeczy z tego samego kreatora — link znajdziesz w górnym menu.':
-    'You can add more things through this same wizard any time — find the link in the top menu.',
+  'Możesz w każdej chwili dodać kolejne rzeczy z tego samego kreatora - link znajdziesz w górnym menu.':
+    'You can add more things through this same wizard any time - find the link in the top menu.',
   'Przejdź do pulpitu': 'Go to dashboard',
   '← Wstecz': '← Back',
   'Dalej →': 'Next →',
@@ -89,8 +89,8 @@ export const en: Record<string, string> = {
   'Waluta': 'Currency',
   'Obecne saldo': 'Current balance',
   '+ Dodaj konto': '+ Add account',
-  'Nie masz jeszcze żadnego konta z gotówką na zakup akcji? Dodaj je tutaj z aktualnym saldem — w kolejnym kroku możesz z niego "kupić" akcje, które faktycznie posiadasz.':
-    'Don\'t have an account with cash for buying stocks yet? Add it here with its current balance — in the next step you can "buy" the stocks you actually own from it.',
+  'Nie masz jeszcze żadnego konta z gotówką na zakup akcji? Dodaj je tutaj z aktualnym saldem - w kolejnym kroku możesz z niego "kupić" akcje, które faktycznie posiadasz.':
+    'Don\'t have an account with cash for buying stocks yet? Add it here with its current balance - in the next step you can "buy" the stocks you actually own from it.',
   'Wyszukaj spółkę': 'Search for a stock',
   'Ticker': 'Ticker',
   'Rynek': 'Market',
@@ -101,17 +101,17 @@ export const en: Record<string, string> = {
   '+ Dodaj pozycję': '+ Add position',
   'Dla każdej posiadanej spółki podaj ilość, cenę i': 'For each stock you own, enter the quantity, price and',
   'prawdziwą datę zakupu': 'the real purchase date',
-  '— dzięki temu historia i wykresy będą liczone poprawnie.': '— that way history and charts will be calculated correctly.',
+  '- dzięki temu historia i wykresy będą liczone poprawnie.': '- that way history and charts will be calculated correctly.',
   'Nie udało się dodać pozycji.': 'Failed to add the position.',
   'Wybierz spółkę.': 'Select a stock.',
-  'Jeśli wybierzesz konto, kwota zostanie od razu odjęta z jego salda — zostaw puste, jeśli tylko deklarujesz akcje, które już posiadasz.':
-    "If you pick an account, the amount is deducted from its balance right away — leave it blank if you're just declaring stocks you already own.",
-  'To pozycja, którą już posiadam — nie odejmuj środków z konta (tylko zapisz powiązanie).':
-    "This is a position I already own — don't deduct funds from the account (just record the link).",
-  'To lokata, którą już posiadam — nie odejmuj środków z konta (tylko zapisz powiązanie).':
-    "This is a deposit I already own — don't deduct funds from the account (just record the link).",
-  'To obligacja, którą już posiadam — nie odejmuj środków z konta (tylko zapisz powiązanie).':
-    "This is a bond I already own — don't deduct funds from the account (just record the link).",
+  'Jeśli wybierzesz konto, kwota zostanie od razu odjęta z jego salda - zostaw puste, jeśli tylko deklarujesz akcje, które już posiadasz.':
+    "If you pick an account, the amount is deducted from its balance right away - leave it blank if you're just declaring stocks you already own.",
+  'To pozycja, którą już posiadam - nie odejmuj środków z konta (tylko zapisz powiązanie).':
+    "This is a position I already own - don't deduct funds from the account (just record the link).",
+  'To lokata, którą już posiadam - nie odejmuj środków z konta (tylko zapisz powiązanie).':
+    "This is a deposit I already own - don't deduct funds from the account (just record the link).",
+  'To obligacja, którą już posiadam - nie odejmuj środków z konta (tylko zapisz powiązanie).':
+    "This is a bond I already own - don't deduct funds from the account (just record the link).",
   'bez powiązania z kontem': 'not linked to an account',
   'Nie dodano jeszcze żadnych akcji.': "You haven't added any stocks yet.",
   'wybierz…': 'select…',
@@ -183,7 +183,7 @@ export const en: Record<string, string> = {
   '+ Konto': '+ Account',
   'Edytuj': 'Edit',
   'Usuń': 'Delete',
-  'Brak kont — dodaj pierwsze.': 'No accounts yet — add your first one.',
+  'Brak kont - dodaj pierwsze.': 'No accounts yet - add your first one.',
   'Historia przelewów': 'Transfer history',
   '+ Lokata': '+ Deposit',
   'Oprocentowanie': 'Interest rate',
@@ -198,8 +198,8 @@ export const en: Record<string, string> = {
   'Brak lokat.': 'No deposits.',
   'Obligacje skarbowe': 'Treasury bonds',
   '+ Obligacja': '+ Bond',
-  'Odsetki liczone metodą uproszczoną (proste, wg wpisanego bieżącego oprocentowania) — nie odwzorowuje dokładnie zmiennych/indeksowanych inflacją harmonogramów kapitalizacji poszczególnych serii.':
-    'Interest is calculated with a simplified method (simple, using the current rate you entered) — it does not precisely replicate the variable/inflation-indexed compounding schedules of specific series.',
+  'Odsetki liczone metodą uproszczoną (proste, wg wpisanego bieżącego oprocentowania) - nie odwzorowuje dokładnie zmiennych/indeksowanych inflacją harmonogramów kapitalizacji poszczególnych serii.':
+    'Interest is calculated with a simplified method (simple, using the current rate you entered) - it does not precisely replicate the variable/inflation-indexed compounding schedules of specific series.',
   'Wykup': 'Maturity',
   'wykupiona': 'redeemed',
   'Wykup wcześniej': 'Redeem early',
@@ -227,8 +227,8 @@ export const en: Record<string, string> = {
 
   // Timeline
   'Timeline majątku': 'Net worth timeline',
-  'Sprawdź, jak realnie pomnożyłeś wpłacone środki — niezależnie od tego, ile do systemu dołożyłeś':
-    'See how much your contributed funds have really multiplied — regardless of how much you put in',
+  'Sprawdź, jak realnie pomnożyłeś wpłacone środki - niezależnie od tego, ile do systemu dołożyłeś':
+    'See how much your contributed funds have really multiplied - regardless of how much you put in',
   '+ Wpłata / wypłata': '+ Deposit / withdrawal',
   'Obecna wartość majątku': 'Current net worth',
   'Wpłacone środki netto': 'Net contributed funds',
@@ -269,8 +269,8 @@ export const en: Record<string, string> = {
   'Portfel akcji i ETF-ów': 'Stock & ETF portfolio',
   'Suma wartości akcji': 'Total stock value',
   'Łączny zysk/strata': 'Total profit/loss',
-  'Kursy odświeżają się przy wejściu na tę stronę — kliknij "Odśwież kursy", by pobrać je ponownie':
-    'Prices refresh when you open this page — click "Refresh prices" to fetch them again',
+  'Kursy odświeżają się przy wejściu na tę stronę - kliknij "Odśwież kursy", by pobrać je ponownie':
+    'Prices refresh when you open this page - click "Refresh prices" to fetch them again',
   '⟳ Odśwież kursy': '⟳ Refresh prices',
   'Notatki': 'Notes',
   '(odświeżanie…)': '(refreshing…)',
@@ -283,7 +283,7 @@ export const en: Record<string, string> = {
   'Zysk/strata': 'Profit/loss',
   'Aktualizacja': 'Updated',
   'Sprzedaj': 'Sell',
-  'Brak pozycji — dodaj pierwszą transakcję.': 'No positions — add your first transaction.',
+  'Brak pozycji - dodaj pierwszą transakcję.': 'No positions - add your first transaction.',
   'Historia transakcji': 'Transaction history',
   'Kupno': 'Buy',
   'Sprzedaż': 'Sell',
@@ -292,7 +292,7 @@ export const en: Record<string, string> = {
   'Nie udało się zapisać transakcji.': 'Failed to save the transaction.',
   'Wybierz konto, z którego pobrane zostaną środki.': 'Select the account funds should be taken from.',
   'wybierz konto…': 'select an account…',
-  'Brak konta w walucie {0} — dodaj je w zakładce Konta i lokaty.': 'No account in {0} — add one on the Accounts & Deposits page.',
+  'Brak konta w walucie {0} - dodaj je w zakładce Konta i lokaty.': 'No account in {0} - add one on the Accounts & Deposits page.',
   'Zapisz kupno': 'Save purchase',
   'Nie udało się sprzedać akcji.': 'Failed to sell the stock.',
   'Posiadasz tylko {0} szt.': 'You only have {0} shares.',
@@ -308,9 +308,9 @@ export const en: Record<string, string> = {
   'Niezainwestowany kapitał': 'Uninvested capital',
   'Ścieżki reinwestycji': 'Reinvestment threads',
   '+ Nowa ścieżka': '+ New thread',
-  'Śledź, do ilu pomnożyła się konkretna kwota — np. zysk ze sprzedaży jednej spółki rozdzielony na kilka kolejnych zakupów, z opcjonalną dodatkową gotówką i niezainwestowaną resztą.':
-    'Track how much a specific amount has multiplied — e.g. the proceeds from selling one stock split across several follow-up purchases, with optional extra cash and any leftover untouched.',
-  'Brak ścieżek — utwórz pierwszą.': 'No threads yet — create your first one.',
+  'Śledź, do ilu pomnożyła się konkretna kwota - np. zysk ze sprzedaży jednej spółki rozdzielony na kilka kolejnych zakupów, z opcjonalną dodatkową gotówką i niezainwestowaną resztą.':
+    'Track how much a specific amount has multiplied - e.g. the proceeds from selling one stock split across several follow-up purchases, with optional extra cash and any leftover untouched.',
+  'Brak ścieżek - utwórz pierwszą.': 'No threads yet - create your first one.',
   'Usunąć całą ścieżkę „{0}”? Tej operacji nie można cofnąć.': 'Delete the whole thread "{0}"? This cannot be undone.',
   'Start:': 'Start:',
   'Usuń ścieżkę': 'Delete thread',
@@ -337,19 +337,19 @@ export const en: Record<string, string> = {
   'Zapisz pozycję': 'Save position',
   'Nie udało się zamknąć pozycji.': 'Failed to close the position.',
   'auto: proporcjonalnie': 'auto: proportional',
-  'Brak jeszcze transakcji sprzedaży tej spółki — dodaj ją najpierw w portfelu.': 'No sell transaction for this stock yet — add it in the portfolio first.',
+  'Brak jeszcze transakcji sprzedaży tej spółki - dodaj ją najpierw w portfelu.': 'No sell transaction for this stock yet - add it in the portfolio first.',
   'Zamknij pozycję': 'Close position',
 
   // Dywidendy
   'Profil dywidendowy': 'Dividend profile',
   'Ile zarabiasz na dywidendach i jaki to procent zainwestowanego kapitału': 'How much you earn from dividends and what percentage of invested capital that is',
-  'Dywidendy wykrywane są automatycznie — nie musisz nic wpisywać ręcznie.':
-    "Dividends are detected automatically — you don't need to enter anything by hand.",
+  'Dywidendy wykrywane są automatycznie - nie musisz nic wpisywać ręcznie.':
+    "Dividends are detected automatically - you don't need to enter anything by hand.",
   'wykrywam dywidendy…': 'detecting dividends…',
   'Wykrywam…': 'Detecting…',
   '⟳ Wykryj dywidendy': '⟳ Detect dividends',
-  'Automatyczne wykrywanie odświeża się samo przy wejściu na tę stronę — ten przycisk wymusza sprawdzenie od razu.':
-    'Automatic detection refreshes itself when you open this page — this button forces an immediate check.',
+  'Automatyczne wykrywanie odświeża się samo przy wejściu na tę stronę - ten przycisk wymusza sprawdzenie od razu.':
+    'Automatic detection refreshes itself when you open this page - this button forces an immediate check.',
   '+ Dywidenda': '+ Dividend',
   '+ Dodaj ręcznie': '+ Add manually',
   'Tylko dla wypłat, których automatyczne wykrywanie nie złapało (np. spółka spoza Yahoo Finance).':
@@ -357,8 +357,8 @@ export const en: Record<string, string> = {
   'Suma dywidend (wszystkie czasy)': 'Total dividends (all time)',
   'Projekcja rocznego dochodu (12 mies.)': 'Projected annual income (12 mo.)',
   'Planowane dywidendy': 'Upcoming dividends',
-  'Szacunek na podstawie historycznego rytmu wypłat tej spółki (ostatnia kwota + średni odstęp) — nie jest to oficjalna zapowiedź zarządu.':
-    "An estimate based on this stock's historical payout rhythm (last amount + average interval) — not an official announcement from management.",
+  'Szacunek na podstawie historycznego rytmu wypłat tej spółki (ostatnia kwota + średni odstęp) - nie jest to oficjalna zapowiedź zarządu.':
+    "An estimate based on this stock's historical payout rhythm (last amount + average interval) - not an official announcement from management.",
   'ok.': 'approx.',
   'Dywidendy miesiąc do miesiąca': 'Dividends month by month',
   'Udział spółek': 'Share by stock',
@@ -368,7 +368,7 @@ export const en: Record<string, string> = {
   '{0} lat': '{0} yrs',
   'Suma dywidend': 'Total dividends',
   'Ostatnie 12 mies.': 'Last 12 mo.',
-  'Brak dywidend — dodaj pierwszą wypłatę.': 'No dividends yet — add your first payout.',
+  'Brak dywidend - dodaj pierwszą wypłatę.': 'No dividends yet - add your first payout.',
   'Historia wypłat': 'Payout history',
   'wykryta automatycznie': 'auto-detected',
   'Brak wypłat.': 'No payouts.',
@@ -379,15 +379,15 @@ export const en: Record<string, string> = {
   'Zapisz dywidendę': 'Save dividend',
 
   // AnalizaSpolek
-  'Komunikaty ESPI/EBI (GPW) i ważne newsy (USA) dla spółek z Twojego portfela — sprawdzane raz dziennie.':
-    'ESPI/EBI filings (GPW) and important news (US) for the stocks in your portfolio — checked once a day.',
+  'Komunikaty ESPI/EBI (GPW) i ważne newsy (USA) dla spółek z Twojego portfela - sprawdzane raz dziennie.':
+    'ESPI/EBI filings (GPW) and important news (US) for the stocks in your portfolio - checked once a day.',
   'Sprawdzam…': 'Checking…',
   '⟳ Sprawdź teraz': '⟳ Check now',
   'Wszystkie spółki': 'All stocks',
   'Pokaż tylko nowe': 'Show only new',
   'Nowe': 'New',
-  'Brak komunikatów — kliknij „Sprawdź teraz” albo poczekaj na codzienne automatyczne sprawdzenie.':
-    'No filings yet — click "Check now" or wait for the daily automatic check.',
+  'Brak komunikatów - kliknij „Sprawdź teraz” albo poczekaj na codzienne automatyczne sprawdzenie.':
+    'No filings yet - click "Check now" or wait for the daily automatic check.',
 
   // Budget shared
   'Ten miesiąc': 'This month',
@@ -396,7 +396,7 @@ export const en: Record<string, string> = {
   'Zakres własny': 'Custom range',
   'Bez kategorii': 'No category',
   'Brak danych w tym okresie.': 'No data for this period.',
-  'wg kategorii — miesiąc do miesiąca': 'by category — month by month',
+  'wg kategorii - miesiąc do miesiąca': 'by category - month by month',
   'Kliknij kategorię poniżej, aby zobaczyć konkretne transakcje w wybranym okresie.': 'Click a category below to see specific transactions for the selected period.',
   'Transakcje w okresie': 'Transactions in period',
   '+ Kategoria': '+ Category',
@@ -415,18 +415,18 @@ export const en: Record<string, string> = {
   'Sklepy': 'Stores',
   '+ Dodaj sklep': '+ Add store',
   'Usuń sklep': 'Delete store',
-  'Brak sklepów — dodaj pierwszy powyżej.': 'No stores yet — add your first one above.',
+  'Brak sklepów - dodaj pierwszy powyżej.': 'No stores yet - add your first one above.',
   'Wydatki wg sklepów': 'Expenses by store',
   'Tylko transakcje, którym przypisano sklep. Kliknij sklep, aby zobaczyć jego transakcje.': 'Only transactions with a store assigned. Click a store to see its transactions.',
   'Brak wydatków przypisanych do sklepów w tym okresie.': 'No expenses assigned to stores in this period.',
   'Bez sklepu': 'No store',
 
   // Bilans / Przychody / Wydatki
-  'Przychody i wydatki razem — podział na kategorie i trend w czasie': 'Income and expenses together — breakdown by category and trend over time',
+  'Przychody i wydatki razem - podział na kategorie i trend w czasie': 'Income and expenses together - breakdown by category and trend over time',
   '+ Przychód / wydatek': '+ Income / expense',
   'Przychody w okresie': 'Income in period',
   'Wydatki w okresie': 'Expenses in period',
-  'Przychody i wydatki — ostatnie 12 miesięcy': 'Income & expenses — last 12 months',
+  'Przychody i wydatki - ostatnie 12 miesięcy': 'Income & expenses - last 12 months',
   'Przychody i wydatki w czasie': 'Income & expenses over time',
   'Słupki': 'Bars',
   'Linia': 'Line',
@@ -434,12 +434,12 @@ export const en: Record<string, string> = {
   '{0} mies.': '{0} mo.',
   'Wybierz co najmniej jedną serię do wyświetlenia.': 'Select at least one series to display.',
   'Skumulowany bilans (oszczędności)': 'Cumulative balance (savings)',
-  'Suma miesięcznych bilansów narastająco — jak rósł Twój zaoszczędzony kapitał w tym okresie.':
-    'Running sum of monthly balances — how your saved capital grew over this period.',
+  'Suma miesięcznych bilansów narastająco - jak rósł Twój zaoszczędzony kapitał w tym okresie.':
+    'Running sum of monthly balances - how your saved capital grew over this period.',
   'Wydatki wg tagów': 'Expenses by tag',
   'Przychody wg tagów': 'Income by tag',
-  'Tylko transakcje z co najmniej jednym tagiem — transakcja z kilkoma tagami liczy się do każdego z nich.':
-    'Only transactions with at least one tag — a transaction with several tags counts toward each of them.',
+  'Tylko transakcje z co najmniej jednym tagiem - transakcja z kilkoma tagami liczy się do każdego z nich.':
+    'Only transactions with at least one tag - a transaction with several tags counts toward each of them.',
   'Brak transakcji z tagami w tym okresie.': 'No tagged transactions in this period.',
   'Bez tagu': 'No tag',
   'Skąd biorą się Twoje przychody i jak zmieniają się w czasie': 'Where your income comes from and how it changes over time',
@@ -504,7 +504,7 @@ export const en: Record<string, string> = {
   '+ Dodaj tag': '+ Add tag',
   'Usunąć tag "{0}"?': 'Delete tag "{0}"?',
   'Usuń tag': 'Delete tag',
-  'Brak tagów — dodaj pierwszy powyżej.': 'No tags yet — add your first one above.',
+  'Brak tagów - dodaj pierwszy powyżej.': 'No tags yet - add your first one above.',
 
   // Belka tax P/L
   'Po podatku od zysków kapitałowych (19%)': 'After capital gains tax (19%)',
@@ -522,7 +522,7 @@ export const en: Record<string, string> = {
   'Zarezerwowano na cele': 'Reserved for goals',
   'Cele oszczędnościowe': 'Savings goals',
   '+ Cel': '+ Goal',
-  'Brak celów — dodaj pierwszy.': 'No goals yet — add your first one.',
+  'Brak celów - dodaj pierwszy.': 'No goals yet - add your first one.',
   'Duże wydatki': 'Big expenses',
   'Brak zaplanowanych wydatków.': 'No planned expenses.',
   'Cofnij': 'Undo',
@@ -544,8 +544,8 @@ export const en: Record<string, string> = {
 
   // Dividend simulation
   'Symulacja przyszłych dywidend (12 mies.)': 'Future dividend simulation (12 mo.)',
-  'Szacunek na podstawie obecnie posiadanych akcji i historycznego rytmu wypłat każdej spółki — nie jest to gwarancja przyszłych dywidend.':
-    "An estimate based on the stocks you currently hold and each company's historical payout rhythm — not a guarantee of future dividends.",
+  'Szacunek na podstawie obecnie posiadanych akcji i historycznego rytmu wypłat każdej spółki - nie jest to gwarancja przyszłych dywidend.':
+    "An estimate based on the stocks you currently hold and each company's historical payout rhythm - not a guarantee of future dividends.",
   'Szacunkowe dywidendy w kolejnych latach': 'Estimated dividends in upcoming years',
   'To samo założenie co powyżej (obecne akcje i historyczny rytm wypłat), zsumowane rok do roku na dłuższym horyzoncie.':
     'Same assumption as above (current holdings and historical payout rhythm), summed year by year over a longer horizon.',
@@ -560,8 +560,8 @@ export const en: Record<string, string> = {
 
   // Invite-only registration / streak / onboarding gate
   'Login lub e-mail': 'Username or email',
-  'Rejestracja jest dostępna tylko na zaproszenie od innego użytkownika — poproś o link lub zeskanuj kod QR.':
-    'Registration is invite-only — ask someone for a link or scan a QR code.',
+  'Rejestracja jest dostępna tylko na zaproszenie od innego użytkownika - poproś o link lub zeskanuj kod QR.':
+    'Registration is invite-only - ask someone for a link or scan a QR code.',
   'Masz już konto? Zaloguj się': 'Already have an account? Log in',
   'Rejestracja jest dostępna tylko na zaproszenie od innego użytkownika.': 'Registration is invite-only.',
   'Seria logowań: {0} dni': '{0}-day login streak',
@@ -569,14 +569,14 @@ export const en: Record<string, string> = {
   'Limit: bez ograniczeń': 'Limit: unlimited',
   'Pozostało w tym tygodniu: {0} z {1}': '{0} of {1} left this week',
   '+ Wygeneruj zaproszenie': '+ Generate invitation',
-  'Wykorzystano limit zaproszeń na ten tydzień — odnawia się na bieżąco, 7 dni po każdym zaproszeniu.':
-    'You’ve used this week’s invitation limit — it renews continuously, 7 days after each invite.',
+  'Wykorzystano limit zaproszeń na ten tydzień - odnawia się na bieżąco, 7 dni po każdym zaproszeniu.':
+    'You’ve used this week’s invitation limit - it renews continuously, 7 days after each invite.',
   'Skopiowano!': 'Copied!',
   'Kopiuj link': 'Copy link',
   'Pokaż QR': 'Show QR',
   'Ukryj QR': 'Hide QR',
   'Zaakceptowane przez {0} ({1})': 'Accepted by {0} ({1})',
-  'Oczekuje — wygenerowano {0}': 'Pending — generated {0}',
+  'Oczekuje - wygenerowano {0}': 'Pending - generated {0}',
   'Czy na pewno chcesz zmienić nazwę użytkownika? Można to zrobić tylko raz na 30 dni.':
     'Are you sure you want to change your username? This can only be done once every 30 days.',
   'Dodaj co najmniej jedno konto bankowe, żeby przejść dalej.': 'Add at least one bank account to continue.',
@@ -592,8 +592,8 @@ export const en: Record<string, string> = {
 
   // Editor role / article CRM / admin role assignment
   'Redakcja': 'Editorial',
-  'Masz uprawnienia redaktora — możesz dodawać i edytować artykuły.':
-    'You have editor permissions — you can add and edit articles.',
+  'Masz uprawnienia redaktora - możesz dodawać i edytować artykuły.':
+    'You have editor permissions - you can add and edit articles.',
   'Przejdź do redakcji': 'Go to editorial',
   'Redakcja artykułów': 'Article editorial',
   'Dodawaj i edytuj artykuły widoczne na stronie głównej.': 'Add and edit articles shown on the homepage.',
@@ -618,8 +618,8 @@ export const en: Record<string, string> = {
   'Czy na pewno chcesz usunąć tę lokatę?': 'Are you sure you want to delete this deposit?',
   'Czy na pewno chcesz usunąć tę obligację?': 'Are you sure you want to delete this bond?',
   'Kategorie, sklepy i tagi': 'Categories, stores & tags',
-  'Zarządzaj tu wszystkimi kategoriami, sklepami i tagami używanymi w budżecie — w jednym miejscu.':
-    'Manage all the categories, stores, and tags used in your budget here — in one place.',
+  'Zarządzaj tu wszystkimi kategoriami, sklepami i tagami używanymi w budżecie - w jednym miejscu.':
+    'Manage all the categories, stores, and tags used in your budget here - in one place.',
   'Kategorie przychodów': 'Income categories',
   'Kategorie wydatków': 'Expense categories',
   'po Belce': 'after tax',
@@ -634,16 +634,16 @@ export const en: Record<string, string> = {
 
   // Feature-interest onboarding + account settings
   'Zainteresowania': 'Interests',
-  'Z czego chcesz korzystać? Odznacz to, czego nie potrzebujesz — zawsze możesz to zmienić później w ustawieniach konta.':
-    'What do you want to use? Uncheck anything you don’t need — you can always change this later in account settings.',
+  'Z czego chcesz korzystać? Odznacz to, czego nie potrzebujesz - zawsze możesz to zmienić później w ustawieniach konta.':
+    'What do you want to use? Uncheck anything you don’t need - you can always change this later in account settings.',
   'Budżet': 'Budget',
   'Portfel akcji, dywidendy, analiza spółek': 'Stock portfolio, dividends, company analysis',
   'Notowanie przychodów i wydatków': 'Tracking income and expenses',
   'Cele oszczędnościowe i planowane wydatki': 'Savings goals and planned expenses',
   'Kalkulator inwestycyjny - obligacje, lokaty, giełda': 'Investment calculator - bonds, deposits, stock market',
   'Z czego korzystasz': 'What you use',
-  'Odznaczone opcje znikają z górnego menu — możesz je włączyć z powrotem w każdej chwili.':
-    'Unchecked options disappear from the top menu — you can turn them back on any time.',
+  'Odznaczone opcje znikają z górnego menu - możesz je włączyć z powrotem w każdej chwili.':
+    'Unchecked options disappear from the top menu - you can turn them back on any time.',
 
   // Chart type switcher
   'Wykres kołowy': 'Pie chart',
@@ -676,8 +676,8 @@ export const en: Record<string, string> = {
   '+ Wyślij zaproszenie mailem': '+ Send invitation by email',
 
   // Growth summary "no data" state
-  'Brak danych — zarejestruj pierwszą wpłatę, aby zobaczyć realny zwrot.':
-    'No data — record your first deposit to see your real return.',
+  'Brak danych - zarejestruj pierwszą wpłatę, aby zobaczyć realny zwrot.':
+    'No data - record your first deposit to see your real return.',
 
   // Admin user detail page
   'Szczegóły': 'Details',
@@ -721,7 +721,7 @@ export const en: Record<string, string> = {
   'To, co zarobiłeś: odsetki na lokatach i obligacjach, zysk na akcjach oraz dywidendy (po podatku Belki).':
     'What you earned: interest on deposits and bonds, stock gains, and dividends (after capital gains tax).',
 
-  // Zmiana wartości majątku — expandable breakdown
+  // Zmiana wartości majątku - expandable breakdown
   'Kliknij, aby zobaczyć podział zmiany na akcje, lokaty, obligacje i gotówkę':
     'Click to see the change broken down by stocks, deposits, bonds and cash',
   'Brak zmian w poszczególnych składnikach.': 'No change in any individual component.',
@@ -768,13 +768,13 @@ export const en: Record<string, string> = {
   'Kolor roli': 'Role color',
   'Utwórz rolę': 'Create role',
   '+ Nowa rola': '+ New role',
-  'Twórz role z wybranym zestawem uprawnień i nadawaj je użytkownikom w ich profilu — niezależnie od statusu administratora/redaktora.':
-    "Create roles with a chosen set of permissions and grant them to users from their profile — independent of admin/editor status.",
+  'Twórz role z wybranym zestawem uprawnień i nadawaj je użytkownikom w ich profilu - niezależnie od statusu administratora/redaktora.':
+    "Create roles with a chosen set of permissions and grant them to users from their profile - independent of admin/editor status.",
   '{0} uprawnień, {1} użytkowników': '{0} permissions, {1} users',
   'Usunąć rolę {0}? Zostanie odebrana wszystkim {1} przypisanym użytkownikom.':
     'Delete role {0}? It will be removed from all {1} users it is assigned to.',
   'Brak ról.': 'No roles yet.',
-  'Brak ról — utwórz je w zakładce "Role".': 'No roles yet — create them in the "Roles" tab.',
+  'Brak ról - utwórz je w zakładce "Role".': 'No roles yet - create them in the "Roles" tab.',
   'Podgląd statystyk aplikacji': 'View app statistics',
   'Podgląd listy użytkowników': 'View user list',
   'Zarządzanie użytkownikami (aktywacja, archiwizacja)': 'Manage users (activate, archive)',
@@ -783,14 +783,14 @@ export const en: Record<string, string> = {
   'Zarządzanie zgłoszeniami feedbacku': 'Manage feedback submissions',
   'Tworzenie i edycja ról': 'Create and edit roles',
 
-  // Invite friends — delete, sub-tabs, expiry
+  // Invite friends - delete, sub-tabs, expiry
   'Oczekujące zaproszenia': 'Pending invitations',
   'Przyjęte zaproszenia': 'Accepted invitations',
   'Brak oczekujących zaproszeń.': 'No pending invitations.',
   'Brak przyjętych zaproszeń.': 'No accepted invitations.',
   'Usunąć ten link z zaproszeniem?': 'Delete this invitation link?',
-  'Wygasło — wygenerowano {0}': 'Expired — generated {0}',
-  'Oczekuje — wygenerowano {0}, wygasa po 48h': 'Pending — generated {0}, expires after 48h',
+  'Wygasło - wygenerowano {0}': 'Expired - generated {0}',
+  'Oczekuje - wygenerowano {0}, wygasa po 48h': 'Pending - generated {0}, expires after 48h',
 
   // Login history
   'Historia logowań': 'Login history',
@@ -804,7 +804,7 @@ export const en: Record<string, string> = {
   // Username change lock
   'Można zmienić od {0}': 'Can be changed again from {0}',
 
-  // Savings goals — reserve from savings, multi-month payday reservations
+  // Savings goals - reserve from savings, multi-month payday reservations
   'Zarezerwuj z oszczędności': 'Reserve from savings',
   'Zarezerwuj część pensji z jednego lub kilku konkretnych miesięcy naraz.':
     'Reserve part of your salary from one or several specific months at once.',
@@ -835,22 +835,22 @@ export const en: Record<string, string> = {
   'Panuj nad': 'Take control of',
   'swoimi finansami': 'your finances',
   'Zbudowane, żeby faktycznie z tego korzystać': 'Built to actually get used',
-  'Nie kolejny arkusz kalkulacyjny — narzędzie, które samo liczy to, co dla Ciebie ważne.':
-    "Not another spreadsheet — a tool that does the math on what matters to you.",
+  'Nie kolejny arkusz kalkulacyjny - narzędzie, które samo liczy to, co dla Ciebie ważne.':
+    "Not another spreadsheet - a tool that does the math on what matters to you.",
   'Wszystko w jednym miejscu': 'Everything in one place',
-  'Konta bankowe, akcje, obligacje i lokaty — jeden widok na cały Twój majątek, bez przełączania się między aplikacjami banków i domów maklerskich.':
-    'Bank accounts, stocks, bonds and deposits — one view of your entire net worth, no switching between bank and broker apps.',
+  'Konta bankowe, akcje, obligacje i lokaty - jeden widok na cały Twój majątek, bez przełączania się między aplikacjami banków i domów maklerskich.':
+    'Bank accounts, stocks, bonds and deposits - one view of your entire net worth, no switching between bank and broker apps.',
   'Realny zwrot z inwestycji': 'Real investment return',
-  'Zysk liczony osobno od wpłaconego kapitału — zobaczysz dokładnie, ile realnie zarobiłeś na lokatach, obligacjach i akcjach, po podatku Belki.':
-    "Profit tracked separately from contributed capital — see exactly what you've earned on deposits, bonds and stocks, after capital gains tax.",
+  'Zysk liczony osobno od wpłaconego kapitału - zobaczysz dokładnie, ile realnie zarobiłeś na lokatach, obligacjach i akcjach, po podatku Belki.':
+    "Profit tracked separately from contributed capital - see exactly what you've earned on deposits, bonds and stocks, after capital gains tax.",
   'Budżet pod kontrolą': 'Budget under control',
-  'Automatyczny import wyciągów, kategorie, sklepy i tagi — analiza przychodów i wydatków, która sama się aktualizuje.':
-    'Automatic statement import, categories, stores and tags — income/expense analysis that updates itself.',
+  'Automatyczny import wyciągów, kategorie, sklepy i tagi - analiza przychodów i wydatków, która sama się aktualizuje.':
+    'Automatic statement import, categories, stores and tags - income/expense analysis that updates itself.',
   'Ustaw cel, rezerwuj kwoty z konkretnych wypłat lub z bieżących oszczędności i śledź postęp na żywo.':
     'Set a goal, reserve amounts from specific paychecks or your current savings, and track progress live.',
   'Dywidendy i podatki': 'Dividends and taxes',
-  'Historia i prognoza wypłat dywidend, szacowany podatek Belki do zapłaty — żadnych niespodzianek przy rozliczeniu.':
-    'Dividend history and forecast, estimated capital gains tax owed — no surprises at tax time.',
+  'Historia i prognoza wypłat dywidend, szacowany podatek Belki do zapłaty - żadnych niespodzianek przy rozliczeniu.':
+    'Dividend history and forecast, estimated capital gains tax owed - no surprises at tax time.',
   'Twoje dane, Twoja kontrola': 'Your data, your control',
   'Dostęp wyłącznie na zaproszenie, bez reklam i bez śledzenia. Historia logowań pokazuje dokładnie, kto i kiedy wchodził na Twoje konto.':
     'Invite-only access, no ads, no tracking. Login history shows exactly who accessed your account and when.',
@@ -862,26 +862,26 @@ export const en: Record<string, string> = {
   'Kilka minut wystarczy, żeby dodać konta bankowe, portfel akcji, lokaty i obligacje.':
     "A few minutes is enough to add bank accounts, your stock portfolio, deposits and bonds.",
   'Widzisz cały obraz': 'You see the full picture',
-  'Dashboard aktualizuje się na bieżąco — majątek, zwrot z inwestycji i budżet w jednym miejscu.':
-    'The dashboard updates live — net worth, investment return and budget in one place.',
+  'Dashboard aktualizuje się na bieżąco - majątek, zwrot z inwestycji i budżet w jednym miejscu.':
+    'The dashboard updates live - net worth, investment return and budget in one place.',
   'Masz już zaproszenie?': 'Already have an invite?',
-  'Zaloguj się i zobacz cały swój majątek w jednym miejscu — od razu po pierwszym dodaniu konta.':
-    'Log in and see your entire net worth in one place — right after adding your first account.',
+  'Zaloguj się i zobacz cały swój majątek w jednym miejscu - od razu po pierwszym dodaniu konta.':
+    'Log in and see your entire net worth in one place - right after adding your first account.',
 
-  // Request access — landing page form + admin review
+  // Request access - landing page form + admin review
   'Nie masz zaproszenia? Poproś o dostęp →': "Don't have an invite? Request access →",
   'Twój adres e-mail': 'Your email address',
   'Poproś o dostęp': 'Request access',
-  'Dziękujemy! Odpowiadamy zwykle w ciągu kilku dni — napiszemy na podany adres, gdy administrator rozpatrzy prośbę.':
-    "Thanks! We usually reply within a few days — we'll write to the address you gave once an administrator reviews the request.",
+  'Dziękujemy! Odpowiadamy zwykle w ciągu kilku dni - napiszemy na podany adres, gdy administrator rozpatrzy prośbę.':
+    "Thanks! We usually reply within a few days - we'll write to the address you gave once an administrator reviews the request.",
   'Prośby o dostęp': 'Access requests',
   'Oczekujące': 'Pending',
   'Zaakceptowane': 'Accepted',
   'Zaakceptowano': 'Accepted',
   'Odrzucono': 'Rejected',
   'Zaakceptuj losowy procent oczekujących': 'Accept a random percentage of pending requests',
-  'Przydatne przy stopniowym otwieraniu dostępu — zamiast rozpatrywać każdą prośbę osobno.':
-    'Useful for a staged rollout — instead of reviewing every request one by one.',
+  'Przydatne przy stopniowym otwieraniu dostępu - zamiast rozpatrywać każdą prośbę osobno.':
+    'Useful for a staged rollout - instead of reviewing every request one by one.',
   'Zaakceptuj': 'Accept',
   'Zaakceptowano {0} z {1} oczekujących próśb.': 'Accepted {0} of {1} pending requests.',
   'Brak próśb w tej kategorii.': 'No requests in this category.',
@@ -891,24 +891,24 @@ export const en: Record<string, string> = {
   'Odrzuć': 'Reject',
 
   // Role acceptance workflow
-  'Kliknięcie oferuje rolę — zaczyna obowiązywać dopiero, gdy użytkownik ją zaakceptuje.':
-    "Clicking offers the role — it doesn't take effect until the user accepts it.",
-  'Oczekuje na akceptację użytkownika — kliknij, aby wycofać ofertę': 'Awaiting the user’s acceptance — click to withdraw the offer',
-  'Zaakceptowana — kliknij, aby odebrać': 'Accepted — click to revoke',
+  'Kliknięcie oferuje rolę - zaczyna obowiązywać dopiero, gdy użytkownik ją zaakceptuje.':
+    "Clicking offers the role - it doesn't take effect until the user accepts it.",
+  'Oczekuje na akceptację użytkownika - kliknij, aby wycofać ofertę': 'Awaiting the user’s acceptance - click to withdraw the offer',
+  'Zaakceptowana - kliknij, aby odebrać': 'Accepted - click to revoke',
   'Kliknij, aby zaoferować tę rolę': 'Click to offer this role',
   '(oczekuje)': '(pending)',
   'Nowe role do zaakceptowania': 'New roles to accept',
-  'Administrator zaproponował Ci nowe uprawnienia — nie zaczną obowiązywać, dopóki ich nie zaakceptujesz.':
-    "An administrator has offered you new permissions — they won't take effect until you accept them.",
+  'Administrator zaproponował Ci nowe uprawnienia - nie zaczną obowiązywać, dopóki ich nie zaakceptujesz.':
+    "An administrator has offered you new permissions - they won't take effect until you accept them.",
   'od {0}': 'from {0}',
 
   // Login back-link, updated budget feature card
   '← Strona główna': '← Homepage',
   'Przychody, wydatki i budżet': 'Income, expenses and budget',
-  'Zarządzaj przychodami i wydatkami, monitoruj budżet miesiąc po miesiącu i sprawdzaj bilans — automatyczny import wyciągów, kategorie, sklepy i tagi robią to za Ciebie.':
-    'Manage your income and expenses, track your budget month to month, and check your balance — automatic statement import, categories, stores and tags do the work for you.',
+  'Zarządzaj przychodami i wydatkami, monitoruj budżet miesiąc po miesiącu i sprawdzaj bilans - automatyczny import wyciągów, kategorie, sklepy i tagi robią to za Ciebie.':
+    'Manage your income and expenses, track your budget month to month, and check your balance - automatic statement import, categories, stores and tags do the work for you.',
 
-  // Translation coverage sweep — everything a distinct-strings audit found
+  // Translation coverage sweep - everything a distinct-strings audit found
   // with no English entry yet, across Planowanie, AdminUsers, AnalizaSpolek,
   // StatementImportPanel, PrivacyPolicy, Landing, and assorted small labels.
   '+ Przychód/Wydatek': '+ Income/Expense',
@@ -918,14 +918,14 @@ export const en: Record<string, string> = {
   'Aktywni dzisiaj': 'Active today',
   'Aktywni użytkownicy dziennie (30 dni)': 'Daily active users (30 days)',
   'Artykuły o finansach osobistych': 'Personal finance articles',
-  'Brak stałych kosztów — dodaj pierwszy.': 'No fixed costs yet — add your first one.',
+  'Brak stałych kosztów - dodaj pierwszy.': 'No fixed costs yet - add your first one.',
   'Brak użytkowników spełniających kryteria.': 'No users match the filters.',
   'Brak wycenionych pozycji w portfelu.': 'No valued positions in the portfolio.',
   'Brak zarezerwowanych wypłat.': 'No reserved paychecks yet.',
-  'Czynsz, subskrypcje, ubezpieczenia — cykliczne opłaty co miesiąc, niezależnie od tego, czy już je zapłaciłeś w tym miesiącu.':
-    "Rent, subscriptions, insurance — recurring monthly charges, whether or not you've already paid them this month.",
+  'Czynsz, subskrypcje, ubezpieczenia - cykliczne opłaty co miesiąc, niezależnie od tego, czy już je zapłaciłeś w tym miesiącu.':
+    "Rent, subscriptions, insurance - recurring monthly charges, whether or not you've already paid them this month.",
   'Czytaj więcej →': 'Read more →',
-  'Dane konta przechowujemy tak długo, jak konto jest aktywne. Kiedy usuniesz konto w ustawieniach, blokujemy je od razu, a po 30 dniach trwale kasujemy wszystkie Twoje dane. Przez te 30 dni możesz cofnąć decyzję linkiem z maila, który wysyłamy przy usuwaniu. Osobno administrator może zarchiwizować konto, czyli je zdezaktywować z zachowaniem danych — takie konto czeka, aż zdecydujesz, co dalej, i nie jest kasowane automatycznie.':
+  'Dane konta przechowujemy tak długo, jak konto jest aktywne. Kiedy usuniesz konto w ustawieniach, blokujemy je od razu, a po 30 dniach trwale kasujemy wszystkie Twoje dane. Przez te 30 dni możesz cofnąć decyzję linkiem z maila, który wysyłamy przy usuwaniu. Osobno administrator może zarchiwizować konto, czyli je zdezaktywować z zachowaniem danych - takie konto czeka, aż zdecydujesz, co dalej, i nie jest kasowane automatycznie.':
     'We keep your account data for as long as the account is active. When you delete your account in the settings, we lock it immediately and permanently erase all your data after 30 days. During those 30 days you can undo it with the link in the email we send. Separately, an administrator can archive an account, which deactivates it while keeping the data - such an account waits for you to decide and is never erased automatically.',
   'Danych nie sprzedajemy i nie udostępniamy w celach marketingowych. Współpracujemy wyłącznie z dostawcami niezbędnymi do działania serwisu:':
     'We never sell your data or share it for marketing purposes. We only work with providers needed to run the service:',
@@ -936,20 +936,20 @@ export const en: Record<string, string> = {
   'Dołączył(a)': 'Joined',
   'Dzień wypłaty pozwala policzyć, ile wypłat zostało do terminu każdego celu oszczędnościowego.':
     'The payday setting lets us calculate how many paychecks are left before each savings goal\'s deadline.',
-  'dostawca analityki bez ciasteczek — zbiorcze statystyki odwiedzin (patrz sekcja wyżej),':
+  'dostawca analityki bez ciasteczek - zbiorcze statystyki odwiedzin (patrz sekcja wyżej),':
     'a cookieless analytics provider - aggregate visit statistics (see the section above),',
-  'Hasła są haszowane, komunikacja z aplikacją odbywa się przez HTTPS, a dostęp do panelu administratora mają wyłącznie konta z uprawnieniami administratora lub odpowiednią rolą — i nawet ten panel nie pokazuje treści Twoich transakcji ani sald, tylko zbiorcze statystyki. Treść danych finansowych nie jest też dostępna przez wbudowany panel Django — do bazy danych dociera się wyłącznie bezpośrednim, świadomym dostępem administracyjnym do infrastruktury, nie jednym kliknięciem w aplikacji.':
-    "Passwords are hashed, communication with the app runs over HTTPS, and only accounts with admin rights or an appropriate role can reach the admin panel — and even that panel never shows the content of your transactions or balances, only aggregate statistics. Financial data isn't reachable through Django's built-in admin site either — the database is only reachable through deliberate, direct administrative access to the infrastructure, not a single click in the app.",
+  'Hasła są haszowane, komunikacja z aplikacją odbywa się przez HTTPS, a dostęp do panelu administratora mają wyłącznie konta z uprawnieniami administratora lub odpowiednią rolą - i nawet ten panel nie pokazuje treści Twoich transakcji ani sald, tylko zbiorcze statystyki. Treść danych finansowych nie jest też dostępna przez wbudowany panel Django - do bazy danych dociera się wyłącznie bezpośrednim, świadomym dostępem administracyjnym do infrastruktury, nie jednym kliknięciem w aplikacji.':
+    "Passwords are hashed, communication with the app runs over HTTPS, and only accounts with admin rights or an appropriate role can reach the admin panel - and even that panel never shows the content of your transactions or balances, only aggregate statistics. Financial data isn't reachable through Django's built-in admin site either - the database is only reachable through deliberate, direct administrative access to the infrastructure, not a single click in the app.",
   'Historia': 'History',
   'Importuj wyciąg z konta': 'Import account statement',
   'Kategoria widoczna tylko dla tego konta': 'Category visible only for this account',
   'Koncentracja portfela': 'Portfolio concentration',
-  'Konta bankowe i ich salda, transakcje budżetowe, kategorie/sklepy/tagi, posiadane akcje i transakcje giełdowe, lokaty, obligacje, dywidendy, cele oszczędnościowe i plany budżetowe — czyli wszystko, co wpisujesz, żeby aplikacja mogła śledzić Twój majątek. Te dane widzisz tylko Ty — inni użytkownicy nie mają do nich dostępu, a panel administratora pokazuje wyłącznie zbiorcze liczby i aktywność konta (np. liczbę transakcji), nigdy treść Twoich transakcji czy sald.':
-    "Bank accounts and their balances, budget transactions, categories/stores/tags, the stocks and stock trades you hold, deposits, bonds, dividends, savings goals and budget plans — basically everything you enter so the app can track your net worth. Only you see this data — other users have no access to it, and the admin panel only ever shows aggregate counts and account activity (e.g. a transaction count), never the content of your transactions or balances.",
-  'Konta w innej walucie będą oznaczone jako walutowe — to tylko etykieta, nie wpływa na przeliczenia.':
-    "Accounts in a different currency get labeled as foreign-currency — that's just a label, it doesn't affect conversions.",
-  'Logowanie działa w oparciu o tokeny JWT przechowywane w local storage przeglądarki — to samo miejsce przechowuje wybrany motyw kolorystyczny i język, zanim zostaną zapisane na koncie. Nie ma żadnych skryptów reklamowych ani śledzących w celach marketingowych.':
-    "Logging in relies on JWT tokens kept in the browser's local storage — the same place stores your chosen theme and language before they're saved to your account. There are no advertising or marketing-tracking scripts.",
+  'Konta bankowe i ich salda, transakcje budżetowe, kategorie/sklepy/tagi, posiadane akcje i transakcje giełdowe, lokaty, obligacje, dywidendy, cele oszczędnościowe i plany budżetowe - czyli wszystko, co wpisujesz, żeby aplikacja mogła śledzić Twój majątek. Te dane widzisz tylko Ty - inni użytkownicy nie mają do nich dostępu, a panel administratora pokazuje wyłącznie zbiorcze liczby i aktywność konta (np. liczbę transakcji), nigdy treść Twoich transakcji czy sald.':
+    "Bank accounts and their balances, budget transactions, categories/stores/tags, the stocks and stock trades you hold, deposits, bonds, dividends, savings goals and budget plans - basically everything you enter so the app can track your net worth. Only you see this data - other users have no access to it, and the admin panel only ever shows aggregate counts and account activity (e.g. a transaction count), never the content of your transactions or balances.",
+  'Konta w innej walucie będą oznaczone jako walutowe - to tylko etykieta, nie wpływa na przeliczenia.':
+    "Accounts in a different currency get labeled as foreign-currency - that's just a label, it doesn't affect conversions.",
+  'Logowanie działa w oparciu o tokeny JWT przechowywane w local storage przeglądarki - to samo miejsce przechowuje wybrany motyw kolorystyczny i język, zanim zostaną zapisane na koncie. Nie ma żadnych skryptów reklamowych ani śledzących w celach marketingowych.':
+    "Logging in relies on JWT tokens kept in the browser's local storage - the same place stores your chosen theme and language before they're saved to your account. There are no advertising or marketing-tracking scripts.",
   'Masz prawo do wglądu w swoje dane, ich poprawienia, przeniesienia i usunięcia. Dwa z nich załatwisz sam(a) w ustawieniach konta: "Pobierz swoje dane" daje pełną kopię wszystkiego, co przechowujemy (JSON plus tabele CSV do Excela), a "Usuń konto" uruchamia trwałe skasowanie danych. Większość informacji poprawisz bezpośrednio w ustawieniach. W pozostałych sprawach napisz na adres podany niżej albo skorzystaj z widgetu "Zostaw feedback" w aplikacji.':
     'You have the right to see your data, correct it, take it with you and have it erased. Two of those you can do yourself in the account settings: "Download your data" gives you a full copy of everything we store (JSON plus CSV tables for Excel), and "Delete account" starts the permanent erasure. Most details you can correct directly in the settings. For anything else, write to the address below or use the "Leave feedback" widget in the app.',
   'Na plusie / na minusie / bez zmian': 'Winning / losing / unchanged',
@@ -960,7 +960,7 @@ export const en: Record<string, string> = {
     "Username, first and last name, email address (if provided), and password (stored only hashed, never in plain text). At registration we also record whose invitation the account was created from.",
   'Nie udało się dodać tagu.': "Couldn't add the tag.",
   'Nie udało się przetworzyć pliku.': "Couldn't process the file.",
-  'Nie udało się zaimportować transakcji — spróbuj wgrać plik ponownie.': "Couldn't import the transactions — try uploading the file again.",
+  'Nie udało się zaimportować transakcji - spróbuj wgrać plik ponownie.': "Couldn't import the transactions - try uploading the file again.",
   'Nie znaleziono artykułu.': 'Article not found.',
   'Nowi w tym tygodniu': 'New this week',
   'Odblokuj': 'Unblock',
@@ -972,7 +972,7 @@ export const en: Record<string, string> = {
   'Ostatnie IP': 'Last IP',
   'Ostatnie logowanie': 'Last login',
   'Panel administratora': 'Admin panel',
-  'Pensja i dzień wypłaty ({0}. dnia miesiąca) — zmień': 'Salary and payday (the {0} of the month) — change',
+  'Pensja i dzień wypłaty ({0}. dnia miesiąca) - zmień': 'Salary and payday (the {0} of the month) - change',
   'Plik PDF': 'PDF file',
   'Podgląd wyciągu': 'Statement preview',
   'Podział wg rynku': 'Breakdown by market',
@@ -984,17 +984,17 @@ export const en: Record<string, string> = {
   'Zmiana wartości względem wpłaconego kapitału na tym koncie': 'Value change relative to capital invested in this account',
   'Zainwestowano': 'Invested',
   'Pozostałe ({0})': 'Other ({0})',
-  'Przy każdym logowaniu zapisujemy adres IP oraz podstawowe informacje o przeglądarce/systemie (User-Agent) — to podstawa historii logowań widocznej w Twoim koncie oraz ochrony przed nieautoryzowanym dostępem. Zapisujemy też, w które dni byłeś/aś aktywny(a) (do serii logowań i statystyk).':
-    'On every login we record the IP address and basic browser/system info (User-Agent) — this powers the login history in your account and helps protect against unauthorized access. We also record which days you were active (for streaks and statistics).',
+  'Przy każdym logowaniu zapisujemy adres IP oraz podstawowe informacje o przeglądarce/systemie (User-Agent) - to podstawa historii logowań widocznej w Twoim koncie oraz ochrony przed nieautoryzowanym dostępem. Zapisujemy też, w które dni byłeś/aś aktywny(a) (do serii logowań i statystyk).':
+    'On every login we record the IP address and basic browser/system info (User-Agent) - this powers the login history in your account and helps protect against unauthorized access. We also record which days you were active (for streaks and statistics).',
   'Rola': 'Role',
-  'Skład, koncentracja i wyniki Twoich pozycji — przeliczone do jednej waluty, żeby dało się je sensownie porównać.':
-    'The composition, concentration and performance of your positions — converted to one currency so they can be meaningfully compared.',
+  'Skład, koncentracja i wyniki Twoich pozycji - przeliczone do jednej waluty, żeby dało się je sensownie porównać.':
+    'The composition, concentration and performance of your positions - converted to one currency so they can be meaningfully compared.',
   'Statystyki portfela': 'Portfolio statistics',
   'Stałe koszty': 'Fixed costs',
   'Stałe koszty / mies.': 'Fixed costs / mo.',
   'Suma': 'Total',
   'Szukaj': 'Search',
-  'Termin wypłaty minął przed celem — dodaj więcej lub przesuń termin': 'The payday deadline is before the goal — add more, or push the deadline back',
+  'Termin wypłaty minął przed celem - dodaj więcej lub przesuń termin': 'The payday deadline is before the goal - add more, or push the deadline back',
   'Transakcje akcji': 'Stock transactions',
   'Transakcje budżetu': 'Budget transactions',
   'Treść zgłoszeń wysłanych przez widget "Zostaw feedback" oraz historia wysłanych zaproszeń (komu, kiedy, czy zostało przyjęte).':
@@ -1013,8 +1013,8 @@ export const en: Record<string, string> = {
   'Waluta inna niż domyślna ({0})': 'Currency other than the default ({0})',
   'Wczytywanie…': 'Loading…',
   'Wgraj i pokaż podgląd': 'Upload and preview',
-  'Wgraj wyciąg w formacie PDF (obecnie obsługiwane: PKO Bank Polski). Zanim cokolwiek zapiszemy, pokażemy podgląd transakcji do zatwierdzenia — i sprawdzimy, czy już ich kiedyś nie zaimportowano.':
-    "Upload a statement in PDF format (currently supported: PKO Bank Polski). Before we save anything, we'll show you a preview of the transactions to confirm — and check whether they've already been imported before.",
+  'Wgraj wyciąg w formacie PDF (obecnie obsługiwane: PKO Bank Polski). Zanim cokolwiek zapiszemy, pokażemy podgląd transakcji do zatwierdzenia - i sprawdzimy, czy już ich kiedyś nie zaimportowano.':
+    "Upload a statement in PDF format (currently supported: PKO Bank Polski). Before we save anything, we'll show you a preview of the transactions to confirm - and check whether they've already been imported before.",
   'Wkrótce pojawią się tu pierwsze artykuły.': 'The first articles will appear here soon.',
   'Wznów': 'Resume',
   'Zablokuj': 'Block',
@@ -1023,7 +1023,7 @@ export const en: Record<string, string> = {
   'Zaloguj się do aplikacji': 'Log in to the app',
   'Wejdź do aplikacji': 'Enter the app',
   'Wróć do swojego majątku': 'Come back to your finances',
-  'Kontynuuj tam, gdzie skończyłeś/aś — Twój dashboard czeka.': 'Pick up right where you left off — your dashboard is waiting.',
+  'Kontynuuj tam, gdzie skończyłeś/aś - Twój dashboard czeka.': 'Pick up right where you left off - your dashboard is waiting.',
   'Zarezerwowano na duże wydatki': 'Reserved for large expenses',
   'Zarezerwuj z wypłaty': 'Reserve from paycheck',
   'Zatrzymaj': 'Pause',
@@ -1031,13 +1031,13 @@ export const en: Record<string, string> = {
   'Zaznacz wszystkie': 'Select all',
   'Zaznaczono {0} z {1} transakcji do importu.': 'Selected {0} of {1} transactions to import.',
   'Zostaje po rezerwacjach i odkładaniu': 'Left after reservations and savings',
-  'Zostało {0} wypłat — odkładaj ~{1} z każdej, żeby zdążyć': '{0} paydays left — set aside ~{1} from each to make it',
+  'Zostało {0} wypłat - odkładaj ~{1} z każdej, żeby zdążyć': '{0} paydays left - set aside ~{1} from each to make it',
   'Zrealizowany zysk/strata wg roku (po podatku Belki)': 'Realized profit/loss by year (after capital gains tax)',
   'Zweryfikowany e-mail': 'Verified email',
   'administratorzy': 'administrators',
   'aktywne': 'active',
   'bardzo rozproszony': 'very diversified',
-  'dostawca poczty e-mail — do wysyłki e-maili weryfikacyjnych, resetu hasła i zaproszeń,': 'email provider — for sending verification, password reset and invitation emails,',
+  'dostawca poczty e-mail - do wysyłki e-maili weryfikacyjnych, resetu hasła i zaproszeń,': 'email provider - for sending verification, password reset and invitation emails,',
   'hosting aplikacji i baza danych (Microsoft Azure),': 'app hosting and database (Microsoft Azure),',
   'już zaimportowano': 'already imported',
   'login lub e-mail': 'username or email',
@@ -1048,13 +1048,13 @@ export const en: Record<string, string> = {
   'np. mBank': 'e.g. mBank',
   'np. wakacje': 'e.g. vacation',
   'odświeżanie…': 'refreshing…',
-  'publiczne źródła danych rynkowych (np. Stooq, Yahoo Finance) — zapytania dotyczą wyłącznie tickerów giełdowych i kursów walut, nigdy Twoich danych osobowych.':
-    'public market data sources (e.g. Stooq, Yahoo Finance) — these queries only ever involve stock tickers and exchange rates, never your personal data.',
-  'skieta to osobisty tracker finansowy — aplikacja dostępna wyłącznie na zaproszenie, bez reklam i bez sprzedaży danych osobom trzecim. Administratorem danych jest osoba prowadząca serwis skieta, z którą można się skontaktować pod adresem podanym na dole tej strony.':
-    'skieta is a personal finance tracker — an invite-only app, with no ads and no selling data to third parties. The data controller is the person running skieta, reachable at the address given at the bottom of this page.',
-  'skieta łączy konta bankowe, inwestycje, lokaty i obligacje w jednym miejscu — zobacz, jak naprawdę rośnie Twój majątek, bez arkusza kalkulacyjnego i bez zgadywania.':
-    "skieta brings bank accounts, investments, deposits and bonds together in one place — see how your net worth is really growing, no spreadsheet and no guessing.",
-  'sprawdź — może to transfer własny': "check — might be a transfer between your own accounts",
+  'publiczne źródła danych rynkowych (np. Stooq, Yahoo Finance) - zapytania dotyczą wyłącznie tickerów giełdowych i kursów walut, nigdy Twoich danych osobowych.':
+    'public market data sources (e.g. Stooq, Yahoo Finance) - these queries only ever involve stock tickers and exchange rates, never your personal data.',
+  'skieta to osobisty tracker finansowy - aplikacja dostępna wyłącznie na zaproszenie, bez reklam i bez sprzedaży danych osobom trzecim. Administratorem danych jest osoba prowadząca serwis skieta, z którą można się skontaktować pod adresem podanym na dole tej strony.':
+    'skieta is a personal finance tracker - an invite-only app, with no ads and no selling data to third parties. The data controller is the person running skieta, reachable at the address given at the bottom of this page.',
+  'skieta łączy konta bankowe, inwestycje, lokaty i obligacje w jednym miejscu - zobacz, jak naprawdę rośnie Twój majątek, bez arkusza kalkulacyjnego i bez zgadywania.':
+    "skieta brings bank accounts, investments, deposits and bonds together in one place - see how your net worth is really growing, no spreadsheet and no guessing.",
+  'sprawdź - może to transfer własny': "check - might be a transfer between your own accounts",
   'umiarkowanie skoncentrowany': 'moderately concentrated',
   'walutowe': 'foreign-currency',
   'wszyscy': 'everyone',
@@ -1133,13 +1133,13 @@ export const en: Record<string, string> = {
   'Wizyty wg wariantu językowego': 'Visits by language variant',
   'Zaproszenia wysłane wg języka': 'Invitations sent by language',
   'Nowy baner na stronie głównej': 'New landing page banner',
-  'Wskaż istniejące zaproszenie grupowe — baner pokaże jego link/kod QR i odliczanie do podanej daty. Liczba wykorzystań to liczba osób zarejestrowanych przez to zaproszenie.':
+  'Wskaż istniejące zaproszenie grupowe - baner pokaże jego link/kod QR i odliczanie do podanej daty. Liczba wykorzystań to liczba osób zarejestrowanych przez to zaproszenie.':
     "Point to an existing group invite - the banner will show its link/QR code and a countdown to the given date. The usage count is the number of people who registered through that invite.",
   'Zaproszenie grupowe': 'Group invite',
   'Wybierz…': 'Select…',
   'Wiadomość (opcjonalnie)': 'Message (optional)',
   'Koniec odliczania': 'Countdown end',
-  'Nie udało się utworzyć promocji — sprawdź dane.': 'Failed to create the promotion - check the details.',
+  'Nie udało się utworzyć promocji - sprawdź dane.': 'Failed to create the promotion - check the details.',
   'Brak promocji.': 'No promotions.',
   'Wyłączona': 'Disabled',
   'Wygasła': 'Expired',
@@ -1187,9 +1187,9 @@ export const en: Record<string, string> = {
   'Wylogowywanie…':
     'Logging out…',
   // Pusty dashboard - baner z zachetą
-  'Zera poniżej to nie błąd — po prostu jeszcze nic nie dodałeś(-aś)':
+  'Zera poniżej to nie błąd - po prostu jeszcze nic nie dodałeś(-aś)':
     "The zeros below aren't a bug - you just haven't added anything yet",
-  'Dodaj konto bankowe, akcje, obligacje albo lokatę, a ten pulpit zacznie liczyć Twój prawdziwy majątek — zysk osobno od wpłaconego kapitału, po podatku Belki.':
+  'Dodaj konto bankowe, akcje, obligacje albo lokatę, a ten pulpit zacznie liczyć Twój prawdziwy majątek - zysk osobno od wpłaconego kapitału, po podatku Belki.':
     'Add a bank account, stocks, bonds or a deposit, and this dashboard starts tracking your real net worth - profit worked out separately from what you put in, after tax.',
   'Dodaj pierwsze dane →':
     'Add your first data →',
@@ -1211,7 +1211,7 @@ export const en: Record<string, string> = {
   // Polityka prywatności - analityka bez ciasteczek
   'Aplikacja i baza danych stoją w centrum danych Microsoft Azure w Polsce (region Poland Central), a serwer pocztowy w Polsce. Zgłoszenia o awariach trafiają do europejskiego regionu dostawcy monitoringu. Twoje dane finansowe nie opuszczają Europejskiego Obszaru Gospodarczego.':
     'The app and the database run in a Microsoft Azure data centre in Poland (the Poland Central region), and the mail server is in Poland too. Crash reports go to our monitoring provider’s European region. Your financial data does not leave the European Economic Area.',
-  'dostawca monitoringu błędów — dostaje techniczne zgłoszenie awarii (adres strony i ślad błędu w kodzie), nigdy treści Twoich danych finansowych ani zawartości formularzy,':
+  'dostawca monitoringu błędów - dostaje techniczne zgłoszenie awarii (adres strony i ślad błędu w kodzie), nigdy treści Twoich danych finansowych ani zawartości formularzy,':
     'an error-monitoring provider - receives a technical crash report (the page address and the stack trace), never the contents of your financial data or of any form,',
   'Analityka odwiedzin':
     'Visit analytics',
@@ -1277,7 +1277,7 @@ export const en: Record<string, string> = {
   'Usuń trwale z bazy': 'Permanently delete from database',
   'Ta operacja jest nieodwracalna i trwale usunie konto oraz wszystkie dane użytkownika z bazy danych. Wpisz nazwę użytkownika "{0}", żeby potwierdzić.':
     'This action is irreversible and will permanently delete the account and all of this user\'s data from the database. Type the username "{0}" to confirm.',
-  'Nazwa użytkownika się nie zgadza — anulowano.': 'Username did not match — cancelled.',
+  'Nazwa użytkownika się nie zgadza - anulowano.': 'Username did not match - cancelled.',
 
   // Footer / landing mock card
   'Regulamin': 'Terms of service',
@@ -1299,8 +1299,8 @@ export const en: Record<string, string> = {
 
   // Landing - price and access request
   'Bezpłatnie, bez reklam i bez podawania karty.': 'Free, with no ads and no card details.',
-  'Rejestracja jest na zaproszenie — nie masz go? Zostaw e-mail.':
-    'Sign-up is invite-only — no invitation? Leave your email.',
+  'Rejestracja jest na zaproszenie - nie masz go? Zostaw e-mail.':
+    'Sign-up is invite-only - no invitation? Leave your email.',
   'Ile to kosztuje?': 'What does it cost?',
   'Nic. skieta jest bezpłatna - bez abonamentu, bez płatnych funkcji i bez reklam. Nie podajesz numeru karty ani przy zakładaniu konta, ani później.':
     'Nothing. skieta is free - no subscription, no paid features and no ads. You are never asked for a card number, either when setting up an account or later.',
@@ -1310,11 +1310,11 @@ export const en: Record<string, string> = {
   'Dashboard skiety: wartość majątku, podział na akcje, gotówkę, lokaty i obligacje oraz wykres majątku w czasie':
     'The skieta dashboard: net worth, the split across stocks, cash, deposits and bonds, and a chart of net worth over time',
   'Zobacz, jak to wygląda w środku': 'See what it looks like inside',
-  'Poniżej prawdziwe ekrany aplikacji — te same, które zobaczysz po zalogowaniu.':
-    'Real screens from the app below — the same ones you get after logging in.',
+  'Poniżej prawdziwe ekrany aplikacji - te same, które zobaczysz po zalogowaniu.':
+    'Real screens from the app below - the same ones you get after logging in.',
   'Zysk, a nie tylko saldo': 'Profit, not just a balance',
-  'Portfel pokazuje osobno wpłacony kapitał i osobno zysk — brutto oraz po podatku Belki. Przy akcjach kupionych w obcej walucie widzisz dodatkowo, ile z wyniku zrobił sam kurs, a nie kurs spółki.':
-    'The portfolio shows contributed capital and profit separately — before and after capital gains tax. For shares bought in a foreign currency you also see how much of the result came from the exchange rate rather than the share price.',
+  'Portfel pokazuje osobno wpłacony kapitał i osobno zysk - brutto oraz po podatku Belki. Przy akcjach kupionych w obcej walucie widzisz dodatkowo, ile z wyniku zrobił sam kurs, a nie kurs spółki.':
+    'The portfolio shows contributed capital and profit separately - before and after capital gains tax. For shares bought in a foreign currency you also see how much of the result came from the exchange rate rather than the share price.',
   'Portfel akcji w skiecie z kolumnami zysku brutto i po podatku Belki oraz wpływem kursu waluty':
     'The stock portfolio in skieta, with profit columns before and after capital gains tax and the exchange-rate effect',
   'Dywidendy policzone w przód': 'Dividends worked out ahead of time',

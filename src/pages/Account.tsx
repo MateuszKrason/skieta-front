@@ -39,7 +39,7 @@ export default function Account() {
         <div className="rounded-xl border border-slate-200 dark:border-slate-700 bg-white dark:bg-slate-800 p-5 shadow-sm">
           <h2 className="text-sm font-semibold text-slate-700 dark:text-slate-300">{t('Redakcja')}</h2>
           <p className="mt-1 text-xs text-slate-500 dark:text-slate-400">
-            {t('Masz uprawnienia redaktora — możesz dodawać i edytować artykuły.')}
+            {t('Masz uprawnienia redaktora - możesz dodawać i edytować artykuły.')}
           </p>
           <Link to="/redakcja" className="btn-primary mt-3 inline-block">
             {t('Przejdź do redakcji')}
@@ -239,7 +239,7 @@ function InterestsForm() {
     },
   })
 
-  // A single shared mutation handles all three checkboxes — track which
+  // A single shared mutation handles all three checkboxes - track which
   // field's PATCH is actually in flight so only that one checkbox shows the
   // spinner, not all three at once.
   const pendingField = mutation.isPending ? Object.keys(mutation.variables ?? {})[0] : null
@@ -248,7 +248,7 @@ function InterestsForm() {
     <div className="space-y-3 rounded-xl border border-slate-200 dark:border-slate-700 bg-white dark:bg-slate-800 p-5 shadow-sm">
       <h2 className="text-sm font-semibold text-slate-700 dark:text-slate-300">{t('Z czego korzystasz')}</h2>
       <p className="text-xs text-slate-500 dark:text-slate-400">
-        {t('Odznaczone opcje znikają z górnego menu — możesz je włączyć z powrotem w każdej chwili.')}
+        {t('Odznaczone opcje znikają z górnego menu - możesz je włączyć z powrotem w każdej chwili.')}
       </p>
       <div className="flex flex-wrap gap-4">
         {INTEREST_OPTIONS.map((opt) => {
@@ -368,7 +368,7 @@ function NavOrderForm() {
       <h2 className="text-sm font-semibold text-slate-700 dark:text-slate-300">{t('Kolejność kart w menu')}</h2>
       <p className="text-xs text-slate-500 dark:text-slate-400">
         {t(
-          'Przeciągnij, aby ustawić kolejność, w jakiej karty pojawiają się w górnym menu — Dashboard zawsze jest pierwszy.',
+          'Przeciągnij, aby ustawić kolejność, w jakiej karty pojawiają się w górnym menu - Dashboard zawsze jest pierwszy.',
         )}
       </p>
       <ul className="space-y-1.5">
@@ -545,7 +545,7 @@ function EmailVerificationStatus() {
     <div className="rounded-xl border border-amber-200 dark:border-amber-800 bg-amber-50 dark:bg-amber-900/30 p-4 text-sm">
       <p className="font-medium text-amber-800 dark:text-amber-300">{t('Adres e-mail nie jest jeszcze potwierdzony')}</p>
       {sent ? (
-        <p className="mt-1 text-amber-700 dark:text-amber-400">{t('Wysłano nowy link weryfikacyjny — sprawdź skrzynkę.')}</p>
+        <p className="mt-1 text-amber-700 dark:text-amber-400">{t('Wysłano nowy link weryfikacyjny - sprawdź skrzynkę.')}</p>
       ) : (
         <>
           <p className="mt-1 text-amber-700 dark:text-amber-400">
@@ -599,7 +599,7 @@ function PendingRoleOffers() {
     <div className="rounded-xl border border-accent-200 dark:border-accent-800 bg-accent-50 dark:bg-accent-950/30 p-5 shadow-sm">
       <h2 className="text-sm font-semibold text-slate-700 dark:text-slate-300">{t('Nowe role do zaakceptowania')}</h2>
       <p className="mt-1 text-xs text-slate-500 dark:text-slate-400">
-        {t('Administrator zaproponował Ci nowe uprawnienia — nie zaczną obowiązywać, dopóki ich nie zaakceptujesz.')}
+        {t('Administrator zaproponował Ci nowe uprawnienia - nie zaczną obowiązywać, dopóki ich nie zaakceptujesz.')}
       </p>
       <ul className="mt-3 space-y-2">
         {pending.map((a) => (
@@ -1190,7 +1190,7 @@ function LoginHeatmap({ dates }: { dates: string[] }) {
   const today = new Date()
   today.setHours(0, 0, 0, 0)
   // Start on a Monday, HEATMAP_WEEKS weeks back, so the grid ends on the
-  // current week — same layout convention as GitHub's contribution graph.
+  // current week - same layout convention as GitHub's contribution graph.
   const start = new Date(today)
   const daysSinceMonday = (start.getDay() + 6) % 7
   start.setDate(start.getDate() - daysSinceMonday - (HEATMAP_WEEKS - 1) * 7)

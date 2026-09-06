@@ -39,7 +39,7 @@ export default function Dashboard() {
     queryFn: async () => (await api.get<DashboardSummary>('/networth/dashboard/')).data,
     refetchInterval: REFRESH_INTERVAL_MS,
     // TanStack Query pauses refetchInterval while the tab is unfocused/hidden
-    // by default — but the "auto co 60s" label and the ticking seconds-ago
+    // by default - but the "auto co 60s" label and the ticking seconds-ago
     // counter below both promise it keeps happening regardless, so it must.
     refetchIntervalInBackground: true,
   })
@@ -334,11 +334,11 @@ function EmptyDashboardBanner() {
   return (
     <div className="rounded-xl border border-accent-200 dark:border-accent-800 bg-accent-50 dark:bg-accent-950/40 p-5">
       <h2 className="text-sm font-semibold text-slate-900 dark:text-slate-100">
-        {t('Zera poniżej to nie błąd — po prostu jeszcze nic nie dodałeś(-aś)')}
+        {t('Zera poniżej to nie błąd - po prostu jeszcze nic nie dodałeś(-aś)')}
       </h2>
       <p className="mt-1 text-sm text-slate-600 dark:text-slate-400">
         {t(
-          'Dodaj konto bankowe, akcje, obligacje albo lokatę, a ten pulpit zacznie liczyć Twój prawdziwy majątek — zysk osobno od wpłaconego kapitału, po podatku Belki.',
+          'Dodaj konto bankowe, akcje, obligacje albo lokatę, a ten pulpit zacznie liczyć Twój prawdziwy majątek - zysk osobno od wpłaconego kapitału, po podatku Belki.',
         )}
       </p>
       <div className="mt-3 flex flex-wrap gap-2">

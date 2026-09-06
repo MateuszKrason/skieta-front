@@ -48,7 +48,7 @@ export default function AnalizaSpolek() {
         <div>
           <h1 className="text-2xl font-bold text-slate-900 dark:text-slate-100">{t('Analiza spółek')}</h1>
           <p className="text-sm text-slate-500 dark:text-slate-400">
-            {t('Komunikaty ESPI/EBI (GPW) i ważne newsy (USA) dla spółek z Twojego portfela — sprawdzane raz dziennie.')}
+            {t('Komunikaty ESPI/EBI (GPW) i ważne newsy (USA) dla spółek z Twojego portfela - sprawdzane raz dziennie.')}
           </p>
         </div>
         <button
@@ -120,7 +120,7 @@ export default function AnalizaSpolek() {
         ))}
         {!isLoading && news?.length === 0 && (
           <p className="text-slate-400 dark:text-slate-500">
-            {t('Brak komunikatów — kliknij „Sprawdź teraz” albo poczekaj na codzienne automatyczne sprawdzenie.')}
+            {t('Brak komunikatów - kliknij „Sprawdź teraz” albo poczekaj na codzienne automatyczne sprawdzenie.')}
           </p>
         )}
       </div>

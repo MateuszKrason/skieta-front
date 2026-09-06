@@ -88,7 +88,7 @@ export default function Timeline() {
         <div>
           <h1 className="text-2xl font-bold text-slate-900 dark:text-slate-100">{t('Historia majątku')}</h1>
           <p className="text-sm text-slate-500 dark:text-slate-400">
-            {t('Sprawdź, jak realnie pomnożyłeś wpłacone środki — niezależnie od tego, ile do systemu dołożyłeś')}
+            {t('Sprawdź, jak realnie pomnożyłeś wpłacone środki - niezależnie od tego, ile do systemu dołożyłeś')}
           </p>
         </div>
         <button
@@ -101,7 +101,7 @@ export default function Timeline() {
 
       <div className="rounded-xl border border-slate-200 dark:border-slate-700 bg-slate-50 dark:bg-slate-900 p-4 text-xs text-slate-500 dark:text-slate-400">
         {t(
-          'Wykres poniżej to Twój faktyczny majątek na podstawie kont, inwestycji i lokat — liczy się sam, na bieżąco. Wpłaty/wypłaty, które rejestrujesz tutaj, to coś innego: pieniądze, które wniosłeś lub wyjąłeś SPOZA śledzonych kont (np. gotówka, prezent, przelew z konta spoza aplikacji). Zaznaczamy je na wykresie, żeby było widać, który skok to Twoja wpłata, a który to realny zysk. Nie dodawaj tu zwykłych przychodów już zapisanych w Budżecie ani przelewów między własnymi kontami — to policzyłoby się podwójnie.',
+          'Wykres poniżej to Twój faktyczny majątek na podstawie kont, inwestycji i lokat - liczy się sam, na bieżąco. Wpłaty/wypłaty, które rejestrujesz tutaj, to coś innego: pieniądze, które wniosłeś lub wyjąłeś SPOZA śledzonych kont (np. gotówka, prezent, przelew z konta spoza aplikacji). Zaznaczamy je na wykresie, żeby było widać, który skok to Twoja wpłata, a który to realny zysk. Nie dodawaj tu zwykłych przychodów już zapisanych w Budżecie ani przelewów między własnymi kontami - to policzyłoby się podwójnie.',
         )}
       </div>
 
@@ -121,7 +121,7 @@ export default function Timeline() {
           <p className="text-xs text-slate-500 dark:text-slate-400">{t('Realny zysk (pomnożenie)')}</p>
           {summary?.growth.growth_amount === null ? (
             <p className="mt-1 text-xs text-slate-400 dark:text-slate-500">
-              {t('Brak danych — zarejestruj pierwszą wpłatę, aby zobaczyć realny zwrot.')}
+              {t('Brak danych - zarejestruj pierwszą wpłatę, aby zobaczyć realny zwrot.')}
             </p>
           ) : (
             <p
@@ -202,7 +202,7 @@ export default function Timeline() {
                   <span className={cf.type === 'deposit' ? 'text-emerald-600' : 'text-red-600 dark:text-red-400'}>
                     {cf.type === 'deposit' ? t('Wpłata') : t('Wypłata')}
                   </span>{' '}
-                  {formatMoney(cf.amount, base)} {cf.note && `— ${cf.note}`}
+                  {formatMoney(cf.amount, base)} {cf.note && `- ${cf.note}`}
                 </span>
                 <span className="flex items-center gap-3">
                   <span className="text-slate-400 dark:text-slate-500">{formatDate(cf.date)}</span>

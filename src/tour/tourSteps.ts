@@ -14,28 +14,28 @@ export const TOUR_STEPS: TourStep[] = [
   {
     id: 'welcome',
     title: 'Witaj w skieta!',
-    body: 'Krótko oprowadzimy Cię po aplikacji — kilkanaście sekund. W każdej chwili możesz pominąć przewodnik.',
+    body: 'Krótko oprowadzimy Cię po aplikacji - kilkanaście sekund. W każdej chwili możesz pominąć przewodnik.',
   },
   {
     id: 'nav-dashboard',
     target: 'nav-dashboard',
     path: '/dashboard',
     title: 'Dashboard',
-    body: 'Twój punkt startowy — szybki podgląd całego majątku, jego zmiany w czasie i bieżącego budżetu.',
+    body: 'Twój punkt startowy - szybki podgląd całego majątku, jego zmiany w czasie i bieżącego budżetu.',
   },
   {
     id: 'dashboard-chart',
     target: 'dashboard-chart',
     path: '/dashboard',
     title: 'Wartość majątku w czasie',
-    body: 'Ten wykres liczy się sam, na podstawie kont, inwestycji i lokat, które dodasz w aplikacji — nie trzeba nic samemu wyliczać.',
+    body: 'Ten wykres liczy się sam, na podstawie kont, inwestycji i lokat, które dodasz w aplikacji - nie trzeba nic samemu wyliczać.',
   },
   {
     id: 'dashboard-realny-zwrot',
     target: 'dashboard-realny-zwrot',
     path: '/dashboard',
     title: 'Realny zwrot',
-    body: 'Tu sprawdzisz, ile z Twojego majątku to realny zysk, a ile to pieniądze, które sam(a) wpłaciłeś(-aś) — z pełną historią wpłat/wypłat.',
+    body: 'Tu sprawdzisz, ile z Twojego majątku to realny zysk, a ile to pieniądze, które sam(a) wpłaciłeś(-aś) - z pełną historią wpłat/wypłat.',
   },
   {
     id: 'nav-budzet',
@@ -58,7 +58,7 @@ export const TOUR_STEPS: TourStep[] = [
     target: 'nav-konta',
     path: '/konta',
     title: 'Konta i lokaty',
-    body: 'Konta bankowe, lokaty terminowe i obligacje skarbowe — podstawa, na której liczy się cały Twój majątek.',
+    body: 'Konta bankowe, lokaty terminowe i obligacje skarbowe - podstawa, na której liczy się cały Twój majątek.',
   },
   {
     id: 'nav-gielda',
@@ -73,7 +73,7 @@ export const TOUR_STEPS: TourStep[] = [
     target: 'gielda-add-tx',
     path: '/gielda/portfel',
     title: 'Dodawanie transakcji',
-    body: 'Zarejestruj kupno akcji — bieżący kurs, zysk i podatek Belki policzą się same.',
+    body: 'Zarejestruj kupno akcji - bieżący kurs, zysk i podatek Belki policzą się same.',
     interest: 'interest_stocks',
   },
   {
@@ -81,7 +81,7 @@ export const TOUR_STEPS: TourStep[] = [
     target: 'nav-planowanie',
     path: '/planowanie',
     title: 'Planowanie',
-    body: 'Pensja, stałe koszty miesięczne, cele oszczędnościowe i nadchodzące większe wydatki — wszystko w jednym miejscu.',
+    body: 'Pensja, stałe koszty miesięczne, cele oszczędnościowe i nadchodzące większe wydatki - wszystko w jednym miejscu.',
     interest: 'interest_planning',
   },
   {
@@ -89,7 +89,7 @@ export const TOUR_STEPS: TourStep[] = [
     target: 'nav-analiza',
     path: '/analiza',
     title: 'Analiza',
-    body: 'Kalkulator inwestycyjny — zasymuluj, jak Twój kapitał może urosnąć przy regularnym oszczędzaniu.',
+    body: 'Kalkulator inwestycyjny - zasymuluj, jak Twój kapitał może urosnąć przy regularnym oszczędzaniu.',
     interest: 'interest_analysis',
   },
   {
@@ -97,7 +97,7 @@ export const TOUR_STEPS: TourStep[] = [
     target: 'header-add-positions',
     path: '/dashboard',
     title: 'Od czego zacząć',
-    body: 'Kliknij tutaj, żeby dodać konta, akcje, lokaty czy obligacje, które już posiadasz — od razu zobaczysz swój prawdziwy majątek, zamiast zaczynać od zera.',
+    body: 'Kliknij tutaj, żeby dodać konta, akcje, lokaty czy obligacje, które już posiadasz - od razu zobaczysz swój prawdziwy majątek, zamiast zaczynać od zera.',
   },
   {
     id: 'finish',
