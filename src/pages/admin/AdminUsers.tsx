@@ -1,13 +1,13 @@
 import { useState } from 'react'
 import { useMutation, useQuery, useQueryClient } from '@tanstack/react-query'
 import { Link } from 'react-router-dom'
-import { Bar, BarChart, ResponsiveContainer, Tooltip, XAxis, YAxis } from 'recharts'
+import { Bar, BarChart, Cell, ResponsiveContainer, Tooltip, XAxis, YAxis } from 'recharts'
 import { api } from '../../api/client'
 import { Spinner } from '../../components/Loader'
 import { useLanguage } from '../../i18n/LanguageContext'
 import { useTooltipStyle } from '../../lib/chartTooltip'
 import { formatDate, formatDateTime } from '../../lib/format'
-import type { AdminActivityStats, AdminUser } from '../../types'
+import type { AdminActiveUser, AdminActivityStats, AdminUser } from '../../types'
 import { DailyRangePicker, useDailyRange } from './dailyRange'
 
 function StatCard({ label, value }: { label: string; value: string | number }) {
@@ -28,6 +28,7 @@ export default function AdminUsers() {
   const [isStaffFilter, setIsStaffFilter] = useState('')
   const [emailVerifiedFilter, setEmailVerifiedFilter] = useState('')
   const dailyRange = useDailyRange('30')
+  const [selectedDay, setSelectedDay] = useState<string | null>(null)
 
   const { data: stats } = useQuery({
     queryKey: ['admin-stats', dailyRange.range.from, dailyRange.range.to],
@@ -37,6 +38,13 @@ export default function AdminUsers() {
           params: { from: dailyRange.range.from, to: dailyRange.range.to },
         })
       ).data,
+  })
+
+  const { data: activeOnDay, isLoading: activeOnDayLoading } = useQuery({
+    queryKey: ['admin-active-users-on-date', selectedDay],
+    queryFn: async () =>
+      (await api.get<AdminActiveUser[]>('/auth/admin/active-users-on/', { params: { date: selectedDay } })).data,
+    enabled: selectedDay !== null,
   })
 
   const { data: users, isLoading } = useQuery({
@@ -76,6 +84,9 @@ export default function AdminUsers() {
           </h2>
           <DailyRangePicker {...dailyRange} />
         </div>
+        <p className="mb-2 text-xs text-slate-400 dark:text-slate-500">
+          {t('Kliknij słupek, aby zobaczyć, kto był aktywny tego dnia.')}
+        </p>
         <div className="h-56">
           <ResponsiveContainer width="100%" height="100%">
             <BarChart data={stats?.daily ?? []}>
@@ -88,10 +99,56 @@ export default function AdminUsers() {
               />
               <YAxis allowDecimals={false} tick={{ fontSize: 12 }} stroke="#94a3b8" width={30} />
               <Tooltip {...tooltipStyle} labelFormatter={(d) => formatDate(d as string)} formatter={(value) => [value, t('Aktywni')]} />
-              <Bar dataKey="count" fill="#059669" radius={[3, 3, 0, 0]} />
+              <Bar
+                dataKey="count"
+                radius={[3, 3, 0, 0]}
+                cursor="pointer"
+                onClick={(entry: { payload?: { date: string } }) => {
+                  const date = entry.payload?.date
+                  if (date) setSelectedDay((prev) => (prev === date ? null : date))
+                }}
+              >
+                {(stats?.daily ?? []).map((d) => (
+                  <Cell key={d.date} fill={d.date === selectedDay ? '#7c3aed' : '#059669'} />
+                ))}
+              </Bar>
             </BarChart>
           </ResponsiveContainer>
         </div>
+        {selectedDay && (
+          <div className="mt-3 rounded-md border border-slate-200 dark:border-slate-700 bg-slate-50 dark:bg-slate-900 p-3">
+            <div className="mb-2 flex items-center justify-between">
+              <h3 className="text-xs font-semibold text-slate-600 dark:text-slate-300">
+                {t('Aktywni {0}', formatDate(selectedDay))}
+              </h3>
+              <button
+                onClick={() => setSelectedDay(null)}
+                className="text-xs text-slate-400 hover:text-slate-600 dark:hover:text-slate-300"
+              >
+                {t('Zamknij')}
+              </button>
+            </div>
+            {activeOnDayLoading ? (
+              <p className="text-xs text-slate-400 dark:text-slate-500">{t('Ładowanie…')}</p>
+            ) : !activeOnDay || activeOnDay.length === 0 ? (
+              <p className="text-xs text-slate-400 dark:text-slate-500">{t('Nikt nie był aktywny tego dnia.')}</p>
+            ) : (
+              <ul className="grid grid-cols-1 gap-1 sm:grid-cols-2 lg:grid-cols-3">
+                {activeOnDay.map((u) => (
+                  <li key={u.id} className="flex justify-between text-xs">
+                    <Link
+                      to={`/admin/uzytkownicy/${u.id}`}
+                      className="font-medium text-accent-700 dark:text-accent-400 hover:underline"
+                    >
+                      {u.username}
+                    </Link>
+                    <span className="text-slate-400 dark:text-slate-500">{u.email}</span>
+                  </li>
+                ))}
+              </ul>
+            )}
+          </div>
+        )}
       </div>
 
       <div className="flex flex-wrap items-end gap-3 rounded-xl border border-slate-200 dark:border-slate-700 bg-white dark:bg-slate-800 p-4 shadow-sm">
