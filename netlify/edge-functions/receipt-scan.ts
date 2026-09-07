@@ -37,14 +37,20 @@ Zasady:
 
 Jeśli któregoś pola nie da się odczytać, ustaw je na null. Nie zgaduj kwoty ani daty - null jest lepszy niż błędna wartość.`
 
+// Lowercase type names, matching Gemini's current documented schema format
+// exactly (ai.google.dev/gemini-api/docs/structured-output) - the older
+// protobuf-style Schema type used uppercase enum values (STRING, OBJECT),
+// and mixing that convention in here made Gemini reject the whole request
+// with a 400, which surfaced to users as "Gemini nie rozpoznało paragonu"
+// regardless of what the photo actually showed.
 const RESPONSE_SCHEMA = {
-  type: 'OBJECT',
+  type: 'object',
   properties: {
-    store_name: { type: ['STRING', 'NULL'] },
-    date: { type: ['STRING', 'NULL'] },
-    amount: { type: ['STRING', 'NULL'] },
-    currency: { type: ['STRING', 'NULL'] },
-    description: { type: ['STRING', 'NULL'] },
+    store_name: { type: ['string', 'null'] },
+    date: { type: ['string', 'null'] },
+    amount: { type: ['string', 'null'] },
+    currency: { type: ['string', 'null'] },
+    description: { type: ['string', 'null'] },
   },
   required: ['store_name', 'date', 'amount', 'currency', 'description'],
 }
