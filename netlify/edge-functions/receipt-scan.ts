@@ -61,7 +61,7 @@ function jsonResponse(body: unknown, status = 200) {
  * to the browser - see GeminiApiKeyRevealView's docstring for why this is
  * the one endpoint allowed to return the plaintext key at all. */
 async function fetchUsersGeminiKey(authHeader: string): Promise<string | null> {
-  const response = await fetch(`${API_BASE}/accounts/gemini-key/reveal/`, {
+  const response = await fetch(`${API_BASE}/auth/gemini-key/reveal/`, {
     headers: { Authorization: authHeader },
     signal: AbortSignal.timeout(REVEAL_TIMEOUT_MS),
   })
