@@ -397,7 +397,7 @@ export const sq: Record<string, string> = {
   'Bez kategorii': 'Pa kategori',
   'Brak danych w tym okresie.': 'Nuk ka të dhëna për këtë periudhë.',
   'wg kategorii - miesiąc do miesiąca': 'sipas kategorisë - muaj pas muaji',
-  'Kliknij kategorię poniżej, aby zobaczyć konkretne transakcje w wybranym okresie.': 'Kliko një kategori më poshtë për të parë transaksionet konkrete në periudhën e zgjedhur.',
+  'Kliknij kategorię poniżej, aby zobaczyć ją samą na wykresie i jej transakcje w wybranym okresie. Kliknij ponownie, aby wrócić do widoku wszystkich.': 'Kliko një kategori më poshtë për ta parë vetëm atë në grafik dhe transaksionet e saj në periudhën e zgjedhur. Kliko përsëri për të shfaqur përsëri të gjitha.',
   'Transakcje w okresie': 'Transaksionet në periudhë',
   '+ Kategoria': '+ Kategori',
   'Brak transakcji w tym okresie.': 'Nuk ka transaksione në këtë periudhë.',
@@ -1174,4 +1174,10 @@ export const sq: Record<string, string> = {
     'skieta llogarit të njëjtën gjë për portofolin tënd të vërtetë - llogari bankare, aksione, obligacione dhe depozita në një vend, me fitimin pas tatimit polak mbi fitimet kapitale. Llogaria është falas dhe krijohet për një minutë.',
   'skieta pokazuje każdy zysk brutto i po podatku, a kalkulator porównuje lokaty, obligacje i giełdę na Twojej kwocie. Konto jest bezpłatne i zakładasz je w minutę.':
     'skieta tregon çdo fitim si bruto ashtu edhe pas tatimit, ndërsa llogaritësi krahason depozitat, obligacionet dhe bursën me shumën tënde. Llogaria është falas dhe krijohet për një minutë.',
+
+  // TransactionFilters - filtra të pavarur kategorie/dyqani/etikete mbi listën e transaksioneve.
+  'Sklep': 'Dyqan',
+  'Tag': 'Etiketë',
+  'Wszystkie': 'Të gjitha',
+  'Wyczyść filtry': 'Pastro filtrat',
 }

@@ -16,6 +16,7 @@ import {
   ScanReceiptButton,
   StatCard,
   StoreBreakdownCard,
+  TransactionFilters,
   TransactionList,
   usePeriodRange,
 } from './shared'
@@ -44,8 +45,11 @@ export default function Wydatki() {
   const period = usePeriodRange('this_month')
   const [showAddTx, setShowAddTx] = useState(false)
   const [showAddCategory, setShowAddCategory] = useState(false)
+  // Independent - category, store and tag can all be active on the
+  // transaction list at once, via TransactionFilters below.
   const [selectedCategoryId, setSelectedCategoryId] = useState<number | null>(null)
   const [selectedStoreId, setSelectedStoreId] = useState<number | null>(null)
+  const [selectedTagId, setSelectedTagId] = useState<number | null>(null)
   const [receiptValues, setReceiptValues] = useState<ReceiptInitialValues | undefined>(undefined)
   const [scanNeedsKey, setScanNeedsKey] = useState(false)
   const [scanError, setScanError] = useState<string | null>(null)
@@ -72,13 +76,22 @@ export default function Wydatki() {
     isFetchingMore: isFetchingMoreTransactions,
     loadMore: loadMoreTransactions,
   } = usePaginatedList<BudgetTransaction>(
-    ['budget-transactions', 'expense', period.range.from, period.range.to, selectedCategoryId, selectedStoreId],
+    [
+      'budget-transactions',
+      'expense',
+      period.range.from,
+      period.range.to,
+      selectedCategoryId,
+      selectedStoreId,
+      selectedTagId,
+    ],
     '/budget/transactions/',
     {
       ...period.range,
       type: 'expense',
       ...(selectedCategoryId ? { category: selectedCategoryId } : {}),
       ...(selectedStoreId ? { store: selectedStoreId } : {}),
+      ...(selectedTagId ? { tag: selectedTagId } : {}),
     },
   )
 
@@ -102,21 +115,6 @@ export default function Wydatki() {
   })
 
   const expenseRows = (breakdown?.rows ?? []).filter((r) => r.type === 'expense')
-  const selectedCategoryName = expenseRows.find((r) => (r.category?.id ?? null) === selectedCategoryId)?.category?.name
-
-  function onSelectCategory(id: number | null) {
-    setSelectedCategoryId(id)
-    setSelectedStoreId(null)
-  }
-
-  function onSelectStore(id: number | null) {
-    setSelectedStoreId(id)
-    setSelectedCategoryId(null)
-  }
-
-  let listTitle = t('Wydatki w okresie')
-  if (selectedCategoryName) listTitle = t('Wydatki: {0}', selectedCategoryName)
-  else if (selectedStoreId) listTitle = t('Wydatki w wybranym sklepie')
 
   return (
     <div className="space-y-6">
@@ -204,31 +202,35 @@ export default function Wydatki() {
           title="Wydatki wg kategorii"
           rows={expenseRows}
           loading={isLoading}
-          onSelectCategory={onSelectCategory}
+          onSelectCategory={setSelectedCategoryId}
           selectedCategoryId={selectedCategoryId}
           palette={EXPENSE_PALETTE}
         />
-        <CategoryTrendChart
-          type="expense"
-          months={6}
-          onSelectCategory={onSelectCategory}
-          selectedCategoryId={selectedCategoryId}
-          palette={EXPENSE_PALETTE}
-        />
+        <CategoryTrendChart type="expense" months={6} onSelectCategory={setSelectedCategoryId} palette={EXPENSE_PALETTE} />
       </div>
 
       <StoreBreakdownCard
         dateFrom={period.range.from}
         dateTo={period.range.to}
-        onSelectStore={onSelectStore}
+        onSelectStore={setSelectedStoreId}
         selectedStoreId={selectedStoreId}
         palette={EXPENSE_PALETTE}
+      />
+
+      <TransactionFilters
+        categories={(categories ?? []).filter((c) => c.type === 'expense')}
+        selectedCategoryId={selectedCategoryId}
+        onSelectCategory={setSelectedCategoryId}
+        selectedStoreId={selectedStoreId}
+        onSelectStore={setSelectedStoreId}
+        selectedTagId={selectedTagId}
+        onSelectTag={setSelectedTagId}
       />
 
       <TransactionList
         transactions={transactions}
         onDelete={(id) => deleteTx.mutate(id)}
-        title={listTitle}
+        title={t('Wydatki w okresie')}
         hasMore={hasMoreTransactions}
         isLoadingMore={isFetchingMoreTransactions}
         onLoadMore={loadMoreTransactions}

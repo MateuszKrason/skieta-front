@@ -12,6 +12,7 @@ import {
   CategoryTrendChart,
   PeriodSelector,
   StatCard,
+  TransactionFilters,
   TransactionList,
   usePeriodRange,
 } from './shared'
@@ -129,13 +130,14 @@ export default function Przychody() {
           onSelectCategory={setSelectedCategoryId}
           selectedCategoryId={selectedCategoryId}
         />
-        <CategoryTrendChart
-          type="income"
-          months={6}
-          onSelectCategory={setSelectedCategoryId}
-          selectedCategoryId={selectedCategoryId}
-        />
+        <CategoryTrendChart type="income" months={6} onSelectCategory={setSelectedCategoryId} />
       </div>
+
+      <TransactionFilters
+        categories={(categories ?? []).filter((c) => c.type === 'income')}
+        selectedCategoryId={selectedCategoryId}
+        onSelectCategory={setSelectedCategoryId}
+      />
 
       <TransactionList
         transactions={transactions}

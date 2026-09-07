@@ -397,7 +397,7 @@ export const en: Record<string, string> = {
   'Bez kategorii': 'No category',
   'Brak danych w tym okresie.': 'No data for this period.',
   'wg kategorii - miesiąc do miesiąca': 'by category - month by month',
-  'Kliknij kategorię poniżej, aby zobaczyć konkretne transakcje w wybranym okresie.': 'Click a category below to see specific transactions for the selected period.',
+  'Kliknij kategorię poniżej, aby zobaczyć ją samą na wykresie i jej transakcje w wybranym okresie. Kliknij ponownie, aby wrócić do widoku wszystkich.': 'Click a category below to see it alone on the chart and its transactions for the selected period. Click again to return to showing everything.',
   'Transakcje w okresie': 'Transactions in period',
   '+ Kategoria': '+ Category',
   'Brak transakcji w tym okresie.': 'No transactions in this period.',
@@ -1351,4 +1351,10 @@ export const en: Record<string, string> = {
     'skieta does the same maths for your real portfolio - bank accounts, shares, bonds and deposits in one place, with profit after Polish capital gains tax. An account is free and takes a minute to set up.',
   'skieta pokazuje każdy zysk brutto i po podatku, a kalkulator porównuje lokaty, obligacje i giełdę na Twojej kwocie. Konto jest bezpłatne i zakładasz je w minutę.':
     'skieta shows every gain both gross and after tax, and the calculator compares deposits, bonds and the stock market on your own amount. An account is free and takes a minute to set up.',
+
+  // TransactionFilters - independent category/store/tag filtering above the transaction list.
+  'Sklep': 'Store',
+  'Tag': 'Tag',
+  'Wszystkie': 'All',
+  'Wyczyść filtry': 'Clear filters',
 }

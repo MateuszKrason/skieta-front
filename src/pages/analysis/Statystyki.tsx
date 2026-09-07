@@ -104,9 +104,6 @@ export default function Statystyki() {
   const [trendDimension, setTrendDimension] = useState<TrendDimension>('category')
   const [trendType, setTrendType] = useState<BudgetType>('expense')
   const [trendMonths, setTrendMonths] = useState(6)
-  const [selectedCategoryId, setSelectedCategoryId] = useState<number | null>(null)
-  const [selectedStoreId, setSelectedStoreId] = useState<number | null>(null)
-  const [selectedTagId, setSelectedTagId] = useState<number | null>(null)
 
   const { data, isLoading } = useQuery({
     queryKey: ['budget-interesting-stats'],
@@ -264,25 +261,12 @@ export default function Statystyki() {
         </select>
       </div>
 
-      {trendDimension === 'category' && (
-        <CategoryTrendChart
-          type={trendType}
-          months={trendMonths}
-          onSelectCategory={setSelectedCategoryId}
-          selectedCategoryId={selectedCategoryId}
-        />
-      )}
-      {trendDimension === 'store' && (
-        <StoreTrendChart
-          type={trendType}
-          months={trendMonths}
-          onSelectStore={setSelectedStoreId}
-          selectedStoreId={selectedStoreId}
-        />
-      )}
-      {trendDimension === 'tag' && (
-        <TagTrendChart type={trendType} months={trendMonths} onSelectTag={setSelectedTagId} selectedTagId={selectedTagId} />
-      )}
+      {/* No transaction list on this page to filter, unlike Wydatki/Przychody/Bilans -
+          onSelect* is left unset, since isolating a series is fully
+          self-contained inside each chart. */}
+      {trendDimension === 'category' && <CategoryTrendChart type={trendType} months={trendMonths} />}
+      {trendDimension === 'store' && <StoreTrendChart type={trendType} months={trendMonths} />}
+      {trendDimension === 'tag' && <TagTrendChart type={trendType} months={trendMonths} />}
     </div>
   )
 }

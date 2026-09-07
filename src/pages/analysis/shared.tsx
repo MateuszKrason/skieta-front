@@ -264,17 +264,28 @@ export function CategoryTrendChart({
   type,
   months = 6,
   onSelectCategory,
-  selectedCategoryId,
   palette = PALETTE,
 }: {
   type: BudgetType
   months?: number
-  onSelectCategory: (id: number | null) => void
-  selectedCategoryId: number | null
+  /** Reports which id this chart just isolated (or null, when it went back to
+   * showing everything) - optional, since a page with no transaction list to
+   * filter (Statystyki) has nothing to do with it. */
+  onSelectCategory?: (id: number | null) => void
   palette?: string[]
 }) {
   const { t } = useLanguage()
   const tooltipStyle = useTooltipStyle()
+  // Which of THIS chart's own bars is isolated - local to this instance,
+  // deliberately not selectedCategoryId itself. Bilans renders an expense
+  // and an income CategoryTrendChart side by side sharing one
+  // selectedCategoryId (it drives the transaction list filter below both),
+  // but their categories are disjoint ids - reacting to the shared id
+  // directly meant isolating a category in one chart hid every bar in the
+  // other, since none of its categories ever matched. Local state keeps each
+  // chart's own isolation independent while still reporting the click
+  // upward so the transaction list filter keeps working as before.
+  const [isolatedId, setIsolatedId] = useState<number | null>(null)
   const { data, isLoading } = useQuery({
     queryKey: ['budget-category-trend', type, months],
     queryFn: async () =>
@@ -296,12 +307,18 @@ export function CategoryTrendChart({
     return point
   })
 
+  function toggle(id: number | null) {
+    const next = isolatedId === id ? null : id
+    setIsolatedId(next)
+    onSelectCategory?.(next)
+  }
+
   return (
     <div className="rounded-xl border border-slate-200 dark:border-slate-700 bg-white dark:bg-slate-800 p-5 shadow-sm">
       <h2 className="mb-1 text-sm font-semibold text-slate-700 dark:text-slate-300">
         {t(type === 'expense' ? 'Wydatki' : 'Przychody')} {t('wg kategorii - miesiąc do miesiąca')}
       </h2>
-      <p className="mb-3 text-xs text-slate-400 dark:text-slate-500">{t('Kliknij kategorię poniżej, aby zobaczyć konkretne transakcje w wybranym okresie.')}</p>
+      <p className="mb-3 text-xs text-slate-400 dark:text-slate-500">{t('Kliknij kategorię poniżej, aby zobaczyć ją samą na wykresie i jej transakcje w wybranym okresie. Kliknij ponownie, aby wrócić do widoku wszystkich.')}</p>
       {isLoading ? (
         <CardLoader />
       ) : rows.length === 0 ? (
@@ -317,6 +334,7 @@ export function CategoryTrendChart({
                 <Tooltip {...tooltipStyle} formatter={(value) => formatMoney(value as number, 'PLN')} />
                 {rows.map((row, i) => {
                   const key = row.category ? `cat_${row.category.id}` : 'cat_none'
+                  const id = row.category?.id ?? null
                   return (
                     <Bar
                       key={key}
@@ -324,6 +342,7 @@ export function CategoryTrendChart({
                       name={row.category?.name ?? t('Bez kategorii')}
                       stackId="cat"
                       fill={row.category?.color || palette[i % palette.length]}
+                      hide={isolatedId !== null && isolatedId !== id}
                     />
                   )
                 })}
@@ -333,11 +352,11 @@ export function CategoryTrendChart({
           <div className="mt-3 flex flex-wrap gap-2">
             {rows.map((row, i) => {
               const id = row.category?.id ?? null
-              const active = selectedCategoryId === id
+              const active = isolatedId === id
               return (
                 <button
                   key={id ?? 'none'}
-                  onClick={() => onSelectCategory(active ? null : id)}
+                  onClick={() => toggle(id)}
                   className={`flex items-center gap-1.5 rounded-full border px-2.5 py-1 text-xs font-medium transition ${
                     active ? 'border-accent-400 dark:border-accent-600 bg-accent-50 dark:bg-accent-900/30 text-accent-700 dark:text-accent-400' : 'border-slate-200 dark:border-slate-700 text-slate-600 dark:text-slate-400 hover:bg-slate-50 dark:hover:bg-slate-700'
                   }`}
@@ -358,17 +377,18 @@ export function TagTrendChart({
   type,
   months = 6,
   onSelectTag,
-  selectedTagId,
   palette = PALETTE,
 }: {
   type: BudgetType
   months?: number
-  onSelectTag: (id: number | null) => void
-  selectedTagId: number | null
+  onSelectTag?: (id: number | null) => void
   palette?: string[]
 }) {
   const { t } = useLanguage()
   const tooltipStyle = useTooltipStyle()
+  // Local to this instance, not selectedTagId - see the identical comment in
+  // CategoryTrendChart above for why.
+  const [isolatedId, setIsolatedId] = useState<number | null>(null)
   const { data, isLoading } = useQuery({
     queryKey: ['budget-tag-trend', type, months],
     queryFn: async () =>
@@ -389,12 +409,18 @@ export function TagTrendChart({
     return point
   })
 
+  function toggle(id: number | null) {
+    const next = isolatedId === id ? null : id
+    setIsolatedId(next)
+    onSelectTag?.(next)
+  }
+
   return (
     <div className="rounded-xl border border-slate-200 dark:border-slate-700 bg-white dark:bg-slate-800 p-5 shadow-sm">
       <h2 className="mb-1 text-sm font-semibold text-slate-700 dark:text-slate-300">
         {t(type === 'expense' ? 'Wydatki' : 'Przychody')} {t('wg tagów - miesiąc do miesiąca')}
       </h2>
-      <p className="mb-3 text-xs text-slate-400 dark:text-slate-500">{t('Tylko transakcje z co najmniej jednym tagiem. Kliknij tag poniżej, aby zobaczyć konkretne transakcje w wybranym okresie.')}</p>
+      <p className="mb-3 text-xs text-slate-400 dark:text-slate-500">{t('Tylko transakcje z co najmniej jednym tagiem. Kliknij tag poniżej, aby zobaczyć go samego na wykresie i jego transakcje w wybranym okresie. Kliknij ponownie, aby wrócić do widoku wszystkich.')}</p>
       {isLoading ? (
         <CardLoader />
       ) : rows.length === 0 ? (
@@ -410,6 +436,7 @@ export function TagTrendChart({
                 <Tooltip {...tooltipStyle} formatter={(value) => formatMoney(value as number, 'PLN')} />
                 {rows.map((row, i) => {
                   const key = row.tag ? `tag_${row.tag.id}` : 'tag_none'
+                  const id = row.tag?.id ?? null
                   return (
                     <Bar
                       key={key}
@@ -417,6 +444,7 @@ export function TagTrendChart({
                       name={row.tag ? `#${row.tag.name}` : t('Bez tagu')}
                       stackId="tag"
                       fill={palette[i % palette.length]}
+                      hide={isolatedId !== null && isolatedId !== id}
                     />
                   )
                 })}
@@ -426,11 +454,11 @@ export function TagTrendChart({
           <div className="mt-3 flex flex-wrap gap-2">
             {rows.map((row, i) => {
               const id = row.tag?.id ?? null
-              const active = selectedTagId === id
+              const active = isolatedId === id
               return (
                 <button
                   key={id ?? 'none'}
-                  onClick={() => onSelectTag(active ? null : id)}
+                  onClick={() => toggle(id)}
                   className={`flex items-center gap-1.5 rounded-full border px-2.5 py-1 text-xs font-medium transition ${
                     active ? 'border-accent-400 dark:border-accent-600 bg-accent-50 dark:bg-accent-900/30 text-accent-700 dark:text-accent-400' : 'border-slate-200 dark:border-slate-700 text-slate-600 dark:text-slate-400 hover:bg-slate-50 dark:hover:bg-slate-700'
                   }`}
@@ -451,17 +479,18 @@ export function StoreTrendChart({
   type,
   months = 6,
   onSelectStore,
-  selectedStoreId,
   palette = PALETTE,
 }: {
   type: BudgetType
   months?: number
-  onSelectStore: (id: number | null) => void
-  selectedStoreId: number | null
+  onSelectStore?: (id: number | null) => void
   palette?: string[]
 }) {
   const { t } = useLanguage()
   const tooltipStyle = useTooltipStyle()
+  // Local to this instance, not selectedStoreId - see the identical comment
+  // in CategoryTrendChart above for why.
+  const [isolatedId, setIsolatedId] = useState<number | null>(null)
   const { data, isLoading } = useQuery({
     queryKey: ['budget-store-trend', type, months],
     queryFn: async () =>
@@ -482,12 +511,18 @@ export function StoreTrendChart({
     return point
   })
 
+  function toggle(id: number | null) {
+    const next = isolatedId === id ? null : id
+    setIsolatedId(next)
+    onSelectStore?.(next)
+  }
+
   return (
     <div className="rounded-xl border border-slate-200 dark:border-slate-700 bg-white dark:bg-slate-800 p-5 shadow-sm">
       <h2 className="mb-1 text-sm font-semibold text-slate-700 dark:text-slate-300">
         {t(type === 'expense' ? 'Wydatki' : 'Przychody')} {t('wg sklepów - miesiąc do miesiąca')}
       </h2>
-      <p className="mb-3 text-xs text-slate-400 dark:text-slate-500">{t('Tylko transakcje przypisane do sklepu. Kliknij sklep poniżej, aby zobaczyć konkretne transakcje w wybranym okresie.')}</p>
+      <p className="mb-3 text-xs text-slate-400 dark:text-slate-500">{t('Tylko transakcje przypisane do sklepu. Kliknij sklep poniżej, aby zobaczyć go samego na wykresie i jego transakcje w wybranym okresie. Kliknij ponownie, aby wrócić do widoku wszystkich.')}</p>
       {isLoading ? (
         <CardLoader />
       ) : rows.length === 0 ? (
@@ -503,6 +538,7 @@ export function StoreTrendChart({
                 <Tooltip {...tooltipStyle} formatter={(value) => formatMoney(value as number, 'PLN')} />
                 {rows.map((row, i) => {
                   const key = row.store ? `store_${row.store.id}` : 'store_none'
+                  const id = row.store?.id ?? null
                   return (
                     <Bar
                       key={key}
@@ -510,6 +546,7 @@ export function StoreTrendChart({
                       name={row.store?.name ?? t('Bez sklepu')}
                       stackId="store"
                       fill={palette[i % palette.length]}
+                      hide={isolatedId !== null && isolatedId !== id}
                     />
                   )
                 })}
@@ -519,11 +556,11 @@ export function StoreTrendChart({
           <div className="mt-3 flex flex-wrap gap-2">
             {rows.map((row, i) => {
               const id = row.store?.id ?? null
-              const active = selectedStoreId === id
+              const active = isolatedId === id
               return (
                 <button
                   key={id ?? 'none'}
-                  onClick={() => onSelectStore(active ? null : id)}
+                  onClick={() => toggle(id)}
                   className={`flex items-center gap-1.5 rounded-full border px-2.5 py-1 text-xs font-medium transition ${
                     active ? 'border-accent-400 dark:border-accent-600 bg-accent-50 dark:bg-accent-900/30 text-accent-700 dark:text-accent-400' : 'border-slate-200 dark:border-slate-700 text-slate-600 dark:text-slate-400 hover:bg-slate-50 dark:hover:bg-slate-700'
                   }`}
@@ -535,6 +572,112 @@ export function StoreTrendChart({
             })}
           </div>
         </>
+      )}
+    </div>
+  )
+}
+
+// Sits directly above TransactionList. The only way to filter the list used
+// to be clicking a chart legend or pie slice, which - besides not being
+// obvious as a filter control at all - only ever let one dimension be active
+// at a time (see the mutual-reset onSelectCategory/onSelectStore/onSelectTag
+// this replaces in Wydatki/Bilans): picking a store silently cleared
+// whatever category was selected. The three selects here are independent -
+// category, store and tag can all be set at once, matching what the
+// `/budget/transactions/` endpoint already supported on its own.
+export function TransactionFilters({
+  categories,
+  selectedCategoryId,
+  onSelectCategory,
+  selectedStoreId,
+  onSelectStore,
+  selectedTagId,
+  onSelectTag,
+}: {
+  categories: Category[]
+  selectedCategoryId: number | null
+  onSelectCategory: (id: number | null) => void
+  // Store and tag are both omittable entirely on a page with no such
+  // dimension of its own (Przychody tracks neither today).
+  selectedStoreId?: number | null
+  onSelectStore?: (id: number | null) => void
+  selectedTagId?: number | null
+  onSelectTag?: (id: number | null) => void
+}) {
+  const { t } = useLanguage()
+  const { data: stores } = useQuery({
+    queryKey: ['budget-stores'],
+    queryFn: async () => (await api.get<Store[]>('/budget/stores/')).data,
+    enabled: onSelectStore !== undefined,
+  })
+  const { data: tags } = useQuery({
+    queryKey: ['budget-tags'],
+    queryFn: async () => (await api.get<Tag[]>('/budget/tags/')).data,
+    enabled: onSelectTag !== undefined,
+  })
+
+  const hasActiveFilter = selectedCategoryId !== null || !!selectedStoreId || !!selectedTagId
+
+  return (
+    <div className="flex flex-wrap items-end gap-3 rounded-xl border border-slate-200 dark:border-slate-700 bg-white dark:bg-slate-800 p-4 shadow-sm">
+      <Field label="Kategoria">
+        <select
+          value={selectedCategoryId ?? ''}
+          onChange={(e) => onSelectCategory(e.target.value ? Number(e.target.value) : null)}
+          className="input"
+        >
+          <option value="">{t('Wszystkie')}</option>
+          {categories.map((c) => (
+            <option key={c.id} value={c.id}>
+              {c.name}
+            </option>
+          ))}
+        </select>
+      </Field>
+      {onSelectStore && (
+        <Field label="Sklep">
+          <select
+            value={selectedStoreId ?? ''}
+            onChange={(e) => onSelectStore(e.target.value ? Number(e.target.value) : null)}
+            className="input"
+          >
+            <option value="">{t('Wszystkie')}</option>
+            {(stores ?? []).map((s) => (
+              <option key={s.id} value={s.id}>
+                {s.name}
+              </option>
+            ))}
+          </select>
+        </Field>
+      )}
+      {onSelectTag && (
+        <Field label="Tag">
+          <select
+            value={selectedTagId ?? ''}
+            onChange={(e) => onSelectTag(e.target.value ? Number(e.target.value) : null)}
+            className="input"
+          >
+            <option value="">{t('Wszystkie')}</option>
+            {(tags ?? []).map((tg) => (
+              <option key={tg.id} value={tg.id}>
+                #{tg.name}
+              </option>
+            ))}
+          </select>
+        </Field>
+      )}
+      {hasActiveFilter && (
+        <button
+          type="button"
+          onClick={() => {
+            onSelectCategory(null)
+            onSelectStore?.(null)
+            onSelectTag?.(null)
+          }}
+          className="pb-2 text-sm font-medium text-slate-500 dark:text-slate-400 hover:text-accent-700 dark:hover:text-accent-400 hover:underline"
+        >
+          {t('Wyczyść filtry')}
+        </button>
       )}
     </div>
   )

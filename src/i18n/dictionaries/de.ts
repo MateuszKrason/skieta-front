@@ -397,7 +397,7 @@ export const de: Record<string, string> = {
   'Bez kategorii': 'Ohne Kategorie',
   'Brak danych w tym okresie.': 'Keine Daten für diesen Zeitraum.',
   'wg kategorii - miesiąc do miesiąca': 'nach Kategorie - Monat für Monat',
-  'Kliknij kategorię poniżej, aby zobaczyć konkretne transakcje w wybranym okresie.': 'Klicke unten auf eine Kategorie, um die zugehörigen Transaktionen im gewählten Zeitraum zu sehen.',
+  'Kliknij kategorię poniżej, aby zobaczyć ją samą na wykresie i jej transakcje w wybranym okresie. Kliknij ponownie, aby wrócić do widoku wszystkich.': 'Klicke unten auf eine Kategorie, um sie allein im Diagramm und ihre Transaktionen im gewählten Zeitraum zu sehen. Klicke erneut, um wieder alle anzuzeigen.',
   'Transakcje w okresie': 'Transaktionen im Zeitraum',
   '+ Kategoria': '+ Kategorie',
   'Brak transakcji w tym okresie.': 'Keine Transaktionen in diesem Zeitraum.',
@@ -1351,4 +1351,10 @@ export const de: Record<string, string> = {
     'skieta rechnet dasselbe für dein echtes Portfolio - Bankkonten, Aktien, Anleihen und Festgeld an einem Ort, mit Gewinn nach polnischer Kapitalertragsteuer. Ein Konto ist kostenlos und in einer Minute erstellt.',
   'skieta pokazuje każdy zysk brutto i po podatku, a kalkulator porównuje lokaty, obligacje i giełdę na Twojej kwocie. Konto jest bezpłatne i zakładasz je w minutę.':
     'skieta zeigt jeden Gewinn brutto und nach Steuern, und der Rechner vergleicht Festgeld, Anleihen und Börse mit deinem eigenen Betrag. Ein Konto ist kostenlos und in einer Minute erstellt.',
+
+  // TransactionFilters - unabhängige Filter für Kategorie/Geschäft/Tag über der Transaktionsliste.
+  'Sklep': 'Geschäft',
+  'Tag': 'Tag',
+  'Wszystkie': 'Alle',
+  'Wyczyść filtry': 'Filter zurücksetzen',
 }

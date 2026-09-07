@@ -397,7 +397,7 @@ export const no: Record<string, string> = {
   'Bez kategorii': 'Ingen kategori',
   'Brak danych w tym okresie.': 'Ingen data for denne perioden.',
   'wg kategorii - miesiąc do miesiąca': 'etter kategori - måned for måned',
-  'Kliknij kategorię poniżej, aby zobaczyć konkretne transakcje w wybranym okresie.': 'Klikk på en kategori nedenfor for å se transaksjonene for valgt periode.',
+  'Kliknij kategorię poniżej, aby zobaczyć ją samą na wykresie i jej transakcje w wybranym okresie. Kliknij ponownie, aby wrócić do widoku wszystkich.': 'Klikk på en kategori nedenfor for å se den alene i diagrammet og transaksjonene for valgt periode. Klikk igjen for å vise alle på nytt.',
   'Transakcje w okresie': 'Transaksjoner i perioden',
   '+ Kategoria': '+ Kategori',
   'Brak transakcji w tym okresie.': 'Ingen transaksjoner i denne perioden.',
@@ -1174,4 +1174,10 @@ export const no: Record<string, string> = {
     'skieta regner det samme for den virkelige porteføljen din - bankkontoer, aksjer, obligasjoner og innskudd på ett sted, med gevinst etter polsk kapitalskatt. En konto er gratis og opprettes på ett minutt.',
   'skieta pokazuje każdy zysk brutto i po podatku, a kalkulator porównuje lokaty, obligacje i giełdę na Twojej kwocie. Konto jest bezpłatne i zakładasz je w minutę.':
     'skieta viser hver gevinst både brutto og etter skatt, og kalkulatoren sammenligner innskudd, obligasjoner og børsen med ditt eget beløp. En konto er gratis og opprettes på ett minutt.',
+
+  // TransactionFilters - uavhengige kategori-/butikk-/tag-filtre over transaksjonslisten.
+  'Sklep': 'Butikk',
+  'Tag': 'Tag',
+  'Wszystkie': 'Alle',
+  'Wyczyść filtry': 'Fjern filtre',
 }

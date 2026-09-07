@@ -17,6 +17,7 @@ import {
   StoreBreakdownCard,
   TagBreakdownCard,
   TagManager,
+  TransactionFilters,
   TransactionList,
   usePeriodRange,
 } from './shared'
@@ -86,24 +87,6 @@ export default function Bilans() {
   const expenseRows = useMemo(() => (breakdown?.rows ?? []).filter((r) => r.type === 'expense'), [breakdown])
   const incomeRows = useMemo(() => (breakdown?.rows ?? []).filter((r) => r.type === 'income'), [breakdown])
 
-  function onSelectCategory(id: number | null) {
-    setSelectedCategoryId(id)
-    setSelectedStoreId(null)
-    setSelectedTagId(null)
-  }
-
-  function onSelectStore(id: number | null) {
-    setSelectedStoreId(id)
-    setSelectedCategoryId(null)
-    setSelectedTagId(null)
-  }
-
-  function onSelectTag(id: number | null) {
-    setSelectedTagId(id)
-    setSelectedCategoryId(null)
-    setSelectedStoreId(null)
-  }
-
   return (
     <div className="space-y-6">
       <div className="flex flex-wrap items-center justify-between gap-3">
@@ -165,14 +148,14 @@ export default function Bilans() {
           title="Wydatki wg kategorii"
           rows={expenseRows}
           loading={isLoading}
-          onSelectCategory={onSelectCategory}
+          onSelectCategory={setSelectedCategoryId}
           selectedCategoryId={selectedCategoryId}
         />
         <CategoryPieCard
           title="Przychody wg kategorii"
           rows={incomeRows}
           loading={isLoading}
-          onSelectCategory={onSelectCategory}
+          onSelectCategory={setSelectedCategoryId}
           selectedCategoryId={selectedCategoryId}
         />
       </div>
@@ -182,26 +165,36 @@ export default function Bilans() {
       <CumulativeNetChart />
 
       <div className="grid grid-cols-1 gap-4 lg:grid-cols-2">
-        <CategoryTrendChart type="expense" months={6} onSelectCategory={onSelectCategory} selectedCategoryId={selectedCategoryId} />
-        <CategoryTrendChart type="income" months={6} onSelectCategory={onSelectCategory} selectedCategoryId={selectedCategoryId} />
+        <CategoryTrendChart type="expense" months={6} onSelectCategory={setSelectedCategoryId} />
+        <CategoryTrendChart type="income" months={6} onSelectCategory={setSelectedCategoryId} />
       </div>
 
       <div className="grid grid-cols-1 gap-4 lg:grid-cols-2">
         <StoreBreakdownCard
           dateFrom={period.range.from}
           dateTo={period.range.to}
-          onSelectStore={onSelectStore}
+          onSelectStore={setSelectedStoreId}
           selectedStoreId={selectedStoreId}
         />
         <TagBreakdownCard
           dateFrom={period.range.from}
           dateTo={period.range.to}
-          onSelectTag={onSelectTag}
+          onSelectTag={setSelectedTagId}
           selectedTagId={selectedTagId}
         />
       </div>
 
-      <TagManager onSelectTag={onSelectTag} selectedTagId={selectedTagId} />
+      <TagManager onSelectTag={setSelectedTagId} selectedTagId={selectedTagId} />
+
+      <TransactionFilters
+        categories={categories ?? []}
+        selectedCategoryId={selectedCategoryId}
+        onSelectCategory={setSelectedCategoryId}
+        selectedStoreId={selectedStoreId}
+        onSelectStore={setSelectedStoreId}
+        selectedTagId={selectedTagId}
+        onSelectTag={setSelectedTagId}
+      />
 
       <TransactionList
         transactions={transactions}

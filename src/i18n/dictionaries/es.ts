@@ -397,7 +397,7 @@ export const es: Record<string, string> = {
   'Bez kategorii': 'Sin categoría',
   'Brak danych w tym okresie.': 'No hay datos en este período.',
   'wg kategorii - miesiąc do miesiąca': 'por categoría - mes a mes',
-  'Kliknij kategorię poniżej, aby zobaczyć konkretne transakcje w wybranym okresie.': 'Haz clic en una categoría de abajo para ver sus transacciones concretas en el período seleccionado.',
+  'Kliknij kategorię poniżej, aby zobaczyć ją samą na wykresie i jej transakcje w wybranym okresie. Kliknij ponownie, aby wrócić do widoku wszystkich.': 'Haz clic en una categoría de abajo para verla sola en el gráfico y sus transacciones en el período seleccionado. Vuelve a hacer clic para mostrar todas de nuevo.',
   'Transakcje w okresie': 'Transacciones en el período',
   '+ Kategoria': '+ Categoría',
   'Brak transakcji w tym okresie.': 'No hay transacciones en este período.',
@@ -1353,4 +1353,10 @@ export const es: Record<string, string> = {
     'skieta hace los mismos cálculos para tu cartera real: cuentas bancarias, acciones, bonos y depósitos en un solo lugar, con la ganancia después del impuesto polaco sobre plusvalías. La cuenta es gratuita y se crea en un minuto.',
   'skieta pokazuje każdy zysk brutto i po podatku, a kalkulator porównuje lokaty, obligacje i giełdę na Twojej kwocie. Konto jest bezpłatne i zakładasz je w minutę.':
     'skieta muestra cada ganancia en bruto y después de impuestos, y la calculadora compara depósitos, bonos y bolsa con tu propio importe. La cuenta es gratuita y se crea en un minuto.',
+
+  // TransactionFilters - filtros independientes de categoría/tienda/etiqueta sobre la lista de transacciones.
+  'Sklep': 'Tienda',
+  'Tag': 'Etiqueta',
+  'Wszystkie': 'Todas',
+  'Wyczyść filtry': 'Borrar filtros',
 }
