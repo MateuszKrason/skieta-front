@@ -40,8 +40,15 @@ const configured = Boolean(SRC && SITE)
 // readers versus one that attracts users. The rest are the funnel: whether
 // people who get in actually finish setting up, put real data in, and can get
 // it back out.
+//
+// `register_clicked` replaced `access_request_submitted` when registration
+// stopped being invite-only: the conversion a public page asks for is now
+// "create an account" rather than "leave your address and wait". It carries
+// the same `source`, so the per-article comparison survives the change - but
+// as a new series, since the two measure different acts and merging them
+// would flatter the new one.
 type EventName =
-  | 'access_request_submitted'
+  | 'register_clicked'
   | 'invite_nudge_clicked'
   | 'article_login_clicked'
   | 'registered'

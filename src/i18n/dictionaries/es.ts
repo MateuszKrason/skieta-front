@@ -1304,8 +1304,8 @@ export const es: Record<string, string> = {
   'Rejestracja jest na zaproszenie - nie masz go? Zostaw e-mail.':
     'El registro es solo por invitación: ¿no tienes una? Deja tu correo.',
   'Ile to kosztuje?': '¿Cuánto cuesta?',
-  'Nic. skieta jest bezpłatna - bez abonamentu, bez płatnych funkcji i bez reklam. Nie podajesz numeru karty ani przy zakładaniu konta, ani później.':
-    'Nada. skieta es gratuita: sin suscripción, sin funciones de pago y sin anuncios. No se te pide ningún número de tarjeta, ni al crear la cuenta ni después.',
+  'Nic. skieta jest dziś w całości bezpłatna - bez abonamentu, bez reklam i bez podawania numeru karty. Gdyby w przyszłości pojawiła się wersja płatna, uprzedzimy o tym z wyprzedzeniem, a pobranie kopii swoich danych pozostanie bezpłatne - to Twoje prawo wynikające z RODO, nie element oferty.':
+    'Nada. Hoy skieta es totalmente gratuita: sin suscripción, sin anuncios y sin número de tarjeta. Si en el futuro hay una versión de pago, te avisaremos con antelación, y descargar una copia de tus datos seguirá siendo gratis: es tu derecho según el RGPD, no parte de ningún plan.',
 
   // Landing - capturas del producto
   'Zrzut z działającej aplikacji, na danych demonstracyjnych.': 'Una captura de la aplicación en funcionamiento, con datos de demostración.',
@@ -1329,4 +1329,28 @@ export const es: Record<string, string> = {
     'Fija un objetivo y reserva para él una cantidad de una nómina concreta o de tus ahorros actuales. skieta calcula cuántas nóminas quedan y cuánto hay que apartar de cada una para llegar a tiempo.',
   'Planowanie budżetu w skiecie z celami oszczędnościowymi i postępem zbierania':
     'Planificación del presupuesto en skieta, con objetivos de ahorro y el progreso de cada uno',
+
+  // Registro abierto - sustituye los textos de acceso solo por invitación.
+  'Bezpłatnie, bez reklam, bez karty': 'Gratis, sin anuncios, sin tarjeta',
+  'Załóż darmowe konto →': 'Crea una cuenta gratis →',
+  'Załóż konto': 'Crear cuenta',
+  'Konto zakładasz w minutę. Bez zaproszenia, bez karty, bez zobowiązań.':
+    'Crear una cuenta lleva un minuto. Sin invitación, sin tarjeta y sin compromiso.',
+  'Przekonaliśmy Cię?': '¿Te hemos convencido?',
+  'Zacznij dziś': 'Empieza hoy',
+  'Załóż konto i zobacz cały swój majątek w jednym miejscu - od razu po pierwszym dodaniu konta.':
+    'Crea una cuenta y ve todo tu patrimonio en un solo lugar, desde que añades la primera cuenta.',
+  'Rejestrujesz się z zaproszenia.': 'Te estás registrando con una invitación.',
+  'Zakładasz konto': 'Creas una cuenta',
+  'Rejestracja jest otwarta i zajmuje minutę. Nie potrzebujesz zaproszenia ani karty płatniczej.':
+    'El registro está abierto y lleva un minuto. No necesitas invitación ni tarjeta de pago.',
+  'Czy potrzebuję zaproszenia?': '¿Necesito una invitación?',
+  'Nie. Rejestracja jest otwarta dla wszystkich - wystarczy założyć konto. Zaproszenia nadal działają: jeśli ktoś prześle Ci swój link, zapiszemy, że to dzięki niemu tu trafiłeś/aś, ale nie jest to warunek założenia konta.':
+    'No. El registro está abierto a todo el mundo: basta con crear una cuenta. Las invitaciones siguen funcionando: si alguien te envía su enlace, registramos que te trajo hasta aquí, pero no es un requisito para darte de alta.',
+  'Bez reklam i bez sprzedawania danych. Nikt nie zagląda w Twoje konta - Twoje liczby służą wyłącznie do wyliczeń, które widzisz w aplikacji. Historia logowań pokazuje, kto i kiedy wchodził na Twoje konto.':
+    'Sin anuncios y sin vender datos. Nadie mira dentro de tus cuentas: tus cifras solo sirven para los cálculos que ves en la aplicación. El historial de inicios de sesión muestra quién entró en tu cuenta y cuándo.',
+  'skieta liczy to samo dla Twojego prawdziwego portfela - konta bankowe, akcje, obligacje i lokaty w jednym miejscu, z zyskiem po podatku Belki. Konto jest bezpłatne i zakładasz je w minutę.':
+    'skieta hace los mismos cálculos para tu cartera real: cuentas bancarias, acciones, bonos y depósitos en un solo lugar, con la ganancia después del impuesto polaco sobre plusvalías. La cuenta es gratuita y se crea en un minuto.',
+  'skieta pokazuje każdy zysk brutto i po podatku, a kalkulator porównuje lokaty, obligacje i giełdę na Twojej kwocie. Konto jest bezpłatne i zakładasz je w minutę.':
+    'skieta muestra cada ganancia en bruto y después de impuestos, y la calculadora compara depósitos, bonos y bolsa con tu propio importe. La cuenta es gratuita y se crea en un minuto.',
 }

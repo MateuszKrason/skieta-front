@@ -1148,4 +1148,30 @@ export const sq: Record<string, string> = {
   'Wykorzystano {0} z {1}': 'Përdorur {0} nga {1}',
   'Odliczanie do {0}': 'Numërimi mbrapsht deri {0}',
   'Utwórz': 'Krijo',
+
+  // Regjistrim i hapur - zëvendëson tekstet për akses vetëm me ftesë.
+  'Bezpłatnie, bez reklam, bez karty': 'Falas, pa reklama, pa kartë',
+  'Załóż darmowe konto →': 'Krijo një llogari falas →',
+  'Załóż konto': 'Krijo llogari',
+  'Konto zakładasz w minutę. Bez zaproszenia, bez karty, bez zobowiązań.':
+    'Krijimi i llogarisë zgjat një minutë. Pa ftesë, pa kartë, pa detyrime.',
+  'Przekonaliśmy Cię?': 'Të bindëm?',
+  'Zacznij dziś': 'Fillo sot',
+  'Załóż konto i zobacz cały swój majątek w jednym miejscu - od razu po pierwszym dodaniu konta.':
+    'Krijo një llogari dhe shih gjithë pasurinë tënde në një vend - që nga çasti kur shton llogarinë e parë.',
+  'Rejestrujesz się z zaproszenia.': 'Po regjistrohesh me një ftesë.',
+  'Zakładasz konto': 'Krijon një llogari',
+  'Rejestracja jest otwarta i zajmuje minutę. Nie potrzebujesz zaproszenia ani karty płatniczej.':
+    'Regjistrimi është i hapur dhe zgjat një minutë. Nuk të duhet as ftesë, as kartë pagese.',
+  'Czy potrzebuję zaproszenia?': 'A më duhet një ftesë?',
+  'Nic. skieta jest dziś w całości bezpłatna - bez abonamentu, bez reklam i bez podawania numeru karty. Gdyby w przyszłości pojawiła się wersja płatna, uprzedzimy o tym z wyprzedzeniem, a pobranie kopii swoich danych pozostanie bezpłatne - to Twoje prawo wynikające z RODO, nie element oferty.':
+    'Asgjë. skieta sot është plotësisht falas - pa abonim, pa reklama dhe pa numër karte. Nëse në të ardhmen del një version me pagesë, do të të njoftojmë paraprakisht, ndërsa shkarkimi i një kopjeje të të dhënave të tua do të mbetet falas - kjo është e drejta jote sipas GDPR-së, jo pjesë e një plani.',
+  'Nie. Rejestracja jest otwarta dla wszystkich - wystarczy założyć konto. Zaproszenia nadal działają: jeśli ktoś prześle Ci swój link, zapiszemy, że to dzięki niemu tu trafiłeś/aś, ale nie jest to warunek założenia konta.':
+    'Jo. Regjistrimi është i hapur për të gjithë - mjafton të krijosh një llogari. Ftesat vazhdojnë të funksionojnë: nëse dikush të dërgon lidhjen e vet, e shënojmë se ai të solli këtu, por nuk është kusht për të hapur llogari.',
+  'Bez reklam i bez sprzedawania danych. Nikt nie zagląda w Twoje konta - Twoje liczby służą wyłącznie do wyliczeń, które widzisz w aplikacji. Historia logowań pokazuje, kto i kiedy wchodził na Twoje konto.':
+    'Pa reklama dhe pa shitje të dhënash. Askush nuk shikon brenda llogarive të tua - shifrat e tua shërbejnë vetëm për llogaritjet që sheh në aplikacion. Historiku i hyrjeve tregon kush ka hyrë në llogarinë tënde dhe kur.',
+  'skieta liczy to samo dla Twojego prawdziwego portfela - konta bankowe, akcje, obligacje i lokaty w jednym miejscu, z zyskiem po podatku Belki. Konto jest bezpłatne i zakładasz je w minutę.':
+    'skieta llogarit të njëjtën gjë për portofolin tënd të vërtetë - llogari bankare, aksione, obligacione dhe depozita në një vend, me fitimin pas tatimit polak mbi fitimet kapitale. Llogaria është falas dhe krijohet për një minutë.',
+  'skieta pokazuje każdy zysk brutto i po podatku, a kalkulator porównuje lokaty, obligacje i giełdę na Twojej kwocie. Konto jest bezpłatne i zakładasz je w minutę.':
+    'skieta tregon çdo fitim si bruto ashtu edhe pas tatimit, ndërsa llogaritësi krahason depozitat, obligacionet dhe bursën me shumën tënde. Llogaria është falas dhe krijohet për një minutë.',
 }

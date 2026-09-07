@@ -1302,8 +1302,8 @@ export const en: Record<string, string> = {
   'Rejestracja jest na zaproszenie - nie masz go? Zostaw e-mail.':
     'Sign-up is invite-only - no invitation? Leave your email.',
   'Ile to kosztuje?': 'What does it cost?',
-  'Nic. skieta jest bezpłatna - bez abonamentu, bez płatnych funkcji i bez reklam. Nie podajesz numeru karty ani przy zakładaniu konta, ani później.':
-    'Nothing. skieta is free - no subscription, no paid features and no ads. You are never asked for a card number, either when setting up an account or later.',
+  'Nic. skieta jest dziś w całości bezpłatna - bez abonamentu, bez reklam i bez podawania numeru karty. Gdyby w przyszłości pojawiła się wersja płatna, uprzedzimy o tym z wyprzedzeniem, a pobranie kopii swoich danych pozostanie bezpłatne - to Twoje prawo wynikające z RODO, nie element oferty.':
+    'Nothing. skieta is entirely free today - no subscription, no ads and no card number to enter. If a paid version appears in the future we will tell you well in advance, and downloading a copy of your data will stay free - that is your right under GDPR, not part of any plan.',
 
   // Landing - product screenshots
   'Zrzut z działającej aplikacji, na danych demonstracyjnych.': 'A screenshot of the running app, using demo data.',
@@ -1327,4 +1327,28 @@ export const en: Record<string, string> = {
     'Set a goal and reserve money for it from a specific payslip or from your current savings. skieta works out how many paydays are left and how much to set aside from each one to get there in time.',
   'Planowanie budżetu w skiecie z celami oszczędnościowymi i postępem zbierania':
     'Budget planning in skieta, with savings goals and the progress towards each one',
+
+  // Open registration - replaced the invite-only landing copy above.
+  'Bezpłatnie, bez reklam, bez karty': 'Free, no ads, no card',
+  'Załóż darmowe konto →': 'Create a free account →',
+  'Załóż konto': 'Sign up',
+  'Konto zakładasz w minutę. Bez zaproszenia, bez karty, bez zobowiązań.':
+    'Setting up an account takes a minute. No invitation, no card, no strings attached.',
+  'Przekonaliśmy Cię?': 'Convinced?',
+  'Zacznij dziś': 'Start today',
+  'Załóż konto i zobacz cały swój majątek w jednym miejscu - od razu po pierwszym dodaniu konta.':
+    'Create an account and see your whole net worth in one place - from the moment you add your first account.',
+  'Rejestrujesz się z zaproszenia.': "You're signing up from an invitation.",
+  'Zakładasz konto': 'You create an account',
+  'Rejestracja jest otwarta i zajmuje minutę. Nie potrzebujesz zaproszenia ani karty płatniczej.':
+    'Registration is open and takes a minute. You need neither an invitation nor a payment card.',
+  'Czy potrzebuję zaproszenia?': 'Do I need an invitation?',
+  'Nie. Rejestracja jest otwarta dla wszystkich - wystarczy założyć konto. Zaproszenia nadal działają: jeśli ktoś prześle Ci swój link, zapiszemy, że to dzięki niemu tu trafiłeś/aś, ale nie jest to warunek założenia konta.':
+    'No. Registration is open to everyone - just create an account. Invitations still work: if someone sends you their link, we record that they brought you here, but it is not a condition of signing up.',
+  'Bez reklam i bez sprzedawania danych. Nikt nie zagląda w Twoje konta - Twoje liczby służą wyłącznie do wyliczeń, które widzisz w aplikacji. Historia logowań pokazuje, kto i kiedy wchodził na Twoje konto.':
+    'No ads and no selling of data. Nobody looks inside your accounts - your figures serve only the calculations you see in the app. The login history shows who accessed your account and when.',
+  'skieta liczy to samo dla Twojego prawdziwego portfela - konta bankowe, akcje, obligacje i lokaty w jednym miejscu, z zyskiem po podatku Belki. Konto jest bezpłatne i zakładasz je w minutę.':
+    'skieta does the same maths for your real portfolio - bank accounts, shares, bonds and deposits in one place, with profit after Polish capital gains tax. An account is free and takes a minute to set up.',
+  'skieta pokazuje każdy zysk brutto i po podatku, a kalkulator porównuje lokaty, obligacje i giełdę na Twojej kwocie. Konto jest bezpłatne i zakładasz je w minutę.':
+    'skieta shows every gain both gross and after tax, and the calculator compares deposits, bonds and the stock market on your own amount. An account is free and takes a minute to set up.',
 }

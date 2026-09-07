@@ -75,26 +75,6 @@ export default function Register() {
     }
   }
 
-  if (!inviteToken) {
-    return (
-      <div className="flex min-h-screen items-center justify-center bg-slate-50 dark:bg-slate-900">
-        <AuthTopBar />
-        <div className="w-full max-w-sm rounded-xl border border-slate-200 dark:border-slate-700 bg-white dark:bg-slate-800 p-8 text-center shadow-sm">
-          <h1 className="mb-1 flex items-center justify-center gap-2 text-2xl font-bold text-accent-700 dark:text-accent-400">
-            <SockLogo className="h-8 w-8" />
-            skieta
-          </h1>
-          <p className="mt-4 text-sm text-slate-600 dark:text-slate-300">
-            {t('Rejestracja jest dostępna tylko na zaproszenie od innego użytkownika - poproś o link lub zeskanuj kod QR.')}
-          </p>
-          <Link to="/logowanie" className="mt-6 inline-block font-medium text-accent-700 dark:text-accent-400 hover:underline">
-            {t('Masz już konto? Zaloguj się')}
-          </Link>
-        </div>
-      </div>
-    )
-  }
-
   return (
     <div className="flex min-h-screen items-center justify-center bg-slate-50 dark:bg-slate-900">
       <AuthTopBar />
@@ -104,6 +84,15 @@ export default function Register() {
           skieta
         </h1>
         <p className="mb-6 text-sm text-slate-500 dark:text-slate-400">{t('Załóż konto i zacznij śledzić swój majątek')}</p>
+        {/* Registration is open to everyone, so an invite is no longer a key
+            to the door - but someone who followed one should still see that
+            it was recognised, rather than landing on a form identical to the
+            one every stranger gets. */}
+        {inviteToken && (
+          <p className="mb-4 rounded-md border border-accent-200 dark:border-accent-800 bg-accent-50 dark:bg-accent-950/40 px-3 py-2 text-sm text-accent-700 dark:text-accent-400">
+            {t('Rejestrujesz się z zaproszenia.')}
+          </p>
+        )}
         <div className="mb-3 flex gap-3">
           <label className="block flex-1 text-sm">
             {t('Imię')}

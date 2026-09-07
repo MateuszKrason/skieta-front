@@ -1302,8 +1302,8 @@ export const de: Record<string, string> = {
   'Rejestracja jest na zaproszenie - nie masz go? Zostaw e-mail.':
     'Die Registrierung läuft nur über Einladung - keine? Hinterlass deine E-Mail-Adresse.',
   'Ile to kosztuje?': 'Was kostet das?',
-  'Nic. skieta jest bezpłatna - bez abonamentu, bez płatnych funkcji i bez reklam. Nie podajesz numeru karty ani przy zakładaniu konta, ani później.':
-    'Nichts. skieta ist kostenlos - kein Abo, keine kostenpflichtigen Funktionen und keine Werbung. Nach einer Kartennummer wirst du weder bei der Anmeldung noch später gefragt.',
+  'Nic. skieta jest dziś w całości bezpłatna - bez abonamentu, bez reklam i bez podawania numeru karty. Gdyby w przyszłości pojawiła się wersja płatna, uprzedzimy o tym z wyprzedzeniem, a pobranie kopii swoich danych pozostanie bezpłatne - to Twoje prawo wynikające z RODO, nie element oferty.':
+    'Nichts. skieta ist heute vollständig kostenlos - kein Abo, keine Werbung und keine Kartennummer. Sollte es künftig eine kostenpflichtige Version geben, sagen wir rechtzeitig Bescheid, und der Download einer Kopie deiner Daten bleibt kostenlos - das ist dein Recht nach DSGVO, kein Bestandteil eines Tarifs.',
 
   // Landing - Produkt-Screenshots
   'Zrzut z działającej aplikacji, na danych demonstracyjnych.': 'Ein Screenshot der laufenden App mit Demodaten.',
@@ -1327,4 +1327,28 @@ export const de: Record<string, string> = {
     'Lege ein Ziel fest und reserviere dafür einen Betrag aus einem bestimmten Gehalt oder aus deinen laufenden Ersparnissen. skieta berechnet, wie viele Gehälter bleiben und wie viel du von jedem zurücklegen musst, um rechtzeitig anzukommen.',
   'Planowanie budżetu w skiecie z celami oszczędnościowymi i postępem zbierania':
     'Budgetplanung in skieta mit Sparzielen und dem Fortschritt beim Ansparen',
+
+  // Offene Registrierung - ersetzt die Invite-only-Texte weiter oben.
+  'Bezpłatnie, bez reklam, bez karty': 'Kostenlos, ohne Werbung, ohne Karte',
+  'Załóż darmowe konto →': 'Kostenloses Konto erstellen →',
+  'Załóż konto': 'Konto erstellen',
+  'Konto zakładasz w minutę. Bez zaproszenia, bez karty, bez zobowiązań.':
+    'Die Kontoerstellung dauert eine Minute. Ohne Einladung, ohne Karte, ohne Verpflichtungen.',
+  'Przekonaliśmy Cię?': 'Überzeugt?',
+  'Zacznij dziś': 'Heute anfangen',
+  'Załóż konto i zobacz cały swój majątek w jednym miejscu - od razu po pierwszym dodaniu konta.':
+    'Erstelle ein Konto und sieh dein gesamtes Vermögen an einem Ort - schon nach dem ersten hinzugefügten Konto.',
+  'Rejestrujesz się z zaproszenia.': 'Du registrierst dich über eine Einladung.',
+  'Zakładasz konto': 'Du erstellst ein Konto',
+  'Rejestracja jest otwarta i zajmuje minutę. Nie potrzebujesz zaproszenia ani karty płatniczej.':
+    'Die Registrierung ist offen und dauert eine Minute. Du brauchst weder eine Einladung noch eine Zahlungskarte.',
+  'Czy potrzebuję zaproszenia?': 'Brauche ich eine Einladung?',
+  'Nie. Rejestracja jest otwarta dla wszystkich - wystarczy założyć konto. Zaproszenia nadal działają: jeśli ktoś prześle Ci swój link, zapiszemy, że to dzięki niemu tu trafiłeś/aś, ale nie jest to warunek założenia konta.':
+    'Nein. Die Registrierung steht allen offen - erstelle einfach ein Konto. Einladungen funktionieren weiterhin: Wenn dir jemand seinen Link schickt, halten wir fest, dass du über ihn hergekommen bist, aber Voraussetzung für ein Konto ist das nicht.',
+  'Bez reklam i bez sprzedawania danych. Nikt nie zagląda w Twoje konta - Twoje liczby służą wyłącznie do wyliczeń, które widzisz w aplikacji. Historia logowań pokazuje, kto i kiedy wchodził na Twoje konto.':
+    'Keine Werbung und kein Verkauf von Daten. Niemand sieht in deine Konten - deine Zahlen dienen ausschließlich den Berechnungen, die du in der App siehst. Die Login-Historie zeigt, wer wann auf dein Konto zugegriffen hat.',
+  'skieta liczy to samo dla Twojego prawdziwego portfela - konta bankowe, akcje, obligacje i lokaty w jednym miejscu, z zyskiem po podatku Belki. Konto jest bezpłatne i zakładasz je w minutę.':
+    'skieta rechnet dasselbe für dein echtes Portfolio - Bankkonten, Aktien, Anleihen und Festgeld an einem Ort, mit Gewinn nach polnischer Kapitalertragsteuer. Ein Konto ist kostenlos und in einer Minute erstellt.',
+  'skieta pokazuje każdy zysk brutto i po podatku, a kalkulator porównuje lokaty, obligacje i giełdę na Twojej kwocie. Konto jest bezpłatne i zakładasz je w minutę.':
+    'skieta zeigt jeden Gewinn brutto und nach Steuern, und der Rechner vergleicht Festgeld, Anleihen und Börse mit deinem eigenen Betrag. Ein Konto ist kostenlos und in einer Minute erstellt.',
 }

@@ -1148,4 +1148,30 @@ export const da: Record<string, string> = {
   'Wykorzystano {0} z {1}': 'Brugt {0} af {1}',
   'Odliczanie do {0}': 'Nedtælling til {0}',
   'Utwórz': 'Opret',
+
+  // Åben registrering - erstatter teksterne om adgang kun via invitation.
+  'Bezpłatnie, bez reklam, bez karty': 'Gratis, uden reklamer, uden kort',
+  'Załóż darmowe konto →': 'Opret en gratis konto →',
+  'Załóż konto': 'Opret konto',
+  'Konto zakładasz w minutę. Bez zaproszenia, bez karty, bez zobowiązań.':
+    'Det tager et minut at oprette en konto. Uden invitation, uden kort og uden forpligtelser.',
+  'Przekonaliśmy Cię?': 'Er du overbevist?',
+  'Zacznij dziś': 'Kom i gang i dag',
+  'Załóż konto i zobacz cały swój majątek w jednym miejscu - od razu po pierwszym dodaniu konta.':
+    'Opret en konto og se hele din formue ét sted - lige fra du tilføjer den første konto.',
+  'Rejestrujesz się z zaproszenia.': 'Du registrerer dig via en invitation.',
+  'Zakładasz konto': 'Du opretter en konto',
+  'Rejestracja jest otwarta i zajmuje minutę. Nie potrzebujesz zaproszenia ani karty płatniczej.':
+    'Registreringen er åben og tager et minut. Du har hverken brug for en invitation eller et betalingskort.',
+  'Czy potrzebuję zaproszenia?': 'Har jeg brug for en invitation?',
+  'Nic. skieta jest dziś w całości bezpłatna - bez abonamentu, bez reklam i bez podawania numeru karty. Gdyby w przyszłości pojawiła się wersja płatna, uprzedzimy o tym z wyprzedzeniem, a pobranie kopii swoich danych pozostanie bezpłatne - to Twoje prawo wynikające z RODO, nie element oferty.':
+    'Ingenting. skieta er i dag helt gratis - ingen abonnementer, ingen reklamer og intet kortnummer. Skulle der fremover komme en betalt version, siger vi til i god tid, og download af en kopi af dine data forbliver gratis - det er din ret efter GDPR, ikke en del af et abonnement.',
+  'Nie. Rejestracja jest otwarta dla wszystkich - wystarczy założyć konto. Zaproszenia nadal działają: jeśli ktoś prześle Ci swój link, zapiszemy, że to dzięki niemu tu trafiłeś/aś, ale nie jest to warunek założenia konta.':
+    'Nej. Registreringen er åben for alle - du skal blot oprette en konto. Invitationer virker stadig: Hvis nogen sender dig deres link, noterer vi, at det var dem, der førte dig hertil, men det er ikke en betingelse for at oprette en konto.',
+  'Bez reklam i bez sprzedawania danych. Nikt nie zagląda w Twoje konta - Twoje liczby służą wyłącznie do wyliczeń, które widzisz w aplikacji. Historia logowań pokazuje, kto i kiedy wchodził na Twoje konto.':
+    'Ingen reklamer og intet salg af data. Ingen kigger ind i dine konti - dine tal bruges udelukkende til de beregninger, du ser i appen. Login-historikken viser, hvem der har været inde på din konto, og hvornår.',
+  'skieta liczy to samo dla Twojego prawdziwego portfela - konta bankowe, akcje, obligacje i lokaty w jednym miejscu, z zyskiem po podatku Belki. Konto jest bezpłatne i zakładasz je w minutę.':
+    'skieta regner det samme for din rigtige portefølje - bankkonti, aktier, obligationer og indlån ét sted, med afkast efter polsk kapitalskat. En konto er gratis og oprettes på et minut.',
+  'skieta pokazuje każdy zysk brutto i po podatku, a kalkulator porównuje lokaty, obligacje i giełdę na Twojej kwocie. Konto jest bezpłatne i zakładasz je w minutę.':
+    'skieta viser hvert afkast både brutto og efter skat, og beregneren sammenligner indlån, obligationer og aktiemarkedet med dit eget beløb. En konto er gratis og oprettes på et minut.',
 }

@@ -3,7 +3,6 @@ import { useQuery } from '@tanstack/react-query'
 import { Link, useParams } from 'react-router-dom'
 import { api } from '../api/client'
 import { PageLoader } from '../components/Loader'
-import RequestAccessForm from '../components/RequestAccessForm'
 import SockLogo from '../components/SockLogo'
 import { useLanguage } from '../i18n/LanguageContext'
 import { trackEvent } from '../lib/analytics'
@@ -183,29 +182,32 @@ export default function ArticleDetail() {
             <ArticleBody body={article.body} />
 
             {/* Most readers here arrived from a search engine and have no
-                account - and registration is invite-only, so a bare "log in"
-                button was a dead end for exactly the audience these articles
-                are written to attract. Offer the access-request path first
-                and keep logging in as the secondary route. */}
+                account, so signing up is the primary action and logging in
+                the secondary one - the reverse of what the rest of the app
+                assumes about its visitors. */}
             <aside className="mt-12 rounded-xl border border-accent-200 dark:border-accent-800 bg-accent-50 dark:bg-accent-950/40 p-6">
               <h2 className="text-lg font-bold text-slate-900 dark:text-slate-100">
                 {t('Policz to na swoich danych')}
               </h2>
               <p className="mt-1.5 text-sm text-slate-600 dark:text-slate-400">
                 {t(
-                  'skieta pokazuje każdy zysk brutto i po podatku, a kalkulator porównuje lokaty, obligacje i giełdę na Twojej kwocie. Dostęp jest na zaproszenie - zostaw e-mail, a odezwiemy się.',
+                  'skieta pokazuje każdy zysk brutto i po podatku, a kalkulator porównuje lokaty, obligacje i giełdę na Twojej kwocie. Konto jest bezpłatne i zakładasz je w minutę.',
                 )}
               </p>
               <div className="mt-4 flex flex-wrap items-center gap-3">
+                <Link
+                  to="/register"
+                  onClick={() => trackEvent('register_clicked', { source: 'article', article: slug })}
+                  className="rounded-full bg-accent-700 px-5 py-2 text-sm font-semibold text-white shadow-sm transition hover:bg-accent-800"
+                >
+                  {t('Załóż darmowe konto →')}
+                </Link>
                 <Link
                   to="/kalkulator"
                   className="rounded-full border border-accent-300 dark:border-accent-700 bg-white dark:bg-slate-900 px-5 py-2 text-sm font-semibold text-accent-700 dark:text-accent-400 transition hover:border-accent-500"
                 >
                   {t('Otwórz kalkulator →')}
                 </Link>
-              </div>
-              <div className="mt-4">
-                <RequestAccessForm variant="prominent" source="article" article={slug} />
               </div>
               <p className="mt-4 text-sm text-slate-500 dark:text-slate-400">
                 {t('Masz już konto?')}{' '}

@@ -1,9 +1,9 @@
 import { lazy } from 'react'
 import { Link } from 'react-router-dom'
-import RequestAccessForm from '../components/RequestAccessForm'
 import SockLogo from '../components/SockLogo'
 import AuthTopBar from '../components/AuthTopBar'
 import { useLanguage } from '../i18n/LanguageContext'
+import { trackEvent } from '../lib/analytics'
 
 // Dynamic, not a static import: this page is itself lazy-loaded so a
 // logged-out visitor's landing bundle stays small (see App.tsx), and a
@@ -47,11 +47,17 @@ export default function PublicCalculator() {
           </h2>
           <p className="mt-1.5 text-sm text-slate-600 dark:text-slate-400">
             {t(
-              'skieta liczy to samo dla Twojego prawdziwego portfela - konta bankowe, akcje, obligacje i lokaty w jednym miejscu, z zyskiem po podatku Belki. Dostęp jest na zaproszenie - zostaw e-mail, a odezwiemy się.',
+              'skieta liczy to samo dla Twojego prawdziwego portfela - konta bankowe, akcje, obligacje i lokaty w jednym miejscu, z zyskiem po podatku Belki. Konto jest bezpłatne i zakładasz je w minutę.',
             )}
           </p>
           <div className="mt-4">
-            <RequestAccessForm variant="prominent" source="calculator" />
+            <Link
+              to="/register"
+              onClick={() => trackEvent('register_clicked', { source: 'calculator' })}
+              className="inline-block rounded-full bg-accent-700 px-6 py-2.5 text-sm font-semibold text-white shadow-sm transition hover:bg-accent-800"
+            >
+              {t('Załóż darmowe konto →')}
+            </Link>
           </div>
         </aside>
       </main>

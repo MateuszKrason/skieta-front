@@ -3,10 +3,10 @@ import { useQuery } from '@tanstack/react-query'
 import { Link } from 'react-router-dom'
 import { api } from '../api/client'
 import { useAuth } from '../auth/AuthContext'
-import RequestAccessForm from '../components/RequestAccessForm'
 import SockLogo from '../components/SockLogo'
 import { LANGUAGES, LANGUAGE_LABELS, useLanguage, type Language } from '../i18n/LanguageContext'
 import { useTheme } from '../theme/ThemeContext'
+import { trackEvent } from '../lib/analytics'
 import { formatCountdown, formatDateTime } from '../lib/format'
 import type { ActiveLandingPromotion, Article } from '../types'
 
@@ -16,7 +16,7 @@ import type { ActiveLandingPromotion, Article } from '../types'
 // actually shows.
 const QRCodeSVG = lazy(() => import('qrcode.react').then((m) => ({ default: m.QRCodeSVG })))
 
-// Public, works logged-in or out (same as RequestAccessForm below) - shows an
+// Public, works logged-in or out - shows an
 // admin-created temporary banner (see AdminLandingPromotions.tsx) with a live
 // countdown, its invite QR/link, and hides itself once the countdown expires.
 // Title/message come back already resolved to the current site language
@@ -134,7 +134,7 @@ const FEATURES: { icon: keyof typeof ICONS; title: string; body: string }[] = [
     // Says precisely what's true - nobody browses users' finances - instead of
     // a blanket "no tracking" claim, which would sit awkwardly next to the
     // site's own analytics on page views.
-    body: 'Dostęp wyłącznie na zaproszenie i bez reklam. Nikt nie zagląda w Twoje konta - Twoje liczby służą wyłącznie do wyliczeń, które widzisz w aplikacji. Historia logowań pokazuje, kto i kiedy wchodził na Twoje konto.',
+    body: 'Bez reklam i bez sprzedawania danych. Nikt nie zagląda w Twoje konta - Twoje liczby służą wyłącznie do wyliczeń, które widzisz w aplikacji. Historia logowań pokazuje, kto i kiedy wchodził na Twoje konto.',
   },
 ]
 
@@ -165,23 +165,36 @@ const SHOWCASE: { name: 'portfel' | 'dywidendy' | 'planowanie'; title: string; b
 ]
 
 const STEPS = [
-  { n: '1', title: 'Dostajesz zaproszenie', body: 'Rejestracja jest możliwa tylko na zaproszenie od kogoś, kto już korzysta ze skieta.' },
+  { n: '1', title: 'Zakładasz konto', body: 'Rejestracja jest otwarta i zajmuje minutę. Nie potrzebujesz zaproszenia ani karty płatniczej.' },
   { n: '2', title: 'Dodajesz swoje konta', body: 'Kilka minut wystarczy, żeby dodać konta bankowe, portfel akcji, lokaty i obligacje.' },
   { n: '3', title: 'Widzisz cały obraz', body: 'Dashboard aktualizuje się na bieżąco - majątek, zwrot z inwestycji i budżet w jednym miejscu.' },
 ]
 
-// The first question anyone arriving from a search engine has is why they
-// can't just sign up - leaving that unanswered on the page loses exactly the
-// visitors the articles are meant to bring in. Invite-only is a deliberate
-// product decision, so it's stated as one rather than apologized for.
+// Written for someone who arrived from a search engine and is deciding
+// whether to hand a finance app their numbers. The questions are the ones
+// that decide that - what it costs, whether it wants bank passwords, who
+// reads the data, and whether they can leave - rather than the ones that
+// happen to be easy to answer.
 const FAQ: { q: string; a: string }[] = [
   {
-    q: 'Dlaczego rejestracja jest tylko na zaproszenie?',
-    a: 'To świadoma decyzja, a nie etap przejściowy. Baza użytkowników rośnie powoli i w kontrolowany sposób. Jeśli nie masz zaproszenia, zostaw adres e-mail w formularzu wyżej - prośby o dostęp są rozpatrywane pojedynczo.',
+    q: 'Ile to kosztuje?',
+    // Present tense, and deliberately promising nothing about the future.
+    // The original wording ("bez płatnych funkcji [...] ani później") ruled
+    // out ever charging for anything; a later draft promised that whatever
+    // someone uses today stays free. Both were commitments the product does
+    // not want to make - today's features may be priced later too. So the
+    // answer states what is true now and stops there.
+    //
+    // The one forward-looking clause that stays is the export, and it is not
+    // a marketing concession: a copy of one's own data is owed under RODO
+    // art. 15/20 whatever the price list says. Saying so is what keeps the
+    // rest of the paragraph from reading as a trap - the honest answer to
+    // "what if you start charging" is "you can always leave with your data".
+    a: 'Nic. skieta jest dziś w całości bezpłatna - bez abonamentu, bez reklam i bez podawania numeru karty. Gdyby w przyszłości pojawiła się wersja płatna, uprzedzimy o tym z wyprzedzeniem, a pobranie kopii swoich danych pozostanie bezpłatne - to Twoje prawo wynikające z RODO, nie element oferty.',
   },
   {
-    q: 'Ile to kosztuje?',
-    a: 'Nic. skieta jest bezpłatna - bez abonamentu, bez płatnych funkcji i bez reklam. Nie podajesz numeru karty ani przy zakładaniu konta, ani później.',
+    q: 'Czy potrzebuję zaproszenia?',
+    a: 'Nie. Rejestracja jest otwarta dla wszystkich - wystarczy założyć konto. Zaproszenia nadal działają: jeśli ktoś prześle Ci swój link, zapiszemy, że to dzięki niemu tu trafiłeś/aś, ale nie jest to warunek założenia konta.',
   },
   {
     q: 'Czy muszę podawać dane logowania do banku?',
@@ -302,11 +315,23 @@ export default function Landing() {
                 </option>
               ))}
             </select>
+            {/* Two actions for a stranger, one for a signed-in visitor.
+                Signing up is the one being pushed, so log-in sits next to it
+                as a quiet link rather than a second button competing with
+                it - returning users go looking for it anyway. */}
+            {!user && (
+              <Link
+                to="/logowanie"
+                className="text-sm font-medium text-slate-600 dark:text-slate-400 hover:text-accent-700 dark:hover:text-accent-400"
+              >
+                {t('Zaloguj się')}
+              </Link>
+            )}
             <Link
-              to={ctaHref}
+              to={user ? ctaHref : '/register'}
               className="rounded-full bg-accent-700 px-5 py-2 text-sm font-semibold text-white shadow-sm shadow-accent-600/30 transition hover:bg-accent-800 hover:shadow-md"
             >
-              {user ? ctaLabel : t('Zaloguj się do aplikacji')}
+              {user ? ctaLabel : t('Załóż konto')}
             </Link>
           </div>
         </div>
@@ -328,7 +353,7 @@ export default function Landing() {
         <div className="mx-auto max-w-6xl px-4 py-16 sm:py-20">
           <div className="mx-auto max-w-3xl text-center">
             <span className="inline-flex items-center gap-1.5 rounded-full border border-accent-200 dark:border-accent-800 bg-accent-50 dark:bg-accent-950/40 px-3 py-1 text-xs font-medium text-accent-700 dark:text-accent-400">
-              {t('Dostępne wyłącznie na zaproszenie')}
+              {t('Bezpłatnie, bez reklam, bez karty')}
             </span>
             <h1 className="mt-5 text-4xl font-extrabold tracking-tight text-slate-900 dark:text-slate-100 sm:text-5xl lg:text-6xl">
               {t('Panuj nad')}{' '}
@@ -343,25 +368,23 @@ export default function Landing() {
               )}
             </p>
             {/* The order flips with who's reading. A signed-in visitor wants
-                the app. A stranger cannot log in at all - registration is
-                invite-only - so leading them with a login button was sending
-                the one group that can actually convert to a dead end, and
-                duplicating the header's button while doing it. They get the
-                calculator instead: it needs no account, and it carries its
-                own access-request form at the bottom (PublicCalculator.tsx),
-                so it hands them something before asking for anything. */}
+                the app. A stranger gets the one action that now actually
+                exists for them - creating an account - with the calculator
+                kept alongside as the no-commitment way to see the maths
+                first. */}
             <div className="mt-8 flex flex-wrap items-center justify-center gap-4">
               <Link
-                to={user ? ctaHref : '/kalkulator'}
+                to={user ? ctaHref : '/register'}
+                onClick={() => !user && trackEvent('register_clicked', { source: 'landing_hero' })}
                 className="rounded-full bg-accent-700 px-7 py-3 text-base font-semibold text-white shadow-lg shadow-accent-600/30 transition hover:-translate-y-0.5 hover:bg-accent-800 hover:shadow-xl"
               >
-                {user ? ctaLabel : t('Wypróbuj kalkulator →')}
+                {user ? ctaLabel : t('Załóż darmowe konto →')}
               </Link>
               <Link
-                to={user ? '/kalkulator' : '/logowanie'}
+                to="/kalkulator"
                 className="rounded-full border border-slate-300 dark:border-slate-600 px-7 py-3 text-base font-semibold text-slate-700 dark:text-slate-200 transition hover:border-accent-400 hover:text-accent-700 dark:hover:text-accent-400"
               >
-                {user ? t('Wypróbuj kalkulator →') : t('Zaloguj się')}
+                {t('Wypróbuj kalkulator →')}
               </Link>
             </div>
             {/* Answered next to the decision, not only in the FAQ far below:
@@ -370,21 +393,8 @@ export default function Landing() {
                 worse than any price. */}
             {!user && (
               <p className="mt-4 text-sm text-slate-500 dark:text-slate-400">
-                {t('Bezpłatnie, bez reklam i bez podawania karty.')}
+                {t('Konto zakładasz w minutę. Bez zaproszenia, bez karty, bez zobowiązań.')}
               </p>
-            )}
-            {!user && (
-              <div className="mx-auto mt-8 max-w-md rounded-2xl border border-slate-200 dark:border-slate-800 bg-white/70 dark:bg-slate-900/50 p-5">
-                {/* The prominent variant renders the field straight away. The
-                    collapsed one hid the only action a new visitor can take
-                    behind a text link they had to find and click first. */}
-                <p className="text-sm font-medium text-slate-700 dark:text-slate-200">
-                  {t('Rejestracja jest na zaproszenie - nie masz go? Zostaw e-mail.')}
-                </p>
-                <div className="mt-3 flex justify-center">
-                  <RequestAccessForm variant="prominent" source="landing_hero" />
-                </div>
-              </div>
             )}
           </div>
 
@@ -500,13 +510,17 @@ export default function Landing() {
         {!user && (
           <div className="mx-auto mt-10 max-w-md rounded-2xl border border-slate-200 dark:border-slate-800 bg-white dark:bg-slate-900 p-5 text-center">
             {/* Someone who read to the bottom of the FAQ has done the work of
-                being convinced - don't make them hunt for the field. */}
+                being convinced - don't make them scroll back up to act on it. */}
             <p className="text-sm font-medium text-slate-700 dark:text-slate-200">
-              {t('Rejestracja jest na zaproszenie - nie masz go? Zostaw e-mail.')}
+              {t('Przekonaliśmy Cię?')}
             </p>
-            <div className="mt-3 flex justify-center">
-              <RequestAccessForm variant="prominent" source="landing_faq" />
-            </div>
+            <Link
+              to="/register"
+              onClick={() => trackEvent('register_clicked', { source: 'landing_faq' })}
+              className="mt-3 inline-block rounded-full bg-accent-700 px-6 py-2.5 text-sm font-semibold text-white shadow-sm transition hover:bg-accent-800"
+            >
+              {t('Załóż darmowe konto →')}
+            </Link>
           </div>
         )}
       </section>
@@ -550,19 +564,27 @@ export default function Landing() {
             className="pointer-events-none absolute -left-10 -top-10 h-56 w-56 rounded-full bg-white/10 blur-3xl"
           />
           <h2 className="text-2xl font-bold text-white sm:text-3xl">
-            {user ? t('Wróć do swojego majątku') : t('Masz już zaproszenie?')}
+            {user ? t('Wróć do swojego majątku') : t('Zacznij dziś')}
           </h2>
           <p className="mx-auto mt-2 max-w-md text-accent-50/90">
             {user
               ? t('Kontynuuj tam, gdzie skończyłeś/aś - Twój dashboard czeka.')
-              : t('Zaloguj się i zobacz cały swój majątek w jednym miejscu - od razu po pierwszym dodaniu konta.')}
+              : t('Załóż konto i zobacz cały swój majątek w jednym miejscu - od razu po pierwszym dodaniu konta.')}
           </p>
           <Link
-            to={ctaHref}
+            to={user ? ctaHref : '/register'}
             className="mt-6 inline-block rounded-full bg-white px-7 py-3 text-base font-semibold text-accent-700 shadow-lg transition hover:-translate-y-0.5 hover:shadow-xl"
           >
-            {ctaLabel}
+            {user ? ctaLabel : t('Załóż darmowe konto →')}
           </Link>
+          {!user && (
+            <p className="mt-4 text-sm text-accent-50/80">
+              {t('Masz już konto?')}{' '}
+              <Link to="/logowanie" className="font-semibold text-white underline">
+                {t('Zaloguj się')}
+              </Link>
+            </p>
+          )}
         </div>
       </section>
       </main>
