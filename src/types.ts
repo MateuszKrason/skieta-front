@@ -925,10 +925,18 @@ export interface MoneyThread {
 
 export interface BudgetPlan {
   id: number
-  monthly_salary: string
-  currency: Currency
   payday_day: number | null
   updated_at: string
+}
+
+export interface IncomeSource {
+  id: number
+  name: string
+  amount: string
+  currency: Currency
+  is_active: boolean
+  notes: string
+  created_at: string
 }
 
 export interface SavingsGoal {
@@ -982,7 +990,7 @@ export interface RecurringExpense {
 }
 
 export interface PlanningSummary {
-  monthly_salary: string
+  monthly_income: string
   avg_monthly_expense: string
   total_monthly_fixed_costs: string
   free_monthly_budget: string

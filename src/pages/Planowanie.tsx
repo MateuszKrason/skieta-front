@@ -9,6 +9,7 @@ import type {
   BudgetPlan,
   Category,
   Currency,
+  IncomeSource,
   PlannedExpense,
   PlanningSummary,
   RecurringExpense,
@@ -59,6 +60,7 @@ export default function Planowanie() {
   const [showAddGoal, setShowAddGoal] = useState(false)
   const [showAddExpense, setShowAddExpense] = useState(false)
   const [showAddFixed, setShowAddFixed] = useState(false)
+  const [showAddIncome, setShowAddIncome] = useState(false)
 
   const { data: summary, isLoading: summaryLoading } = useQuery({
     queryKey: ['planning-summary'],
@@ -68,6 +70,11 @@ export default function Planowanie() {
   const { data: plan } = useQuery({
     queryKey: ['planning-plan'],
     queryFn: async () => (await api.get<BudgetPlan>('/planning/plan/')).data,
+  })
+
+  const { data: incomeSources, isLoading: incomeSourcesLoading } = useQuery({
+    queryKey: ['planning-income-sources'],
+    queryFn: async () => (await api.get<IncomeSource[]>('/planning/income-sources/')).data,
   })
 
   const { data: goals, isLoading: goalsLoading } = useQuery({
@@ -93,6 +100,7 @@ export default function Planowanie() {
   function invalidateAll() {
     queryClient.invalidateQueries({ queryKey: ['planning-summary'] })
     queryClient.invalidateQueries({ queryKey: ['planning-plan'] })
+    queryClient.invalidateQueries({ queryKey: ['planning-income-sources'] })
     queryClient.invalidateQueries({ queryKey: ['planning-goals'] })
     queryClient.invalidateQueries({ queryKey: ['planning-expenses'] })
     queryClient.invalidateQueries({ queryKey: ['planning-recurring'] })
@@ -125,12 +133,24 @@ export default function Planowanie() {
     onSuccess: invalidateAll,
   })
 
+  const deleteIncome = useMutation({
+    mutationFn: (id: number) => api.delete(`/planning/income-sources/${id}/`),
+    onSuccess: invalidateAll,
+  })
+
+  const toggleIncomeActive = useMutation({
+    mutationFn: ({ id, is_active }: { id: number; is_active: boolean }) =>
+      api.patch(`/planning/income-sources/${id}/`, { is_active }),
+    onSuccess: invalidateAll,
+  })
+
   const base = summary?.base_currency ?? 'PLN'
   const today = new Date().toISOString().slice(0, 10)
   const sortedExpenses = [...(expenses ?? [])].sort((a, b) => a.due_date.localeCompare(b.due_date))
   const sortedFixedCosts = [...(fixedCosts ?? [])].sort((a, b) => Number(b.is_active) - Number(a.is_active) || a.name.localeCompare(b.name))
+  const sortedIncomeSources = [...(incomeSources ?? [])].sort((a, b) => Number(b.is_active) - Number(a.is_active) || a.name.localeCompare(b.name))
 
-  if (summaryLoading || goalsLoading || expensesLoading || fixedCostsLoading) {
+  if (summaryLoading || goalsLoading || expensesLoading || fixedCostsLoading || incomeSourcesLoading) {
     return <PageLoader />
   }
 
@@ -143,10 +163,10 @@ export default function Planowanie() {
         </p>
       </div>
 
-      <SalaryForm plan={plan} onDone={invalidateAll} />
+      <PaydayForm plan={plan} onDone={invalidateAll} />
 
       <div className="grid grid-cols-1 gap-4 sm:grid-cols-2 lg:grid-cols-4">
-        <StatCard label={t('Pensja miesięczna')} value={formatMoney(summary?.monthly_salary, base)} />
+        <StatCard label={t('Dochód miesięczny')} value={formatMoney(summary?.monthly_income, base)} />
         <StatCard label={t('Śr. wydatki (3 mies.)')} value={formatMoney(summary?.avg_monthly_expense, base)} tone="negative" />
         <StatCard label={t('Stałe koszty / mies.')} value={formatMoney(summary?.total_monthly_fixed_costs, base)} tone="negative" />
         <StatCard
@@ -164,6 +184,45 @@ export default function Planowanie() {
           value={formatMoney(summary?.remaining_after_commitments, base)}
           tone={Number(summary?.remaining_after_commitments ?? 0) >= 0 ? 'positive' : 'negative'}
         />
+      </div>
+
+      <div className="rounded-xl border border-slate-200 dark:border-slate-700 bg-white dark:bg-slate-800 p-5 shadow-sm">
+        <div className="mb-3 flex items-center justify-between">
+          <div>
+            <h2 className="text-sm font-semibold text-slate-700 dark:text-slate-300">{t('Źródła dochodu')}</h2>
+            <p className="text-xs text-slate-400 dark:text-slate-500">
+              {t('Pensja, dodatkowa praca, najem - dodaj tyle źródeł, ile potrzebujesz, sumują się na dochód miesięczny.')}
+            </p>
+          </div>
+          <button
+            onClick={() => setShowAddIncome((v) => !v)}
+            className="rounded-md bg-accent-600 px-3 py-1.5 text-sm font-medium text-white hover:bg-accent-700"
+          >
+            {t('+ Źródło dochodu')}
+          </button>
+        </div>
+        {showAddIncome && (
+          <div className="mb-4">
+            <AddIncomeSourceForm
+              onDone={() => {
+                setShowAddIncome(false)
+                invalidateAll()
+              }}
+            />
+          </div>
+        )}
+        <div className="space-y-2">
+          {sortedIncomeSources.map((s) => (
+            <IncomeSourceRow
+              key={s.id}
+              source={s}
+              onDelete={() => deleteIncome.mutate(s.id)}
+              onToggleActive={() => toggleIncomeActive.mutate({ id: s.id, is_active: !s.is_active })}
+              onChange={invalidateAll}
+            />
+          ))}
+          {sortedIncomeSources.length === 0 && <p className="text-slate-400 dark:text-slate-500">{t('Brak źródeł dochodu - dodaj pierwsze.')}</p>}
+        </div>
       </div>
 
       <div className="rounded-xl border border-slate-200 dark:border-slate-700 bg-white dark:bg-slate-800 p-5 shadow-sm">
@@ -310,19 +369,15 @@ export default function Planowanie() {
   )
 }
 
-function SalaryForm({ plan, onDone }: { plan: BudgetPlan | undefined; onDone: () => void }) {
+function PaydayForm({ plan, onDone }: { plan: BudgetPlan | undefined; onDone: () => void }) {
   const { t } = useLanguage()
   const [editing, setEditing] = useState(false)
-  const [salary, setSalary] = useState('')
-  const [currency, setCurrency] = useState<Currency>('PLN')
   const [paydayDay, setPaydayDay] = useState('')
   const [error, setError] = useState<string | null>(null)
 
   const mutation = useMutation({
     mutationFn: () =>
       api.patch<BudgetPlan>('/planning/plan/', {
-        monthly_salary: salary,
-        currency,
         payday_day: paydayDay ? Number(paydayDay) : null,
       }),
     onSuccess: () => {
@@ -340,8 +395,6 @@ function SalaryForm({ plan, onDone }: { plan: BudgetPlan | undefined; onDone: ()
   })
 
   function startEditing() {
-    setSalary(plan?.monthly_salary ?? '')
-    setCurrency(plan?.currency ?? 'PLN')
     setPaydayDay(plan?.payday_day ? String(plan.payday_day) : '10')
     setError(null)
     setEditing(true)
@@ -364,27 +417,14 @@ function SalaryForm({ plan, onDone }: { plan: BudgetPlan | undefined; onDone: ()
         className="text-xs font-medium text-accent-700 dark:text-accent-400 hover:underline"
       >
         {plan?.payday_day
-          ? t('Pensja i dzień wypłaty ({0}. dnia miesiąca) - zmień', plan.payday_day)
-          : t('Ustaw pensję miesięczną i dzień wypłaty')}
+          ? t('Dzień wypłaty ({0}. dnia miesiąca) - zmień', plan.payday_day)
+          : t('Ustaw dzień wypłaty')}
       </button>
     )
   }
 
   return (
     <form onSubmit={onSubmit} className="grid grid-cols-2 gap-3 rounded-xl border border-slate-200 dark:border-slate-700 bg-white dark:bg-slate-800 p-4 shadow-sm sm:grid-cols-5">
-      <Field label="Pensja miesięczna (netto)">
-        <AmountInput value={salary} onChange={setSalary} required className="input" />
-      </Field>
-      <Field label="Waluta">
-        <select value={currency} onChange={(e) => setCurrency(e.target.value as Currency)} className="input">
-          <option value="PLN">PLN</option>
-          <option value="USD">USD</option>
-          <option value="EUR">EUR</option>
-          <option value="NOK">NOK</option>
-          <option value="DKK">DKK</option>
-          <option value="GBP">GBP</option>
-        </select>
-      </Field>
       <Field label="Dzień wypłaty w miesiącu">
         <input
           type="number"
@@ -413,6 +453,178 @@ function SalaryForm({ plan, onDone }: { plan: BudgetPlan | undefined; onDone: ()
       <p className="col-span-2 text-xs text-slate-400 dark:text-slate-500 sm:col-span-5">
         {t('Dzień wypłaty pozwala policzyć, ile wypłat zostało do terminu każdego celu oszczędnościowego.')}
       </p>
+    </form>
+  )
+}
+
+function AddIncomeSourceForm({ onDone }: { onDone: () => void }) {
+  const { t } = useLanguage()
+  const [name, setName] = useState('')
+  const [amount, setAmount] = useState('')
+  const [currency, setCurrency] = useState<Currency>('PLN')
+  const [notes, setNotes] = useState('')
+
+  const mutation = useMutation({
+    mutationFn: () =>
+      api.post('/planning/income-sources/', {
+        name,
+        amount,
+        currency,
+        notes,
+      }),
+    onSuccess: onDone,
+  })
+
+  function onSubmit(e: FormEvent) {
+    e.preventDefault()
+    mutation.mutate()
+  }
+
+  return (
+    <form onSubmit={onSubmit} className="grid grid-cols-2 gap-3 rounded-lg border border-slate-200 dark:border-slate-700 bg-slate-50 dark:bg-slate-900 p-4 sm:grid-cols-5">
+      <Field label="Nazwa źródła">
+        <input value={name} onChange={(e) => setName(e.target.value)} required placeholder="np. Pensja" className="input" />
+      </Field>
+      <Field label="Kwota miesięcznie">
+        <AmountInput value={amount} onChange={setAmount} required className="input" />
+      </Field>
+      <Field label="Waluta">
+        <select value={currency} onChange={(e) => setCurrency(e.target.value as Currency)} className="input">
+          <option value="PLN">PLN</option>
+          <option value="USD">USD</option>
+          <option value="EUR">EUR</option>
+          <option value="NOK">NOK</option>
+          <option value="DKK">DKK</option>
+          <option value="GBP">GBP</option>
+        </select>
+      </Field>
+      <Field label="Notatka (opcjonalnie)">
+        <input value={notes} onChange={(e) => setNotes(e.target.value)} className="input" />
+      </Field>
+      <div className="col-span-2 flex items-end sm:col-span-5">
+        <button type="submit" className="btn-primary" disabled={mutation.isPending}>
+          {t('Dodaj źródło dochodu')}
+        </button>
+      </div>
+    </form>
+  )
+}
+
+function IncomeSourceRow({
+  source,
+  onDelete,
+  onToggleActive,
+  onChange,
+}: {
+  source: IncomeSource
+  onDelete: () => void
+  onToggleActive: () => void
+  onChange: () => void
+}) {
+  const { t } = useLanguage()
+  const [editing, setEditing] = useState(false)
+
+  if (editing) {
+    return (
+      <IncomeSourceEditForm
+        source={source}
+        onDone={() => {
+          setEditing(false)
+          onChange()
+        }}
+        onCancel={() => setEditing(false)}
+      />
+    )
+  }
+
+  return (
+    <div className={`flex items-center justify-between rounded-md px-3 py-2 text-sm ${source.is_active ? 'bg-slate-50 dark:bg-slate-900' : 'bg-slate-50 dark:bg-slate-900 opacity-50'}`}>
+      <span>
+        <span className={source.is_active ? 'font-medium text-slate-700 dark:text-slate-300' : 'text-slate-400 dark:text-slate-500 line-through'}>
+          {source.name}
+        </span>{' '}
+        <span className="text-slate-500 dark:text-slate-400">{formatMoney(source.amount, source.currency)}/mies.</span>
+        {source.notes && <span className="text-slate-400 dark:text-slate-500"> - {source.notes}</span>}
+      </span>
+      <span className="flex items-center gap-3">
+        <button onClick={onToggleActive} className="text-xs font-medium text-accent-700 dark:text-accent-400 hover:underline">
+          {source.is_active ? t('Zatrzymaj') : t('Wznów')}
+        </button>
+        <button onClick={() => setEditing(true)} className="text-xs font-medium text-slate-600 dark:text-slate-400 hover:underline">
+          {t('Edytuj')}
+        </button>
+        <button onClick={onDelete} className="text-xs font-medium text-red-600 dark:text-red-400 hover:underline">
+          {t('Usuń')}
+        </button>
+      </span>
+    </div>
+  )
+}
+
+function IncomeSourceEditForm({
+  source,
+  onDone,
+  onCancel,
+}: {
+  source: IncomeSource
+  onDone: () => void
+  onCancel: () => void
+}) {
+  const { t } = useLanguage()
+  const [name, setName] = useState(source.name)
+  const [amount, setAmount] = useState(source.amount)
+  const [currency, setCurrency] = useState<Currency>(source.currency)
+  const [notes, setNotes] = useState(source.notes)
+
+  const mutation = useMutation({
+    mutationFn: () =>
+      api.patch(`/planning/income-sources/${source.id}/`, {
+        name,
+        amount,
+        currency,
+        notes,
+      }),
+    onSuccess: onDone,
+  })
+
+  function onSubmit(e: FormEvent) {
+    e.preventDefault()
+    mutation.mutate()
+  }
+
+  return (
+    <form onSubmit={onSubmit} className="grid grid-cols-2 gap-3 rounded-md border border-accent-200 dark:border-accent-800 bg-white dark:bg-slate-800 p-3 sm:grid-cols-5">
+      <Field label="Nazwa źródła">
+        <input value={name} onChange={(e) => setName(e.target.value)} required className="input" />
+      </Field>
+      <Field label="Kwota miesięcznie">
+        <AmountInput value={amount} onChange={setAmount} required className="input" />
+      </Field>
+      <Field label="Waluta">
+        <select value={currency} onChange={(e) => setCurrency(e.target.value as Currency)} className="input">
+          <option value="PLN">PLN</option>
+          <option value="USD">USD</option>
+          <option value="EUR">EUR</option>
+          <option value="NOK">NOK</option>
+          <option value="DKK">DKK</option>
+          <option value="GBP">GBP</option>
+        </select>
+      </Field>
+      <Field label="Notatka (opcjonalnie)">
+        <input value={notes} onChange={(e) => setNotes(e.target.value)} className="input" />
+      </Field>
+      <div className="col-span-2 flex items-end gap-2 sm:col-span-5">
+        <button type="submit" className="btn-primary" disabled={mutation.isPending}>
+          {t('Zapisz zmiany')}
+        </button>
+        <button
+          type="button"
+          onClick={onCancel}
+          className="rounded-md border border-slate-300 dark:border-slate-600 px-4 py-1.5 text-sm font-medium text-slate-600 dark:text-slate-400 hover:bg-slate-100 dark:hover:bg-slate-700"
+        >
+          {t('Anuluj')}
+        </button>
+      </div>
     </form>
   )
 }
