@@ -108,24 +108,28 @@ function PortfolioAnalyticsBody({ data }: { data: CryptoPortfolioAnalytics }) {
               </PieChart>
             </ResponsiveContainer>
           </div>
-          <div className="mt-2 flex items-center justify-between px-1.5 text-[11px] font-medium uppercase tracking-wide text-slate-400 dark:text-slate-500">
-            <button onClick={() => toggleAllocSort('symbol')} className="hover:text-slate-600 dark:hover:text-slate-300">
+          {/* Grid, not justify-between flex - see the identical comment in
+              StatystykiPortfela.tsx's AllocationLine header for why: header
+              labels and row values used to size themselves independently,
+              which drifted out of alignment whenever one was wider than the
+              other. A shared grid-cols template on both this header and
+              AllocationLine keeps them locked to the same three columns. */}
+          <div className="mt-2 grid grid-cols-[minmax(0,1fr)_72px_72px] items-center gap-2 px-1.5 text-[11px] font-medium uppercase tracking-wide text-slate-400 dark:text-slate-500">
+            <button onClick={() => toggleAllocSort('symbol')} className="text-left hover:text-slate-600 dark:hover:text-slate-300">
               {t('Moneta')}{allocSortKey === 'symbol' && (allocSortDir === 'asc' ? ' ▲' : ' ▼')}
             </button>
-            <span className="flex items-center gap-2">
-              <button
-                onClick={() => toggleAllocSort('pct')}
-                className="min-w-[56px] text-right hover:text-slate-600 dark:hover:text-slate-300"
-              >
-                {t('Udział')}{allocSortKey === 'pct' && (allocSortDir === 'asc' ? ' ▲' : ' ▼')}
-              </button>
-              <button
-                onClick={() => toggleAllocSort('unrealized_pl_pct')}
-                className="min-w-[56px] text-right hover:text-slate-600 dark:hover:text-slate-300"
-              >
-                {t('Zysk')}{allocSortKey === 'unrealized_pl_pct' && (allocSortDir === 'asc' ? ' ▲' : ' ▼')}
-              </button>
-            </span>
+            <button
+              onClick={() => toggleAllocSort('pct')}
+              className="text-right hover:text-slate-600 dark:hover:text-slate-300"
+            >
+              {t('Udział')}{allocSortKey === 'pct' && (allocSortDir === 'asc' ? ' ▲' : ' ▼')}
+            </button>
+            <button
+              onClick={() => toggleAllocSort('unrealized_pl_pct')}
+              className="text-right hover:text-slate-600 dark:hover:text-slate-300"
+            >
+              {t('Zysk')}{allocSortKey === 'unrealized_pl_pct' && (allocSortDir === 'asc' ? ' ▲' : ' ▼')}
+            </button>
           </div>
           <div className="space-y-1">
             {sortedAllocation.map((r) => {
@@ -193,12 +197,10 @@ function PortfolioAnalyticsBody({ data }: { data: CryptoPortfolioAnalytics }) {
               </PieChart>
             </ResponsiveContainer>
           </div>
-          <div className="mt-2 flex items-center justify-between px-1.5 text-[11px] font-medium uppercase tracking-wide text-slate-400 dark:text-slate-500">
+          <div className="mt-2 grid grid-cols-[minmax(0,1fr)_72px_72px] items-center gap-2 px-1.5 text-[11px] font-medium uppercase tracking-wide text-slate-400 dark:text-slate-500">
             <span>{t('Konto')}</span>
-            <span className="flex items-center gap-2">
-              <span className="min-w-[56px] text-right">{t('Udział')}</span>
-              <span className="min-w-[56px] text-right">{t('Zysk')}</span>
-            </span>
+            <span className="text-right">{t('Udział')}</span>
+            <span className="text-right">{t('Zysk')}</span>
           </div>
           <div className="space-y-1">
             {data.by_account.map((row, i) => (
@@ -254,7 +256,7 @@ function AllocationLine({ row, color }: { row: CryptoAllocationRow; color: strin
   const { t } = useLanguage()
   const plPct = row.unrealized_pl_pct !== null ? Number(row.unrealized_pl_pct) : null
   return (
-    <div className="flex items-center justify-between rounded-md px-1.5 py-1 text-xs">
+    <div className="grid grid-cols-[minmax(0,1fr)_72px_72px] items-center gap-2 rounded-md px-1.5 py-1 text-xs">
       <span className="flex min-w-0 items-center gap-2">
         <span className="h-2 w-2 shrink-0 rounded-full" style={{ backgroundColor: color }} />
         <span className="truncate">
@@ -262,18 +264,19 @@ function AllocationLine({ row, color }: { row: CryptoAllocationRow; color: strin
           {row.asset.name && <span className="text-slate-400 dark:text-slate-500"> {row.asset.name}</span>}
         </span>
       </span>
-      <span className="flex items-center gap-2 text-slate-500 dark:text-slate-400 tabular-nums">
-        <span className="min-w-[56px] text-right" title={t('Udział tej monety w wartości całego portfela')}>
-          {formatPct(row.pct)}
-        </span>
-        <span
-          className={`min-w-[56px] text-right ${
-            plPct === null ? '' : plPct >= 0 ? 'text-emerald-600 dark:text-emerald-400' : 'text-red-600 dark:text-red-400'
-          }`}
-          title={t('Zysk/strata (niezrealizowane) na tej pozycji')}
-        >
-          {plPct !== null ? formatPct(row.unrealized_pl_pct) : '—'}
-        </span>
+      <span
+        className="text-right tabular-nums text-slate-500 dark:text-slate-400"
+        title={t('Udział tej monety w wartości całego portfela')}
+      >
+        {formatPct(row.pct)}
+      </span>
+      <span
+        className={`text-right tabular-nums ${
+          plPct === null ? 'text-slate-500 dark:text-slate-400' : plPct >= 0 ? 'text-emerald-600 dark:text-emerald-400' : 'text-red-600 dark:text-red-400'
+        }`}
+        title={t('Zysk/strata (niezrealizowane) na tej pozycji')}
+      >
+        {plPct !== null ? formatPct(row.unrealized_pl_pct) : '—'}
       </span>
     </div>
   )
@@ -285,23 +288,24 @@ function AccountLine({ row, color }: { row: AccountBreakdownRow; color: string }
   const value = Number(row.value_base)
   const gainPct = invested ? (value / invested - 1) * 100 : null
   return (
-    <div className="flex items-center justify-between rounded-md px-1.5 py-1 text-xs">
+    <div className="grid grid-cols-[minmax(0,1fr)_72px_72px] items-center gap-2 rounded-md px-1.5 py-1 text-xs">
       <span className="flex min-w-0 items-center gap-2">
         <span className="h-2 w-2 shrink-0 rounded-full" style={{ backgroundColor: color }} />
         <span className="truncate">{row.account_label}</span>
       </span>
-      <span className="flex shrink-0 items-center gap-2 text-slate-500 dark:text-slate-400 tabular-nums">
-        <span className="min-w-[56px] text-right" title={t('Udział tego konta w wartości całego portfela')}>
-          {formatPct(row.pct)}
-        </span>
-        <span
-          className={`min-w-[56px] text-right ${
-            gainPct === null ? '' : gainPct >= 0 ? 'text-emerald-600 dark:text-emerald-400' : 'text-red-600 dark:text-red-400'
-          }`}
-          title={t('Zmiana wartości względem wpłaconego kapitału na tym koncie')}
-        >
-          {gainPct !== null ? `${gainPct >= 0 ? '+' : ''}${gainPct.toFixed(2)}%` : '—'}
-        </span>
+      <span
+        className="text-right tabular-nums text-slate-500 dark:text-slate-400"
+        title={t('Udział tego konta w wartości całego portfela')}
+      >
+        {formatPct(row.pct)}
+      </span>
+      <span
+        className={`text-right tabular-nums ${
+          gainPct === null ? 'text-slate-500 dark:text-slate-400' : gainPct >= 0 ? 'text-emerald-600 dark:text-emerald-400' : 'text-red-600 dark:text-red-400'
+        }`}
+        title={t('Zmiana wartości względem wpłaconego kapitału na tym koncie')}
+      >
+        {gainPct !== null ? `${gainPct >= 0 ? '+' : ''}${gainPct.toFixed(2)}%` : '—'}
       </span>
     </div>
   )
