@@ -11,7 +11,14 @@ import { COUNTRIES } from '../lib/countries'
 import { formatCountdown, formatDateTime } from '../lib/format'
 import { useTheme, type Theme } from '../theme/ThemeContext'
 import { useTour } from '../tour/TourContext'
-import type { Currency, Invitation, InvitationList, LoginHistoryResponse, RoleAssignment } from '../types'
+import type {
+  Currency,
+  GeminiKeyStatus,
+  Invitation,
+  InvitationList,
+  LoginHistoryResponse,
+  RoleAssignment,
+} from '../types'
 
 const CURRENCY_OPTIONS: Currency[] = ['PLN', 'USD', 'EUR', 'GBP']
 
@@ -52,6 +59,7 @@ export default function Account() {
       <InterestsForm />
       <EmailPreferencesForm />
       <NavOrderForm />
+      <GeminiKeySection />
       <PasswordForm />
       <InviteFriends />
       <LoginHistorySection />
@@ -774,6 +782,106 @@ function ProfileForm() {
         {t('Zapisz dane')}
       </button>
     </form>
+  )
+}
+
+// Powers Wydatki's "wgraj paragon" button (see ScanReceiptButton in
+// pages/analysis/shared.tsx) - that feature calls Gemini directly from a
+// Netlify edge function using this key, on the user's own free quota, so it
+// never touches this app's own budget. The key itself never leaves this
+// form once saved: the GET below only ever reports whether one is set, never
+// the value (see accounts.views.GeminiApiKeyView on the backend).
+function GeminiKeySection() {
+  const { t } = useLanguage()
+  const queryClient = useQueryClient()
+  const [apiKey, setApiKey] = useState('')
+  const [error, setError] = useState<string | null>(null)
+
+  const { data: status } = useQuery({
+    queryKey: ['gemini-key-status'],
+    queryFn: async () => (await api.get<GeminiKeyStatus>('/auth/gemini-key/')).data,
+  })
+
+  const saveMutation = useMutation({
+    mutationFn: () => api.put('/auth/gemini-key/', { api_key: apiKey }),
+    onSuccess: () => {
+      setApiKey('')
+      setError(null)
+      queryClient.invalidateQueries({ queryKey: ['gemini-key-status'] })
+    },
+    onError: (err: unknown) => {
+      const data = (err as { response?: { data?: unknown } }).response?.data
+      if (data && typeof data === 'object') {
+        setError(Object.values(data as Record<string, unknown>).flat().join(' '))
+      } else {
+        setError(t('Nie udało się zapisać klucza.'))
+      }
+    },
+  })
+
+  const deleteMutation = useMutation({
+    mutationFn: () => api.delete('/auth/gemini-key/'),
+    onSuccess: () => queryClient.invalidateQueries({ queryKey: ['gemini-key-status'] }),
+  })
+
+  function onSubmit(e: FormEvent) {
+    e.preventDefault()
+    setError(null)
+    saveMutation.mutate()
+  }
+
+  return (
+    <div className="space-y-3 rounded-xl border border-slate-200 dark:border-slate-700 bg-white dark:bg-slate-800 p-5 shadow-sm">
+      <h2 className="text-sm font-semibold text-slate-700 dark:text-slate-300">
+        {t('Automatyczne skanowanie paragonów')}
+      </h2>
+      <p className="text-xs text-slate-500 dark:text-slate-400">
+        {t(
+          'Wklej własny, darmowy klucz Google Gemini, żeby wgrywać zdjęcia paragonów zamiast wpisywać wydatki ręcznie - skanowanie liczy się do Twojego prywatnego, darmowego limitu, nie do naszego.',
+        )}
+      </p>
+
+      {status?.has_key ? (
+        <div className="flex items-center justify-between gap-3 rounded-md bg-emerald-50 dark:bg-emerald-950/30 px-3 py-2">
+          <p className="text-sm text-emerald-700 dark:text-emerald-400">
+            {status.added_at
+              ? t('Klucz ustawiony {0}', formatDateTime(status.added_at))
+              : t('Klucz jest ustawiony.')}
+          </p>
+          <button
+            type="button"
+            onClick={() => deleteMutation.mutate()}
+            disabled={deleteMutation.isPending}
+            className="shrink-0 text-sm font-medium text-red-600 dark:text-red-400 hover:underline"
+          >
+            {t('Usuń klucz')}
+          </button>
+        </div>
+      ) : (
+        <form onSubmit={onSubmit} className="space-y-2">
+          <a
+            href="https://aistudio.google.com/apikey"
+            target="_blank"
+            rel="noopener noreferrer"
+            className="inline-block text-sm font-medium text-accent-700 dark:text-accent-400 hover:underline"
+          >
+            {t('Pobierz darmowy klucz Google →')}
+          </a>
+          <input
+            type="text"
+            value={apiKey}
+            onChange={(e) => setApiKey(e.target.value)}
+            placeholder={t('Wklej klucz Gemini')}
+            required
+            className="input"
+          />
+          {error && <p className="text-sm text-red-600 dark:text-red-400">{error}</p>}
+          <button type="submit" className="btn-primary" disabled={saveMutation.isPending}>
+            {saveMutation.isPending ? t('Sprawdzanie klucza…') : t('Zapisz klucz')}
+          </button>
+        </form>
+      )}
+    </div>
   )
 }
 

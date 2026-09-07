@@ -54,6 +54,7 @@ type EventName =
   | 'registered'
   | 'onboarding_completed'
   | 'statement_imported'
+  | 'receipt_scanned'
   | 'data_exported'
 
 /** Where a conversion came from, so articles can be compared against the

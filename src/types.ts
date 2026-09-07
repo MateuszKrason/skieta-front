@@ -1000,3 +1000,20 @@ export interface PlanningSummary {
   remaining_after_commitments: string
   base_currency: Currency
 }
+
+export interface GeminiKeyStatus {
+  has_key: boolean
+  added_at: string | null
+}
+
+/** What /receipt-scan (a Netlify edge function, not the Django API) returns
+ * after Gemini reads a photo of a paragon - each field null where Gemini
+ * couldn't read it, never guessed. Reviewed and completed by hand in
+ * AddTransactionForm before anything is saved. */
+export interface ParsedReceipt {
+  store_name: string | null
+  date: string | null
+  amount: string | null
+  currency: string | null
+  description: string | null
+}
