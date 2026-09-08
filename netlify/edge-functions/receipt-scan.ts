@@ -15,7 +15,14 @@
 // function never writes anything itself.
 
 const API_BASE = 'https://api.skieta.com/api'
-const GEMINI_MODEL = 'gemini-2.5-flash-lite'
+// gemini-2.5-flash-lite (the model this originally shipped with) 404s as of
+// September 2026 - retired from the API entirely, not just no longer
+// recommended. ai.google.dev/gemini-api/docs/models no longer lists any 2.5
+// model; 3.5 Flash-Lite is its direct successor (same "fastest, cheapest"
+// slot) and is confirmed free-tier and multimodal. Model names churn here
+// faster than this file gets touched - if this 404s again, check that page
+// for whatever replaced this one before assuming the code is wrong again.
+const GEMINI_MODEL = 'gemini-3.5-flash-lite'
 const GEMINI_URL = `https://generativelanguage.googleapis.com/v1beta/models/${GEMINI_MODEL}:generateContent`
 
 const REVEAL_TIMEOUT_MS = 5000
