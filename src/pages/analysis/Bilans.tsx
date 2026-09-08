@@ -29,6 +29,7 @@ export default function Bilans() {
   const [showAddTx, setShowAddTx] = useState(false)
   const [showAddCategory, setShowAddCategory] = useState(false)
   const [selectedTagId, setSelectedTagId] = useState<number | null>(null)
+  const [search, setSearch] = useState('')
   const [selectedCategoryId, setSelectedCategoryId] = useState<number | null>(null)
   const [selectedStoreId, setSelectedStoreId] = useState<number | null>(null)
 
@@ -49,13 +50,22 @@ export default function Bilans() {
     isFetchingMore: isFetchingMoreTransactions,
     loadMore: loadMoreTransactions,
   } = usePaginatedList<BudgetTransaction>(
-    ['budget-transactions', period.range.from, period.range.to, selectedTagId, selectedCategoryId, selectedStoreId],
+    [
+      'budget-transactions',
+      period.range.from,
+      period.range.to,
+      selectedTagId,
+      selectedCategoryId,
+      selectedStoreId,
+      search,
+    ],
     '/budget/transactions/',
     {
       ...period.range,
       ...(selectedTagId ? { tag: selectedTagId } : {}),
       ...(selectedCategoryId ? { category: selectedCategoryId } : {}),
       ...(selectedStoreId ? { store: selectedStoreId } : {}),
+      ...(search ? { search } : {}),
     },
   )
 
@@ -194,6 +204,8 @@ export default function Bilans() {
         onSelectStore={setSelectedStoreId}
         selectedTagId={selectedTagId}
         onSelectTag={setSelectedTagId}
+        search={search}
+        onSearchChange={setSearch}
       />
 
       <TransactionList

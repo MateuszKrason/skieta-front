@@ -24,6 +24,7 @@ export default function Przychody() {
   const [showAddTx, setShowAddTx] = useState(false)
   const [showAddCategory, setShowAddCategory] = useState(false)
   const [selectedCategoryId, setSelectedCategoryId] = useState<number | null>(null)
+  const [search, setSearch] = useState('')
 
   const { data: breakdown, isLoading } = useQuery({
     queryKey: ['budget-breakdown', period.range.from, period.range.to],
@@ -47,9 +48,14 @@ export default function Przychody() {
     isFetchingMore: isFetchingMoreTransactions,
     loadMore: loadMoreTransactions,
   } = usePaginatedList<BudgetTransaction>(
-    ['budget-transactions', 'income', period.range.from, period.range.to, selectedCategoryId],
+    ['budget-transactions', 'income', period.range.from, period.range.to, selectedCategoryId, search],
     '/budget/transactions/',
-    { ...period.range, type: 'income', ...(selectedCategoryId ? { category: selectedCategoryId } : {}) },
+    {
+      ...period.range,
+      type: 'income',
+      ...(selectedCategoryId ? { category: selectedCategoryId } : {}),
+      ...(search ? { search } : {}),
+    },
   )
 
   function invalidateBudget() {
@@ -137,6 +143,8 @@ export default function Przychody() {
         categories={(categories ?? []).filter((c) => c.type === 'income')}
         selectedCategoryId={selectedCategoryId}
         onSelectCategory={setSelectedCategoryId}
+        search={search}
+        onSearchChange={setSearch}
       />
 
       <TransactionList

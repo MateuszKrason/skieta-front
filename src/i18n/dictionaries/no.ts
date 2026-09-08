@@ -902,6 +902,18 @@ export const no: Record<string, string> = {
     'Klikk her for å legge til en bankkonto og, hvis du har dem, også aksjer, innskudd og obligasjoner. Du ser med en gang hvor du faktisk står, i stedet for å begynne på null.',
   'Przychody i wydatki, w tym dodawanie ze zdjęcia paragonu':
     'Inntekter og utgifter, inkludert å legge dem inn fra et bilde av en kvittering',
+  'opis, sklep, kategoria, tag albo kwota': 'beskrivelse, butikk, kategori, tagg eller beløp',
+  'Sklepu "{0}" nie ma jeszcze na liście - na razie nazwa trafiła do opisu.':
+    'Butikken "{0}" står ikke på listen din ennå - foreløpig havnet navnet i beskrivelsen.',
+  '+ Dodaj "{0}" do sklepów': '+ Legg "{0}" til i butikker',
+  'Dodaję…': 'Legger til…',
+  'Nie udało się dodać sklepu - dodaj go ręcznie w "Zarządzaj sklepami".':
+    'Butikken kunne ikke legges til - legg den inn manuelt under "Zarządzaj sklepami".',
+  'Przyślij mi na początku miesiąca podsumowanie poprzedniego':
+    'Send meg en oppsummering av forrige måned i starten av hver måned',
+  'Wypisać z miesięcznych podsumowań?': 'Melde deg av de månedlige oppsummeringene?',
+  'Przestaniemy wysyłać e-mail z podsumowaniem poprzedniego miesiąca. Pozostałe powiadomienia zostają bez zmian, a wszystko zmienisz w ustawieniach konta.':
+    'Vi slutter å sende e-posten med oppsummeringen av forrige måned. De andre varslene dine står uendret, og du kan endre alt sammen i kontoinnstillingene.',
   'Twoje dane, Twoja kontrola': 'Dine data, din kontroll',
   'Dostęp wyłącznie na zaproszenie, bez reklam i bez śledzenia. Historia logowań pokazuje dokładnie, kto i kiedy wchodził na Twoje konto.':
     'Tilgang kun på invitasjon, uten reklame og uten sporing. Innloggingshistorikken viser nøyaktig hvem som har vært inne på kontoen din, og når.',

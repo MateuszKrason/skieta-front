@@ -902,6 +902,18 @@ export const de: Record<string, string> = {
     'Klicke hier, um ein Bankkonto hinzuzufügen und, falls vorhanden, auch Aktien, Festgeld und Anleihen. Du siehst sofort, wo du wirklich stehst, statt bei null anzufangen.',
   'Przychody i wydatki, w tym dodawanie ze zdjęcia paragonu':
     'Einnahmen und Ausgaben, inklusive Erfassung per Foto des Kassenbons',
+  'opis, sklep, kategoria, tag albo kwota': 'Beschreibung, Geschäft, Kategorie, Tag oder Betrag',
+  'Sklepu "{0}" nie ma jeszcze na liście - na razie nazwa trafiła do opisu.':
+    'Das Geschäft "{0}" steht noch nicht auf deiner Liste - vorerst ist der Name in die Beschreibung gewandert.',
+  '+ Dodaj "{0}" do sklepów': '+ "{0}" zu den Geschäften hinzufügen',
+  'Dodaję…': 'Wird hinzugefügt…',
+  'Nie udało się dodać sklepu - dodaj go ręcznie w "Zarządzaj sklepami".':
+    'Das Geschäft konnte nicht angelegt werden - füge es von Hand unter "Zarządzaj sklepami" hinzu.',
+  'Przyślij mi na początku miesiąca podsumowanie poprzedniego':
+    'Schick mir zu Monatsbeginn eine Zusammenfassung des Vormonats',
+  'Wypisać z miesięcznych podsumowań?': 'Von den monatlichen Zusammenfassungen abmelden?',
+  'Przestaniemy wysyłać e-mail z podsumowaniem poprzedniego miesiąca. Pozostałe powiadomienia zostają bez zmian, a wszystko zmienisz w ustawieniach konta.':
+    'Wir hören auf, dir die E-Mail mit der Zusammenfassung des Vormonats zu schicken. Deine übrigen Benachrichtigungen bleiben unverändert, und alles davon kannst du in den Kontoeinstellungen ändern.',
   'Twoje dane, Twoja kontrola': 'Deine Daten, deine Kontrolle',
   'Dostęp wyłącznie na zaproszenie, bez reklam i bez śledzenia. Historia logowań pokazuje dokładnie, kto i kiedy wchodził na Twoje konto.':
     'Zugang nur auf Einladung, keine Werbung und kein Tracking. Der Anmeldeverlauf zeigt genau, wer wann auf dein Konto zugegriffen hat.',

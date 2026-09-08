@@ -902,6 +902,18 @@ export const en: Record<string, string> = {
     'Click here to add a bank account and, if you have them, stocks, deposits and bonds too. You will see where you really stand straight away, instead of starting from zero.',
   'Przychody i wydatki, w tym dodawanie ze zdjęcia paragonu':
     'Income and expenses, including adding one from a photo of a receipt',
+  'opis, sklep, kategoria, tag albo kwota': 'description, store, category, tag or amount',
+  'Sklepu "{0}" nie ma jeszcze na liście - na razie nazwa trafiła do opisu.':
+    'Store "{0}" is not on your list yet - for now the name went into the description.',
+  '+ Dodaj "{0}" do sklepów': '+ Add "{0}" to stores',
+  'Dodaję…': 'Adding…',
+  'Nie udało się dodać sklepu - dodaj go ręcznie w "Zarządzaj sklepami".':
+    'Could not add the store - add it by hand under "Zarządzaj sklepami".',
+  'Przyślij mi na początku miesiąca podsumowanie poprzedniego':
+    'Send me a summary of the previous month at the start of each month',
+  'Wypisać z miesięcznych podsumowań?': 'Unsubscribe from monthly summaries?',
+  'Przestaniemy wysyłać e-mail z podsumowaniem poprzedniego miesiąca. Pozostałe powiadomienia zostają bez zmian, a wszystko zmienisz w ustawieniach konta.':
+    'We will stop sending the e-mail summarising your previous month. Your other notifications stay as they are, and you can change all of it in account settings.',
   'Twoje dane, Twoja kontrola': 'Your data, your control',
   'Dostęp wyłącznie na zaproszenie, bez reklam i bez śledzenia. Historia logowań pokazuje dokładnie, kto i kiedy wchodził na Twoje konto.':
     'Invite-only access, no ads, no tracking. Login history shows exactly who accessed your account and when.',

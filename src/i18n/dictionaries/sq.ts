@@ -902,6 +902,18 @@ export const sq: Record<string, string> = {
     'Kliko këtu për të shtuar një llogari bankare dhe, nëse i ke, edhe aksione, depozita e obligacione. E sheh menjëherë gjendjen tënde reale, në vend që të nisesh nga zeroja.',
   'Przychody i wydatki, w tym dodawanie ze zdjęcia paragonu':
     'Të ardhurat dhe shpenzimet, përfshirë shtimin nga fotoja e një kuponi',
+  'opis, sklep, kategoria, tag albo kwota': 'përshkrimi, dyqani, kategoria, etiketa ose shuma',
+  'Sklepu "{0}" nie ma jeszcze na liście - na razie nazwa trafiła do opisu.':
+    'Dyqani "{0}" nuk është ende në listën tënde - për momentin emri shkoi te përshkrimi.',
+  '+ Dodaj "{0}" do sklepów': '+ Shto "{0}" te dyqanet',
+  'Dodaję…': 'Po e shtoj…',
+  'Nie udało się dodać sklepu - dodaj go ręcznie w "Zarządzaj sklepami".':
+    'Dyqani nuk u shtua - shtoje me dorë te "Zarządzaj sklepami".',
+  'Przyślij mi na początku miesiąca podsumowanie poprzedniego':
+    'Më dërgo në fillim të muajit një përmbledhje të muajit të kaluar',
+  'Wypisać z miesięcznych podsumowań?': 'Të çregjistrohesh nga përmbledhjet mujore?',
+  'Przestaniemy wysyłać e-mail z podsumowaniem poprzedniego miesiąca. Pozostałe powiadomienia zostają bez zmian, a wszystko zmienisz w ustawieniach konta.':
+    'Do të ndalojmë dërgimin e emailit me përmbledhjen e muajit të kaluar. Njoftimet e tjera mbeten siç janë dhe gjithçka mund ta ndryshosh te cilësimet e llogarisë.',
   'Twoje dane, Twoja kontrola': 'Të dhënat e tua, kontrolli yt',
   'Dostęp wyłącznie na zaproszenie, bez reklam i bez śledzenia. Historia logowań pokazuje dokładnie, kto i kiedy wchodził na Twoje konto.':
     'Akses vetëm me ftesë, pa reklama dhe pa gjurmim. Historiku i identifikimeve tregon saktësisht kush dhe kur ka hyrë në llogarinë tënde.',

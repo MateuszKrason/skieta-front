@@ -902,6 +902,18 @@ export const da: Record<string, string> = {
     'Klik her for at tilføje en bankkonto og, hvis du har dem, også aktier, indlån og obligationer. Du ser med det samme, hvor du reelt står, i stedet for at begynde fra nul.',
   'Przychody i wydatki, w tym dodawanie ze zdjęcia paragonu':
     'Indtægter og udgifter, herunder tilføjelse fra et foto af en kvittering',
+  'opis, sklep, kategoria, tag albo kwota': 'beskrivelse, butik, kategori, tag eller beløb',
+  'Sklepu "{0}" nie ma jeszcze na liście - na razie nazwa trafiła do opisu.':
+    'Butikken "{0}" står ikke på din liste endnu - indtil videre er navnet havnet i beskrivelsen.',
+  '+ Dodaj "{0}" do sklepów': '+ Tilføj "{0}" til butikker',
+  'Dodaję…': 'Tilføjer…',
+  'Nie udało się dodać sklepu - dodaj go ręcznie w "Zarządzaj sklepami".':
+    'Butikken kunne ikke tilføjes - tilføj den manuelt under "Zarządzaj sklepami".',
+  'Przyślij mi na początku miesiąca podsumowanie poprzedniego':
+    'Send mig en opsummering af den forrige måned i starten af hver måned',
+  'Wypisać z miesięcznych podsumowań?': 'Frameld de månedlige opsummeringer?',
+  'Przestaniemy wysyłać e-mail z podsumowaniem poprzedniego miesiąca. Pozostałe powiadomienia zostają bez zmian, a wszystko zmienisz w ustawieniach konta.':
+    'Vi holder op med at sende mailen med opsummeringen af din forrige måned. Dine øvrige beskeder er uændrede, og du kan ændre det hele i kontoindstillingerne.',
   'Twoje dane, Twoja kontrola': 'Dine data, din kontrol',
   'Dostęp wyłącznie na zaproszenie, bez reklam i bez śledzenia. Historia logowań pokazuje dokładnie, kto i kiedy wchodził na Twoje konto.':
     'Kun adgang via invitation, ingen reklamer og ingen sporing. Login-historikken viser præcis, hvem der har tilgået din konto, og hvornår.',

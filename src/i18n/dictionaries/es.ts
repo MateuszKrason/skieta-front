@@ -902,6 +902,18 @@ export const es: Record<string, string> = {
     'Haz clic aquí para añadir una cuenta bancaria y, si los tienes, también acciones, depósitos y bonos. Verás enseguida cuál es tu situación real, en vez de empezar desde cero.',
   'Przychody i wydatki, w tym dodawanie ze zdjęcia paragonu':
     'Ingresos y gastos, incluido añadirlos desde la foto de un ticket',
+  'opis, sklep, kategoria, tag albo kwota': 'descripción, tienda, categoría, etiqueta o importe',
+  'Sklepu "{0}" nie ma jeszcze na liście - na razie nazwa trafiła do opisu.':
+    'La tienda "{0}" todavía no está en tu lista; por ahora el nombre ha ido a la descripción.',
+  '+ Dodaj "{0}" do sklepów': '+ Añadir "{0}" a las tiendas',
+  'Dodaję…': 'Añadiendo…',
+  'Nie udało się dodać sklepu - dodaj go ręcznie w "Zarządzaj sklepami".':
+    'No se ha podido añadir la tienda: añádela a mano en "Zarządzaj sklepami".',
+  'Przyślij mi na początku miesiąca podsumowanie poprzedniego':
+    'Envíame a principios de mes un resumen del mes anterior',
+  'Wypisać z miesięcznych podsumowań?': '¿Darte de baja de los resúmenes mensuales?',
+  'Przestaniemy wysyłać e-mail z podsumowaniem poprzedniego miesiąca. Pozostałe powiadomienia zostają bez zmian, a wszystko zmienisz w ustawieniach konta.':
+    'Dejaremos de enviarte el correo con el resumen del mes anterior. El resto de avisos se queda como está y puedes cambiarlo todo en los ajustes de la cuenta.',
   'Twoje dane, Twoja kontrola': 'Tus datos, tu control',
   'Dostęp wyłącznie na zaproszenie, bez reklam i bez śledzenia. Historia logowań pokazuje dokładnie, kto i kiedy wchodził na Twoje konto.':
     'Acceso solo por invitación, sin anuncios y sin rastreo. El historial de inicios de sesión muestra exactamente quién entró en tu cuenta y cuándo.',

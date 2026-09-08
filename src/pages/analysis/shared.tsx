@@ -591,6 +591,8 @@ export function TransactionFilters({
   onSelectStore,
   selectedTagId,
   onSelectTag,
+  search,
+  onSearchChange,
 }: {
   categories: Category[]
   selectedCategoryId: number | null
@@ -601,8 +603,20 @@ export function TransactionFilters({
   onSelectStore?: (id: number | null) => void
   selectedTagId?: number | null
   onSelectTag?: (id: number | null) => void
+  search: string
+  onSearchChange: (value: string) => void
 }) {
   const { t } = useLanguage()
+  // Typed locally and handed up on a pause, so a query key doesn't change on
+  // every keystroke and refetch a list nobody has finished asking for yet.
+  const [searchDraft, setSearchDraft] = useState(search)
+  useEffect(() => {
+    if (searchDraft.trim() === search) return
+    const timer = setTimeout(() => onSearchChange(searchDraft.trim()), 300)
+    return () => clearTimeout(timer)
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [searchDraft])
+
   const { data: stores } = useQuery({
     queryKey: ['budget-stores'],
     queryFn: async () => (await api.get<Store[]>('/budget/stores/')).data,
@@ -614,10 +628,25 @@ export function TransactionFilters({
     enabled: onSelectTag !== undefined,
   })
 
-  const hasActiveFilter = selectedCategoryId !== null || !!selectedStoreId || !!selectedTagId
+  const hasActiveFilter =
+    selectedCategoryId !== null || !!selectedStoreId || !!selectedTagId || searchDraft !== ''
 
   return (
     <div className="flex flex-wrap items-end gap-3 rounded-xl border border-slate-200 dark:border-slate-700 bg-white dark:bg-slate-800 p-4 shadow-sm">
+      {/* First and widest, because it is the one that answers the question
+          the dropdowns can't: "where was that thing I bought". Searches
+          description, store, category and tag at once, and a number is read
+          as an amount - so you can look for what you remember, whichever of
+          those it happens to be. */}
+      <Field label="Szukaj">
+        <input
+          type="search"
+          value={searchDraft}
+          onChange={(e) => setSearchDraft(e.target.value)}
+          placeholder={t('opis, sklep, kategoria, tag albo kwota')}
+          className="input w-64 max-w-full"
+        />
+      </Field>
       <Field label="Kategoria">
         <select
           value={selectedCategoryId ?? ''}
@@ -671,6 +700,8 @@ export function TransactionFilters({
             onSelectCategory(null)
             onSelectStore?.(null)
             onSelectTag?.(null)
+            setSearchDraft('')
+            onSearchChange('')
           }}
           className="pb-2 text-sm font-medium text-slate-500 dark:text-slate-400 hover:text-accent-700 dark:hover:text-accent-400 hover:underline"
         >
@@ -1339,6 +1370,15 @@ function writeLastCategory(type: BudgetType, categoryId: number) {
   }
 }
 
+/** Undoes the "Biedronka: Zakupy" prefix the scan flow adds to the
+ * description when a store name matches nothing - once the store exists as a
+ * real row, repeating its name in the description is just noise. */
+function stripStorePrefix(description: string, storeName: string): string {
+  if (description === storeName) return ''
+  const prefix = `${storeName}: `
+  return description.startsWith(prefix) ? description.slice(prefix.length) : description
+}
+
 export function AddTransactionForm({
   categories,
   accounts,
@@ -1365,6 +1405,7 @@ export function AddTransactionForm({
   }
 }) {
   const { t } = useLanguage()
+  const queryClient = useQueryClient()
   const [type, setType] = useState<BudgetType>(lockedType ?? 'expense')
   const [category, setCategory] = useState<number | ''>('')
   const [store, setStore] = useState<number | ''>('')
@@ -1443,10 +1484,12 @@ export function AddTransactionForm({
   })
 
   // The scanned store name is text, not an id - matched against the user's
-  // existing stores once they load. A store that isn't on the list yet isn't
-  // created automatically (that's its own decision, made in "Zarządzaj
-  // sklepami"), so its name is folded into the description instead of being
-  // silently dropped.
+  // existing stores once they load. A store that isn't on the list yet still
+  // isn't created behind the user's back (that stays their decision), but the
+  // name is offered as a one-click "add it" below rather than only being
+  // folded into the description: on a fresh account nothing matches for the
+  // first few weeks, and without the offer the store breakdown stays empty
+  // exactly while someone is deciding whether the app is worth keeping.
   useEffect(() => {
     if (!initialValues?.storeName || appliedStoreMatch.current || !stores) return
     appliedStoreMatch.current = true
@@ -1460,6 +1503,19 @@ export function AddTransactionForm({
     }
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [stores])
+
+  const addStore = useMutation({
+    mutationFn: async (name: string) => (await api.post<Store>('/budget/stores/', { name })).data,
+    onSuccess: (created) => {
+      setStore(created.id)
+      // It's a real store on the transaction now, so drop the copy that was
+      // put in the description purely as a fallback for this case.
+      setDescription((prev) => stripStorePrefix(prev, created.name))
+      setUnmatchedStoreName(null)
+      queryClient.invalidateQueries({ queryKey: ['budget-stores'] })
+    },
+    onError: () => setError(t('Nie udało się dodać sklepu - dodaj go ręcznie w "Zarządzaj sklepami".')),
+  })
 
   function toggleTag(id: number) {
     setTags((prev) => (prev.includes(id) ? prev.filter((t) => t !== id) : [...prev, id]))
@@ -1536,9 +1592,19 @@ export function AddTransactionForm({
           ))}
         </select>
         {unmatchedStoreName && (
-          <p className="mt-1 text-xs text-amber-600 dark:text-amber-400">
-            {t('Nie znaleziono sklepu "{0}" na liście - nazwa trafiła do opisu.', unmatchedStoreName)}
-          </p>
+          <div className="mt-1 space-y-1">
+            <p className="text-xs text-amber-600 dark:text-amber-400">
+              {t('Sklepu "{0}" nie ma jeszcze na liście - na razie nazwa trafiła do opisu.', unmatchedStoreName)}
+            </p>
+            <button
+              type="button"
+              onClick={() => addStore.mutate(unmatchedStoreName)}
+              disabled={addStore.isPending}
+              className="rounded-md border border-accent-300 dark:border-accent-700 px-2 py-0.5 text-xs font-medium text-accent-700 dark:text-accent-300 hover:bg-accent-50 dark:hover:bg-accent-950/40 disabled:opacity-60"
+            >
+              {addStore.isPending ? t('Dodaję…') : t('+ Dodaj "{0}" do sklepów', unmatchedStoreName)}
+            </button>
+          </div>
         )}
       </Field>
       <Field label="Kwota">

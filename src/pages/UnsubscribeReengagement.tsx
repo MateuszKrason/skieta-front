@@ -6,21 +6,28 @@ import AuthTopBar from '../components/AuthTopBar'
 import SockLogo from '../components/SockLogo'
 import { useLanguage } from '../i18n/LanguageContext'
 
-// Landing page for the unsubscribe link in the re-engagement email. Behind a
+// Landing page for the unsubscribe link in both optional emails. Behind a
 // button rather than firing on mount, same reasoning as CancelDeletion: a
 // mail scanner or link prefetcher loading this page must not be able to
 // unsubscribe someone who never clicked anything themselves.
+//
+// `kind` says which of the two the link came from. It is absent from links
+// sent before the monthly summary existed, and those are still sitting in
+// inboxes - so no kind means the re-engagement reminder, exactly as it did
+// when they were sent.
 export default function UnsubscribeReengagement() {
   const { t } = useLanguage()
   const [searchParams] = useSearchParams()
   const token = searchParams.get('token') ?? ''
+  const isMonthlySummary = searchParams.get('kind') === 'monthly-summary'
+  const kind = isMonthlySummary ? 'monthly-summary' : 'reengagement'
   const [status, setStatus] = useState<'idle' | 'sending' | 'ok' | 'error'>('idle')
   const [message, setMessage] = useState('')
 
   async function unsubscribe() {
     setStatus('sending')
     try {
-      const { data } = await api.post<{ detail: string }>('/auth/unsubscribe-reengagement/', { token })
+      const { data } = await api.post<{ detail: string }>('/auth/unsubscribe-reengagement/', { token, kind })
       setStatus('ok')
       setMessage(data.detail)
     } catch (err: unknown) {
@@ -62,10 +69,12 @@ export default function UnsubscribeReengagement() {
         ) : (
           <>
             <h2 className="text-lg font-semibold text-slate-900 dark:text-slate-100">
-              {t('Wypisać z przypomnień e-mail?')}
+              {isMonthlySummary ? t('Wypisać z miesięcznych podsumowań?') : t('Wypisać z przypomnień e-mail?')}
             </h2>
             <p className="mt-2 text-sm text-slate-500 dark:text-slate-400">
-              {t('Przestaniemy wysyłać e-maile z przypomnieniem, gdy dawno się nie logowałeś/aś. Możesz to zmienić w każdej chwili w ustawieniach konta.')}
+              {isMonthlySummary
+                ? t('Przestaniemy wysyłać e-mail z podsumowaniem poprzedniego miesiąca. Pozostałe powiadomienia zostają bez zmian, a wszystko zmienisz w ustawieniach konta.')
+                : t('Przestaniemy wysyłać e-maile z przypomnieniem, gdy dawno się nie logowałeś/aś. Możesz to zmienić w każdej chwili w ustawieniach konta.')}
             </p>
             {status === 'error' && (
               <p className="mt-3 rounded-md bg-red-50 dark:bg-red-900/30 px-3 py-2 text-sm text-red-700 dark:text-red-400">

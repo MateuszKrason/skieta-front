@@ -55,6 +55,7 @@ export default function Wydatki() {
   const [selectedCategoryId, setSelectedCategoryId] = useState<number | null>(null)
   const [selectedStoreId, setSelectedStoreId] = useState<number | null>(null)
   const [selectedTagId, setSelectedTagId] = useState<number | null>(null)
+  const [search, setSearch] = useState('')
   const [receiptValues, setReceiptValues] = useState<ReceiptInitialValues | undefined>(undefined)
   // Bumped on every applied receipt so the form below remounts with the new
   // values. Without it a second scan while the form is still open from the
@@ -117,6 +118,7 @@ export default function Wydatki() {
       selectedCategoryId,
       selectedStoreId,
       selectedTagId,
+      search,
     ],
     '/budget/transactions/',
     {
@@ -125,6 +127,7 @@ export default function Wydatki() {
       ...(selectedCategoryId ? { category: selectedCategoryId } : {}),
       ...(selectedStoreId ? { store: selectedStoreId } : {}),
       ...(selectedTagId ? { tag: selectedTagId } : {}),
+      ...(search ? { search } : {}),
     },
   )
 
@@ -249,6 +252,8 @@ export default function Wydatki() {
         onSelectStore={setSelectedStoreId}
         selectedTagId={selectedTagId}
         onSelectTag={setSelectedTagId}
+        search={search}
+        onSearchChange={setSearch}
       />
 
       <TransactionList
