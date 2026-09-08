@@ -848,7 +848,7 @@ function GeminiKeySection() {
       </h2>
       <p className="text-xs text-slate-500 dark:text-slate-400">
         {t(
-          'Wklej własny, darmowy klucz Google Gemini, żeby wgrywać zdjęcia paragonów zamiast wpisywać wydatki ręcznie - skanowanie liczy się do Twojego prywatnego, darmowego limitu, nie do naszego.',
+          'Zamiast wpisywać wydatki ręcznie, możesz wgrywać zdjęcia paragonów - odczyta je za Ciebie Google. Trzeba mu to raz zezwolić, a poniżej masz instrukcję krok po kroku. Nic to nie kosztuje i nie wymaga karty płatniczej.',
         )}
       </p>
 

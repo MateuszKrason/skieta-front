@@ -884,14 +884,6 @@ export const en: Record<string, string> = {
     'Create an account and start logging expenses today - your first receipt goes in as a photo in seconds.',
   '📷 Paragon': '📷 Receipt',
   '📷 Dodaj paragon': '📷 Add a receipt',
-  'Jeszcze jeden krok: darmowy klucz Gemini': 'One more step: a free Gemini key',
-  'Paragony odczytuje Google Gemini na Twoim własnym, darmowym limicie - dzięki temu funkcja jest bezpłatna i nikt poza Tobą nie płaci za Twoje skany.':
-    'Receipts are read by Google Gemini on your own free quota - that is what keeps this feature free, and it means nobody but you pays for your scans.',
-  'Otwórz Google AI Studio i kliknij "Create API key" - jest darmowy i zajmuje minutę.':
-    'Open Google AI Studio and click "Create API key" - it is free and takes a minute.',
-  'Skopiuj wygenerowany klucz.': 'Copy the key it generates.',
-  'Wklej go poniżej. Przechowujemy go zaszyfrowany i używamy wyłącznie do odczytania Twoich paragonów.':
-    'Paste it below. We store it encrypted and use it only to read your receipts.',
   'Motyw': 'Theme',
   'Klucz zapisany. Kliknij przycisk z paragonem jeszcze raz i wybierz zdjęcie.':
     'Key saved. Click the receipt button again and pick a photo.',
@@ -918,6 +910,27 @@ export const en: Record<string, string> = {
     'Add skieta to your home screen - then a receipt goes in with one tap, without hunting for the address in a browser.',
   'Zainstaluj': 'Install',
   'Nie teraz': 'Not now',
+  'Kliknij przycisk poniżej. Otworzy się strona Google - jest po angielsku, więc się nie zrażaj. Zaloguj się swoim zwykłym kontem Google, tym od Gmaila.':
+    'Click the button below and sign in with your ordinary Google account, the one you use for Gmail.',
+  'Otwórz stronę Google →': 'Open the Google page →',
+  'Na tej stronie kliknij niebieski przycisk „Create API key”. Jeśli Google poprosi o wybranie projektu, wybierz dowolny z listy albo pozwól mu utworzyć nowy.':
+    'On that page, click the blue “Create API key” button. If Google asks you to pick a project, choose any one from the list or let it create a new one.',
+  'Pokaże się okienko z długim ciągiem znaków zaczynającym się od „AIza”. Skopiuj go w całości - obok jest ikonka kopiowania.':
+    'A window appears with a long string of characters starting with “AIza”. Copy the whole thing - there is a copy icon next to it.',
+  'Wróć tutaj i wklej skopiowany ciąg w to pole:':
+    'Come back here and paste the string into this field:',
+  'To nie wygląda na ciąg od Google - powinien zaczynać się od „AIza”. Sprawdź, czy skopiowałeś/aś całość.':
+    'That does not look like the string from Google - it should start with “AIza”. Check that you copied all of it.',
+  'Sprawdzam u Google…': 'Checking with Google…',
+  'Zapisz i włącz skanowanie': 'Save and turn on scanning',
+  'Po co to jest i czy to bezpieczne?': 'What is this for, and is it safe?',
+  'Odczytanie zdjęcia to praca, za którą ktoś płaci Google. Gdybyśmy robili to na własny rachunek, skanowanie musiałoby być płatne albo mocno ograniczone - dzięki Twojemu własnemu, darmowemu limitowi jest bezpłatne. Wklejany ciąg działa jak hasło do tej jednej rzeczy: nie daje dostępu do Twojej poczty, dysku ani niczego innego na koncie Google. U nas leży zaszyfrowany, a w ustawieniach konta skasujesz go jednym kliknięciem.':
+    'Reading a photo is work somebody pays Google for. If we did it on our own account, scanning would have to be paid for or heavily limited - your own free allowance is what keeps it free. The string you paste works like a password for this one thing: it gives no access to your mail, your drive or anything else on your Google account. We store it encrypted, and you can delete it from account settings with one click.',
+  'Zanim zeskanujesz pierwszy paragon': 'Before you scan your first receipt',
+  'Zdjęcia paragonów odczytuje za Ciebie Google. Trzeba mu to raz zezwolić - zajmuje to jakieś dwie minuty, nie wymaga karty płatniczej i nic nie kosztuje.':
+    'Google reads the receipt photos for you. You have to allow it once - it takes about two minutes, needs no payment card and costs nothing.',
+  'Zamiast wpisywać wydatki ręcznie, możesz wgrywać zdjęcia paragonów - odczyta je za Ciebie Google. Trzeba mu to raz zezwolić, a poniżej masz instrukcję krok po kroku. Nic to nie kosztuje i nie wymaga karty płatniczej.':
+    'Instead of typing expenses in by hand you can upload photos of receipts - Google reads them for you. You have to allow it once, and there are step-by-step instructions below. It costs nothing and needs no payment card.',
   'Twoje dane, Twoja kontrola': 'Your data, your control',
   'Dostęp wyłącznie na zaproszenie, bez reklam i bez śledzenia. Historia logowań pokazuje dokładnie, kto i kiedy wchodził na Twoje konto.':
     'Invite-only access, no ads, no tracking. Login history shows exactly who accessed your account and when.',

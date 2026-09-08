@@ -884,14 +884,6 @@ export const es: Record<string, string> = {
     'Crea una cuenta y empieza a registrar gastos hoy mismo: el primer ticket lo añades con una foto en unos segundos.',
   '📷 Paragon': '📷 Ticket',
   '📷 Dodaj paragon': '📷 Añadir ticket',
-  'Jeszcze jeden krok: darmowy klucz Gemini': 'Un paso más: una clave gratuita de Gemini',
-  'Paragony odczytuje Google Gemini na Twoim własnym, darmowym limicie - dzięki temu funkcja jest bezpłatna i nikt poza Tobą nie płaci za Twoje skany.':
-    'Los tickets los lee Google Gemini con tu propio límite gratuito; por eso la función no cuesta nada y nadie más que tú paga por tus escaneos.',
-  'Otwórz Google AI Studio i kliknij "Create API key" - jest darmowy i zajmuje minutę.':
-    'Abre Google AI Studio y haz clic en "Create API key": es gratis y lleva un minuto.',
-  'Skopiuj wygenerowany klucz.': 'Copia la clave generada.',
-  'Wklej go poniżej. Przechowujemy go zaszyfrowany i używamy wyłącznie do odczytania Twoich paragonów.':
-    'Pégala abajo. La guardamos cifrada y la usamos únicamente para leer tus tickets.',
   'Motyw': 'Tema',
   'Klucz zapisany. Kliknij przycisk z paragonem jeszcze raz i wybierz zdjęcie.':
     'Clave guardada. Vuelve a hacer clic en el botón del ticket y elige una foto.',
@@ -918,6 +910,26 @@ export const es: Record<string, string> = {
     'Añade skieta a la pantalla de inicio: así un ticket se registra con un toque, sin buscar la dirección en el navegador.',
   'Zainstaluj': 'Instalar',
   'Nie teraz': 'Ahora no',
+  'Kliknij przycisk poniżej. Otworzy się strona Google - jest po angielsku, więc się nie zrażaj. Zaloguj się swoim zwykłym kontem Google, tym od Gmaila.':
+    'Haz clic en el botón de abajo. Se abrirá una página de Google en inglés; que eso no te frene. Inicia sesión con tu cuenta de Google de siempre, la de Gmail.',
+  'Otwórz stronę Google →': 'Abrir la página de Google →',
+  'Na tej stronie kliknij niebieski przycisk „Create API key”. Jeśli Google poprosi o wybranie projektu, wybierz dowolny z listy albo pozwól mu utworzyć nowy.':
+    'En esa página haz clic en el botón azul “Create API key”. Si Google te pide elegir un proyecto, escoge cualquiera de la lista o deja que cree uno nuevo.',
+  'Pokaże się okienko z długim ciągiem znaków zaczynającym się od „AIza”. Skopiuj go w całości - obok jest ikonka kopiowania.':
+    'Aparecerá una ventana con una cadena larga de caracteres que empieza por “AIza”. Cópiala entera: al lado hay un icono de copiar.',
+  'Wróć tutaj i wklej skopiowany ciąg w to pole:': 'Vuelve aquí y pega la cadena en este campo:',
+  'To nie wygląda na ciąg od Google - powinien zaczynać się od „AIza”. Sprawdź, czy skopiowałeś/aś całość.':
+    'Esto no parece la cadena de Google: debería empezar por “AIza”. Comprueba que la has copiado entera.',
+  'Sprawdzam u Google…': 'Comprobando con Google…',
+  'Zapisz i włącz skanowanie': 'Guardar y activar el escaneo',
+  'Po co to jest i czy to bezpieczne?': '¿Para qué es esto y es seguro?',
+  'Odczytanie zdjęcia to praca, za którą ktoś płaci Google. Gdybyśmy robili to na własny rachunek, skanowanie musiałoby być płatne albo mocno ograniczone - dzięki Twojemu własnemu, darmowemu limitowi jest bezpłatne. Wklejany ciąg działa jak hasło do tej jednej rzeczy: nie daje dostępu do Twojej poczty, dysku ani niczego innego na koncie Google. U nas leży zaszyfrowany, a w ustawieniach konta skasujesz go jednym kliknięciem.':
+    'Leer una foto es un trabajo que alguien le paga a Google. Si lo hiciéramos por nuestra cuenta, el escaneo tendría que ser de pago o muy limitado: tu propio límite gratuito es lo que lo mantiene gratis. La cadena que pegas funciona como una contraseña para esta única cosa: no da acceso a tu correo, a tu disco ni a nada más de tu cuenta de Google. Aquí queda cifrada y en los ajustes de la cuenta la borras con un clic.',
+  'Zanim zeskanujesz pierwszy paragon': 'Antes de escanear tu primer ticket',
+  'Zdjęcia paragonów odczytuje za Ciebie Google. Trzeba mu to raz zezwolić - zajmuje to jakieś dwie minuty, nie wymaga karty płatniczej i nic nie kosztuje.':
+    'Google lee por ti las fotos de los tickets. Tienes que permitírselo una vez: son unos dos minutos, no hace falta tarjeta y no cuesta nada.',
+  'Zamiast wpisywać wydatki ręcznie, możesz wgrywać zdjęcia paragonów - odczyta je za Ciebie Google. Trzeba mu to raz zezwolić, a poniżej masz instrukcję krok po kroku. Nic to nie kosztuje i nie wymaga karty płatniczej.':
+    'En lugar de escribir los gastos a mano puedes subir fotos de tickets: Google los lee por ti. Hay que permitírselo una vez y abajo tienes las instrucciones paso a paso. No cuesta nada y no hace falta tarjeta.',
   'Twoje dane, Twoja kontrola': 'Tus datos, tu control',
   'Dostęp wyłącznie na zaproszenie, bez reklam i bez śledzenia. Historia logowań pokazuje dokładnie, kto i kiedy wchodził na Twoje konto.':
     'Acceso solo por invitación, sin anuncios y sin rastreo. El historial de inicios de sesión muestra exactamente quién entró en tu cuenta y cuándo.',

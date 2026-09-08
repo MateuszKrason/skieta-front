@@ -4,11 +4,38 @@ import { api } from '../api/client'
 import { useAuth } from '../auth/AuthContext'
 import { useLanguage } from '../i18n/LanguageContext'
 
+const GOOGLE_KEY_URL = 'https://aistudio.google.com/apikey'
+
+// Every Google-issued key starts with this. Used only for a nudge, never to
+// block a save: if Google ever changes the prefix, a hint that has gone stale
+// must not convince anyone their perfectly good key is broken.
+const KEY_PREFIX = 'AIza'
+
+// Quotes and stray whitespace, which is what comes along when a key is
+// pasted out of a notes app or a chat message.
+const SURROUNDING_QUOTES = /^["']+|["']+$/g
+
+function Step({ number, children }: { number: number; children: React.ReactNode }) {
+  return (
+    <li className="flex gap-3">
+      <span className="flex h-6 w-6 shrink-0 items-center justify-center rounded-full bg-accent-100 dark:bg-accent-900/60 text-xs font-semibold text-accent-800 dark:text-accent-200">
+        {number}
+      </span>
+      <div className="flex-1 space-y-2 pt-0.5">{children}</div>
+    </li>
+  )
+}
+
 // Shared by the account settings panel and by the prompt that appears the
-// moment a scan fails for want of a key (see GeminiKeyPrompt below). Both
-// need the identical save-and-validate behaviour, and the second one only
-// exists because sending someone to Settings mid-task was where most people
-// gave up on receipt scanning entirely.
+// moment a scan fails for want of a key (see GeminiKeyPrompt below), so both
+// give the identical walkthrough instead of one of them being the good copy.
+//
+// Written for someone who has never heard the phrase "API key". The earlier
+// version said "open Google AI Studio and click Create API key", which
+// assumes the reader knows what a key is, expects a developer console, is
+// not thrown by the page being in English, and knows what to do when Google
+// asks which project to use. Each of those is a place where somebody who
+// just wanted to photograph a receipt simply stops.
 export function GeminiKeyForm({ onSaved }: { onSaved?: () => void }) {
   const { t } = useLanguage()
   const { updateProfile } = useAuth()
@@ -16,8 +43,13 @@ export function GeminiKeyForm({ onSaved }: { onSaved?: () => void }) {
   const [apiKey, setApiKey] = useState('')
   const [error, setError] = useState<string | null>(null)
 
+  // An invisible trailing space failing the save with "this key doesn't
+  // work" would send someone back to Google to fetch a key that was fine.
+  const cleanedKey = apiKey.trim().replace(SURROUNDING_QUOTES, '')
+  const looksWrong = cleanedKey !== '' && !cleanedKey.startsWith(KEY_PREFIX)
+
   const saveMutation = useMutation({
-    mutationFn: () => api.put('/auth/gemini-key/', { api_key: apiKey }),
+    mutationFn: () => api.put('/auth/gemini-key/', { api_key: cleanedKey }),
     onSuccess: () => {
       setApiKey('')
       setError(null)
@@ -45,36 +77,84 @@ export function GeminiKeyForm({ onSaved }: { onSaved?: () => void }) {
   }
 
   return (
-    <form onSubmit={onSubmit} className="space-y-2">
-      <a
-        href="https://aistudio.google.com/apikey"
-        target="_blank"
-        rel="noopener noreferrer"
-        className="inline-block text-sm font-medium text-accent-700 dark:text-accent-400 hover:underline"
-      >
-        {t('Pobierz darmowy klucz Google →')}
-      </a>
-      <input
-        type="text"
-        value={apiKey}
-        onChange={(e) => setApiKey(e.target.value)}
-        placeholder={t('Wklej klucz Gemini')}
-        required
-        className="input"
-      />
-      {error && <p className="text-sm text-red-600 dark:text-red-400">{error}</p>}
-      <button type="submit" className="btn-primary" disabled={saveMutation.isPending}>
-        {saveMutation.isPending ? t('Sprawdzanie klucza…') : t('Zapisz klucz')}
-      </button>
-    </form>
+    <div className="space-y-4">
+      <ol className="space-y-4 text-sm text-slate-600 dark:text-slate-400">
+        <Step number={1}>
+          <p>
+            {t(
+              'Kliknij przycisk poniżej. Otworzy się strona Google - jest po angielsku, więc się nie zrażaj. Zaloguj się swoim zwykłym kontem Google, tym od Gmaila.',
+            )}
+          </p>
+          <a
+            href={GOOGLE_KEY_URL}
+            target="_blank"
+            rel="noopener noreferrer"
+            className="inline-block rounded-md bg-accent-600 px-4 py-2 text-sm font-semibold text-white hover:bg-accent-700"
+          >
+            {t('Otwórz stronę Google →')}
+          </a>
+        </Step>
+        <Step number={2}>
+          <p>
+            {t(
+              'Na tej stronie kliknij niebieski przycisk „Create API key”. Jeśli Google poprosi o wybranie projektu, wybierz dowolny z listy albo pozwól mu utworzyć nowy.',
+            )}
+          </p>
+        </Step>
+        <Step number={3}>
+          <p>
+            {t(
+              'Pokaże się okienko z długim ciągiem znaków zaczynającym się od „AIza”. Skopiuj go w całości - obok jest ikonka kopiowania.',
+            )}
+          </p>
+        </Step>
+        <Step number={4}>
+          <form onSubmit={onSubmit} className="space-y-2">
+            <label className="block">
+              <span className="block">{t('Wróć tutaj i wklej skopiowany ciąg w to pole:')}</span>
+              <input
+                type="text"
+                value={apiKey}
+                onChange={(e) => setApiKey(e.target.value)}
+                placeholder="AIzaSy…"
+                required
+                autoComplete="off"
+                spellCheck={false}
+                className="input mt-1 max-w-sm"
+              />
+            </label>
+            {looksWrong && (
+              <p className="max-w-sm text-xs text-amber-600 dark:text-amber-400">
+                {t(
+                  'To nie wygląda na ciąg od Google - powinien zaczynać się od „AIza”. Sprawdź, czy skopiowałeś/aś całość.',
+                )}
+              </p>
+            )}
+            {error && <p className="max-w-sm text-sm text-red-600 dark:text-red-400">{error}</p>}
+            <button type="submit" className="btn-primary" disabled={saveMutation.isPending}>
+              {saveMutation.isPending ? t('Sprawdzam u Google…') : t('Zapisz i włącz skanowanie')}
+            </button>
+          </form>
+        </Step>
+      </ol>
+
+      {/* Folded away rather than in the flow: someone who just wants the
+          feature working should not have to read a justification first, but
+          anyone hesitating over pasting a Google credential into a website
+          deserves a straight answer without having to go looking for it. */}
+      <details className="text-sm">
+        <summary className="cursor-pointer font-medium text-accent-700 dark:text-accent-400">
+          {t('Po co to jest i czy to bezpieczne?')}
+        </summary>
+        <p className="mt-2 leading-relaxed text-slate-600 dark:text-slate-400">
+          {t(
+            'Odczytanie zdjęcia to praca, za którą ktoś płaci Google. Gdybyśmy robili to na własny rachunek, skanowanie musiałoby być płatne albo mocno ograniczone - dzięki Twojemu własnemu, darmowemu limitowi jest bezpłatne. Wklejany ciąg działa jak hasło do tej jednej rzeczy: nie daje dostępu do Twojej poczty, dysku ani niczego innego na koncie Google. U nas leży zaszyfrowany, a w ustawieniach konta skasujesz go jednym kliknięciem.',
+          )}
+        </p>
+      </details>
+    </div>
   )
 }
-
-const SETUP_STEPS = [
-  'Otwórz Google AI Studio i kliknij "Create API key" - jest darmowy i zajmuje minutę.',
-  'Skopiuj wygenerowany klucz.',
-  'Wklej go poniżej. Przechowujemy go zaszyfrowany i używamy wyłącznie do odczytania Twoich paragonów.',
-]
 
 /** Shown in place of the old one-line "add a key in settings" note. Someone
  * who just photographed a receipt is as motivated as they will ever be to set
@@ -97,27 +177,15 @@ export function GeminiKeyPrompt() {
 
   return (
     <div className="rounded-xl border border-amber-300 dark:border-amber-800 bg-amber-50 dark:bg-amber-950/30 p-5">
-      <h2 className="text-sm font-semibold text-slate-900 dark:text-slate-100">
-        {t('Jeszcze jeden krok: darmowy klucz Gemini')}
+      <h2 className="text-base font-semibold text-slate-900 dark:text-slate-100">
+        {t('Zanim zeskanujesz pierwszy paragon')}
       </h2>
-      <p className="mt-1 text-sm text-slate-600 dark:text-slate-400">
+      <p className="mt-1 mb-4 text-sm text-slate-600 dark:text-slate-400">
         {t(
-          'Paragony odczytuje Google Gemini na Twoim własnym, darmowym limicie - dzięki temu funkcja jest bezpłatna i nikt poza Tobą nie płaci za Twoje skany.',
+          'Zdjęcia paragonów odczytuje za Ciebie Google. Trzeba mu to raz zezwolić - zajmuje to jakieś dwie minuty, nie wymaga karty płatniczej i nic nie kosztuje.',
         )}
       </p>
-      <ol className="mt-3 space-y-1.5 text-sm text-slate-600 dark:text-slate-400">
-        {SETUP_STEPS.map((step, i) => (
-          <li key={step} className="flex gap-2">
-            <span className="flex h-5 w-5 shrink-0 items-center justify-center rounded-full bg-amber-200 dark:bg-amber-900 text-xs font-semibold text-amber-900 dark:text-amber-200">
-              {i + 1}
-            </span>
-            {t(step)}
-          </li>
-        ))}
-      </ol>
-      <div className="mt-4 max-w-sm">
-        <GeminiKeyForm onSaved={() => setSaved(true)} />
-      </div>
+      <GeminiKeyForm onSaved={() => setSaved(true)} />
     </div>
   )
 }

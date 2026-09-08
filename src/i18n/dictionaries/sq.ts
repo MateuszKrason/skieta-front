@@ -884,14 +884,6 @@ export const sq: Record<string, string> = {
     'Hap një llogari dhe fillo të regjistrosh shpenzimet që sot - kuponin e parë e shton si foto brenda pak sekondash.',
   '📷 Paragon': '📷 Kupon',
   '📷 Dodaj paragon': '📷 Shto kupon',
-  'Jeszcze jeden krok: darmowy klucz Gemini': 'Edhe një hap: një çelës falas Gemini',
-  'Paragony odczytuje Google Gemini na Twoim własnym, darmowym limicie - dzięki temu funkcja jest bezpłatna i nikt poza Tobą nie płaci za Twoje skany.':
-    'Kuponët i lexon Google Gemini me kuotën tënde falas - prandaj funksioni është pa pagesë dhe askush përveç teje nuk paguan për skanimet e tua.',
-  'Otwórz Google AI Studio i kliknij "Create API key" - jest darmowy i zajmuje minutę.':
-    'Hap Google AI Studio dhe kliko "Create API key" - është falas dhe merr një minutë.',
-  'Skopiuj wygenerowany klucz.': 'Kopjo çelësin e krijuar.',
-  'Wklej go poniżej. Przechowujemy go zaszyfrowany i używamy wyłącznie do odczytania Twoich paragonów.':
-    'Ngjite më poshtë. E ruajmë të enkriptuar dhe e përdorim vetëm për të lexuar kuponët e tu.',
   'Motyw': 'Tema',
   'Klucz zapisany. Kliknij przycisk z paragonem jeszcze raz i wybierz zdjęcie.':
     'Çelësi u ruajt. Kliko sërish butonin e kuponit dhe zgjidh një foto.',
@@ -918,6 +910,26 @@ export const sq: Record<string, string> = {
     'Shto skieta në ekranin bazë - kështu një kupon futet me një prekje, pa kërkuar adresën në shfletues.',
   'Zainstaluj': 'Instalo',
   'Nie teraz': 'Jo tani',
+  'Kliknij przycisk poniżej. Otworzy się strona Google - jest po angielsku, więc się nie zrażaj. Zaloguj się swoim zwykłym kontem Google, tym od Gmaila.':
+    'Kliko butonin më poshtë. Do të hapet një faqe e Google në anglisht - mos u frikëso nga kjo. Hyr me llogarinë tënde të zakonshme Google, atë të Gmail-it.',
+  'Otwórz stronę Google →': 'Hap faqen e Google →',
+  'Na tej stronie kliknij niebieski przycisk „Create API key”. Jeśli Google poprosi o wybranie projektu, wybierz dowolny z listy albo pozwól mu utworzyć nowy.':
+    'Në atë faqe kliko butonin blu “Create API key”. Nëse Google të kërkon të zgjedhësh një projekt, merr cilindo nga lista ose lëre të krijojë një të ri.',
+  'Pokaże się okienko z długim ciągiem znaków zaczynającym się od „AIza”. Skopiuj go w całości - obok jest ikonka kopiowania.':
+    'Do të shfaqet një dritare me një varg të gjatë shenjash që fillon me “AIza”. Kopjoje të gjithë - pranë ka një ikonë kopjimi.',
+  'Wróć tutaj i wklej skopiowany ciąg w to pole:': 'Kthehu këtu dhe ngjite vargun në këtë fushë:',
+  'To nie wygląda na ciąg od Google - powinien zaczynać się od „AIza”. Sprawdź, czy skopiowałeś/aś całość.':
+    'Kjo nuk duket si vargu nga Google - duhet të fillojë me “AIza”. Kontrollo nëse e kopjove të plotë.',
+  'Sprawdzam u Google…': 'Po kontrolloj te Google…',
+  'Zapisz i włącz skanowanie': 'Ruaj dhe aktivizo skanimin',
+  'Po co to jest i czy to bezpieczne?': 'Për çfarë shërben dhe a është e sigurt?',
+  'Odczytanie zdjęcia to praca, za którą ktoś płaci Google. Gdybyśmy robili to na własny rachunek, skanowanie musiałoby być płatne albo mocno ograniczone - dzięki Twojemu własnemu, darmowemu limitowi jest bezpłatne. Wklejany ciąg działa jak hasło do tej jednej rzeczy: nie daje dostępu do Twojej poczty, dysku ani niczego innego na koncie Google. U nas leży zaszyfrowany, a w ustawieniach konta skasujesz go jednym kliknięciem.':
+    'Leximi i një fotoje është punë për të cilën dikush i paguan Google. Po ta bënim me llogarinë tonë, skanimi do të duhej të ishte me pagesë ose fort i kufizuar - kuota jote falas është ajo që e mban pa pagesë. Vargu që ngjit funksionon si një fjalëkalim vetëm për këtë gjë: nuk jep akses në postën tënde, në diskun tënd apo në asgjë tjetër të llogarisë Google. Te ne qëndron i enkriptuar dhe te cilësimet e llogarisë e fshin me një klikim.',
+  'Zanim zeskanujesz pierwszy paragon': 'Përpara se të skanosh kuponin e parë',
+  'Zdjęcia paragonów odczytuje za Ciebie Google. Trzeba mu to raz zezwolić - zajmuje to jakieś dwie minuty, nie wymaga karty płatniczej i nic nie kosztuje.':
+    'Fotot e kuponëve i lexon Google për ty. Duhet t’ia lejosh një herë - zgjat rreth dy minuta, nuk kërkon kartë pagese dhe nuk kushton asgjë.',
+  'Zamiast wpisywać wydatki ręcznie, możesz wgrywać zdjęcia paragonów - odczyta je za Ciebie Google. Trzeba mu to raz zezwolić, a poniżej masz instrukcję krok po kroku. Nic to nie kosztuje i nie wymaga karty płatniczej.':
+    'Në vend që të shkruash shpenzimet me dorë, mund të ngarkosh foto kuponësh - Google i lexon për ty. Duhet t’ia lejosh një herë, dhe më poshtë ke udhëzimet hap pas hapi. Nuk kushton asgjë dhe nuk kërkon kartë pagese.',
   'Twoje dane, Twoja kontrola': 'Të dhënat e tua, kontrolli yt',
   'Dostęp wyłącznie na zaproszenie, bez reklam i bez śledzenia. Historia logowań pokazuje dokładnie, kto i kiedy wchodził na Twoje konto.':
     'Akses vetëm me ftesë, pa reklama dhe pa gjurmim. Historiku i identifikimeve tregon saktësisht kush dhe kur ka hyrë në llogarinë tënde.',

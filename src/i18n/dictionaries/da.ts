@@ -884,14 +884,6 @@ export const da: Record<string, string> = {
     'Opret en konto, og begynd at registrere udgifter allerede i dag - den første kvittering lægger du ind som et foto på få sekunder.',
   '📷 Paragon': '📷 Kvittering',
   '📷 Dodaj paragon': '📷 Tilføj kvittering',
-  'Jeszcze jeden krok: darmowy klucz Gemini': 'Et skridt mere: en gratis Gemini-nøgle',
-  'Paragony odczytuje Google Gemini na Twoim własnym, darmowym limicie - dzięki temu funkcja jest bezpłatna i nikt poza Tobą nie płaci za Twoje skany.':
-    'Kvitteringer aflæses af Google Gemini på din egen gratis kvote - derfor er funktionen gratis, og ingen andre end dig betaler for dine scanninger.',
-  'Otwórz Google AI Studio i kliknij "Create API key" - jest darmowy i zajmuje minutę.':
-    'Åbn Google AI Studio, og klik på "Create API key" - det er gratis og tager et minut.',
-  'Skopiuj wygenerowany klucz.': 'Kopier den nøgle, der bliver oprettet.',
-  'Wklej go poniżej. Przechowujemy go zaszyfrowany i używamy wyłącznie do odczytania Twoich paragonów.':
-    'Indsæt den nedenfor. Vi opbevarer den krypteret og bruger den udelukkende til at aflæse dine kvitteringer.',
   'Motyw': 'Tema',
   'Klucz zapisany. Kliknij przycisk z paragonem jeszcze raz i wybierz zdjęcie.':
     'Nøglen er gemt. Klik på kvitteringsknappen igen, og vælg et billede.',
@@ -918,6 +910,27 @@ export const da: Record<string, string> = {
     'Føj skieta til hjemmeskærmen - så er en kvittering inde med ét tryk, uden at lede efter adressen i en browser.',
   'Zainstaluj': 'Installer',
   'Nie teraz': 'Ikke nu',
+  'Kliknij przycisk poniżej. Otworzy się strona Google - jest po angielsku, więc się nie zrażaj. Zaloguj się swoim zwykłym kontem Google, tym od Gmaila.':
+    'Klik på knappen nedenfor. Der åbner en Google-side på engelsk - lad dig ikke skræmme af det. Log ind med din helt almindelige Google-konto, den fra Gmail.',
+  'Otwórz stronę Google →': 'Åbn Google-siden →',
+  'Na tej stronie kliknij niebieski przycisk „Create API key”. Jeśli Google poprosi o wybranie projektu, wybierz dowolny z listy albo pozwól mu utworzyć nowy.':
+    'På siden klikker du på den blå knap “Create API key”. Beder Google dig vælge et projekt, så tag et vilkårligt fra listen eller lad den oprette et nyt.',
+  'Pokaże się okienko z długim ciągiem znaków zaczynającym się od „AIza”. Skopiuj go w całości - obok jest ikonka kopiowania.':
+    'Der dukker et vindue op med en lang tegnfølge, der begynder med “AIza”. Kopier det hele - ved siden af er der et kopi-ikon.',
+  'Wróć tutaj i wklej skopiowany ciąg w to pole:':
+    'Kom tilbage hertil og indsæt tegnfølgen i dette felt:',
+  'To nie wygląda na ciąg od Google - powinien zaczynać się od „AIza”. Sprawdź, czy skopiowałeś/aś całość.':
+    'Det ligner ikke tegnfølgen fra Google - den bør begynde med “AIza”. Tjek, om du fik det hele med.',
+  'Sprawdzam u Google…': 'Tjekker hos Google…',
+  'Zapisz i włącz skanowanie': 'Gem og slå scanning til',
+  'Po co to jest i czy to bezpieczne?': 'Hvad skal det til for, og er det sikkert?',
+  'Odczytanie zdjęcia to praca, za którą ktoś płaci Google. Gdybyśmy robili to na własny rachunek, skanowanie musiałoby być płatne albo mocno ograniczone - dzięki Twojemu własnemu, darmowemu limitowi jest bezpłatne. Wklejany ciąg działa jak hasło do tej jednej rzeczy: nie daje dostępu do Twojej poczty, dysku ani niczego innego na koncie Google. U nas leży zaszyfrowany, a w ustawieniach konta skasujesz go jednym kliknięciem.':
+    'At læse et billede er arbejde, som nogen betaler Google for. Gjorde vi det for egen regning, skulle scanning enten koste penge eller være stærkt begrænset - din egen gratis kvote er det, der holder det gratis. Tegnfølgen, du indsætter, virker som en adgangskode til netop denne ene ting: den giver ikke adgang til din mail, dit drev eller noget andet på din Google-konto. Hos os ligger den krypteret, og i kontoindstillingerne sletter du den med ét klik.',
+  'Zanim zeskanujesz pierwszy paragon': 'Før du scanner din første kvittering',
+  'Zdjęcia paragonów odczytuje za Ciebie Google. Trzeba mu to raz zezwolić - zajmuje to jakieś dwie minuty, nie wymaga karty płatniczej i nic nie kosztuje.':
+    'Google læser kvitteringsbillederne for dig. Det skal du give lov til én gang - det tager et par minutter, kræver ikke betalingskort og koster ingenting.',
+  'Zamiast wpisywać wydatki ręcznie, możesz wgrywać zdjęcia paragonów - odczyta je za Ciebie Google. Trzeba mu to raz zezwolić, a poniżej masz instrukcję krok po kroku. Nic to nie kosztuje i nie wymaga karty płatniczej.':
+    'I stedet for at taste udgifter ind i hånden kan du uploade billeder af kvitteringer - Google læser dem for dig. Det skal du give lov til én gang, og nedenfor står vejledningen trin for trin. Det koster ingenting og kræver ikke betalingskort.',
   'Twoje dane, Twoja kontrola': 'Dine data, din kontrol',
   'Dostęp wyłącznie na zaproszenie, bez reklam i bez śledzenia. Historia logowań pokazuje dokładnie, kto i kiedy wchodził na Twoje konto.':
     'Kun adgang via invitation, ingen reklamer og ingen sporing. Login-historikken viser præcis, hvem der har tilgået din konto, og hvornår.',

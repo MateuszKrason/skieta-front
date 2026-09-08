@@ -884,14 +884,6 @@ export const de: Record<string, string> = {
     'Leg ein Konto an und fang noch heute an, Ausgaben zu erfassen - den ersten Kassenbon fügst du in Sekunden als Foto hinzu.',
   '📷 Paragon': '📷 Kassenbon',
   '📷 Dodaj paragon': '📷 Kassenbon hinzufügen',
-  'Jeszcze jeden krok: darmowy klucz Gemini': 'Noch ein Schritt: ein kostenloser Gemini-Schlüssel',
-  'Paragony odczytuje Google Gemini na Twoim własnym, darmowym limicie - dzięki temu funkcja jest bezpłatna i nikt poza Tobą nie płaci za Twoje skany.':
-    'Kassenbons liest Google Gemini über dein eigenes, kostenloses Kontingent - deshalb ist die Funktion gratis, und niemand außer dir zahlt für deine Scans.',
-  'Otwórz Google AI Studio i kliknij "Create API key" - jest darmowy i zajmuje minutę.':
-    'Öffne Google AI Studio und klicke auf "Create API key" - das ist kostenlos und dauert eine Minute.',
-  'Skopiuj wygenerowany klucz.': 'Kopiere den erzeugten Schlüssel.',
-  'Wklej go poniżej. Przechowujemy go zaszyfrowany i używamy wyłącznie do odczytania Twoich paragonów.':
-    'Füge ihn unten ein. Wir speichern ihn verschlüsselt und verwenden ihn ausschließlich zum Auslesen deiner Kassenbons.',
   'Motyw': 'Design',
   'Klucz zapisany. Kliknij przycisk z paragonem jeszcze raz i wybierz zdjęcie.':
     'Schlüssel gespeichert. Klicke erneut auf die Kassenbon-Schaltfläche und wähle ein Foto.',
@@ -918,6 +910,27 @@ export const de: Record<string, string> = {
     'Füge skieta zum Startbildschirm hinzu - ein Kassenbon ist dann mit einem Tippen erfasst, ohne die Adresse im Browser zu suchen.',
   'Zainstaluj': 'Installieren',
   'Nie teraz': 'Jetzt nicht',
+  'Kliknij przycisk poniżej. Otworzy się strona Google - jest po angielsku, więc się nie zrażaj. Zaloguj się swoim zwykłym kontem Google, tym od Gmaila.':
+    'Klicke auf die Schaltfläche unten. Es öffnet sich eine Google-Seite auf Englisch - lass dich davon nicht abschrecken. Melde dich mit deinem gewöhnlichen Google-Konto an, dem von Gmail.',
+  'Otwórz stronę Google →': 'Google-Seite öffnen →',
+  'Na tej stronie kliknij niebieski przycisk „Create API key”. Jeśli Google poprosi o wybranie projektu, wybierz dowolny z listy albo pozwól mu utworzyć nowy.':
+    'Klicke auf dieser Seite auf die blaue Schaltfläche „Create API key“. Falls Google nach einem Projekt fragt, wähle irgendeines aus der Liste oder lass ein neues anlegen.',
+  'Pokaże się okienko z długim ciągiem znaków zaczynającym się od „AIza”. Skopiuj go w całości - obok jest ikonka kopiowania.':
+    'Es erscheint ein Fenster mit einer langen Zeichenfolge, die mit „AIza“ beginnt. Kopiere sie vollständig - daneben ist ein Kopier-Symbol.',
+  'Wróć tutaj i wklej skopiowany ciąg w to pole:':
+    'Komm hierher zurück und füge die Zeichenfolge in dieses Feld ein:',
+  'To nie wygląda na ciąg od Google - powinien zaczynać się od „AIza”. Sprawdź, czy skopiowałeś/aś całość.':
+    'Das sieht nicht nach der Zeichenfolge von Google aus - sie sollte mit „AIza“ beginnen. Prüfe, ob du alles kopiert hast.',
+  'Sprawdzam u Google…': 'Frage bei Google nach…',
+  'Zapisz i włącz skanowanie': 'Speichern und Scannen aktivieren',
+  'Po co to jest i czy to bezpieczne?': 'Wozu ist das da und ist es sicher?',
+  'Odczytanie zdjęcia to praca, za którą ktoś płaci Google. Gdybyśmy robili to na własny rachunek, skanowanie musiałoby być płatne albo mocno ograniczone - dzięki Twojemu własnemu, darmowemu limitowi jest bezpłatne. Wklejany ciąg działa jak hasło do tej jednej rzeczy: nie daje dostępu do Twojej poczty, dysku ani niczego innego na koncie Google. U nas leży zaszyfrowany, a w ustawieniach konta skasujesz go jednym kliknięciem.':
+    'Ein Foto auszulesen ist Arbeit, für die jemand Google bezahlt. Täten wir das auf eigene Rechnung, müsste das Scannen kostenpflichtig oder stark begrenzt sein - dein eigenes, kostenloses Kontingent hält es gratis. Die eingefügte Zeichenfolge wirkt wie ein Passwort für genau diese eine Sache: Sie gibt keinen Zugriff auf deine Mail, deine Ablage oder sonst etwas in deinem Google-Konto. Bei uns liegt sie verschlüsselt, und in den Kontoeinstellungen löschst du sie mit einem Klick.',
+  'Zanim zeskanujesz pierwszy paragon': 'Bevor du den ersten Kassenbon scannst',
+  'Zdjęcia paragonów odczytuje za Ciebie Google. Trzeba mu to raz zezwolić - zajmuje to jakieś dwie minuty, nie wymaga karty płatniczej i nic nie kosztuje.':
+    'Die Fotos der Kassenbons liest Google für dich aus. Das musst du einmal erlauben - es dauert etwa zwei Minuten, braucht keine Zahlungskarte und kostet nichts.',
+  'Zamiast wpisywać wydatki ręcznie, możesz wgrywać zdjęcia paragonów - odczyta je za Ciebie Google. Trzeba mu to raz zezwolić, a poniżej masz instrukcję krok po kroku. Nic to nie kosztuje i nie wymaga karty płatniczej.':
+    'Statt Ausgaben von Hand einzutippen, kannst du Fotos von Kassenbons hochladen - Google liest sie für dich aus. Das musst du einmal erlauben; unten steht die Anleitung Schritt für Schritt. Es kostet nichts und braucht keine Zahlungskarte.',
   'Twoje dane, Twoja kontrola': 'Deine Daten, deine Kontrolle',
   'Dostęp wyłącznie na zaproszenie, bez reklam i bez śledzenia. Historia logowań pokazuje dokładnie, kto i kiedy wchodził na Twoje konto.':
     'Zugang nur auf Einladung, keine Werbung und kein Tracking. Der Anmeldeverlauf zeigt genau, wer wann auf dein Konto zugegriffen hat.',
