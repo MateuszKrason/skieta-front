@@ -914,6 +914,10 @@ export const de: Record<string, string> = {
   'Wypisać z miesięcznych podsumowań?': 'Von den monatlichen Zusammenfassungen abmelden?',
   'Przestaniemy wysyłać e-mail z podsumowaniem poprzedniego miesiąca. Pozostałe powiadomienia zostają bez zmian, a wszystko zmienisz w ustawieniach konta.':
     'Wir hören auf, dir die E-Mail mit der Zusammenfassung des Vormonats zu schicken. Deine übrigen Benachrichtigungen bleiben unverändert, und alles davon kannst du in den Kontoeinstellungen ändern.',
+  'Dodaj skietę do ekranu głównego - paragon wrzucisz wtedy jednym tapnięciem, bez szukania adresu w przeglądarce.':
+    'Füge skieta zum Startbildschirm hinzu - ein Kassenbon ist dann mit einem Tippen erfasst, ohne die Adresse im Browser zu suchen.',
+  'Zainstaluj': 'Installieren',
+  'Nie teraz': 'Jetzt nicht',
   'Twoje dane, Twoja kontrola': 'Deine Daten, deine Kontrolle',
   'Dostęp wyłącznie na zaproszenie, bez reklam i bez śledzenia. Historia logowań pokazuje dokładnie, kto i kiedy wchodził na Twoje konto.':
     'Zugang nur auf Einladung, keine Werbung und kein Tracking. Der Anmeldeverlauf zeigt genau, wer wann auf dein Konto zugegriffen hat.',

@@ -914,6 +914,10 @@ export const da: Record<string, string> = {
   'Wypisać z miesięcznych podsumowań?': 'Frameld de månedlige opsummeringer?',
   'Przestaniemy wysyłać e-mail z podsumowaniem poprzedniego miesiąca. Pozostałe powiadomienia zostają bez zmian, a wszystko zmienisz w ustawieniach konta.':
     'Vi holder op med at sende mailen med opsummeringen af din forrige måned. Dine øvrige beskeder er uændrede, og du kan ændre det hele i kontoindstillingerne.',
+  'Dodaj skietę do ekranu głównego - paragon wrzucisz wtedy jednym tapnięciem, bez szukania adresu w przeglądarce.':
+    'Føj skieta til hjemmeskærmen - så er en kvittering inde med ét tryk, uden at lede efter adressen i en browser.',
+  'Zainstaluj': 'Installer',
+  'Nie teraz': 'Ikke nu',
   'Twoje dane, Twoja kontrola': 'Dine data, din kontrol',
   'Dostęp wyłącznie na zaproszenie, bez reklam i bez śledzenia. Historia logowań pokazuje dokładnie, kto i kiedy wchodził na Twoje konto.':
     'Kun adgang via invitation, ingen reklamer og ingen sporing. Login-historikken viser præcis, hvem der har tilgået din konto, og hvornår.',

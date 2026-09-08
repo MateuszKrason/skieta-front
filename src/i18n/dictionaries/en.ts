@@ -914,6 +914,10 @@ export const en: Record<string, string> = {
   'Wypisać z miesięcznych podsumowań?': 'Unsubscribe from monthly summaries?',
   'Przestaniemy wysyłać e-mail z podsumowaniem poprzedniego miesiąca. Pozostałe powiadomienia zostają bez zmian, a wszystko zmienisz w ustawieniach konta.':
     'We will stop sending the e-mail summarising your previous month. Your other notifications stay as they are, and you can change all of it in account settings.',
+  'Dodaj skietę do ekranu głównego - paragon wrzucisz wtedy jednym tapnięciem, bez szukania adresu w przeglądarce.':
+    'Add skieta to your home screen - then a receipt goes in with one tap, without hunting for the address in a browser.',
+  'Zainstaluj': 'Install',
+  'Nie teraz': 'Not now',
   'Twoje dane, Twoja kontrola': 'Your data, your control',
   'Dostęp wyłącznie na zaproszenie, bez reklam i bez śledzenia. Historia logowań pokazuje dokładnie, kto i kiedy wchodził na Twoje konto.':
     'Invite-only access, no ads, no tracking. Login history shows exactly who accessed your account and when.',

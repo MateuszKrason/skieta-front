@@ -24,6 +24,13 @@
 #     the browser drops the request and no error appears anywhere. A
 #     self-hosted Sentry needs its own origin here instead.
 /*
-  Content-Security-Policy: default-src 'self'; script-src 'self' https://cloud.umami.is; style-src 'self' 'unsafe-inline'; img-src 'self' data:; font-src 'self' data:; connect-src 'self' https://cloud.umami.is https://gateway.umami.is https://*.ingest.sentry.io https://*.ingest.de.sentry.io; frame-ancestors 'none'; base-uri 'self'; form-action 'self'; object-src 'none'
+  Content-Security-Policy: default-src 'self'; script-src 'self' https://cloud.umami.is; style-src 'self' 'unsafe-inline'; img-src 'self' data:; font-src 'self' data:; worker-src 'self'; connect-src 'self' https://cloud.umami.is https://gateway.umami.is https://*.ingest.sentry.io https://*.ingest.de.sentry.io; frame-ancestors 'none'; base-uri 'self'; form-action 'self'; object-src 'none'
   Referrer-Policy: strict-origin-when-cross-origin
   X-Content-Type-Options: nosniff
+
+# The worker script itself must never be served from a stale cache, or a
+# deploy's new worker can sit unnoticed behind an old copy for as long as the
+# CDN feels like holding it. Browsers already refuse to trust a max-age above
+# 24h here; this makes it explicit rather than relying on that backstop.
+/sw.js
+  Cache-Control: no-cache

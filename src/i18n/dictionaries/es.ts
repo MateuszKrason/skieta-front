@@ -914,6 +914,10 @@ export const es: Record<string, string> = {
   'Wypisać z miesięcznych podsumowań?': '¿Darte de baja de los resúmenes mensuales?',
   'Przestaniemy wysyłać e-mail z podsumowaniem poprzedniego miesiąca. Pozostałe powiadomienia zostają bez zmian, a wszystko zmienisz w ustawieniach konta.':
     'Dejaremos de enviarte el correo con el resumen del mes anterior. El resto de avisos se queda como está y puedes cambiarlo todo en los ajustes de la cuenta.',
+  'Dodaj skietę do ekranu głównego - paragon wrzucisz wtedy jednym tapnięciem, bez szukania adresu w przeglądarce.':
+    'Añade skieta a la pantalla de inicio: así un ticket se registra con un toque, sin buscar la dirección en el navegador.',
+  'Zainstaluj': 'Instalar',
+  'Nie teraz': 'Ahora no',
   'Twoje dane, Twoja kontrola': 'Tus datos, tu control',
   'Dostęp wyłącznie na zaproszenie, bez reklam i bez śledzenia. Historia logowań pokazuje dokładnie, kto i kiedy wchodził na Twoje konto.':
     'Acceso solo por invitación, sin anuncios y sin rastreo. El historial de inicios de sesión muestra exactamente quién entró en tu cuenta y cuándo.',

@@ -914,6 +914,10 @@ export const sq: Record<string, string> = {
   'Wypisać z miesięcznych podsumowań?': 'Të çregjistrohesh nga përmbledhjet mujore?',
   'Przestaniemy wysyłać e-mail z podsumowaniem poprzedniego miesiąca. Pozostałe powiadomienia zostają bez zmian, a wszystko zmienisz w ustawieniach konta.':
     'Do të ndalojmë dërgimin e emailit me përmbledhjen e muajit të kaluar. Njoftimet e tjera mbeten siç janë dhe gjithçka mund ta ndryshosh te cilësimet e llogarisë.',
+  'Dodaj skietę do ekranu głównego - paragon wrzucisz wtedy jednym tapnięciem, bez szukania adresu w przeglądarce.':
+    'Shto skieta në ekranin bazë - kështu një kupon futet me një prekje, pa kërkuar adresën në shfletues.',
+  'Zainstaluj': 'Instalo',
+  'Nie teraz': 'Jo tani',
   'Twoje dane, Twoja kontrola': 'Të dhënat e tua, kontrolli yt',
   'Dostęp wyłącznie na zaproszenie, bez reklam i bez śledzenia. Historia logowań pokazuje dokładnie, kto i kiedy wchodził na Twoje konto.':
     'Akses vetëm me ftesë, pa reklama dhe pa gjurmim. Historiku i identifikimeve tregon saktësisht kush dhe kur ka hyrë në llogarinë tënde.',

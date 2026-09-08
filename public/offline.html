@@ -1,0 +1,94 @@
+<!doctype html>
+<html lang="pl">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Brak połączenia - skieta</title>
+    <!-- Everything inline and self-contained: this page is served by the
+         service worker at the exact moment the network is unavailable, so it
+         cannot depend on fetching a stylesheet, a font or an image. -->
+    <style>
+      :root {
+        color-scheme: light dark;
+        --bg: #f8fafc;
+        --card: #ffffff;
+        --border: #e2e8f0;
+        --heading: #0f172a;
+        --body: #475569;
+        --accent: #059669;
+      }
+      @media (prefers-color-scheme: dark) {
+        :root {
+          --bg: #0f172a;
+          --card: #1e293b;
+          --border: #334155;
+          --heading: #f1f5f9;
+          --body: #cbd5e1;
+          --accent: #34d399;
+        }
+      }
+      body {
+        margin: 0;
+        min-height: 100vh;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        padding: 24px;
+        background: var(--bg);
+        font-family: -apple-system, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
+      }
+      .card {
+        max-width: 380px;
+        width: 100%;
+        box-sizing: border-box;
+        background: var(--card);
+        border: 1px solid var(--border);
+        border-radius: 12px;
+        padding: 32px;
+        text-align: center;
+      }
+      .brand {
+        margin: 0 0 20px;
+        font-size: 20px;
+        font-weight: 700;
+        color: var(--accent);
+      }
+      h1 {
+        margin: 0 0 10px;
+        font-size: 18px;
+        color: var(--heading);
+      }
+      p {
+        margin: 0 0 20px;
+        font-size: 14px;
+        line-height: 1.6;
+        color: var(--body);
+      }
+      button {
+        font: inherit;
+        font-weight: 600;
+        font-size: 14px;
+        color: #ffffff;
+        background: var(--accent);
+        border: 0;
+        border-radius: 8px;
+        padding: 11px 26px;
+        cursor: pointer;
+      }
+    </style>
+  </head>
+  <body>
+    <div class="card">
+      <p class="brand">skieta</p>
+      <h1>Brak połączenia</h1>
+      <!-- Says plainly that nothing is available rather than implying the
+           app half-works offline: every screen here is a number fetched from
+           the server. -->
+      <p>
+        skieta potrzebuje połączenia, żeby pokazać Twoje konta, budżet i inwestycje - żadna z tych liczb
+        nie jest trzymana na urządzeniu. Sprawdź sieć i spróbuj ponownie.
+      </p>
+      <button type="button" onclick="location.reload()">Spróbuj ponownie</button>
+    </div>
+  </body>
+</html>

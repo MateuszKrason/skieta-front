@@ -4,6 +4,7 @@ import { Link, NavLink, Outlet } from 'react-router-dom'
 import { api } from '../api/client'
 import { useAuth } from '../auth/AuthContext'
 import FeedbackWidget from './FeedbackWidget'
+import InstallPrompt from './InstallPrompt'
 import InviteNudgeBubble from './InviteNudgeBubble'
 import { ScanReceiptNavButton } from './ScanReceiptButton'
 import SockLogo from './SockLogo'
@@ -300,6 +301,10 @@ export default function Layout() {
   return (
     <TourProvider>
     <div className="min-h-screen">
+      {/* Above the header rather than inside the page: it is an offer about
+          the app as a whole, and it only ever renders when the browser has
+          already decided the app is installable. */}
+      <InstallPrompt />
       <header className="border-b border-slate-200 dark:border-slate-700 bg-white dark:bg-slate-800">
         <div className="mx-auto flex max-w-7xl items-center justify-between px-4 py-3">
           <div className="flex items-center gap-4 xl:gap-8">
