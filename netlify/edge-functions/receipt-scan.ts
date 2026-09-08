@@ -35,22 +35,27 @@ Zasady:
 - store_name: nazwa sklepu z nagłówka paragonu (nie NIP, nie adres).
 - description: bardzo krótkie podsumowanie zakupu po polsku, np. "Zakupy spożywcze" (maks. 60 znaków).
 
-Jeśli któregoś pola nie da się odczytać, ustaw je na null. Nie zgaduj kwoty ani daty - null jest lepszy niż błędna wartość.`
+Jeśli któregoś pola nie da się odczytać, zwróć dla niego pusty string "". Nie zgaduj kwoty ani daty - pusty string jest lepszy niż błędna wartość.`
 
-// Lowercase type names, matching Gemini's current documented schema format
-// exactly (ai.google.dev/gemini-api/docs/structured-output) - the older
-// protobuf-style Schema type used uppercase enum values (STRING, OBJECT),
-// and mixing that convention in here made Gemini reject the whole request
-// with a 400, which surfaced to users as "Gemini nie rozpoznało paragonu"
-// regardless of what the photo actually showed.
+// Every property is a plain "string", never a nullable type array
+// (`type: ["string","null"]`) - that syntax is newer and less consistently
+// supported across Gemini model versions, and this app has no way to test
+// it live against a real key (see the module-level note above). A schema
+// this basic - one flat object, five string properties, nothing optional -
+// is the form structured output has supported since it launched, which
+// matters most here precisely because a bad schema fails the *entire*
+// request with no way to see why (see the note on hiding Gemini's error
+// body below). "Not found" is expressed in-band as "" and converted back to
+// null in normalizeParsedReceipt below, so callers still see the same
+// store_name: string | null shape as before.
 const RESPONSE_SCHEMA = {
   type: 'object',
   properties: {
-    store_name: { type: ['string', 'null'] },
-    date: { type: ['string', 'null'] },
-    amount: { type: ['string', 'null'] },
-    currency: { type: ['string', 'null'] },
-    description: { type: ['string', 'null'] },
+    store_name: { type: 'string' },
+    date: { type: 'string' },
+    amount: { type: 'string' },
+    currency: { type: 'string' },
+    description: { type: 'string' },
   },
   required: ['store_name', 'date', 'amount', 'currency', 'description'],
 }
@@ -97,13 +102,23 @@ interface ParsedReceipt {
   description: string | null
 }
 
-function isValidParsedReceipt(value: unknown): value is ParsedReceipt {
-  if (!value || typeof value !== 'object') return false
-  const keys = ['store_name', 'date', 'amount', 'currency', 'description']
-  return keys.every((key) => {
-    const v = (value as Record<string, unknown>)[key]
-    return v === null || typeof v === 'string'
-  })
+const RECEIPT_FIELDS = ['store_name', 'date', 'amount', 'currency', 'description'] as const
+
+/** Gemini returns "" for a field it couldn't read (see RESPONSE_SCHEMA above)
+ * - normalized to null here so every other caller keeps working with the
+ * same store_name: string | null shape this endpoint has always returned. */
+function normalizeParsedReceipt(value: unknown): ParsedReceipt | null {
+  if (!value || typeof value !== 'object') return null
+  const record = value as Record<string, unknown>
+  if (!RECEIPT_FIELDS.every((key) => typeof record[key] === 'string')) return null
+  const blankToNull = (s: unknown) => (typeof s === 'string' && s.trim() === '' ? null : (s as string))
+  return {
+    store_name: blankToNull(record.store_name),
+    date: blankToNull(record.date),
+    amount: blankToNull(record.amount),
+    currency: blankToNull(record.currency),
+    description: blankToNull(record.description),
+  }
 }
 
 export default async (request: Request) => {
@@ -172,29 +187,37 @@ export default async (request: Request) => {
   }
 
   if (!geminiResponse.ok) {
-    // Never echo Gemini's own error body back - it can quote the request,
-    // and the request contains the user's key in the URL.
-    const status = geminiResponse.status === 400 ? 400 : 502
+    // The body itself is never echoed to the browser - Gemini's error
+    // responses can quote back parts of the request, which here includes
+    // the user's own key in the URL - but the bare status code is safe, and
+    // without it every failure looks identical from the UI. Logged in full
+    // server-side (Netlify's own function logs, never the browser) so a
+    // repeat failure is actually diagnosable next time instead of guessed at
+    // a third time.
+    const errorBody = await geminiResponse.text().catch(() => '')
+    console.error(`Gemini generateContent failed: ${geminiResponse.status} ${errorBody}`)
     return jsonResponse(
-      { detail: 'Gemini nie rozpoznało paragonu - spróbuj innego zdjęcia albo wpisz dane ręcznie.' },
-      status,
+      {
+        detail: `Gemini nie rozpoznało paragonu (błąd ${geminiResponse.status}) - spróbuj innego zdjęcia albo wpisz dane ręcznie.`,
+      },
+      geminiResponse.status === 400 ? 400 : 502,
     )
   }
 
-  let parsed: unknown
+  let parsed: ParsedReceipt | null = null
   try {
     const payload = await geminiResponse.json()
     const text = payload.candidates?.[0]?.content?.parts?.[0]?.text
-    parsed = JSON.parse(text)
-  } catch {
+    parsed = normalizeParsedReceipt(JSON.parse(text))
+  } catch (err) {
+    console.error('Failed to parse Gemini response as the expected receipt JSON:', err)
+  }
+
+  if (!parsed) {
     return jsonResponse(
       { detail: 'Nie udało się odczytać odpowiedzi Gemini - spróbuj innego zdjęcia.' },
       502,
     )
-  }
-
-  if (!isValidParsedReceipt(parsed)) {
-    return jsonResponse({ detail: 'Nieoczekiwana odpowiedź Gemini - spróbuj ponownie.' }, 502)
   }
 
   return jsonResponse(parsed)
