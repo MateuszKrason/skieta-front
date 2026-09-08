@@ -1556,7 +1556,7 @@ export function AddTransactionForm({
   }
 
   return (
-    <form onSubmit={onSubmit} className="grid grid-cols-2 gap-3 rounded-xl border border-slate-200 dark:border-slate-700 bg-white dark:bg-slate-800 p-4 shadow-sm sm:grid-cols-4">
+    <form onSubmit={onSubmit} className="grid grid-cols-1 gap-3 rounded-xl border border-slate-200 dark:border-slate-700 bg-white dark:bg-slate-800 p-4 shadow-sm sm:grid-cols-4">
       {!lockedType && (
         <Field label="Typ">
           <select
@@ -1652,26 +1652,37 @@ export function AddTransactionForm({
       <Field label="Opis (opcjonalnie)">
         <input value={description} onChange={(e) => setDescription(e.target.value)} className="input" />
       </Field>
-      <div className="col-span-2 sm:col-span-4">
+      <div className="sm:col-span-4">
         <TagPicker selected={tags} onToggle={toggleTag} />
       </div>
-      {error && <p className="col-span-2 text-sm text-red-600 dark:text-red-400 sm:col-span-4">{error}</p>}
+      {error && <p className="text-sm text-red-600 dark:text-red-400 sm:col-span-4">{error}</p>}
       <div className="flex items-end">
         <button type="submit" className="btn-primary w-full" disabled={mutation.isPending}>
           {t('Zapisz')}
         </button>
       </div>
-      <p className="col-span-2 text-xs text-slate-400 dark:text-slate-500 sm:col-span-4">
+      <p className="text-xs text-slate-400 dark:text-slate-500 sm:col-span-4">
         {t('Jeśli wybierzesz konto, kwota od razu zmieni jego saldo.')}
       </p>
     </form>
   )
 }
 
-export function Field({ label, children }: { label: string; children: React.ReactNode }) {
+export function Field({
+  label,
+  children,
+  className,
+}: {
+  label: string
+  children: React.ReactNode
+  className?: string
+}) {
   const { t } = useLanguage()
+  // min-w-0 because a grid item defaults to min-content width: without it a
+  // control that refuses to shrink - input[type=date] is the one that does -
+  // widens its whole column and drags the form out of shape.
   return (
-    <label className="block text-xs font-medium text-slate-500 dark:text-slate-400">
+    <label className={`block min-w-0 text-xs font-medium text-slate-500 dark:text-slate-400 ${className ?? ''}`}>
       {t(label)}
       <div className="mt-1">{children}</div>
     </label>

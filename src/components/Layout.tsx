@@ -82,7 +82,7 @@ function navLinkClass({ isActive }: { isActive: boolean }) {
 // immediately - two clicks close together used to fire two independent
 // request pairs with no guaranteed resolution order, so whichever refetch
 // happened to land last "won" regardless of actual click order.
-function LanguageSelect() {
+function LanguageSelect({ className }: { className?: string }) {
   const { updateProfile } = useAuth()
   const { language, setLanguage, t } = useLanguage()
 
@@ -100,7 +100,7 @@ function LanguageSelect() {
       onChange={(e) => mutation.mutate(e.target.value as Language)}
       disabled={mutation.isPending}
       title={t('Zmień język interfejsu')}
-      className="rounded-md border border-slate-300 dark:border-slate-600 bg-transparent px-2 py-1 font-medium text-slate-600 dark:text-slate-400 hover:bg-slate-100 dark:hover:bg-slate-700 disabled:opacity-50"
+      className={`h-8 rounded-md border border-slate-300 dark:border-slate-600 bg-transparent px-2 font-medium text-slate-600 dark:text-slate-400 hover:bg-slate-100 dark:hover:bg-slate-700 disabled:opacity-50 ${className ?? ''}`}
     >
       {LANGUAGES.map((lang) => (
         <option key={lang} value={lang}>
@@ -111,7 +111,7 @@ function LanguageSelect() {
   )
 }
 
-function ThemeToggleButton() {
+function ThemeToggleButton({ className }: { className?: string }) {
   const { updateProfile } = useAuth()
   const { theme, setTheme } = useTheme()
   const { t } = useLanguage()
@@ -135,7 +135,7 @@ function ThemeToggleButton() {
             ? t('Przełącz na lawendowy motyw')
             : t('Przełącz na jasny motyw')
       }
-      className="rounded-md border border-slate-300 dark:border-slate-600 px-2.5 py-1 text-slate-600 dark:text-slate-400 hover:bg-slate-100 dark:hover:bg-slate-700 disabled:opacity-50"
+      className={`h-8 rounded-md border border-slate-300 dark:border-slate-600 px-2.5 text-slate-600 dark:text-slate-400 hover:bg-slate-100 dark:hover:bg-slate-700 disabled:opacity-50 ${className ?? ''}`}
     >
       {theme === 'light' ? '🌙' : theme === 'dark' ? '🌸' : '☀️'}
     </button>
@@ -207,13 +207,13 @@ function UserMenu({ onNavigate }: { onNavigate: () => void }) {
             {t('Moje konto')}
           </NavLink>
           <div className="my-1 border-t border-slate-100 dark:border-slate-700" />
-          <div className="flex items-center justify-between px-2 py-1">
-            <span className="text-xs text-slate-500 dark:text-slate-400">{t('Język')}</span>
-            <LanguageSelect />
+          <div className="flex items-center justify-between gap-3 px-2 py-1.5">
+            <span className="text-slate-500 dark:text-slate-400">{t('Język')}</span>
+            <LanguageSelect className="w-16 shrink-0" />
           </div>
-          <div className="flex items-center justify-between px-2 py-1">
-            <span className="text-xs text-slate-500 dark:text-slate-400">{t('Motyw')}</span>
-            <ThemeToggleButton />
+          <div className="flex items-center justify-between gap-3 px-2 py-1.5">
+            <span className="text-slate-500 dark:text-slate-400">{t('Motyw')}</span>
+            <ThemeToggleButton className="w-16 shrink-0" />
           </div>
           <div className="my-1 border-t border-slate-100 dark:border-slate-700" />
           <button
