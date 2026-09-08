@@ -851,6 +851,57 @@ export const es: Record<string, string> = {
   'Dywidendy i podatki': 'Dividendos e impuestos',
   'Historia i prognoza wypłat dywidend, szacowany podatek Belki do zapłaty - żadnych niespodzianek przy rozliczeniu.':
     'Historial y previsión de pagos de dividendos, impuesto estimado a pagar - sin sorpresas a la hora de declarar.',
+  // Landing - budget-first positioning + receipt scanning
+  'Zapisuj wydatki zdjęciem paragonu i zobacz, gdzie naprawdę idą Twoje pieniądze. A jeśli inwestujesz - skieta doliczy do tego akcje, lokaty i obligacje i pokaże realny zysk, a nie samo saldo.':
+    'Registra los gastos con una foto del ticket y comprueba adónde va realmente tu dinero. Y si inviertes, skieta suma acciones, depósitos y bonos, y te muestra la ganancia real, no solo el saldo.',
+  'Wydatek ze zdjęcia paragonu': 'Un gasto a partir de la foto del ticket',
+  'Zrób paragonowi zdjęcie telefonem, a skieta odczyta kwotę, datę i sklep oraz sama zaproponuje kategorię z Twojej listy. Zostaje Ci sprawdzić i zapisać.':
+    'Haz una foto del ticket con el móvil y skieta leerá el importe, la fecha y la tienda, y propondrá una categoría de tu propia lista. Solo te queda revisarlo y guardarlo.',
+  'Realny zwrot, dywidendy i podatki': 'Rentabilidad real, dividendos e impuestos',
+  'Jeśli inwestujesz: zysk liczony osobno od wpłaconego kapitału, po podatku Belki, plus historia i prognoza dywidend wraz z szacowanym podatkiem do zapłaty.':
+    'Si inviertes: la ganancia se calcula aparte del capital aportado, después del impuesto sobre plusvalías, además del historial y la previsión de dividendos con el impuesto estimado a pagar.',
+  'Widać, na co naprawdę idą pieniądze': 'Se ve adónde va realmente el dinero',
+  'Wydatki z podziałem na kategorie, sklepy i tagi, miesiąc po miesiącu. Nowy wydatek dodajesz zdjęciem paragonu - kwota, data i sklep odczytują się same, a kategoria jest proponowana z Twojej własnej listy.':
+    'Gastos desglosados por categoría, tienda y etiqueta, mes a mes. Un gasto nuevo se añade con una foto del ticket: el importe, la fecha y la tienda se leen solos, y la categoría se propone a partir de tu propia lista.',
+  'Strona wydatków w skiecie: podział na kategorie i sklepy, wykres wydatków w czasie i przycisk wgrywania paragonu':
+    'La página de gastos en skieta: desglose por categorías y tiendas, gráfico de gastos en el tiempo y el botón para subir el ticket',
+  'Zaczynasz notować': 'Empiezas a registrar',
+  'Dodajesz konto bankowe, a wydatki wrzucasz zdjęciem paragonu. Portfel akcji, lokaty i obligacje - jeśli je masz.':
+    'Añades una cuenta bancaria y registras los gastos con fotos de los tickets. Cartera de acciones, depósitos y bonos, si los tienes.',
+  'Dashboard aktualizuje się na bieżąco - budżet, majątek i zwrot z inwestycji w jednym miejscu.':
+    'El panel se actualiza al momento: presupuesto, patrimonio y rentabilidad de las inversiones en un solo lugar.',
+  'Czy mogę używać skiety tylko do budżetu, bez inwestycji?':
+    '¿Puedo usar skieta solo para el presupuesto, sin inversiones?',
+  'Tak, i nie musisz niczego obchodzić. Przy zakładaniu konta zaznaczasz, co Cię interesuje - jeśli nie zaznaczysz giełdy, cała część inwestycyjna po prostu znika z menu i zostaje czysta aplikacja do przychodów, wydatków, paragonów i celów oszczędnościowych. Możesz to zmienić w każdej chwili w ustawieniach konta.':
+    'Sí, y no tienes que sortear nada. Al crear la cuenta eliges qué te interesa: si no marcas la bolsa, toda la parte de inversión desaparece del menú y queda una aplicación limpia para ingresos, gastos, tickets y objetivos de ahorro. Puedes cambiarlo cuando quieras en los ajustes de la cuenta.',
+  'Jak działa dodawanie wydatku ze zdjęcia paragonu?':
+    '¿Cómo funciona añadir un gasto a partir de la foto de un ticket?',
+  'Robisz paragonowi zdjęcie telefonem, a skieta odczytuje z niego kwotę, datę i nazwę sklepu oraz proponuje kategorię z Twojej własnej listy - poprawiasz, co trzeba, i zapisujesz. Odczytem zajmuje się Google Gemini na Twoim własnym, darmowym kluczu, który wklejasz raz przy pierwszym skanowaniu. Samego zdjęcia nigdzie nie zapisujemy - jest odczytywane w locie i nie trafia do naszej bazy.':
+    'Haces una foto del ticket con el móvil y skieta lee el importe, la fecha y el nombre de la tienda, y propone una categoría de tu propia lista: corriges lo que haga falta y guardas. De la lectura se encarga Google Gemini con tu propia clave gratuita, que pegas una vez al escanear por primera vez. La foto en sí no la guardamos en ningún sitio: se lee al vuelo y no llega a nuestra base de datos.',
+  'Arkusz nie zrobi za Ciebie zdjęcia paragonu i nie policzy, ile realnie zarobiłeś. skieta odczytuje wydatek ze zdjęcia i sama pilnuje kategorii, a przy inwestycjach liczy zysk osobno od wpłaconego kapitału, po podatku Belki, z kosztem zakupu akcji przeliczonym po kursie NBP z dnia transakcji, a nie dzisiejszym. To rzeczy, które w arkuszu trzeba utrzymywać ręcznie i łatwo w nich o błąd.':
+    'Una hoja de cálculo no va a fotografiar el ticket por ti ni va a calcular cuánto has ganado de verdad. skieta lee el gasto de la foto y se ocupa de las categorías, y en las inversiones calcula la ganancia aparte del capital aportado, después del impuesto sobre plusvalías, con el coste de compra de las acciones convertido al tipo del NBP del día de la transacción y no al de hoy. Son cosas que en una hoja de cálculo hay que mantener a mano y en las que es fácil equivocarse.',
+  'Załóż konto i zacznij notować wydatki jeszcze dziś - pierwszy paragon wrzucisz zdjęciem w kilka sekund.':
+    'Crea una cuenta y empieza a registrar gastos hoy mismo: el primer ticket lo añades con una foto en unos segundos.',
+  '📷 Paragon': '📷 Ticket',
+  '📷 Dodaj paragon': '📷 Añadir ticket',
+  'Jeszcze jeden krok: darmowy klucz Gemini': 'Un paso más: una clave gratuita de Gemini',
+  'Paragony odczytuje Google Gemini na Twoim własnym, darmowym limicie - dzięki temu funkcja jest bezpłatna i nikt poza Tobą nie płaci za Twoje skany.':
+    'Los tickets los lee Google Gemini con tu propio límite gratuito; por eso la función no cuesta nada y nadie más que tú paga por tus escaneos.',
+  'Otwórz Google AI Studio i kliknij "Create API key" - jest darmowy i zajmuje minutę.':
+    'Abre Google AI Studio y haz clic en "Create API key": es gratis y lleva un minuto.',
+  'Skopiuj wygenerowany klucz.': 'Copia la clave generada.',
+  'Wklej go poniżej. Przechowujemy go zaszyfrowany i używamy wyłącznie do odczytania Twoich paragonów.':
+    'Pégala abajo. La guardamos cifrada y la usamos únicamente para leer tus tickets.',
+  'Motyw': 'Tema',
+  'Klucz zapisany. Kliknij przycisk z paragonem jeszcze raz i wybierz zdjęcie.':
+    'Clave guardada. Vuelve a hacer clic en el botón del ticket y elige una foto.',
+  'Najszybciej: zdjęcie paragonu': 'Lo más rápido: una foto del ticket',
+  'Zamiast wpisywać wydatek ręcznie, zrób paragonowi zdjęcie telefonem. skieta odczyta kwotę, datę i sklep oraz zaproponuje kategorię. Przycisk jest na górnym pasku, więc masz go pod ręką na każdej stronie.':
+    'En lugar de escribir el gasto a mano, haz una foto del ticket con el móvil. skieta lee el importe, la fecha y la tienda, y propone una categoría. El botón está en la barra superior, así que lo tienes a mano en cualquier página.',
+  'Kliknij tutaj, żeby dodać konto bankowe, a jeśli je masz - także akcje, lokaty i obligacje. Od razu zobaczysz swój prawdziwy stan, zamiast zaczynać od zera.':
+    'Haz clic aquí para añadir una cuenta bancaria y, si los tienes, también acciones, depósitos y bonos. Verás enseguida cuál es tu situación real, en vez de empezar desde cero.',
+  'Przychody i wydatki, w tym dodawanie ze zdjęcia paragonu':
+    'Ingresos y gastos, incluido añadirlos desde la foto de un ticket',
   'Twoje dane, Twoja kontrola': 'Tus datos, tu control',
   'Dostęp wyłącznie na zaproszenie, bez reklam i bez śledzenia. Historia logowań pokazuje dokładnie, kto i kiedy wchodził na Twoje konto.':
     'Acceso solo por invitación, sin anuncios y sin rastreo. El historial de inicios de sesión muestra exactamente quién entró en tu cuenta y cuándo.',

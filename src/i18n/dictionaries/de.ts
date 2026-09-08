@@ -851,6 +851,57 @@ export const de: Record<string, string> = {
   'Dywidendy i podatki': 'Dividenden und Steuern',
   'Historia i prognoza wypłat dywidend, szacowany podatek Belki do zapłaty - żadnych niespodzianek przy rozliczeniu.':
     'Dividendenhistorie und -prognose, geschätzte fällige Kapitalertragsteuer - keine Überraschungen bei der Steuererklärung.',
+  // Landing - budget-first positioning + receipt scanning
+  'Zapisuj wydatki zdjęciem paragonu i zobacz, gdzie naprawdę idą Twoje pieniądze. A jeśli inwestujesz - skieta doliczy do tego akcje, lokaty i obligacje i pokaże realny zysk, a nie samo saldo.':
+    'Erfasse Ausgaben mit einem Foto des Kassenbons und sieh, wohin dein Geld wirklich geht. Und wenn du investierst - skieta rechnet Aktien, Festgeld und Anleihen dazu und zeigt den echten Gewinn, nicht nur den Kontostand.',
+  'Wydatek ze zdjęcia paragonu': 'Ausgabe aus dem Foto des Kassenbons',
+  'Zrób paragonowi zdjęcie telefonem, a skieta odczyta kwotę, datę i sklep oraz sama zaproponuje kategorię z Twojej listy. Zostaje Ci sprawdzić i zapisać.':
+    'Fotografiere den Kassenbon mit dem Handy, und skieta liest Betrag, Datum und Geschäft aus und schlägt selbst eine Kategorie aus deiner Liste vor. Du musst nur noch prüfen und speichern.',
+  'Realny zwrot, dywidendy i podatki': 'Echte Rendite, Dividenden und Steuern',
+  'Jeśli inwestujesz: zysk liczony osobno od wpłaconego kapitału, po podatku Belki, plus historia i prognoza dywidend wraz z szacowanym podatkiem do zapłaty.':
+    'Wenn du investierst: Gewinn getrennt vom eingezahlten Kapital berechnet, nach Kapitalertragsteuer, dazu Dividendenhistorie und -prognose samt geschätzter fälliger Steuer.',
+  'Widać, na co naprawdę idą pieniądze': 'Man sieht, wohin das Geld wirklich geht',
+  'Wydatki z podziałem na kategorie, sklepy i tagi, miesiąc po miesiącu. Nowy wydatek dodajesz zdjęciem paragonu - kwota, data i sklep odczytują się same, a kategoria jest proponowana z Twojej własnej listy.':
+    'Ausgaben nach Kategorien, Geschäften und Tags, Monat für Monat. Eine neue Ausgabe fügst du mit einem Foto des Kassenbons hinzu - Betrag, Datum und Geschäft lesen sich selbst aus, und die Kategorie wird aus deiner eigenen Liste vorgeschlagen.',
+  'Strona wydatków w skiecie: podział na kategorie i sklepy, wykres wydatków w czasie i przycisk wgrywania paragonu':
+    'Die Ausgabenseite in skieta: Aufteilung nach Kategorien und Geschäften, Ausgabenverlauf und die Schaltfläche zum Hochladen des Kassenbons',
+  'Zaczynasz notować': 'Du fängst an zu erfassen',
+  'Dodajesz konto bankowe, a wydatki wrzucasz zdjęciem paragonu. Portfel akcji, lokaty i obligacje - jeśli je masz.':
+    'Du fügst ein Bankkonto hinzu und erfasst Ausgaben per Foto des Kassenbons. Aktiendepot, Festgeld und Anleihen - falls du sie hast.',
+  'Dashboard aktualizuje się na bieżąco - budżet, majątek i zwrot z inwestycji w jednym miejscu.':
+    'Das Dashboard aktualisiert sich laufend - Budget, Vermögen und Anlagerendite an einem Ort.',
+  'Czy mogę używać skiety tylko do budżetu, bez inwestycji?':
+    'Kann ich skieta nur für das Budget nutzen, ohne Investitionen?',
+  'Tak, i nie musisz niczego obchodzić. Przy zakładaniu konta zaznaczasz, co Cię interesuje - jeśli nie zaznaczysz giełdy, cała część inwestycyjna po prostu znika z menu i zostaje czysta aplikacja do przychodów, wydatków, paragonów i celów oszczędnościowych. Możesz to zmienić w każdej chwili w ustawieniach konta.':
+    'Ja, und du musst nichts umgehen. Beim Anlegen des Kontos wählst du aus, was dich interessiert - lässt du die Börse weg, verschwindet der gesamte Anlagebereich einfach aus dem Menü, und es bleibt eine schlanke App für Einnahmen, Ausgaben, Kassenbons und Sparziele. Du kannst das jederzeit in den Kontoeinstellungen ändern.',
+  'Jak działa dodawanie wydatku ze zdjęcia paragonu?':
+    'Wie funktioniert das Hinzufügen einer Ausgabe aus dem Foto eines Kassenbons?',
+  'Robisz paragonowi zdjęcie telefonem, a skieta odczytuje z niego kwotę, datę i nazwę sklepu oraz proponuje kategorię z Twojej własnej listy - poprawiasz, co trzeba, i zapisujesz. Odczytem zajmuje się Google Gemini na Twoim własnym, darmowym kluczu, który wklejasz raz przy pierwszym skanowaniu. Samego zdjęcia nigdzie nie zapisujemy - jest odczytywane w locie i nie trafia do naszej bazy.':
+    'Du fotografierst den Kassenbon mit dem Handy, und skieta liest Betrag, Datum und Name des Geschäfts aus und schlägt eine Kategorie aus deiner eigenen Liste vor - du korrigierst, was nötig ist, und speicherst. Das Auslesen übernimmt Google Gemini mit deinem eigenen, kostenlosen Schlüssel, den du beim ersten Scan einmal einfügst. Das Foto selbst speichern wir nirgends - es wird direkt ausgelesen und landet nicht in unserer Datenbank.',
+  'Arkusz nie zrobi za Ciebie zdjęcia paragonu i nie policzy, ile realnie zarobiłeś. skieta odczytuje wydatek ze zdjęcia i sama pilnuje kategorii, a przy inwestycjach liczy zysk osobno od wpłaconego kapitału, po podatku Belki, z kosztem zakupu akcji przeliczonym po kursie NBP z dnia transakcji, a nie dzisiejszym. To rzeczy, które w arkuszu trzeba utrzymywać ręcznie i łatwo w nich o błąd.':
+    'Eine Tabelle fotografiert keinen Kassenbon für dich und rechnet nicht aus, wie viel du wirklich verdient hast. skieta liest die Ausgabe aus dem Foto und achtet auf die Kategorien, und bei Investitionen berechnet sie den Gewinn getrennt vom eingezahlten Kapital, nach Kapitalertragsteuer, mit dem Kaufkurs der Aktien zum NBP-Kurs vom Transaktionstag statt zum heutigen. Das alles muss man in einer Tabelle von Hand pflegen, und dabei passieren leicht Fehler.',
+  'Załóż konto i zacznij notować wydatki jeszcze dziś - pierwszy paragon wrzucisz zdjęciem w kilka sekund.':
+    'Leg ein Konto an und fang noch heute an, Ausgaben zu erfassen - den ersten Kassenbon fügst du in Sekunden als Foto hinzu.',
+  '📷 Paragon': '📷 Kassenbon',
+  '📷 Dodaj paragon': '📷 Kassenbon hinzufügen',
+  'Jeszcze jeden krok: darmowy klucz Gemini': 'Noch ein Schritt: ein kostenloser Gemini-Schlüssel',
+  'Paragony odczytuje Google Gemini na Twoim własnym, darmowym limicie - dzięki temu funkcja jest bezpłatna i nikt poza Tobą nie płaci za Twoje skany.':
+    'Kassenbons liest Google Gemini über dein eigenes, kostenloses Kontingent - deshalb ist die Funktion gratis, und niemand außer dir zahlt für deine Scans.',
+  'Otwórz Google AI Studio i kliknij "Create API key" - jest darmowy i zajmuje minutę.':
+    'Öffne Google AI Studio und klicke auf "Create API key" - das ist kostenlos und dauert eine Minute.',
+  'Skopiuj wygenerowany klucz.': 'Kopiere den erzeugten Schlüssel.',
+  'Wklej go poniżej. Przechowujemy go zaszyfrowany i używamy wyłącznie do odczytania Twoich paragonów.':
+    'Füge ihn unten ein. Wir speichern ihn verschlüsselt und verwenden ihn ausschließlich zum Auslesen deiner Kassenbons.',
+  'Motyw': 'Design',
+  'Klucz zapisany. Kliknij przycisk z paragonem jeszcze raz i wybierz zdjęcie.':
+    'Schlüssel gespeichert. Klicke erneut auf die Kassenbon-Schaltfläche und wähle ein Foto.',
+  'Najszybciej: zdjęcie paragonu': 'Am schnellsten: ein Foto des Kassenbons',
+  'Zamiast wpisywać wydatek ręcznie, zrób paragonowi zdjęcie telefonem. skieta odczyta kwotę, datę i sklep oraz zaproponuje kategorię. Przycisk jest na górnym pasku, więc masz go pod ręką na każdej stronie.':
+    'Statt die Ausgabe von Hand einzutippen, fotografiere den Kassenbon mit dem Handy. skieta liest Betrag, Datum und Geschäft aus und schlägt eine Kategorie vor. Die Schaltfläche sitzt in der oberen Leiste und ist damit auf jeder Seite griffbereit.',
+  'Kliknij tutaj, żeby dodać konto bankowe, a jeśli je masz - także akcje, lokaty i obligacje. Od razu zobaczysz swój prawdziwy stan, zamiast zaczynać od zera.':
+    'Klicke hier, um ein Bankkonto hinzuzufügen und, falls vorhanden, auch Aktien, Festgeld und Anleihen. Du siehst sofort, wo du wirklich stehst, statt bei null anzufangen.',
+  'Przychody i wydatki, w tym dodawanie ze zdjęcia paragonu':
+    'Einnahmen und Ausgaben, inklusive Erfassung per Foto des Kassenbons',
   'Twoje dane, Twoja kontrola': 'Deine Daten, deine Kontrolle',
   'Dostęp wyłącznie na zaproszenie, bez reklam i bez śledzenia. Historia logowań pokazuje dokładnie, kto i kiedy wchodził na Twoje konto.':
     'Zugang nur auf Einladung, keine Werbung und kein Tracking. Der Anmeldeverlauf zeigt genau, wer wann auf dein Konto zugegriffen hat.',

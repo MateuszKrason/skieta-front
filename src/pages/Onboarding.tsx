@@ -209,7 +209,7 @@ const INTEREST_OPTIONS: {
 }[] = [
   { field: 'interest_stocks', label: 'Giełda', hint: 'Portfel akcji, dywidendy, analiza spółek' },
   { field: 'interest_crypto', label: 'Krypto', hint: 'Portfel kryptowalut i analiza' },
-  { field: 'interest_budget', label: 'Budżet', hint: 'Notowanie przychodów i wydatków' },
+  { field: 'interest_budget', label: 'Budżet', hint: 'Przychody i wydatki, w tym dodawanie ze zdjęcia paragonu' },
   { field: 'interest_planning', label: 'Planowanie', hint: 'Cele oszczędnościowe i planowane wydatki' },
   { field: 'interest_analysis', label: 'Analiza', hint: 'Kalkulator inwestycyjny - obligacje, lokaty, giełda' },
 ]

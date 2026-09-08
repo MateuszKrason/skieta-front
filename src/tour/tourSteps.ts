@@ -54,6 +54,18 @@ export const TOUR_STEPS: TourStep[] = [
     interest: 'interest_budget',
   },
   {
+    // Straight after "how to add a transaction", because it is the same job
+    // done faster - and this button is the one thing in the app a new user is
+    // least likely to find on their own, being an icon in the top bar rather
+    // than something on the page they happen to be reading.
+    id: 'scan-receipt',
+    target: 'header-scan-receipt',
+    path: '/budzet/wydatki',
+    title: 'Najszybciej: zdjęcie paragonu',
+    body: 'Zamiast wpisywać wydatek ręcznie, zrób paragonowi zdjęcie telefonem. skieta odczyta kwotę, datę i sklep oraz zaproponuje kategorię. Przycisk jest na górnym pasku, więc masz go pod ręką na każdej stronie.',
+    interest: 'interest_budget',
+  },
+  {
     id: 'nav-konta',
     target: 'nav-konta',
     path: '/konta',
@@ -97,7 +109,7 @@ export const TOUR_STEPS: TourStep[] = [
     target: 'header-add-positions',
     path: '/dashboard',
     title: 'Od czego zacząć',
-    body: 'Kliknij tutaj, żeby dodać konta, akcje, lokaty czy obligacje, które już posiadasz - od razu zobaczysz swój prawdziwy majątek, zamiast zaczynać od zera.',
+    body: 'Kliknij tutaj, żeby dodać konto bankowe, a jeśli je masz - także akcje, lokaty i obligacje. Od razu zobaczysz swój prawdziwy stan, zamiast zaczynać od zera.',
   },
   {
     id: 'finish',

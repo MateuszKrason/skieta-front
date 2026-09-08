@@ -4,6 +4,7 @@ import { QRCodeSVG } from 'qrcode.react'
 import { Link, useNavigate } from 'react-router-dom'
 import { api } from '../api/client'
 import { useAuth } from '../auth/AuthContext'
+import { GeminiKeyForm } from '../components/GeminiKeyForm'
 import { DEFAULT_NAV_ORDER, REORDERABLE_LINKS } from '../components/Layout'
 import { useLanguage, LANGUAGES, LANGUAGE_LABELS, type Language } from '../i18n/LanguageContext'
 import { trackEvent } from '../lib/analytics'
@@ -793,42 +794,23 @@ function ProfileForm() {
 // the value (see accounts.views.GeminiApiKeyView on the backend).
 function GeminiKeySection() {
   const { t } = useLanguage()
+  const { updateProfile } = useAuth()
   const queryClient = useQueryClient()
-  const [apiKey, setApiKey] = useState('')
-  const [error, setError] = useState<string | null>(null)
 
   const { data: status } = useQuery({
     queryKey: ['gemini-key-status'],
     queryFn: async () => (await api.get<GeminiKeyStatus>('/auth/gemini-key/')).data,
   })
 
-  const saveMutation = useMutation({
-    mutationFn: () => api.put('/auth/gemini-key/', { api_key: apiKey }),
-    onSuccess: () => {
-      setApiKey('')
-      setError(null)
-      queryClient.invalidateQueries({ queryKey: ['gemini-key-status'] })
-    },
-    onError: (err: unknown) => {
-      const data = (err as { response?: { data?: unknown } }).response?.data
-      if (data && typeof data === 'object') {
-        setError(Object.values(data as Record<string, unknown>).flat().join(' '))
-      } else {
-        setError(t('Nie udało się zapisać klucza.'))
-      }
-    },
-  })
-
   const deleteMutation = useMutation({
     mutationFn: () => api.delete('/auth/gemini-key/'),
-    onSuccess: () => queryClient.invalidateQueries({ queryKey: ['gemini-key-status'] }),
+    onSuccess: () => {
+      queryClient.invalidateQueries({ queryKey: ['gemini-key-status'] })
+      // Keeps the receipt buttons honest: with the key gone they go back to
+      // showing the setup instructions instead of opening the camera.
+      updateProfile({ has_gemini_api_key: false })
+    },
   })
-
-  function onSubmit(e: FormEvent) {
-    e.preventDefault()
-    setError(null)
-    saveMutation.mutate()
-  }
 
   return (
     <div className="space-y-3 rounded-xl border border-slate-200 dark:border-slate-700 bg-white dark:bg-slate-800 p-5 shadow-sm">
@@ -858,28 +840,7 @@ function GeminiKeySection() {
           </button>
         </div>
       ) : (
-        <form onSubmit={onSubmit} className="space-y-2">
-          <a
-            href="https://aistudio.google.com/apikey"
-            target="_blank"
-            rel="noopener noreferrer"
-            className="inline-block text-sm font-medium text-accent-700 dark:text-accent-400 hover:underline"
-          >
-            {t('Pobierz darmowy klucz Google →')}
-          </a>
-          <input
-            type="text"
-            value={apiKey}
-            onChange={(e) => setApiKey(e.target.value)}
-            placeholder={t('Wklej klucz Gemini')}
-            required
-            className="input"
-          />
-          {error && <p className="text-sm text-red-600 dark:text-red-400">{error}</p>}
-          <button type="submit" className="btn-primary" disabled={saveMutation.isPending}>
-            {saveMutation.isPending ? t('Sprawdzanie klucza…') : t('Zapisz klucz')}
-          </button>
-        </form>
+        <GeminiKeyForm />
       )}
     </div>
   )

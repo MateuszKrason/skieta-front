@@ -1,4 +1,4 @@
-import { useEffect, useRef, useState, type ChangeEvent, type FormEvent } from 'react'
+import { useEffect, useRef, useState, type FormEvent } from 'react'
 import { useMutation, useQuery, useQueryClient } from '@tanstack/react-query'
 import {
   Area,
@@ -17,12 +17,11 @@ import {
   XAxis,
   YAxis,
 } from 'recharts'
-import { api, tokenStore } from '../../api/client'
+import { api } from '../../api/client'
 import { AmountInput } from '../../components/AmountInput'
 import { CardLoader } from '../../components/Loader'
 import { LoadMoreButton } from '../../components/LoadMoreButton'
 import { useLanguage } from '../../i18n/LanguageContext'
-import { trackEvent } from '../../lib/analytics'
 import { useTooltipStyle } from '../../lib/chartTooltip'
 import { formatAxisValue, formatDate, formatMoney, formatPct, groupAccountsByBank } from '../../lib/format'
 import type {
@@ -33,7 +32,6 @@ import type {
   CategoryBreakdownRow,
   Currency,
   MonthlyTrendRow,
-  ParsedReceipt,
   Store,
   StoreBreakdownRow,
   Tag,
@@ -1601,86 +1599,6 @@ export function AddTransactionForm({
         {t('Jeśli wybierzesz konto, kwota od razu zmieni jego saldo.')}
       </p>
     </form>
-  )
-}
-
-// Calls /receipt-scan, a Netlify edge function (not the Django API - see
-// netlify/edge-functions/receipt-scan.ts) that reads the photo with the
-// user's own Gemini key and returns a proposed transaction. Reports the
-// result through callbacks rather than opening a form itself, so the caller
-// decides where the parsed values land (AddTransactionForm's initialValues)
-// and how to surface an error - this component only knows how to take a
-// photo and ask.
-export function ScanReceiptButton({
-  onParsed,
-  onNeedsGeminiKey,
-  onError,
-}: {
-  onParsed: (result: ParsedReceipt) => void
-  onNeedsGeminiKey: () => void
-  onError: (message: string) => void
-}) {
-  const { t } = useLanguage()
-  const [scanning, setScanning] = useState(false)
-  const inputRef = useRef<HTMLInputElement>(null)
-
-  async function onFileSelected(e: ChangeEvent<HTMLInputElement>) {
-    const file = e.target.files?.[0]
-    // Lets the same file be picked again right after a failed scan, instead
-    // of the input silently ignoring an unchanged selection.
-    e.target.value = ''
-    if (!file) return
-
-    setScanning(true)
-    try {
-      const form = new FormData()
-      form.append('photo', file)
-      const token = tokenStore.getAccess()
-      const response = await fetch('/receipt-scan', {
-        method: 'POST',
-        headers: token ? { Authorization: `Bearer ${token}` } : {},
-        body: form,
-      })
-      const data = await response.json()
-      if (!response.ok) {
-        if (data.error === 'no_gemini_key') {
-          onNeedsGeminiKey()
-        } else {
-          onError(data.detail ?? t('Nie udało się odczytać paragonu.'))
-        }
-        return
-      }
-      trackEvent('receipt_scanned')
-      onParsed(data as ParsedReceipt)
-    } catch {
-      onError(t('Nie udało się odczytać paragonu - sprawdź połączenie i spróbuj ponownie.'))
-    } finally {
-      setScanning(false)
-    }
-  }
-
-  return (
-    <>
-      <button
-        type="button"
-        onClick={() => inputRef.current?.click()}
-        disabled={scanning}
-        title={t('Zalecamy robić zdjęcie paragonu od razu telefonem - Gemini odczytuje je najlepiej.')}
-        className="rounded-md border border-slate-300 dark:border-slate-600 px-3 py-1.5 text-sm font-medium text-slate-700 dark:text-slate-300 hover:bg-slate-100 dark:hover:bg-slate-700 disabled:opacity-60"
-      >
-        {scanning ? t('Odczytywanie…') : t('📷 Wgraj paragon')}
-      </button>
-      {/* capture="environment" opens the camera directly on a phone; on
-          desktop it's ignored and this is a plain file picker. */}
-      <input
-        ref={inputRef}
-        type="file"
-        accept="image/*"
-        capture="environment"
-        onChange={onFileSelected}
-        className="hidden"
-      />
-    </>
   )
 }
 

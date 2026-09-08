@@ -428,6 +428,10 @@ export interface User {
     has_seen_tour: boolean
     calculator_presets: { name: string; keys: string[] }[]
     reengagement_emails_enabled: boolean
+    /** Whether the account has a Gemini key set - never the key itself. Lets
+     * the receipt button decide between opening the camera and showing the
+     * setup instructions without a request of its own. */
+    has_gemini_api_key: boolean
   }
 }
 

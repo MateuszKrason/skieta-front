@@ -1,7 +1,9 @@
-import { useState } from 'react'
+import { useEffect, useState } from 'react'
 import { useMutation, useQuery, useQueryClient } from '@tanstack/react-query'
-import { Link } from 'react-router-dom'
+import { useLocation, useNavigate } from 'react-router-dom'
 import { api } from '../../api/client'
+import { GeminiKeyPrompt } from '../../components/GeminiKeyForm'
+import { ScanReceiptButton, type ReceiptScanNavState } from '../../components/ScanReceiptButton'
 import { useLanguage } from '../../i18n/LanguageContext'
 import { formatMoney } from '../../lib/format'
 import { usePaginatedList } from '../../lib/usePaginatedList'
@@ -13,7 +15,6 @@ import {
   CategoryTrendChart,
   EXPENSE_PALETTE,
   PeriodSelector,
-  ScanReceiptButton,
   StatCard,
   StoreBreakdownCard,
   TransactionFilters,
@@ -44,6 +45,8 @@ function receiptToInitialValues(receipt: ParsedReceipt): ReceiptInitialValues {
 export default function Wydatki() {
   const queryClient = useQueryClient()
   const { t } = useLanguage()
+  const location = useLocation()
+  const navigate = useNavigate()
   const period = usePeriodRange('this_month')
   const [showAddTx, setShowAddTx] = useState(false)
   const [showAddCategory, setShowAddCategory] = useState(false)
@@ -53,8 +56,36 @@ export default function Wydatki() {
   const [selectedStoreId, setSelectedStoreId] = useState<number | null>(null)
   const [selectedTagId, setSelectedTagId] = useState<number | null>(null)
   const [receiptValues, setReceiptValues] = useState<ReceiptInitialValues | undefined>(undefined)
+  // Bumped on every applied receipt so the form below remounts with the new
+  // values. Without it a second scan while the form is still open from the
+  // first one would keep the same React key, and initialValues (read only in
+  // useState initialisers) would silently stay on the previous receipt.
+  const [receiptSeq, setReceiptSeq] = useState(0)
   const [scanNeedsKey, setScanNeedsKey] = useState(false)
   const [scanError, setScanError] = useState<string | null>(null)
+
+  function applyScan(receipt: ParsedReceipt) {
+    setScanError(null)
+    setScanNeedsKey(false)
+    setReceiptValues(receiptToInitialValues(receipt))
+    setReceiptSeq((n) => n + 1)
+    setShowAddTx(true)
+  }
+
+  // A scan can also start from the header or the dashboard, which have
+  // nowhere to show a result - they hand it over through the router state
+  // (see ScanReceiptNavButton) and land here. Cleared straight after so a
+  // refresh, or coming back with the browser's back button, doesn't re-open
+  // the form with a receipt that was already saved or dismissed.
+  useEffect(() => {
+    const state = location.state as ReceiptScanNavState | null
+    if (!state) return
+    if (state.receipt) applyScan(state.receipt)
+    if (state.needsGeminiKey) setScanNeedsKey(true)
+    if (state.scanError) setScanError(state.scanError)
+    navigate(location.pathname, { replace: true, state: null })
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [location.state])
 
   const { data: breakdown, isLoading } = useQuery({
     queryKey: ['budget-breakdown', period.range.from, period.range.to],
@@ -132,25 +163,24 @@ export default function Wydatki() {
           >
             {t('+ Kategoria')}
           </button>
-          <ScanReceiptButton
-            onParsed={(receipt) => {
-              setScanError(null)
-              setScanNeedsKey(false)
-              setReceiptValues(receiptToInitialValues(receipt))
-              setShowAddTx(true)
-            }}
-            onNeedsGeminiKey={() => setScanNeedsKey(true)}
-            onError={(message) => setScanError(message)}
-          />
           <button
             onClick={() => {
               setReceiptValues(undefined)
               setShowAddTx((v) => !v)
             }}
-            className="rounded-md bg-accent-600 px-3 py-1.5 text-sm font-medium text-white hover:bg-accent-700"
+            className="rounded-md border border-slate-300 dark:border-slate-600 px-3 py-1.5 text-sm font-medium text-slate-700 dark:text-slate-300 hover:bg-slate-100 dark:hover:bg-slate-700"
           >
             {t('+ Wydatek')}
           </button>
+          {/* The filled one, and last in the row, because photographing the
+              receipt is the faster way to do exactly what "+ Wydatek" does -
+              it just used to look like the least important of the three. */}
+          <ScanReceiptButton
+            onParsed={applyScan}
+            onNeedsGeminiKey={() => setScanNeedsKey(true)}
+            onError={(message) => setScanError(message)}
+            className="rounded-md bg-accent-600 px-3 py-1.5 text-sm font-semibold text-white hover:bg-accent-700 disabled:opacity-60"
+          />
         </div>
       </div>
 
@@ -158,15 +188,7 @@ export default function Wydatki() {
         {t('💡 Najlepiej wgrywać świeże zdjęcie zrobione telefonem - Gemini odczytuje je lepiej niż skan albo stary plik.')}
       </p>
 
-      {scanNeedsKey && (
-        <p className="text-sm text-amber-600 dark:text-amber-400">
-          {t('Żeby skanować paragony, dodaj swój darmowy klucz Gemini w')}{' '}
-          <Link to="/moje-konto" className="font-medium underline">
-            {t('ustawieniach konta')}
-          </Link>
-          .
-        </p>
-      )}
+      {scanNeedsKey && <GeminiKeyPrompt />}
       {scanError && <p className="text-sm text-red-600 dark:text-red-400">{scanError}</p>}
 
       <PeriodSelector {...period} />
@@ -184,7 +206,7 @@ export default function Wydatki() {
 
       {showAddTx && (
         <AddTransactionForm
-          key={receiptValues ? 'from-receipt' : 'blank'}
+          key={receiptValues ? `from-receipt-${receiptSeq}` : 'blank'}
           lockedType="expense"
           categories={categories ?? []}
           accounts={accounts ?? []}

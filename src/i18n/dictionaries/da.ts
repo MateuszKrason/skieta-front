@@ -851,6 +851,57 @@ export const da: Record<string, string> = {
   'Dywidendy i podatki': 'Udbytte og skat',
   'Historia i prognoza wypłat dywidend, szacowany podatek Belki do zapłaty - żadnych niespodzianek przy rozliczeniu.':
     'Historik og prognose for udbyttebetalinger, estimeret kapitalgevinstskat at betale - ingen overraskelser ved selvangivelsen.',
+  // Landing - budget-first positioning + receipt scanning
+  'Zapisuj wydatki zdjęciem paragonu i zobacz, gdzie naprawdę idą Twoje pieniądze. A jeśli inwestujesz - skieta doliczy do tego akcje, lokaty i obligacje i pokaże realny zysk, a nie samo saldo.':
+    'Registrer udgifter med et foto af kvitteringen, og se, hvor pengene faktisk går hen. Og hvis du investerer, lægger skieta aktier, indlån og obligationer oveni og viser den reelle gevinst, ikke bare saldoen.',
+  'Wydatek ze zdjęcia paragonu': 'En udgift fra et foto af kvitteringen',
+  'Zrób paragonowi zdjęcie telefonem, a skieta odczyta kwotę, datę i sklep oraz sama zaproponuje kategorię z Twojej listy. Zostaje Ci sprawdzić i zapisać.':
+    'Tag et billede af kvitteringen med telefonen, så aflæser skieta beløb, dato og butik og foreslår selv en kategori fra din egen liste. Du skal bare tjekke og gemme.',
+  'Realny zwrot, dywidendy i podatki': 'Reelt afkast, udbytte og skat',
+  'Jeśli inwestujesz: zysk liczony osobno od wpłaconego kapitału, po podatku Belki, plus historia i prognoza dywidend wraz z szacowanym podatkiem do zapłaty.':
+    'Hvis du investerer: gevinsten opgøres adskilt fra den indskudte kapital, efter kapitalskat, plus udbyttehistorik og prognose med den forventede skat.',
+  'Widać, na co naprawdę idą pieniądze': 'Man kan se, hvor pengene reelt går hen',
+  'Wydatki z podziałem na kategorie, sklepy i tagi, miesiąc po miesiącu. Nowy wydatek dodajesz zdjęciem paragonu - kwota, data i sklep odczytują się same, a kategoria jest proponowana z Twojej własnej listy.':
+    'Udgifter fordelt på kategorier, butikker og tags, måned for måned. En ny udgift tilføjer du med et foto af kvitteringen - beløb, dato og butik aflæses af sig selv, og kategorien foreslås fra din egen liste.',
+  'Strona wydatków w skiecie: podział na kategorie i sklepy, wykres wydatków w czasie i przycisk wgrywania paragonu':
+    'Udgiftssiden i skieta: fordeling på kategorier og butikker, graf over udgifter over tid og knappen til at uploade kvitteringen',
+  'Zaczynasz notować': 'Du begynder at registrere',
+  'Dodajesz konto bankowe, a wydatki wrzucasz zdjęciem paragonu. Portfel akcji, lokaty i obligacje - jeśli je masz.':
+    'Du tilføjer en bankkonto og lægger udgifter ind med et foto af kvitteringen. Aktieportefølje, indlån og obligationer - hvis du har dem.',
+  'Dashboard aktualizuje się na bieżąco - budżet, majątek i zwrot z inwestycji w jednym miejscu.':
+    'Dashboardet opdateres løbende - budget, formue og investeringsafkast ét sted.',
+  'Czy mogę używać skiety tylko do budżetu, bez inwestycji?':
+    'Kan jeg bruge skieta kun til budget, uden investeringer?',
+  'Tak, i nie musisz niczego obchodzić. Przy zakładaniu konta zaznaczasz, co Cię interesuje - jeśli nie zaznaczysz giełdy, cała część inwestycyjna po prostu znika z menu i zostaje czysta aplikacja do przychodów, wydatków, paragonów i celów oszczędnościowych. Możesz to zmienić w każdej chwili w ustawieniach konta.':
+    'Ja, og du behøver ikke at gå uden om noget. Når du opretter kontoen, vælger du, hvad der interesserer dig - vælger du ikke børsen til, forsvinder hele investeringsdelen ganske enkelt fra menuen, og tilbage står en ren app til indtægter, udgifter, kvitteringer og opsparingsmål. Du kan altid ændre det i kontoindstillingerne.',
+  'Jak działa dodawanie wydatku ze zdjęcia paragonu?':
+    'Hvordan fungerer det at tilføje en udgift fra et foto af en kvittering?',
+  'Robisz paragonowi zdjęcie telefonem, a skieta odczytuje z niego kwotę, datę i nazwę sklepu oraz proponuje kategorię z Twojej własnej listy - poprawiasz, co trzeba, i zapisujesz. Odczytem zajmuje się Google Gemini na Twoim własnym, darmowym kluczu, który wklejasz raz przy pierwszym skanowaniu. Samego zdjęcia nigdzie nie zapisujemy - jest odczytywane w locie i nie trafia do naszej bazy.':
+    'Du tager et billede af kvitteringen med telefonen, og skieta aflæser beløb, dato og butikkens navn og foreslår en kategori fra din egen liste - du retter det, der skal rettes, og gemmer. Aflæsningen klares af Google Gemini med din egen gratis nøgle, som du indsætter én gang, første gang du scanner. Selve billedet gemmer vi ingen steder - det aflæses undervejs og havner ikke i vores database.',
+  'Arkusz nie zrobi za Ciebie zdjęcia paragonu i nie policzy, ile realnie zarobiłeś. skieta odczytuje wydatek ze zdjęcia i sama pilnuje kategorii, a przy inwestycjach liczy zysk osobno od wpłaconego kapitału, po podatku Belki, z kosztem zakupu akcji przeliczonym po kursie NBP z dnia transakcji, a nie dzisiejszym. To rzeczy, które w arkuszu trzeba utrzymywać ręcznie i łatwo w nich o błąd.':
+    'Et regneark tager ikke billedet af kvitteringen for dig og regner ikke ud, hvor meget du reelt har tjent. skieta aflæser udgiften fra billedet og holder styr på kategorierne, og ved investeringer opgøres gevinsten adskilt fra den indskudte kapital, efter kapitalskat, med aktiernes købspris omregnet til NBP-kursen fra handelsdagen i stedet for dagens. Det er ting, man skal vedligeholde i hånden i et regneark, og hvor fejl let sniger sig ind.',
+  'Załóż konto i zacznij notować wydatki jeszcze dziś - pierwszy paragon wrzucisz zdjęciem w kilka sekund.':
+    'Opret en konto, og begynd at registrere udgifter allerede i dag - den første kvittering lægger du ind som et foto på få sekunder.',
+  '📷 Paragon': '📷 Kvittering',
+  '📷 Dodaj paragon': '📷 Tilføj kvittering',
+  'Jeszcze jeden krok: darmowy klucz Gemini': 'Et skridt mere: en gratis Gemini-nøgle',
+  'Paragony odczytuje Google Gemini na Twoim własnym, darmowym limicie - dzięki temu funkcja jest bezpłatna i nikt poza Tobą nie płaci za Twoje skany.':
+    'Kvitteringer aflæses af Google Gemini på din egen gratis kvote - derfor er funktionen gratis, og ingen andre end dig betaler for dine scanninger.',
+  'Otwórz Google AI Studio i kliknij "Create API key" - jest darmowy i zajmuje minutę.':
+    'Åbn Google AI Studio, og klik på "Create API key" - det er gratis og tager et minut.',
+  'Skopiuj wygenerowany klucz.': 'Kopier den nøgle, der bliver oprettet.',
+  'Wklej go poniżej. Przechowujemy go zaszyfrowany i używamy wyłącznie do odczytania Twoich paragonów.':
+    'Indsæt den nedenfor. Vi opbevarer den krypteret og bruger den udelukkende til at aflæse dine kvitteringer.',
+  'Motyw': 'Tema',
+  'Klucz zapisany. Kliknij przycisk z paragonem jeszcze raz i wybierz zdjęcie.':
+    'Nøglen er gemt. Klik på kvitteringsknappen igen, og vælg et billede.',
+  'Najszybciej: zdjęcie paragonu': 'Hurtigst: et foto af kvitteringen',
+  'Zamiast wpisywać wydatek ręcznie, zrób paragonowi zdjęcie telefonem. skieta odczyta kwotę, datę i sklep oraz zaproponuje kategorię. Przycisk jest na górnym pasku, więc masz go pod ręką na każdej stronie.':
+    'I stedet for at taste udgiften ind i hånden kan du tage et billede af kvitteringen med telefonen. skieta aflæser beløb, dato og butik og foreslår en kategori. Knappen sidder i den øverste bjælke, så den er lige ved hånden på alle sider.',
+  'Kliknij tutaj, żeby dodać konto bankowe, a jeśli je masz - także akcje, lokaty i obligacje. Od razu zobaczysz swój prawdziwy stan, zamiast zaczynać od zera.':
+    'Klik her for at tilføje en bankkonto og, hvis du har dem, også aktier, indlån og obligationer. Du ser med det samme, hvor du reelt står, i stedet for at begynde fra nul.',
+  'Przychody i wydatki, w tym dodawanie ze zdjęcia paragonu':
+    'Indtægter og udgifter, herunder tilføjelse fra et foto af en kvittering',
   'Twoje dane, Twoja kontrola': 'Dine data, din kontrol',
   'Dostęp wyłącznie na zaproszenie, bez reklam i bez śledzenia. Historia logowań pokazuje dokładnie, kto i kiedy wchodził na Twoje konto.':
     'Kun adgang via invitation, ingen reklamer og ingen sporing. Login-historikken viser præcis, hvem der har tilgået din konto, og hvornår.',

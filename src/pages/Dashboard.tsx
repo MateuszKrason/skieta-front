@@ -5,6 +5,7 @@ import { Area, AreaChart, ResponsiveContainer, Tooltip, XAxis, YAxis } from 'rec
 import { api } from '../api/client'
 import { useAuth } from '../auth/AuthContext'
 import { PageLoader, Spinner } from '../components/Loader'
+import { ScanReceiptNavButton } from '../components/ScanReceiptButton'
 import { useLanguage } from '../i18n/LanguageContext'
 import { useTooltipStyle } from '../lib/chartTooltip'
 import { signalInviteMoment } from '../lib/inviteMoment'
@@ -28,6 +29,7 @@ export default function Dashboard() {
   const { t } = useLanguage()
   const tooltipStyle = useTooltipStyle()
   const showCrypto = user?.profile.interest_crypto ?? true
+  const showBudget = user?.profile.interest_budget ?? true
 
   const {
     data: summary,
@@ -191,11 +193,22 @@ export default function Dashboard() {
       </div>
 
       <div className="rounded-xl border border-slate-200 dark:border-slate-700 bg-white dark:bg-slate-800 p-5 shadow-sm">
-        <div className="mb-3 flex items-center justify-between">
+        <div className="mb-3 flex flex-wrap items-center justify-between gap-2">
           <h2 className="text-sm font-semibold text-slate-700 dark:text-slate-300">{t('Przychody i wydatki (ten miesiąc)')}</h2>
-          <Link to="/budzet" className="text-xs font-medium text-accent-700 dark:text-accent-400 hover:underline">
-            {t('Zobacz pełną analizę →')}
-          </Link>
+          <div className="flex items-center gap-3">
+            {/* The first screen after logging in, and the one people open
+                daily - so the fastest way to record an expense belongs here
+                too, not only inside the budget section. */}
+            {showBudget && (
+              <ScanReceiptNavButton
+                label={t('📷 Dodaj paragon')}
+                className="rounded-md bg-accent-600 px-3 py-1.5 text-xs font-semibold text-white hover:bg-accent-700 disabled:opacity-60"
+              />
+            )}
+            <Link to="/budzet" className="text-xs font-medium text-accent-700 dark:text-accent-400 hover:underline">
+              {t('Zobacz pełną analizę →')}
+            </Link>
+          </div>
         </div>
         <div className="grid grid-cols-1 gap-4 sm:grid-cols-3">
           <StatCard label={t('Przychody')} value={formatMoney(budgetSummary?.income_total, base)} tone="positive" />

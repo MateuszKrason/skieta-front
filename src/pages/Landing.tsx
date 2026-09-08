@@ -98,25 +98,29 @@ const ICONS = {
   trending: 'M3 17l6-6 4 4 8-8M15 6h6v6',
   wallet: 'M3 7a2 2 0 0 1 2-2h11a2 2 0 0 1 2 2v1h1a2 2 0 0 1 2 2v8a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V7Zm14 6h.01',
   target: 'M12 21a9 9 0 1 0 0-18 9 9 0 0 0 0 18Zm0-5a4 4 0 1 0 0-8 4 4 0 0 0 0 8Zm0-2a2 2 0 1 0 0-4 2 2 0 0 0 0 4Z',
-  coins: 'M8 12a5 5 0 1 0 10 0 5 5 0 0 0-10 0Zm0 0a5 3 0 1 1 10 0M4 9a5 3 0 0 1 8-2.4M4 9v3a5 3 0 0 0 8 2.4M4 9a5 3 0 0 0 4.5 2.98',
+  camera: 'M4 8a2 2 0 0 1 2-2h2l1.5-2h5L16 6h2a2 2 0 0 1 2 2v9a2 2 0 0 1-2 2H6a2 2 0 0 1-2-2V8Zm8 8a3.5 3.5 0 1 0 0-7 3.5 3.5 0 0 0 0 7Z',
   shield: 'M12 3l7 3v6c0 4.5-3 7.5-7 9-4-1.5-7-4.5-7-9V6l7-3Zm-2.5 9 1.8 1.8L15.5 10',
 }
 
+// Ordered by who is reading, not by what the app is proudest of. The page
+// used to open with net worth, brokerage accounts and Belka tax, which reads
+// as "portfolio tracker for people who already invest" - two of its three
+// screenshots were stock screens - and quietly told everyone who just wants
+// to know where their salary goes that this is not for them. That is the far
+// larger group, and it does not work the other way round: someone who
+// invests does not leave a page about budgeting, because they have expenses
+// too. So budgeting leads and the investment features stay as depth, which
+// is also where the real differentiator against every other budget app is.
 const FEATURES: { icon: keyof typeof ICONS; title: string; body: string }[] = [
-  {
-    icon: 'layers',
-    title: 'Wszystko w jednym miejscu',
-    body: 'Konta bankowe, akcje, obligacje i lokaty - jeden widok na cały Twój majątek, bez przełączania się między aplikacjami banków i domów maklerskich.',
-  },
-  {
-    icon: 'trending',
-    title: 'Realny zwrot z inwestycji',
-    body: 'Zysk liczony osobno od wpłaconego kapitału - zobaczysz dokładnie, ile realnie zarobiłeś na lokatach, obligacjach i akcjach, po podatku Belki.',
-  },
   {
     icon: 'wallet',
     title: 'Przychody, wydatki i budżet',
     body: 'Zarządzaj przychodami i wydatkami, monitoruj budżet miesiąc po miesiącu i sprawdzaj bilans - automatyczny import wyciągów, kategorie, sklepy i tagi robią to za Ciebie.',
+  },
+  {
+    icon: 'camera',
+    title: 'Wydatek ze zdjęcia paragonu',
+    body: 'Zrób paragonowi zdjęcie telefonem, a skieta odczyta kwotę, datę i sklep oraz sama zaproponuje kategorię z Twojej listy. Zostaje Ci sprawdzić i zapisać.',
   },
   {
     icon: 'target',
@@ -124,9 +128,16 @@ const FEATURES: { icon: keyof typeof ICONS; title: string; body: string }[] = [
     body: 'Ustaw cel, rezerwuj kwoty z konkretnych wypłat lub z bieżących oszczędności i śledź postęp na żywo.',
   },
   {
-    icon: 'coins',
-    title: 'Dywidendy i podatki',
-    body: 'Historia i prognoza wypłat dywidend, szacowany podatek Belki do zapłaty - żadnych niespodzianek przy rozliczeniu.',
+    icon: 'layers',
+    title: 'Wszystko w jednym miejscu',
+    body: 'Konta bankowe, akcje, obligacje i lokaty - jeden widok na cały Twój majątek, bez przełączania się między aplikacjami banków i domów maklerskich.',
+  },
+  {
+    // Two investor-facing cards merged into one: the section keeps six tiles
+    // (a clean 3x2 grid) with budgeting now taking the first three.
+    icon: 'trending',
+    title: 'Realny zwrot, dywidendy i podatki',
+    body: 'Jeśli inwestujesz: zysk liczony osobno od wpłaconego kapitału, po podatku Belki, plus historia i prognoza dywidend wraz z szacowanym podatkiem do zapłaty.',
   },
   {
     icon: 'shield',
@@ -143,18 +154,18 @@ const FEATURES: { icon: keyof typeof ICONS; title: string; body: string }[] = [
 // goals funded from a specific payslip - each paired with the screen that
 // proves it. Deliberately not one row per feature: six screenshots would be a
 // scroll marathon, and the remaining features are believable as text.
-const SHOWCASE: { name: 'portfel' | 'dywidendy' | 'planowanie'; title: string; body: string; alt: string }[] = [
+const SHOWCASE: { name: 'wydatki' | 'portfel' | 'planowanie'; title: string; body: string; alt: string }[] = [
+  {
+    name: 'wydatki',
+    title: 'Widać, na co naprawdę idą pieniądze',
+    body: 'Wydatki z podziałem na kategorie, sklepy i tagi, miesiąc po miesiącu. Nowy wydatek dodajesz zdjęciem paragonu - kwota, data i sklep odczytują się same, a kategoria jest proponowana z Twojej własnej listy.',
+    alt: 'Strona wydatków w skiecie: podział na kategorie i sklepy, wykres wydatków w czasie i przycisk wgrywania paragonu',
+  },
   {
     name: 'portfel',
     title: 'Zysk, a nie tylko saldo',
     body: 'Portfel pokazuje osobno wpłacony kapitał i osobno zysk - brutto oraz po podatku Belki. Przy akcjach kupionych w obcej walucie widzisz dodatkowo, ile z wyniku zrobił sam kurs, a nie kurs spółki.',
     alt: 'Portfel akcji w skiecie z kolumnami zysku brutto i po podatku Belki oraz wpływem kursu waluty',
-  },
-  {
-    name: 'dywidendy',
-    title: 'Dywidendy policzone w przód',
-    body: 'Historia wypłat, prognoza kolejnych na podstawie rytmu każdej spółki i szacowany podatek do zapłaty. Nie musisz nic wpisywać ręcznie ani pilnować terminów.',
-    alt: 'Profil dywidendowy w skiecie: suma wypłat, projekcja rocznego dochodu i planowane dywidendy',
   },
   {
     name: 'planowanie',
@@ -166,8 +177,8 @@ const SHOWCASE: { name: 'portfel' | 'dywidendy' | 'planowanie'; title: string; b
 
 const STEPS = [
   { n: '1', title: 'Zakładasz konto', body: 'Rejestracja jest otwarta i zajmuje minutę. Nie potrzebujesz zaproszenia ani karty płatniczej.' },
-  { n: '2', title: 'Dodajesz swoje konta', body: 'Kilka minut wystarczy, żeby dodać konta bankowe, portfel akcji, lokaty i obligacje.' },
-  { n: '3', title: 'Widzisz cały obraz', body: 'Dashboard aktualizuje się na bieżąco - majątek, zwrot z inwestycji i budżet w jednym miejscu.' },
+  { n: '2', title: 'Zaczynasz notować', body: 'Dodajesz konto bankowe, a wydatki wrzucasz zdjęciem paragonu. Portfel akcji, lokaty i obligacje - jeśli je masz.' },
+  { n: '3', title: 'Widzisz cały obraz', body: 'Dashboard aktualizuje się na bieżąco - budżet, majątek i zwrot z inwestycji w jednym miejscu.' },
 ]
 
 // Written for someone who arrived from a search engine and is deciding
@@ -193,6 +204,21 @@ const FAQ: { q: string; a: string }[] = [
     a: 'Nic. skieta jest dziś w całości bezpłatna - bez abonamentu, bez reklam i bez podawania numeru karty. Gdyby w przyszłości pojawiła się wersja płatna, uprzedzimy o tym z wyprzedzeniem, a pobranie kopii swoich danych pozostanie bezpłatne - to Twoje prawo wynikające z RODO, nie element oferty.',
   },
   {
+    // High up on purpose: it is the objection this page used to create by
+    // itself. Answerable with a plain "yes" because the app really does hide
+    // the whole investing side behind the interest toggles picked at signup
+    // (see Onboarding's INTERESTS and Layout's getNavLinks).
+    q: 'Czy mogę używać skiety tylko do budżetu, bez inwestycji?',
+    a: 'Tak, i nie musisz niczego obchodzić. Przy zakładaniu konta zaznaczasz, co Cię interesuje - jeśli nie zaznaczysz giełdy, cała część inwestycyjna po prostu znika z menu i zostaje czysta aplikacja do przychodów, wydatków, paragonów i celów oszczędnościowych. Możesz to zmienić w każdej chwili w ustawieniach konta.',
+  },
+  {
+    q: 'Jak działa dodawanie wydatku ze zdjęcia paragonu?',
+    // Says out loud that it needs the user's own key. Discovering that only
+    // after photographing a receipt is exactly how people bounced off this
+    // feature in the app, and hiding it here would repeat the mistake.
+    a: 'Robisz paragonowi zdjęcie telefonem, a skieta odczytuje z niego kwotę, datę i nazwę sklepu oraz proponuje kategorię z Twojej własnej listy - poprawiasz, co trzeba, i zapisujesz. Odczytem zajmuje się Google Gemini na Twoim własnym, darmowym kluczu, który wklejasz raz przy pierwszym skanowaniu. Samego zdjęcia nigdzie nie zapisujemy - jest odczytywane w locie i nie trafia do naszej bazy.',
+  },
+  {
     q: 'Czy potrzebuję zaproszenia?',
     a: 'Nie. Rejestracja jest otwarta dla wszystkich - wystarczy założyć konto. Zaproszenia nadal działają: jeśli ktoś prześle Ci swój link, zapiszemy, że to dzięki niemu tu trafiłeś/aś, ale nie jest to warunek założenia konta.',
   },
@@ -202,7 +228,7 @@ const FAQ: { q: string; a: string }[] = [
   },
   {
     q: 'Czym to się różni od arkusza kalkulacyjnego?',
-    a: 'Arkusz pokaże Ci, ile masz. skieta pokazuje, ile z tego faktycznie zarobiłeś - zysk liczony osobno od wpłaconego kapitału, po podatku Belki, z kosztem zakupu akcji przeliczonym po kursie NBP z dnia transakcji, a nie dzisiejszym. To rzeczy, które w arkuszu trzeba utrzymywać ręcznie i łatwo w nich o błąd.',
+    a: 'Arkusz nie zrobi za Ciebie zdjęcia paragonu i nie policzy, ile realnie zarobiłeś. skieta odczytuje wydatek ze zdjęcia i sama pilnuje kategorii, a przy inwestycjach liczy zysk osobno od wpłaconego kapitału, po podatku Belki, z kosztem zakupu akcji przeliczonym po kursie NBP z dnia transakcji, a nie dzisiejszym. To rzeczy, które w arkuszu trzeba utrzymywać ręcznie i łatwo w nich o błąd.',
   },
   {
     q: 'Skąd biorą się kursy i oprocentowanie?',
@@ -230,8 +256,8 @@ const FAQ: { q: string; a: string }[] = [
 // instead of shoving the page down when it lands.
 const PRODUCT_SHOTS = {
   dashboard: { width: 1262, height: 843 },
+  wydatki: { width: 1262, height: 1015 },
   portfel: { width: 1262, height: 725 },
-  dywidendy: { width: 1256, height: 821 },
   planowanie: { width: 1261, height: 788 },
 } as const
 
@@ -364,7 +390,7 @@ export default function Landing() {
             </p>
             <p className="mx-auto mt-5 max-w-xl text-lg text-slate-600 dark:text-slate-400">
               {t(
-                'skieta łączy konta bankowe, inwestycje, lokaty i obligacje w jednym miejscu - zobacz, jak naprawdę rośnie Twój majątek, bez arkusza kalkulacyjnego i bez zgadywania.',
+                'Zapisuj wydatki zdjęciem paragonu i zobacz, gdzie naprawdę idą Twoje pieniądze. A jeśli inwestujesz - skieta doliczy do tego akcje, lokaty i obligacje i pokaże realny zysk, a nie samo saldo.',
               )}
             </p>
             {/* The order flips with who's reading. A signed-in visitor wants
@@ -569,7 +595,7 @@ export default function Landing() {
           <p className="mx-auto mt-2 max-w-md text-accent-50/90">
             {user
               ? t('Kontynuuj tam, gdzie skończyłeś/aś - Twój dashboard czeka.')
-              : t('Załóż konto i zobacz cały swój majątek w jednym miejscu - od razu po pierwszym dodaniu konta.')}
+              : t('Załóż konto i zacznij notować wydatki jeszcze dziś - pierwszy paragon wrzucisz zdjęciem w kilka sekund.')}
           </p>
           <Link
             to={user ? ctaHref : '/register'}

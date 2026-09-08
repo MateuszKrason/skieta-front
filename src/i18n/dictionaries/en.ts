@@ -851,6 +851,57 @@ export const en: Record<string, string> = {
   'Dywidendy i podatki': 'Dividends and taxes',
   'Historia i prognoza wypłat dywidend, szacowany podatek Belki do zapłaty - żadnych niespodzianek przy rozliczeniu.':
     'Dividend history and forecast, estimated capital gains tax owed - no surprises at tax time.',
+  // Landing - budget-first positioning + receipt scanning
+  'Zapisuj wydatki zdjęciem paragonu i zobacz, gdzie naprawdę idą Twoje pieniądze. A jeśli inwestujesz - skieta doliczy do tego akcje, lokaty i obligacje i pokaże realny zysk, a nie samo saldo.':
+    'Log expenses by photographing the receipt and see where your money actually goes. And if you invest - skieta adds stocks, deposits and bonds on top and shows your real profit, not just a balance.',
+  'Wydatek ze zdjęcia paragonu': 'An expense from a photo of the receipt',
+  'Zrób paragonowi zdjęcie telefonem, a skieta odczyta kwotę, datę i sklep oraz sama zaproponuje kategorię z Twojej listy. Zostaje Ci sprawdzić i zapisać.':
+    'Photograph the receipt with your phone and skieta reads the amount, date and store, then suggests a category from your own list. All that is left is to check it and save.',
+  'Realny zwrot, dywidendy i podatki': 'Real return, dividends and taxes',
+  'Jeśli inwestujesz: zysk liczony osobno od wpłaconego kapitału, po podatku Belki, plus historia i prognoza dywidend wraz z szacowanym podatkiem do zapłaty.':
+    'If you invest: profit counted separately from the capital you put in, after capital gains tax, plus dividend history and forecasts with the tax you can expect to owe.',
+  'Widać, na co naprawdę idą pieniądze': 'You can see where the money really goes',
+  'Wydatki z podziałem na kategorie, sklepy i tagi, miesiąc po miesiącu. Nowy wydatek dodajesz zdjęciem paragonu - kwota, data i sklep odczytują się same, a kategoria jest proponowana z Twojej własnej listy.':
+    'Expenses split by category, store and tag, month after month. A new expense goes in as a photo of the receipt - amount, date and store read themselves, and the category is suggested from your own list.',
+  'Strona wydatków w skiecie: podział na kategorie i sklepy, wykres wydatków w czasie i przycisk wgrywania paragonu':
+    'The expenses page in skieta: a breakdown by category and store, a spending-over-time chart and the upload-receipt button',
+  'Zaczynasz notować': 'You start logging',
+  'Dodajesz konto bankowe, a wydatki wrzucasz zdjęciem paragonu. Portfel akcji, lokaty i obligacje - jeśli je masz.':
+    'You add a bank account and put expenses in by photographing receipts. Stock portfolio, deposits and bonds - if you have them.',
+  'Dashboard aktualizuje się na bieżąco - budżet, majątek i zwrot z inwestycji w jednym miejscu.':
+    'The dashboard updates continuously - budget, net worth and investment return in one place.',
+  'Czy mogę używać skiety tylko do budżetu, bez inwestycji?':
+    'Can I use skieta only for budgeting, without investing?',
+  'Tak, i nie musisz niczego obchodzić. Przy zakładaniu konta zaznaczasz, co Cię interesuje - jeśli nie zaznaczysz giełdy, cała część inwestycyjna po prostu znika z menu i zostaje czysta aplikacja do przychodów, wydatków, paragonów i celów oszczędnościowych. Możesz to zmienić w każdej chwili w ustawieniach konta.':
+    'Yes, and you do not have to work around anything. When you create an account you pick what interests you - leave the stock market unchecked and the whole investing side simply disappears from the menu, leaving a clean app for income, expenses, receipts and savings goals. You can change it at any time in account settings.',
+  'Jak działa dodawanie wydatku ze zdjęcia paragonu?':
+    'How does adding an expense from a photo of a receipt work?',
+  'Robisz paragonowi zdjęcie telefonem, a skieta odczytuje z niego kwotę, datę i nazwę sklepu oraz proponuje kategorię z Twojej własnej listy - poprawiasz, co trzeba, i zapisujesz. Odczytem zajmuje się Google Gemini na Twoim własnym, darmowym kluczu, który wklejasz raz przy pierwszym skanowaniu. Samego zdjęcia nigdzie nie zapisujemy - jest odczytywane w locie i nie trafia do naszej bazy.':
+    'You photograph the receipt with your phone, and skieta reads the amount, date and store name from it and suggests a category from your own list - you correct whatever needs correcting and save. The reading is done by Google Gemini on your own free key, which you paste once the first time you scan. We never store the photo itself - it is read on the fly and never reaches our database.',
+  'Arkusz nie zrobi za Ciebie zdjęcia paragonu i nie policzy, ile realnie zarobiłeś. skieta odczytuje wydatek ze zdjęcia i sama pilnuje kategorii, a przy inwestycjach liczy zysk osobno od wpłaconego kapitału, po podatku Belki, z kosztem zakupu akcji przeliczonym po kursie NBP z dnia transakcji, a nie dzisiejszym. To rzeczy, które w arkuszu trzeba utrzymywać ręcznie i łatwo w nich o błąd.':
+    'A spreadsheet will not photograph a receipt for you, and it will not work out how much you actually earned. skieta reads an expense off a photo and keeps track of categories for you, and for investments it counts profit separately from the capital you put in, after capital gains tax, with the purchase cost of shares converted at the NBP rate from the transaction date rather than the rate today. Those are things a spreadsheet needs kept up by hand, and they are easy to get wrong.',
+  'Załóż konto i zacznij notować wydatki jeszcze dziś - pierwszy paragon wrzucisz zdjęciem w kilka sekund.':
+    'Create an account and start logging expenses today - your first receipt goes in as a photo in seconds.',
+  '📷 Paragon': '📷 Receipt',
+  '📷 Dodaj paragon': '📷 Add a receipt',
+  'Jeszcze jeden krok: darmowy klucz Gemini': 'One more step: a free Gemini key',
+  'Paragony odczytuje Google Gemini na Twoim własnym, darmowym limicie - dzięki temu funkcja jest bezpłatna i nikt poza Tobą nie płaci za Twoje skany.':
+    'Receipts are read by Google Gemini on your own free quota - that is what keeps this feature free, and it means nobody but you pays for your scans.',
+  'Otwórz Google AI Studio i kliknij "Create API key" - jest darmowy i zajmuje minutę.':
+    'Open Google AI Studio and click "Create API key" - it is free and takes a minute.',
+  'Skopiuj wygenerowany klucz.': 'Copy the key it generates.',
+  'Wklej go poniżej. Przechowujemy go zaszyfrowany i używamy wyłącznie do odczytania Twoich paragonów.':
+    'Paste it below. We store it encrypted and use it only to read your receipts.',
+  'Motyw': 'Theme',
+  'Klucz zapisany. Kliknij przycisk z paragonem jeszcze raz i wybierz zdjęcie.':
+    'Key saved. Click the receipt button again and pick a photo.',
+  'Najszybciej: zdjęcie paragonu': 'The fastest way: a photo of the receipt',
+  'Zamiast wpisywać wydatek ręcznie, zrób paragonowi zdjęcie telefonem. skieta odczyta kwotę, datę i sklep oraz zaproponuje kategorię. Przycisk jest na górnym pasku, więc masz go pod ręką na każdej stronie.':
+    'Instead of typing an expense in by hand, photograph the receipt with your phone. skieta reads the amount, date and store, and suggests a category. The button sits in the top bar, so it is within reach on every page.',
+  'Kliknij tutaj, żeby dodać konto bankowe, a jeśli je masz - także akcje, lokaty i obligacje. Od razu zobaczysz swój prawdziwy stan, zamiast zaczynać od zera.':
+    'Click here to add a bank account and, if you have them, stocks, deposits and bonds too. You will see where you really stand straight away, instead of starting from zero.',
+  'Przychody i wydatki, w tym dodawanie ze zdjęcia paragonu':
+    'Income and expenses, including adding one from a photo of a receipt',
   'Twoje dane, Twoja kontrola': 'Your data, your control',
   'Dostęp wyłącznie na zaproszenie, bez reklam i bez śledzenia. Historia logowań pokazuje dokładnie, kto i kiedy wchodził na Twoje konto.':
     'Invite-only access, no ads, no tracking. Login history shows exactly who accessed your account and when.',

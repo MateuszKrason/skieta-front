@@ -851,6 +851,57 @@ export const sq: Record<string, string> = {
   'Dywidendy i podatki': 'Dividendët dhe tatimet',
   'Historia i prognoza wypłat dywidend, szacowany podatek Belki do zapłaty - żadnych niespodzianek przy rozliczeniu.':
     'Historiku dhe parashikimi i pagesave të dividendëve, tatimi i vlerësuar për pagesë - asnjë befasi kur vjen koha e llogarive.',
+  // Landing - budget-first positioning + receipt scanning
+  'Zapisuj wydatki zdjęciem paragonu i zobacz, gdzie naprawdę idą Twoje pieniądze. A jeśli inwestujesz - skieta doliczy do tego akcje, lokaty i obligacje i pokaże realny zysk, a nie samo saldo.':
+    'Regjistro shpenzimet me një foto të kuponit dhe shiko ku shkojnë vërtet paratë e tua. Dhe nëse investon, skieta shton aksionet, depozitat dhe obligacionet dhe tregon fitimin real, jo vetëm gjendjen.',
+  'Wydatek ze zdjęcia paragonu': 'Një shpenzim nga fotoja e kuponit',
+  'Zrób paragonowi zdjęcie telefonem, a skieta odczyta kwotę, datę i sklep oraz sama zaproponuje kategorię z Twojej listy. Zostaje Ci sprawdzić i zapisać.':
+    'Fotografo kuponin me telefon dhe skieta lexon shumën, datën dhe dyqanin, si dhe propozon vetë një kategori nga lista jote. Të mbetet vetëm ta kontrollosh dhe ta ruash.',
+  'Realny zwrot, dywidendy i podatki': 'Kthim real, dividendë dhe taksa',
+  'Jeśli inwestujesz: zysk liczony osobno od wpłaconego kapitału, po podatku Belki, plus historia i prognoza dywidend wraz z szacowanym podatkiem do zapłaty.':
+    'Nëse investon: fitimi llogaritet veçmas nga kapitali i derdhur, pas taksës mbi fitimet kapitale, plus historiku dhe parashikimi i dividendëve së bashku me taksën e vlerësuar që duhet paguar.',
+  'Widać, na co naprawdę idą pieniądze': 'Duket ku shkojnë vërtet paratë',
+  'Wydatki z podziałem na kategorie, sklepy i tagi, miesiąc po miesiącu. Nowy wydatek dodajesz zdjęciem paragonu - kwota, data i sklep odczytują się same, a kategoria jest proponowana z Twojej własnej listy.':
+    'Shpenzimet të ndara sipas kategorive, dyqaneve dhe etiketave, muaj pas muaji. Një shpenzim të ri e shton me një foto të kuponit - shuma, data dhe dyqani lexohen vetë, ndërsa kategoria propozohet nga lista jote.',
+  'Strona wydatków w skiecie: podział na kategorie i sklepy, wykres wydatków w czasie i przycisk wgrywania paragonu':
+    'Faqja e shpenzimeve në skieta: ndarja sipas kategorive dhe dyqaneve, grafiku i shpenzimeve në kohë dhe butoni për ngarkimin e kuponit',
+  'Zaczynasz notować': 'Fillon të regjistrosh',
+  'Dodajesz konto bankowe, a wydatki wrzucasz zdjęciem paragonu. Portfel akcji, lokaty i obligacje - jeśli je masz.':
+    'Shton një llogari bankare dhe shpenzimet i fut me foto të kuponit. Portofoli i aksioneve, depozitat dhe obligacionet - nëse i ke.',
+  'Dashboard aktualizuje się na bieżąco - budżet, majątek i zwrot z inwestycji w jednym miejscu.':
+    'Paneli përditësohet vazhdimisht - buxheti, pasuria dhe kthimi nga investimet në një vend.',
+  'Czy mogę używać skiety tylko do budżetu, bez inwestycji?':
+    'A mund ta përdor skieta vetëm për buxhetin, pa investime?',
+  'Tak, i nie musisz niczego obchodzić. Przy zakładaniu konta zaznaczasz, co Cię interesuje - jeśli nie zaznaczysz giełdy, cała część inwestycyjna po prostu znika z menu i zostaje czysta aplikacja do przychodów, wydatków, paragonów i celów oszczędnościowych. Możesz to zmienić w każdej chwili w ustawieniach konta.':
+    'Po, dhe nuk të duhet të shmangësh asgjë. Kur hap llogarinë zgjedh çfarë të intereson - nëse nuk zgjedh bursën, e gjithë pjesa e investimeve thjesht zhduket nga menyja dhe mbetet një aplikacion i pastër për të ardhurat, shpenzimet, kuponët dhe qëllimet e kursimit. Mund ta ndryshosh në çdo moment te cilësimet e llogarisë.',
+  'Jak działa dodawanie wydatku ze zdjęcia paragonu?':
+    'Si funksionon shtimi i një shpenzimi nga fotoja e një kuponi?',
+  'Robisz paragonowi zdjęcie telefonem, a skieta odczytuje z niego kwotę, datę i nazwę sklepu oraz proponuje kategorię z Twojej własnej listy - poprawiasz, co trzeba, i zapisujesz. Odczytem zajmuje się Google Gemini na Twoim własnym, darmowym kluczu, który wklejasz raz przy pierwszym skanowaniu. Samego zdjęcia nigdzie nie zapisujemy - jest odczytywane w locie i nie trafia do naszej bazy.':
+    'Fotografon kuponin me telefon dhe skieta lexon prej tij shumën, datën dhe emrin e dyqanit, si dhe propozon një kategori nga lista jote - korrigjon çfarë duhet dhe ruan. Leximin e kryen Google Gemini me çelësin tënd falas, të cilin e ngjit një herë herën e parë që skanon. Vetë foton nuk e ruajmë askund - lexohet aty për aty dhe nuk përfundon në bazën tonë të të dhënave.',
+  'Arkusz nie zrobi za Ciebie zdjęcia paragonu i nie policzy, ile realnie zarobiłeś. skieta odczytuje wydatek ze zdjęcia i sama pilnuje kategorii, a przy inwestycjach liczy zysk osobno od wpłaconego kapitału, po podatku Belki, z kosztem zakupu akcji przeliczonym po kursie NBP z dnia transakcji, a nie dzisiejszym. To rzeczy, które w arkuszu trzeba utrzymywać ręcznie i łatwo w nich o błąd.':
+    'Një fletëllogaritëse nuk e fotografon kuponin për ty dhe nuk llogarit sa ke fituar vërtet. skieta e lexon shpenzimin nga fotoja dhe kujdeset për kategoritë, ndërsa te investimet e llogarit fitimin veçmas nga kapitali i derdhur, pas taksës mbi fitimet kapitale, me koston e blerjes së aksioneve të konvertuar me kursin e NBP-së të ditës së transaksionit dhe jo të sotmen. Këto janë gjëra që në një fletëllogaritëse duhen mbajtur me dorë dhe ku gabimi vjen lehtë.',
+  'Załóż konto i zacznij notować wydatki jeszcze dziś - pierwszy paragon wrzucisz zdjęciem w kilka sekund.':
+    'Hap një llogari dhe fillo të regjistrosh shpenzimet që sot - kuponin e parë e shton si foto brenda pak sekondash.',
+  '📷 Paragon': '📷 Kupon',
+  '📷 Dodaj paragon': '📷 Shto kupon',
+  'Jeszcze jeden krok: darmowy klucz Gemini': 'Edhe një hap: një çelës falas Gemini',
+  'Paragony odczytuje Google Gemini na Twoim własnym, darmowym limicie - dzięki temu funkcja jest bezpłatna i nikt poza Tobą nie płaci za Twoje skany.':
+    'Kuponët i lexon Google Gemini me kuotën tënde falas - prandaj funksioni është pa pagesë dhe askush përveç teje nuk paguan për skanimet e tua.',
+  'Otwórz Google AI Studio i kliknij "Create API key" - jest darmowy i zajmuje minutę.':
+    'Hap Google AI Studio dhe kliko "Create API key" - është falas dhe merr një minutë.',
+  'Skopiuj wygenerowany klucz.': 'Kopjo çelësin e krijuar.',
+  'Wklej go poniżej. Przechowujemy go zaszyfrowany i używamy wyłącznie do odczytania Twoich paragonów.':
+    'Ngjite më poshtë. E ruajmë të enkriptuar dhe e përdorim vetëm për të lexuar kuponët e tu.',
+  'Motyw': 'Tema',
+  'Klucz zapisany. Kliknij przycisk z paragonem jeszcze raz i wybierz zdjęcie.':
+    'Çelësi u ruajt. Kliko sërish butonin e kuponit dhe zgjidh një foto.',
+  'Najszybciej: zdjęcie paragonu': 'Më e shpejta: një foto e kuponit',
+  'Zamiast wpisywać wydatek ręcznie, zrób paragonowi zdjęcie telefonem. skieta odczyta kwotę, datę i sklep oraz zaproponuje kategorię. Przycisk jest na górnym pasku, więc masz go pod ręką na każdej stronie.':
+    'Në vend që ta shkruash shpenzimin me dorë, fotografo kuponin me telefon. skieta lexon shumën, datën dhe dyqanin, si dhe propozon një kategori. Butoni ndodhet në shiritin e sipërm, ndaj e ke pranë në çdo faqe.',
+  'Kliknij tutaj, żeby dodać konto bankowe, a jeśli je masz - także akcje, lokaty i obligacje. Od razu zobaczysz swój prawdziwy stan, zamiast zaczynać od zera.':
+    'Kliko këtu për të shtuar një llogari bankare dhe, nëse i ke, edhe aksione, depozita e obligacione. E sheh menjëherë gjendjen tënde reale, në vend që të nisesh nga zeroja.',
+  'Przychody i wydatki, w tym dodawanie ze zdjęcia paragonu':
+    'Të ardhurat dhe shpenzimet, përfshirë shtimin nga fotoja e një kuponi',
   'Twoje dane, Twoja kontrola': 'Të dhënat e tua, kontrolli yt',
   'Dostęp wyłącznie na zaproszenie, bez reklam i bez śledzenia. Historia logowań pokazuje dokładnie, kto i kiedy wchodził na Twoje konto.':
     'Akses vetëm me ftesë, pa reklama dhe pa gjurmim. Historiku i identifikimeve tregon saktësisht kush dhe kur ka hyrë në llogarinë tënde.',
