@@ -6,13 +6,15 @@
 // for its duration. An edge function has no such shared worker to block, and
 // scales independently of the Django app.
 //
-// The photo itself never reaches Django at all. The only two things this
-// function tells Django about are: "give me this user's Gemini key" (one
-// fast, small request - see accounts.views.GeminiApiKeyRevealView) and
-// nothing else. The parsed result goes straight back to the browser, which
-// shows it as an editable preview and only then saves it as a normal
-// transaction through the existing /api/budget/transactions/ endpoint - this
-// function never writes anything itself.
+// The photo itself never reaches Django at all. This function only ever
+// reads two small things from Django: the user's Gemini key (see
+// accounts.views.GeminiApiKeyRevealView) and their own expense category
+// names, so Gemini can propose one of the user's real categories instead of
+// inventing text that would never match anything in the dropdown. The
+// parsed result goes straight back to the browser, which shows it as an
+// editable preview and only then saves it as a normal transaction through
+// the existing /api/budget/transactions/ endpoint - this function never
+// writes anything itself.
 
 const API_BASE = 'https://api.skieta.com/api'
 // gemini-2.5-flash-lite (the model this originally shipped with) 404s as of
@@ -33,7 +35,20 @@ const GEMINI_TIMEOUT_MS = 25000
 
 const MAX_PHOTO_BYTES = 8 * 1024 * 1024
 
-const EXTRACTION_PROMPT = `Odczytaj ten paragon fiskalny i zwróć dane zakupu w formacie JSON.
+// A closed list, not free text: Gemini has no way to know the user's own
+// category names otherwise, and a category it invented (in whatever
+// language, however it feels like phrasing "groceries" today) would almost
+// never exact-match anything in the dropdown, making the suggestion useless
+// more often than not. Picking from the user's own list - or saying none
+// fit - is the only version of this that reliably lands as a real
+// pre-filled selection rather than text nobody asked for.
+function buildExtractionPrompt(categoryNames: string[]): string {
+  const categoryInstruction =
+    categoryNames.length > 0
+      ? `- category_name: wybierz JEDNĄ najlepiej pasującą kategorię z tej listy, przepisując ją dokładnie tak jak podano: ${categoryNames.map((n) => `"${n}"`).join(', ')}. Jeśli żadna nie pasuje sensownie, zwróć pusty string - nie wymyślaj własnej nazwy.`
+      : '- category_name: zawsze zwróć pusty string.'
+
+  return `Odczytaj ten paragon fiskalny i zwróć dane zakupu w formacie JSON.
 
 Zasady:
 - amount: końcowa kwota do zapłaty (SUMA/RAZEM), jako string z kropką dziesiętną, np. "23.47".
@@ -41,8 +56,10 @@ Zasady:
 - date: data transakcji w formacie YYYY-MM-DD.
 - store_name: nazwa sklepu z nagłówka paragonu (nie NIP, nie adres).
 - description: bardzo krótkie podsumowanie zakupu po polsku, np. "Zakupy spożywcze" (maks. 60 znaków).
+${categoryInstruction}
 
 Jeśli któregoś pola nie da się odczytać, zwróć dla niego pusty string "". Nie zgaduj kwoty ani daty - pusty string jest lepszy niż błędna wartość.`
+}
 
 // Every property is a plain "string", never a nullable type array
 // (`type: ["string","null"]`) - that syntax is newer and less consistently
@@ -63,8 +80,9 @@ const RESPONSE_SCHEMA = {
     amount: { type: 'string' },
     currency: { type: 'string' },
     description: { type: 'string' },
+    category_name: { type: 'string' },
   },
-  required: ['store_name', 'date', 'amount', 'currency', 'description'],
+  required: ['store_name', 'date', 'amount', 'currency', 'description', 'category_name'],
 }
 
 function jsonResponse(body: unknown, status = 200) {
@@ -88,6 +106,26 @@ async function fetchUsersGeminiKey(authHeader: string): Promise<string | null> {
   return data.api_key ?? null
 }
 
+/** The user's own expense category names, so Gemini can pick a real one
+ * instead of inventing text that will never match the dropdown. Best-effort:
+ * an empty list here just means the prompt tells Gemini to skip
+ * category_name, not that the whole scan fails - the store/date/amount this
+ * endpoint exists for don't depend on it. */
+async function fetchUsersExpenseCategories(authHeader: string): Promise<string[]> {
+  try {
+    const response = await fetch(`${API_BASE}/budget/categories/?type=expense`, {
+      headers: { Authorization: authHeader },
+      signal: AbortSignal.timeout(REVEAL_TIMEOUT_MS),
+    })
+    if (!response.ok) return []
+    const data = await response.json()
+    if (!Array.isArray(data)) return []
+    return data.map((c: { name?: unknown }) => c.name).filter((name): name is string => typeof name === 'string')
+  } catch {
+    return []
+  }
+}
+
 async function fileToBase64(file: File): Promise<string> {
   const buffer = await file.arrayBuffer()
   let binary = ''
@@ -107,9 +145,13 @@ interface ParsedReceipt {
   amount: string | null
   currency: string | null
   description: string | null
+  /** Exact name of one of the user's own expense categories, echoed back by
+   * Gemini - matched against the real category list client-side, not an id,
+   * since Gemini is never told any. null when none fit (or none exist). */
+  category_name: string | null
 }
 
-const RECEIPT_FIELDS = ['store_name', 'date', 'amount', 'currency', 'description'] as const
+const RECEIPT_FIELDS = ['store_name', 'date', 'amount', 'currency', 'description', 'category_name'] as const
 
 /** Gemini returns "" for a field it couldn't read (see RESPONSE_SCHEMA above)
  * - normalized to null here so every other caller keeps working with the
@@ -125,6 +167,7 @@ function normalizeParsedReceipt(value: unknown): ParsedReceipt | null {
     amount: blankToNull(record.amount),
     currency: blankToNull(record.currency),
     description: blankToNull(record.description),
+    category_name: blankToNull(record.category_name),
   }
 }
 
@@ -154,8 +197,15 @@ export default async (request: Request) => {
   }
 
   let apiKey: string | null
+  let categoryNames: string[]
   try {
-    apiKey = await fetchUsersGeminiKey(authHeader)
+    // Independent requests, fetched together - fetchUsersExpenseCategories
+    // never rejects (see its own try/catch), so a failure here is always
+    // the key lookup, and the error handling below still means what it says.
+    ;[apiKey, categoryNames] = await Promise.all([
+      fetchUsersGeminiKey(authHeader),
+      fetchUsersExpenseCategories(authHeader),
+    ])
   } catch {
     return jsonResponse({ detail: 'Nie udało się zweryfikować konta - spróbuj ponownie.' }, 502)
   }
@@ -177,7 +227,7 @@ export default async (request: Request) => {
         contents: [
           {
             parts: [
-              { text: EXTRACTION_PROMPT },
+              { text: buildExtractionPrompt(categoryNames) },
               { inlineData: { mimeType: photo.type || 'image/jpeg', data: base64Photo } },
             ],
           },

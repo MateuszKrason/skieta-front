@@ -27,6 +27,7 @@ type ReceiptInitialValues = {
   date?: string
   description?: string
   storeName?: string
+  categoryName?: string
 }
 
 function receiptToInitialValues(receipt: ParsedReceipt): ReceiptInitialValues {
@@ -36,6 +37,7 @@ function receiptToInitialValues(receipt: ParsedReceipt): ReceiptInitialValues {
     date: receipt.date ?? undefined,
     description: receipt.description ?? undefined,
     storeName: receipt.store_name ?? undefined,
+    categoryName: receipt.category_name ?? undefined,
   }
 }
 

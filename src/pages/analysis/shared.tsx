@@ -1315,6 +1315,32 @@ function writeLastAccount(type: BudgetType, accountId: number) {
   }
 }
 
+// Same idea, same reasoning, for the category picker - most of the time the
+// last category used for expenses (or for income) is exactly the one
+// needed again, category included, especially right after scanning a
+// receipt: Gemini proposes store/date/amount but never a category, and
+// leaving it blank meant re-picking the same "Jedzenie" or "Transport"
+// every single time.
+const LAST_CATEGORY_KEY_PREFIX = 'skieta.lastTransactionCategory.'
+
+function readLastCategory(type: BudgetType): number | null {
+  try {
+    const raw = localStorage.getItem(LAST_CATEGORY_KEY_PREFIX + type)
+    return raw ? Number(raw) : null
+  } catch {
+    return null
+  }
+}
+
+function writeLastCategory(type: BudgetType, categoryId: number) {
+  try {
+    localStorage.setItem(LAST_CATEGORY_KEY_PREFIX + type, String(categoryId))
+  } catch {
+    // Private browsing / blocked site data - the form still works, it just
+    // won't remember the choice for next time.
+  }
+}
+
 export function AddTransactionForm({
   categories,
   accounts,
@@ -1337,6 +1363,7 @@ export function AddTransactionForm({
     date?: string
     description?: string
     storeName?: string
+    categoryName?: string
   }
 }) {
   const { t } = useLanguage()
@@ -1352,6 +1379,7 @@ export function AddTransactionForm({
   const [unmatchedStoreName, setUnmatchedStoreName] = useState<string | null>(null)
   const [error, setError] = useState<string | null>(null)
   const appliedRememberedAccount = useRef(false)
+  const appliedRememberedCategory = useRef(false)
   const appliedStoreMatch = useRef(false)
 
   // Runs once, as soon as the accounts list has loaded (it's often still []
@@ -1368,6 +1396,39 @@ export function AddTransactionForm({
       setCurrency(remembered.currency)
     }
   }, [accounts, lockedAccount, type])
+
+  // Same as the account effect, waiting on `categories` the same way - but a
+  // category name from a scanned receipt (Gemini matching the paragon's own
+  // contents against the user's real category list - see receipt-scan.ts)
+  // takes priority over the remembered last-used one. "Last used" is a
+  // reasonable default with nothing else to go on, but it is not what this
+  // specific receipt is about - a scan of the pharmacy right after a grocery
+  // run should not default to "Jedzenie" just because that was used last.
+  // Falls through to remembered only when the receipt didn't suggest
+  // anything at all - if it suggested a name that matched nothing, that is
+  // left for the user rather than guessed from unrelated history.
+  useEffect(() => {
+    if (appliedRememberedCategory.current || categories.length === 0) return
+    appliedRememberedCategory.current = true
+
+    const suggestedName = initialValues?.categoryName
+    if (suggestedName) {
+      const suggested = categories.find(
+        (c) => c.type === type && c.name.toLowerCase() === suggestedName.toLowerCase(),
+      )
+      if (suggested) setCategory(suggested.id)
+      return
+    }
+
+    const rememberedId = readLastCategory(type)
+    const remembered = rememberedId
+      ? categories.find((c) => c.id === rememberedId && c.type === type)
+      : undefined
+    if (remembered) {
+      setCategory(remembered.id)
+    }
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [categories, type])
 
   // Categories aren't restricted to their linked account here - the account
   // on a Category is just an organizational tag (shown as a badge in
@@ -1421,6 +1482,7 @@ export function AddTransactionForm({
       }),
     onSuccess: () => {
       if (account) writeLastAccount(type, account)
+      if (category) writeLastCategory(type, category)
       onDone()
     },
     onError: (err: unknown) => {

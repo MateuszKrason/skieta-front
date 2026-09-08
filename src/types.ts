@@ -1016,4 +1016,9 @@ export interface ParsedReceipt {
   amount: string | null
   currency: string | null
   description: string | null
+  /** Exact name of one of the user's own expense categories, matched
+   * server-side by Gemini - never an invented name, since Gemini is only
+   * ever shown the real list. null when nothing fit (or the user has no
+   * expense categories yet). */
+  category_name: string | null
 }
