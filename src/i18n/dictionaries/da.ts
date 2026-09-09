@@ -931,6 +931,11 @@ export const da: Record<string, string> = {
     'Google læser kvitteringsbillederne for dig. Det skal du give lov til én gang - det tager et par minutter, kræver ikke betalingskort og koster ingenting.',
   'Zamiast wpisywać wydatki ręcznie, możesz wgrywać zdjęcia paragonów - odczyta je za Ciebie Google. Trzeba mu to raz zezwolić, a poniżej masz instrukcję krok po kroku. Nic to nie kosztuje i nie wymaga karty płatniczej.':
     'I stedet for at taste udgifter ind i hånden kan du uploade billeder af kvitteringer - Google læser dem for dig. Det skal du give lov til én gang, og nedenfor står vejledningen trin for trin. Det koster ingenting og kræver ikke betalingskort.',
+  '📷 Zrób zdjęcie': '📷 Tag et billede',
+  '🖼️ Wybierz z galerii': '🖼️ Vælg fra galleri',
+  'Analizuję zdjęcie paragonu…': 'Analyserer billedet af kvitteringen…',
+  'To może potrwać do pół minuty.': 'Det kan tage op til et halvt minut.',
+  'lub dodaj ręcznie': 'eller tilføj det manuelt',
   'Twoje dane, Twoja kontrola': 'Dine data, din kontrol',
   'Dostęp wyłącznie na zaproszenie, bez reklam i bez śledzenia. Historia logowań pokazuje dokładnie, kto i kiedy wchodził na Twoje konto.':
     'Kun adgang via invitation, ingen reklamer og ingen sporing. Login-historikken viser præcis, hvem der har tilgået din konto, og hvornår.',

@@ -5,7 +5,7 @@ import { Area, AreaChart, ResponsiveContainer, Tooltip, XAxis, YAxis } from 'rec
 import { api } from '../api/client'
 import { useAuth } from '../auth/AuthContext'
 import { PageLoader, Spinner } from '../components/Loader'
-import { ScanReceiptNavButton } from '../components/ScanReceiptButton'
+import { AddExpenseManuallyLink, ScanReceiptNavButton } from '../components/ScanReceiptButton'
 import { useLanguage } from '../i18n/LanguageContext'
 import { useTooltipStyle } from '../lib/chartTooltip'
 import { signalInviteMoment } from '../lib/inviteMoment'
@@ -205,6 +205,12 @@ export default function Dashboard() {
                 className="rounded-md bg-accent-600 px-3 py-1.5 text-xs font-semibold text-white hover:bg-accent-700 disabled:opacity-60"
               />
             )}
+            {/* Quiet on purpose - the scan button is the point of this row,
+                and typing an expense in by hand is still the more familiar
+                path for plenty of people. A same-weight second button here
+                would compete with the scan CTA instead of reading as its
+                fallback. */}
+            {showBudget && <AddExpenseManuallyLink />}
             <Link to="/budzet" className="text-xs font-medium text-accent-700 dark:text-accent-400 hover:underline">
               {t('Zobacz pełną analizę →')}
             </Link>

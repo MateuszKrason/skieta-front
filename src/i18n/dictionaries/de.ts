@@ -931,6 +931,11 @@ export const de: Record<string, string> = {
     'Die Fotos der Kassenbons liest Google für dich aus. Das musst du einmal erlauben - es dauert etwa zwei Minuten, braucht keine Zahlungskarte und kostet nichts.',
   'Zamiast wpisywać wydatki ręcznie, możesz wgrywać zdjęcia paragonów - odczyta je za Ciebie Google. Trzeba mu to raz zezwolić, a poniżej masz instrukcję krok po kroku. Nic to nie kosztuje i nie wymaga karty płatniczej.':
     'Statt Ausgaben von Hand einzutippen, kannst du Fotos von Kassenbons hochladen - Google liest sie für dich aus. Das musst du einmal erlauben; unten steht die Anleitung Schritt für Schritt. Es kostet nichts und braucht keine Zahlungskarte.',
+  '📷 Zrób zdjęcie': '📷 Foto aufnehmen',
+  '🖼️ Wybierz z galerii': '🖼️ Aus Galerie wählen',
+  'Analizuję zdjęcie paragonu…': 'Kassenbon wird analysiert…',
+  'To może potrwać do pół minuty.': 'Das kann bis zu einer halben Minute dauern.',
+  'lub dodaj ręcznie': 'oder manuell hinzufügen',
   'Twoje dane, Twoja kontrola': 'Deine Daten, deine Kontrolle',
   'Dostęp wyłącznie na zaproszenie, bez reklam i bez śledzenia. Historia logowań pokazuje dokładnie, kto i kiedy wchodził na Twoje konto.':
     'Zugang nur auf Einladung, keine Werbung und kein Tracking. Der Anmeldeverlauf zeigt genau, wer wann auf dein Konto zugegriffen hat.',

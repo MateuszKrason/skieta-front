@@ -931,6 +931,11 @@ export const en: Record<string, string> = {
     'Google reads the receipt photos for you. You have to allow it once - it takes about two minutes, needs no payment card and costs nothing.',
   'Zamiast wpisywać wydatki ręcznie, możesz wgrywać zdjęcia paragonów - odczyta je za Ciebie Google. Trzeba mu to raz zezwolić, a poniżej masz instrukcję krok po kroku. Nic to nie kosztuje i nie wymaga karty płatniczej.':
     'Instead of typing expenses in by hand you can upload photos of receipts - Google reads them for you. You have to allow it once, and there are step-by-step instructions below. It costs nothing and needs no payment card.',
+  '📷 Zrób zdjęcie': '📷 Take a photo',
+  '🖼️ Wybierz z galerii': '🖼️ Choose from gallery',
+  'Analizuję zdjęcie paragonu…': 'Analysing the receipt photo…',
+  'To może potrwać do pół minuty.': 'This can take up to half a minute.',
+  'lub dodaj ręcznie': 'or add it manually',
   'Twoje dane, Twoja kontrola': 'Your data, your control',
   'Dostęp wyłącznie na zaproszenie, bez reklam i bez śledzenia. Historia logowań pokazuje dokładnie, kto i kiedy wchodził na Twoje konto.':
     'Invite-only access, no ads, no tracking. Login history shows exactly who accessed your account and when.',

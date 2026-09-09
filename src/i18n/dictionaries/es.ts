@@ -930,6 +930,11 @@ export const es: Record<string, string> = {
     'Google lee por ti las fotos de los tickets. Tienes que permitírselo una vez: son unos dos minutos, no hace falta tarjeta y no cuesta nada.',
   'Zamiast wpisywać wydatki ręcznie, możesz wgrywać zdjęcia paragonów - odczyta je za Ciebie Google. Trzeba mu to raz zezwolić, a poniżej masz instrukcję krok po kroku. Nic to nie kosztuje i nie wymaga karty płatniczej.':
     'En lugar de escribir los gastos a mano puedes subir fotos de tickets: Google los lee por ti. Hay que permitírselo una vez y abajo tienes las instrucciones paso a paso. No cuesta nada y no hace falta tarjeta.',
+  '📷 Zrób zdjęcie': '📷 Hacer una foto',
+  '🖼️ Wybierz z galerii': '🖼️ Elegir de la galería',
+  'Analizuję zdjęcie paragonu…': 'Analizando la foto del ticket…',
+  'To może potrwać do pół minuty.': 'Esto puede tardar hasta medio minuto.',
+  'lub dodaj ręcznie': 'o añadirlo a mano',
   'Twoje dane, Twoja kontrola': 'Tus datos, tu control',
   'Dostęp wyłącznie na zaproszenie, bez reklam i bez śledzenia. Historia logowań pokazuje dokładnie, kto i kiedy wchodził na Twoje konto.':
     'Acceso solo por invitación, sin anuncios y sin rastreo. El historial de inicios de sesión muestra exactamente quién entró en tu cuenta y cuándo.',

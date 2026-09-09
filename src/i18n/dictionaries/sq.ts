@@ -930,6 +930,11 @@ export const sq: Record<string, string> = {
     'Fotot e kuponëve i lexon Google për ty. Duhet t’ia lejosh një herë - zgjat rreth dy minuta, nuk kërkon kartë pagese dhe nuk kushton asgjë.',
   'Zamiast wpisywać wydatki ręcznie, możesz wgrywać zdjęcia paragonów - odczyta je za Ciebie Google. Trzeba mu to raz zezwolić, a poniżej masz instrukcję krok po kroku. Nic to nie kosztuje i nie wymaga karty płatniczej.':
     'Në vend që të shkruash shpenzimet me dorë, mund të ngarkosh foto kuponësh - Google i lexon për ty. Duhet t’ia lejosh një herë, dhe më poshtë ke udhëzimet hap pas hapi. Nuk kushton asgjë dhe nuk kërkon kartë pagese.',
+  '📷 Zrób zdjęcie': '📷 Bëj një foto',
+  '🖼️ Wybierz z galerii': '🖼️ Zgjidh nga galeria',
+  'Analizuję zdjęcie paragonu…': 'Po analizoj foton e kuponit…',
+  'To może potrwać do pół minuty.': 'Kjo mund të zgjasë deri në gjysmë minuti.',
+  'lub dodaj ręcznie': 'ose shtoje me dorë',
   'Twoje dane, Twoja kontrola': 'Të dhënat e tua, kontrolli yt',
   'Dostęp wyłącznie na zaproszenie, bez reklam i bez śledzenia. Historia logowań pokazuje dokładnie, kto i kiedy wchodził na Twoje konto.':
     'Akses vetëm me ftesë, pa reklama dhe pa gjurmim. Historiku i identifikimeve tregon saktësisht kush dhe kur ka hyrë në llogarinë tënde.',

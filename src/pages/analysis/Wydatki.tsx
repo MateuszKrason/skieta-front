@@ -84,6 +84,10 @@ export default function Wydatki() {
     if (state.receipt) applyScan(state.receipt)
     if (state.needsGeminiKey) setScanNeedsKey(true)
     if (state.scanError) setScanError(state.scanError)
+    if (state.openManualAdd) {
+      setReceiptValues(undefined)
+      setShowAddTx(true)
+    }
     navigate(location.pathname, { replace: true, state: null })
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [location.state])

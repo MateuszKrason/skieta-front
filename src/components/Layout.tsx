@@ -1,4 +1,4 @@
-import { useEffect, useRef, useState } from 'react'
+import { useState } from 'react'
 import { useMutation } from '@tanstack/react-query'
 import { Link, NavLink, Outlet } from 'react-router-dom'
 import { api } from '../api/client'
@@ -7,9 +7,11 @@ import FeedbackWidget from './FeedbackWidget'
 import InstallPrompt from './InstallPrompt'
 import InviteNudgeBubble from './InviteNudgeBubble'
 import { ScanReceiptNavButton } from './ScanReceiptButton'
+import ScanningIndicator from './ScanningIndicator'
 import SockLogo from './SockLogo'
 import { useTheme, type Theme } from '../theme/ThemeContext'
 import { LANGUAGES, useLanguage, type Language } from '../i18n/LanguageContext'
+import { useDismissableMenu } from '../lib/useDismissableMenu'
 import { TourProvider } from '../tour/TourContext'
 import TourOverlay from '../tour/TourOverlay'
 import type { User } from '../types'
@@ -152,23 +154,7 @@ function UserMenu({ onNavigate }: { onNavigate: () => void }) {
   const { user, logout } = useAuth()
   const { t } = useLanguage()
   const [open, setOpen] = useState(false)
-  const containerRef = useRef<HTMLDivElement>(null)
-
-  useEffect(() => {
-    if (!open) return
-    function onPointerDown(event: MouseEvent) {
-      if (containerRef.current && !containerRef.current.contains(event.target as Node)) setOpen(false)
-    }
-    function onKeyDown(event: KeyboardEvent) {
-      if (event.key === 'Escape') setOpen(false)
-    }
-    document.addEventListener('mousedown', onPointerDown)
-    document.addEventListener('keydown', onKeyDown)
-    return () => {
-      document.removeEventListener('mousedown', onPointerDown)
-      document.removeEventListener('keydown', onKeyDown)
-    }
-  }, [open])
+  const containerRef = useDismissableMenu<HTMLDivElement>(open, () => setOpen(false))
 
   const streak = user?.profile.login_streak ?? 0
 
@@ -410,6 +396,7 @@ export default function Layout() {
         </div>
       </footer>
       <FeedbackWidget />
+      <ScanningIndicator />
     </div>
     <TourOverlay />
     </TourProvider>
