@@ -1,12 +1,12 @@
 import { useState } from 'react'
 import { useQuery } from '@tanstack/react-query'
-import { Bar, BarChart, CartesianGrid, Cell, ReferenceLine, ResponsiveContainer, Tooltip, XAxis, YAxis } from 'recharts'
+import { Bar, BarChart, CartesianGrid, Cell, Legend, ReferenceLine, ResponsiveContainer, Tooltip, XAxis, YAxis } from 'recharts'
 import { api } from '../../api/client'
 import { CardLoader } from '../../components/Loader'
 import { useLanguage } from '../../i18n/LanguageContext'
 import { useTooltipStyle } from '../../lib/chartTooltip'
 import { formatAxisValue, formatDate, formatMoney, formatNumber, formatPct } from '../../lib/format'
-import type { BudgetType, InterestingStats, MonthlyTrendRow } from '../../types'
+import type { BudgetType, Currency, InterestingStats, MonthlyTrendRow, ReimbursementTrend } from '../../types'
 import { CategoryTrendChart, StoreTrendChart, TagTrendChart } from './shared'
 
 const WEEKDAY_NAMES = ['Poniedziałek', 'Wtorek', 'Środa', 'Czwartek', 'Piątek', 'Sobota', 'Niedziela']
@@ -94,6 +94,88 @@ function SavingsRateChart() {
           </ResponsiveContainer>
         </div>
       )}
+    </div>
+  )
+}
+
+/** Money that passed through your account on somebody else's behalf. Kept
+ * out of the way entirely for people who never front anything - a chart of
+ * twelve empty months teaches nothing, and this page is long enough. The
+ * settled and still-owed shares are stacked rather than summed because they
+ * answer different questions: how much you routinely lay out for others,
+ * and how much of it is currently sitting with somebody who hasn't paid you
+ * back yet. */
+function FrontedForOthersChart({ currency }: { currency: Currency }) {
+  const { t } = useLanguage()
+  const tooltipStyle = useTooltipStyle()
+  const [months, setMonths] = useState(12)
+
+  const { data, isLoading } = useQuery({
+    queryKey: ['budget-reimbursement-trend', months],
+    queryFn: async () =>
+      (await api.get<ReimbursementTrend>('/budget/reimbursement-trend/', { params: { months } })).data,
+  })
+
+  // No loader: most people front nothing and would see a spinner resolve
+  // into an empty space. The rest of the page has already rendered by now,
+  // so the card simply appears for those who do.
+  //
+  // The totals are all-time, so a zero here really does mean "never fronted
+  // anything", not "nothing in the last 12 months".
+  if (isLoading || !data || Number(data.total_fronted) === 0) return null
+
+  const chartData = data.rows.map((row) => ({
+    month: row.month,
+    settled: Number(row.settled),
+    pending: Number(row.pending),
+  }))
+
+  return (
+    <div className="rounded-xl border border-slate-200 dark:border-slate-700 bg-white dark:bg-slate-800 p-5 shadow-sm">
+      <div className="mb-1 flex flex-wrap items-center justify-between gap-2">
+        <h2 className="text-sm font-semibold text-slate-700 dark:text-slate-300">{t('Wyłożone za innych')}</h2>
+        <select value={months} onChange={(e) => setMonths(Number(e.target.value))} className="input w-auto">
+          {SAVINGS_RATE_MONTHS_OPTIONS.map((m) => (
+            <option key={m} value={m}>
+              {t('Ostatnie {0} mies.', m)}
+            </option>
+          ))}
+        </select>
+      </div>
+      <p className="mb-3 text-xs text-slate-400 dark:text-slate-500">
+        {t('Pieniądze, które zapłaciłeś za kogoś innego - miesiąc po miesiącu. Nie liczą się jako Twoje wydatki.')}
+      </p>
+      <div className="mb-4 grid grid-cols-1 gap-4 sm:grid-cols-2">
+        <InsightCard
+          label={t('Wyłożone za innych (łącznie)')}
+          value={formatMoney(data.total_fronted, currency)}
+          hint={t('Od początku, nie tylko w wybranym okresie')}
+        />
+        <InsightCard
+          label={t('Czeka na zwrot')}
+          value={formatMoney(data.total_pending, currency)}
+          hint={
+            Number(data.total_pending) === 0
+              ? t('Wszystko już Ci oddano')
+              : t('Oznacz zwrot przy transakcji, gdy pieniądze wrócą')
+          }
+        />
+      </div>
+      <div className="h-56">
+        <ResponsiveContainer width="100%" height="100%">
+          <BarChart data={chartData}>
+            <CartesianGrid strokeDasharray="3 3" stroke="#94a3b8" strokeOpacity={0.15} />
+            <XAxis dataKey="month" tick={{ fontSize: 12 }} stroke="#94a3b8" />
+            <YAxis tickFormatter={formatAxisValue} tick={{ fontSize: 12 }} stroke="#94a3b8" width={44} />
+            <Tooltip {...tooltipStyle} formatter={(value) => formatMoney(value as number, currency)} />
+            <Legend wrapperStyle={{ fontSize: 12 }} />
+            {/* One stack, so the bar height is the whole month's outlay while
+                the split still shows who actually paid you back. */}
+            <Bar dataKey="settled" stackId="fronted" name={t('Zwrócone')} fill="#059669" />
+            <Bar dataKey="pending" stackId="fronted" name={t('Czeka na zwrot')} fill="#f59e0b" />
+          </BarChart>
+        </ResponsiveContainer>
+      </div>
     </div>
   )
 }
@@ -207,6 +289,8 @@ export default function Statystyki() {
           </div>
 
           <SavingsRateChart />
+
+          <FrontedForOthersChart currency={data.base_currency} />
         </>
       )}
 

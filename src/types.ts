@@ -777,6 +777,11 @@ export interface BudgetTransaction {
   account: number | null
   account_detail: BankAccount | null
   amount: string
+  /** The part of `amount` that was fronted for somebody else. Subtracted
+   * from this user's spending everywhere it is analysed, but not from the
+   * account balance - paying the whole bill really did move the whole sum. */
+  reimbursed_amount: string
+  reimbursement_received: boolean
   currency: Currency
   date: string
   description: string
@@ -822,6 +827,10 @@ export interface CategoryBreakdown {
   income_total: string
   expense_total: string
   net: string
+  /** Already excluded from expense_total - reported so the app can say
+   * where the difference went instead of just showing a smaller number. */
+  reimbursed_total: string
+  reimbursement_pending: string
   rows: CategoryBreakdownRow[]
 }
 
@@ -830,6 +839,20 @@ export interface MonthlyTrendRow {
   income: string
   expense: string
   net: string
+}
+
+export interface ReimbursementTrendRow {
+  month: string
+  fronted: string
+  settled: string
+  pending: string
+}
+
+export interface ReimbursementTrend {
+  rows: ReimbursementTrendRow[]
+  /** All-time, not the sum of `rows` - see budget.services.reimbursement_trend. */
+  total_fronted: string
+  total_pending: string
 }
 
 export interface TransactionHighlight {
@@ -1015,6 +1038,15 @@ export interface GeminiKeyStatus {
  * after Gemini reads a photo of a paragon - each field null where Gemini
  * couldn't read it, never guessed. Reviewed and completed by hand in
  * AddTransactionForm before anything is saved. */
+/** One product line off a receipt, read only when a split was asked for. */
+export interface ReceiptItem {
+  /** As printed, abbreviations and all - "JOG.NAT.ZOTT 400G". Shown back to
+   * the user verbatim so they can recognise it on the paper in their hand. */
+  name: string
+  amount: string
+  category_name: string | null
+}
+
 export interface ParsedReceipt {
   store_name: string | null
   date: string | null
@@ -1026,4 +1058,11 @@ export interface ParsedReceipt {
    * ever shown the real list. null when nothing fit (or the user has no
    * expense categories yet). */
   category_name: string | null
+  /** Present only when a per-product split was requested and the stronger
+   * model could deliver one. */
+  items?: ReceiptItem[] | null
+  /** Set when a split was asked for but could not be produced - the daily
+   * allowance on the stronger model ran out, or that model no longer
+   * exists. The scan still succeeded, just without the per-item breakdown. */
+  degraded?: 'quota' | 'model_missing' | null
 }

@@ -42,6 +42,8 @@ export function ScanReceiptButton({
   className,
   label,
   dataTour,
+  split = false,
+  categoryNames,
 }: {
   onParsed: (result: ParsedReceipt) => void
   onNeedsGeminiKey: () => void
@@ -51,6 +53,14 @@ export function ScanReceiptButton({
   className?: string
   label?: string
   dataTour?: string
+  /** Ask for a reading product by product rather than one amount for the
+   * whole receipt. Costs a request against the stronger model's much
+   * smaller daily allowance, so it is opt-in per scan, never the default. */
+  split?: boolean
+  /** The few categories the user said this receipt is likely to fall into.
+   * Narrowing the list Gemini chooses from raises the odds of a sensible
+   * assignment; left out, the edge function uses every expense category. */
+  categoryNames?: string[]
 }) {
   const { t } = useLanguage()
   const { user } = useAuth()
@@ -122,6 +132,10 @@ export function ScanReceiptButton({
     try {
       const form = new FormData()
       form.append('photo', file)
+      if (split) form.append('split', '1')
+      if (categoryNames && categoryNames.length > 0) {
+        form.append('categories', JSON.stringify(categoryNames))
+      }
       const token = tokenStore.getAccess()
       const response = await fetch('/receipt-scan', {
         method: 'POST',

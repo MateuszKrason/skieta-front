@@ -17,23 +17,73 @@
 // writes anything itself.
 
 const API_BASE = 'https://api.skieta.com/api'
-// gemini-2.5-flash-lite (the model this originally shipped with) 404s as of
-// September 2026 - retired from the API entirely, not just no longer
-// recommended. ai.google.dev/gemini-api/docs/models no longer lists any 2.5
-// model; 3.5 Flash-Lite is its direct successor (same "fastest, cheapest"
-// slot) and is confirmed free-tier and multimodal. Model names churn here
-// faster than this file gets touched - if this 404s again, check that page
-// for whatever replaced this one before assuming the code is wrong again.
-const GEMINI_MODEL = 'gemini-3.5-flash-lite'
-const GEMINI_URL = `https://generativelanguage.googleapis.com/v1beta/models/${GEMINI_MODEL}:generateContent`
+
+/** Netlify exposes env through its own accessor, Deno through its; neither
+ * is guaranteed to be there, and reading env can throw outright when the
+ * permission is not granted. Every caller has a working default, so a
+ * failure here is not worth surfacing - it just means the built-in model
+ * name is used. */
+function envOr(name: string, fallback: string): string {
+  try {
+    const netlifyEnv = (globalThis as { Netlify?: { env?: { get?: (key: string) => string | undefined } } }).Netlify
+    const fromNetlify = netlifyEnv?.env?.get?.(name)
+    if (fromNetlify) return fromNetlify
+    const denoEnv = (globalThis as { Deno?: { env?: { get?: (key: string) => string | undefined } } }).Deno
+    const fromDeno = denoEnv?.env?.get?.(name)
+    if (fromDeno) return fromDeno
+  } catch {
+    // Ignored on purpose - see the note above.
+  }
+  return fallback
+}
+
+// Two models, because the two jobs are not the same job.
+//
+// Finding one big, well-printed number next to SUMA is something the
+// cheapest tier does fine. Reading twenty-five lines of abbreviated Polish
+// thermal print - "JOG.NAT.ZOTT 400G", truncated at the printer's column
+// limit, on curled shiny paper - is where a lite model falls apart, so the
+// per-item split asks a flash-tier model instead.
+//
+// The reason this is not simply "use the better model for everything" is
+// the free tier's daily allowance, which differs by a factor of twenty-five:
+// flash-lite gets 500 requests a day, flash gets 20. Everyday scanning would
+// eat that in an afternoon. So the quick scan stays on lite and the stronger
+// model is spent only on the rarer, harder job.
+//
+// Both are env-overridable because these names churn faster than this file
+// gets touched: gemini-2.5-flash-lite, which this originally shipped with,
+// was retired out from under a working production deploy and started
+// answering 404. When that happens again, this should be a Netlify
+// environment variable away from being fixed, not a code deploy.
+// ai.google.dev/gemini-api/docs/models has the current list.
+const SCAN_MODEL = envOr('GEMINI_SCAN_MODEL', 'gemini-3.5-flash-lite')
+const SPLIT_MODEL = envOr('GEMINI_SPLIT_MODEL', 'gemini-3.8-flash')
+
+function geminiUrl(model: string): string {
+  return `https://generativelanguage.googleapis.com/v1beta/models/${model}:generateContent`
+}
 
 const REVEAL_TIMEOUT_MS = 5000
 // Vision calls are slower than a plain text prompt - long enough for a real
 // photo, short enough that a hung request doesn't tie up the function
 // indefinitely.
 const GEMINI_TIMEOUT_MS = 25000
+// A stronger model producing twenty-five rows instead of six fields needs
+// noticeably longer. Kept env-overridable and deliberately short of a
+// minute, since the platform imposes its own ceiling on how long an edge
+// function may run - if real receipts start timing out here, raise this
+// before assuming the model is at fault.
+const SPLIT_TIMEOUT_MS = Number(envOr('GEMINI_SPLIT_TIMEOUT_MS', '40000'))
 
 const MAX_PHOTO_BYTES = 8 * 1024 * 1024
+
+/** Lines that are not things anyone bought. Polish receipts carry plenty of
+ * them, and a split that files "RABAT -4,50" as groceries is both wrong and
+ * confusing to correct by hand. */
+const NON_PRODUCT_HINT =
+  'Pomiń wiersze, które nie są kupionym towarem: rabaty, kaucje za butelki, opłatę cukrową, ' +
+  'podsumowanie PTU/VAT, NIP, numer karty, kwotę otrzymaną i resztę.'
 
 // A closed list, not free text: Gemini has no way to know the user's own
 // category names otherwise, and a category it invented (in whatever
@@ -42,12 +92,17 @@ const MAX_PHOTO_BYTES = 8 * 1024 * 1024
 // more often than not. Picking from the user's own list - or saying none
 // fit - is the only version of this that reliably lands as a real
 // pre-filled selection rather than text nobody asked for.
-function buildExtractionPrompt(categoryNames: string[]): string {
-  const categoryInstruction =
-    categoryNames.length > 0
-      ? `- category_name: wybierz JEDNĄ najlepiej pasującą kategorię z tej listy, przepisując ją dokładnie tak jak podano: ${categoryNames.map((n) => `"${n}"`).join(', ')}. Jeśli żadna nie pasuje sensownie, zwróć pusty string - nie wymyślaj własnej nazwy.`
-      : '- category_name: zawsze zwróć pusty string.'
+function categoryInstruction(categoryNames: string[], field: string): string {
+  if (categoryNames.length === 0) return `- ${field}: zawsze zwróć pusty string.`
+  const list = categoryNames.map((name) => `"${name}"`).join(', ')
+  return (
+    `- ${field}: wybierz JEDNĄ najlepiej pasującą kategorię z tej listy, przepisując ją dokładnie ` +
+    `tak jak podano: ${list}. Jeśli żadna nie pasuje sensownie, zwróć pusty string - nie wymyślaj ` +
+    'własnej nazwy.'
+  )
+}
 
+function buildExtractionPrompt(categoryNames: string[]): string {
   return `Odczytaj ten paragon fiskalny i zwróć dane zakupu w formacie JSON.
 
 Zasady:
@@ -56,7 +111,35 @@ Zasady:
 - date: data transakcji w formacie YYYY-MM-DD.
 - store_name: nazwa sklepu z nagłówka paragonu (nie NIP, nie adres).
 - description: bardzo krótkie podsumowanie zakupu po polsku, np. "Zakupy spożywcze" (maks. 60 znaków).
-${categoryInstruction}
+${categoryInstruction(categoryNames, 'category_name')}
+
+Jeśli któregoś pola nie da się odczytać, zwróć dla niego pusty string "". Nie zgaduj kwoty ani daty - pusty string jest lepszy niż błędna wartość.`
+}
+
+/** The same reading, plus a row per product. The instruction to make the
+ * items add up to the total is not decoration: the client checks that sum
+ * and makes the user resolve any difference before anything is saved (see
+ * TransactionSplitSerializer on the backend), so a model that quietly drops
+ * a line produces a visible discrepancy rather than a wrong budget. */
+function buildSplitPrompt(categoryNames: string[]): string {
+  return `Odczytaj ten paragon fiskalny pozycja po pozycji i zwróć wynik w formacie JSON.
+
+Zasady ogólne:
+- amount: końcowa kwota do zapłaty (SUMA/RAZEM), jako string z kropką dziesiętną, np. "23.47".
+- currency: kod waluty ISO, domyślnie "PLN" jeśli brak innej informacji.
+- date: data transakcji w formacie YYYY-MM-DD.
+- store_name: nazwa sklepu z nagłówka paragonu (nie NIP, nie adres).
+- description: bardzo krótkie podsumowanie zakupu po polsku, np. "Zakupy spożywcze" (maks. 60 znaków).
+${categoryInstruction(categoryNames, 'category_name')}
+
+Zasady dla listy items (jedna pozycja = jeden towar z paragonu):
+- name: nazwa towaru dokładnie tak, jak wydrukowana na paragonie, nawet jeśli jest skrócona.
+- amount: kwota zapłacona za tę pozycję, jako string z kropką dziesiętną. Jeśli w wierszu jest
+  ilość razy cena (np. "2 x 3,99"), podaj wartość całego wiersza, nie cenę jednostkową.
+${categoryInstruction(categoryNames, 'category_name w items')}
+- ${NON_PRODUCT_HINT}
+- Suma wszystkich items powinna zgadzać się z polem amount. Jeśli nie potrafisz odczytać jakiejś
+  pozycji, pomiń ją - lepiej krótsza lista niż zmyślona kwota.
 
 Jeśli któregoś pola nie da się odczytać, zwróć dla niego pusty string "". Nie zgaduj kwoty ani daty - pusty string jest lepszy niż błędna wartość.`
 }
@@ -65,24 +148,47 @@ Jeśli któregoś pola nie da się odczytać, zwróć dla niego pusty string "".
 // (`type: ["string","null"]`) - that syntax is newer and less consistently
 // supported across Gemini model versions, and this app has no way to test
 // it live against a real key (see the module-level note above). A schema
-// this basic - one flat object, five string properties, nothing optional -
+// this basic - one flat object, six string properties, nothing optional -
 // is the form structured output has supported since it launched, which
 // matters most here precisely because a bad schema fails the *entire*
 // request with no way to see why (see the note on hiding Gemini's error
 // body below). "Not found" is expressed in-band as "" and converted back to
 // null in normalizeParsedReceipt below, so callers still see the same
 // store_name: string | null shape as before.
+const RECEIPT_PROPERTIES = {
+  store_name: { type: 'string' },
+  date: { type: 'string' },
+  amount: { type: 'string' },
+  currency: { type: 'string' },
+  description: { type: 'string' },
+  category_name: { type: 'string' },
+}
+const RECEIPT_REQUIRED = ['store_name', 'date', 'amount', 'currency', 'description', 'category_name']
+
 const RESPONSE_SCHEMA = {
   type: 'object',
+  properties: RECEIPT_PROPERTIES,
+  required: RECEIPT_REQUIRED,
+}
+
+const SPLIT_RESPONSE_SCHEMA = {
+  type: 'object',
   properties: {
-    store_name: { type: 'string' },
-    date: { type: 'string' },
-    amount: { type: 'string' },
-    currency: { type: 'string' },
-    description: { type: 'string' },
-    category_name: { type: 'string' },
+    ...RECEIPT_PROPERTIES,
+    items: {
+      type: 'array',
+      items: {
+        type: 'object',
+        properties: {
+          name: { type: 'string' },
+          amount: { type: 'string' },
+          category_name: { type: 'string' },
+        },
+        required: ['name', 'amount', 'category_name'],
+      },
+    },
   },
-  required: ['store_name', 'date', 'amount', 'currency', 'description', 'category_name'],
+  required: [...RECEIPT_REQUIRED, 'items'],
 }
 
 function jsonResponse(body: unknown, status = 200) {
@@ -126,6 +232,22 @@ async function fetchUsersExpenseCategories(authHeader: string): Promise<string[]
   }
 }
 
+/** The handful of categories the user ticked for this particular receipt.
+ * Narrowing the closed list from "all of them" to "these four" both raises
+ * the odds of a sensible per-item assignment and shrinks the review to the
+ * groups they already said they expect. Anything malformed falls back to
+ * the full list rather than failing the scan. */
+function parseRequestedCategories(raw: FormDataEntryValue | null): string[] {
+  if (typeof raw !== 'string' || raw.trim() === '') return []
+  try {
+    const parsed = JSON.parse(raw)
+    if (!Array.isArray(parsed)) return []
+    return parsed.filter((name): name is string => typeof name === 'string' && name.trim() !== '')
+  } catch {
+    return []
+  }
+}
+
 async function fileToBase64(file: File): Promise<string> {
   const buffer = await file.arrayBuffer()
   let binary = ''
@@ -139,6 +261,14 @@ async function fileToBase64(file: File): Promise<string> {
   return btoa(binary)
 }
 
+interface ReceiptItem {
+  name: string
+  amount: string
+  /** Exact name of one of the categories offered in the prompt, or null when
+   * none fitted - matched against real category ids client-side. */
+  category_name: string | null
+}
+
 interface ParsedReceipt {
   store_name: string | null
   date: string | null
@@ -149,9 +279,37 @@ interface ParsedReceipt {
    * Gemini - matched against the real category list client-side, not an id,
    * since Gemini is never told any. null when none fit (or none exist). */
   category_name: string | null
+  /** Only present when a split was asked for and the model that answered
+   * could produce one. null when the scan fell back to the simpler model. */
+  items: ReceiptItem[] | null
+  /** Set when a split was requested but could not be delivered, so the UI
+   * can say why rather than silently offering one category. */
+  degraded: 'quota' | 'model_missing' | null
 }
 
 const RECEIPT_FIELDS = ['store_name', 'date', 'amount', 'currency', 'description', 'category_name'] as const
+
+const blankToNull = (value: unknown) =>
+  typeof value === 'string' && value.trim() === '' ? null : (value as string)
+
+/** Rows Gemini could not read cleanly are dropped rather than guessed at.
+ * A row with no amount is not a purchase anyone can review. */
+function normalizeItems(value: unknown): ReceiptItem[] | null {
+  if (!Array.isArray(value)) return null
+  const items: ReceiptItem[] = []
+  for (const raw of value) {
+    if (!raw || typeof raw !== 'object') continue
+    const record = raw as Record<string, unknown>
+    if (typeof record.name !== 'string' || typeof record.amount !== 'string') continue
+    if (record.amount.trim() === '') continue
+    items.push({
+      name: record.name,
+      amount: record.amount,
+      category_name: blankToNull(record.category_name),
+    })
+  }
+  return items
+}
 
 /** Gemini returns "" for a field it couldn't read (see RESPONSE_SCHEMA above)
  * - normalized to null here so every other caller keeps working with the
@@ -160,7 +318,6 @@ function normalizeParsedReceipt(value: unknown): ParsedReceipt | null {
   if (!value || typeof value !== 'object') return null
   const record = value as Record<string, unknown>
   if (!RECEIPT_FIELDS.every((key) => typeof record[key] === 'string')) return null
-  const blankToNull = (s: unknown) => (typeof s === 'string' && s.trim() === '' ? null : (s as string))
   return {
     store_name: blankToNull(record.store_name),
     date: blankToNull(record.date),
@@ -168,7 +325,29 @@ function normalizeParsedReceipt(value: unknown): ParsedReceipt | null {
     currency: blankToNull(record.currency),
     description: blankToNull(record.description),
     category_name: blankToNull(record.category_name),
+    items: normalizeItems(record.items),
+    degraded: null,
   }
+}
+
+function callGemini(
+  model: string,
+  apiKey: string,
+  prompt: string,
+  schema: unknown,
+  timeoutMs: number,
+  mimeType: string,
+  base64Photo: string,
+): Promise<Response> {
+  return fetch(`${geminiUrl(model)}?key=${encodeURIComponent(apiKey)}`, {
+    method: 'POST',
+    headers: { 'content-type': 'application/json' },
+    body: JSON.stringify({
+      contents: [{ parts: [{ text: prompt }, { inlineData: { mimeType, data: base64Photo } }] }],
+      generationConfig: { responseMimeType: 'application/json', responseSchema: schema },
+    }),
+    signal: AbortSignal.timeout(timeoutMs),
+  })
 }
 
 export default async (request: Request) => {
@@ -196,15 +375,22 @@ export default async (request: Request) => {
     return jsonResponse({ detail: 'Zdjęcie jest za duże (limit 8 MB).' }, 400)
   }
 
+  const wantsSplit = form.get('split') === '1'
+  const requestedCategories = parseRequestedCategories(form.get('categories'))
+
   let apiKey: string | null
   let categoryNames: string[]
   try {
     // Independent requests, fetched together - fetchUsersExpenseCategories
     // never rejects (see its own try/catch), so a failure here is always
     // the key lookup, and the error handling below still means what it says.
+    // When the client already said which categories it wants, the category
+    // round trip is skipped entirely rather than fetched and thrown away.
     ;[apiKey, categoryNames] = await Promise.all([
       fetchUsersGeminiKey(authHeader),
-      fetchUsersExpenseCategories(authHeader),
+      requestedCategories.length > 0
+        ? Promise.resolve(requestedCategories)
+        : fetchUsersExpenseCategories(authHeader),
     ])
   } catch {
     return jsonResponse({ detail: 'Nie udało się zweryfikować konta - spróbuj ponownie.' }, 502)
@@ -217,28 +403,39 @@ export default async (request: Request) => {
   }
 
   const base64Photo = await fileToBase64(photo)
+  const mimeType = photo.type || 'image/jpeg'
 
   let geminiResponse: Response
+  let degraded: ParsedReceipt['degraded'] = null
   try {
-    geminiResponse = await fetch(`${GEMINI_URL}?key=${encodeURIComponent(apiKey)}`, {
-      method: 'POST',
-      headers: { 'content-type': 'application/json' },
-      body: JSON.stringify({
-        contents: [
-          {
-            parts: [
-              { text: buildExtractionPrompt(categoryNames) },
-              { inlineData: { mimeType: photo.type || 'image/jpeg', data: base64Photo } },
-            ],
-          },
-        ],
-        generationConfig: {
-          responseMimeType: 'application/json',
-          responseSchema: RESPONSE_SCHEMA,
-        },
-      }),
-      signal: AbortSignal.timeout(GEMINI_TIMEOUT_MS),
-    })
+    geminiResponse = await callGemini(
+      wantsSplit ? SPLIT_MODEL : SCAN_MODEL,
+      apiKey,
+      wantsSplit ? buildSplitPrompt(categoryNames) : buildExtractionPrompt(categoryNames),
+      wantsSplit ? SPLIT_RESPONSE_SCHEMA : RESPONSE_SCHEMA,
+      wantsSplit ? SPLIT_TIMEOUT_MS : GEMINI_TIMEOUT_MS,
+      mimeType,
+      base64Photo,
+    )
+
+    // The stronger model is the one with 20 requests a day and the one most
+    // likely to be renamed out from under us, so both of its plausible
+    // failures get a second chance on the model that does the everyday
+    // scanning. Losing the per-item split is a far better outcome than
+    // losing the whole reading of the receipt.
+    if (wantsSplit && !geminiResponse.ok && (geminiResponse.status === 429 || geminiResponse.status === 404)) {
+      degraded = geminiResponse.status === 429 ? 'quota' : 'model_missing'
+      console.error(`Split model ${SPLIT_MODEL} unavailable (${geminiResponse.status}), falling back to ${SCAN_MODEL}`)
+      geminiResponse = await callGemini(
+        SCAN_MODEL,
+        apiKey,
+        buildExtractionPrompt(categoryNames),
+        RESPONSE_SCHEMA,
+        GEMINI_TIMEOUT_MS,
+        mimeType,
+        base64Photo,
+      )
+    }
   } catch {
     return jsonResponse({ detail: 'Nie udało się połączyć z Gemini - spróbuj ponownie.' }, 502)
   }
@@ -277,7 +474,7 @@ export default async (request: Request) => {
     )
   }
 
-  return jsonResponse(parsed)
+  return jsonResponse({ ...parsed, degraded })
 }
 
 export const config = { path: '/receipt-scan' }

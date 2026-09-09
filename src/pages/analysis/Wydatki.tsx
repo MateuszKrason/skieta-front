@@ -7,7 +7,16 @@ import { ScanReceiptButton, type ReceiptScanNavState } from '../../components/Sc
 import { useLanguage } from '../../i18n/LanguageContext'
 import { formatMoney } from '../../lib/format'
 import { usePaginatedList } from '../../lib/usePaginatedList'
-import type { BankAccount, BudgetTransaction, Category, CategoryBreakdown, Currency, ParsedReceipt } from '../../types'
+import type {
+  BankAccount,
+  BudgetTransaction,
+  Category,
+  CategoryBreakdown,
+  Currency,
+  ParsedReceipt,
+  Store,
+} from '../../types'
+import { ReceiptSplitPicker, ReceiptSplitReview } from './ReceiptSplit'
 import {
   AddCategoryForm,
   AddTransactionForm,
@@ -64,6 +73,36 @@ export default function Wydatki() {
   const [receiptSeq, setReceiptSeq] = useState(0)
   const [scanNeedsKey, setScanNeedsKey] = useState(false)
   const [scanError, setScanError] = useState<string | null>(null)
+  // The split flow has three states: closed, picking the categories to
+  // expect, and reviewing what came back. Only one of them is ever on
+  // screen, so a single receipt-or-null plus a boolean covers it.
+  const [pickingSplit, setPickingSplit] = useState(false)
+  const [splitReceipt, setSplitReceipt] = useState<ParsedReceipt | null>(null)
+
+  /** A split that came back without items still read the receipt - it just
+   * could not break it down, because the stronger model was out of daily
+   * requests or has been renamed away. Falling through to the ordinary
+   * one-category form keeps that reading rather than throwing it away, and
+   * says which of the two happened instead of leaving it a mystery. */
+  function applySplitScan(receipt: ParsedReceipt) {
+    setPickingSplit(false)
+    if (receipt.items && receipt.items.length > 0) {
+      setSplitReceipt(receipt)
+      return
+    }
+    // applyScan clears scanError - it assumes a fresh scan has nothing to
+    // explain - so the reason has to be set after it, not before, or the
+    // fallback happens silently and the user is left wondering why asking
+    // for a split produced a one-category form.
+    applyScan(receipt)
+    setScanError(
+      receipt.degraded === 'quota'
+        ? t('Dzienny limit mocniejszego modelu wyczerpany - paragon odczytany prościej, jedną kategorią.')
+        : receipt.degraded === 'model_missing'
+          ? t('Mocniejszy model jest chwilowo niedostępny - paragon odczytany prościej, jedną kategorią.')
+          : t('Nie udało się odczytać pojedynczych pozycji - zapisz paragon jedną kategorią.'),
+    )
+  }
 
   function applyScan(receipt: ParsedReceipt) {
     setScanError(null)
@@ -106,6 +145,11 @@ export default function Wydatki() {
   const { data: accounts } = useQuery({
     queryKey: ['accounts'],
     queryFn: async () => (await api.get<BankAccount[]>('/banking/accounts/')).data,
+  })
+
+  const { data: stores } = useQuery({
+    queryKey: ['budget-stores'],
+    queryFn: async () => (await api.get<Store[]>('/budget/stores/')).data,
   })
 
   const {
@@ -191,9 +235,55 @@ export default function Wydatki() {
         </div>
       </div>
 
+      {/* The split lives in the hint line rather than as a fourth button:
+          it explains itself and offers itself in the same breath, without
+          adding another box to a row that already has three. */}
       <p className="text-xs text-slate-400 dark:text-slate-500">
-        {t('💡 Najlepiej wgrywać świeże zdjęcie zrobione telefonem - Gemini odczytuje je lepiej niż skan albo stary plik.')}
+        {t('💡 Najlepiej wgrywać świeże zdjęcie zrobione telefonem - Gemini odczytuje je lepiej niż skan albo stary plik.')}{' '}
+        {t('Duże zakupy możesz też')}{' '}
+        <button
+          type="button"
+          onClick={() => {
+            setSplitReceipt(null)
+            setScanError(null)
+            setPickingSplit((v) => !v)
+          }}
+          className="font-medium text-accent-700 dark:text-accent-400 hover:underline"
+        >
+          {t('podzielić na kategorie')}
+        </button>
+        .
       </p>
+
+      {pickingSplit && (
+        <ReceiptSplitPicker
+          categories={(categories ?? []).filter((c) => c.type === 'expense')}
+          onParsed={applySplitScan}
+          onNeedsGeminiKey={() => {
+            setPickingSplit(false)
+            setScanNeedsKey(true)
+          }}
+          onError={(message) => {
+            setPickingSplit(false)
+            setScanError(message)
+          }}
+          onCancel={() => setPickingSplit(false)}
+        />
+      )}
+
+      {splitReceipt && (
+        <ReceiptSplitReview
+          receipt={splitReceipt}
+          categories={(categories ?? []).filter((c) => c.type === 'expense')}
+          accounts={accounts ?? []}
+          stores={stores ?? []}
+          onSaved={() => {
+            setSplitReceipt(null)
+            invalidateBudget()
+          }}
+          onCancel={() => setSplitReceipt(null)}
+        />
+      )}
 
       {scanNeedsKey && <GeminiKeyPrompt />}
       {scanError && <p className="text-sm text-red-600 dark:text-red-400">{scanError}</p>}
@@ -226,7 +316,25 @@ export default function Wydatki() {
         />
       )}
 
-      <StatCard label={t('Wydatki w okresie')} value={formatMoney(breakdown?.expense_total, 'PLN')} tone="negative" />
+      {/* The fronted total only earns a place on screen when there is one -
+          for most people this is always zero, and a permanent "0 zł wyłożone
+          za innych" card would be pure noise. */}
+      <div className={Number(breakdown?.reimbursed_total ?? 0) > 0 ? 'grid grid-cols-1 gap-4 sm:grid-cols-3' : ''}>
+        <StatCard label={t('Wydatki w okresie')} value={formatMoney(breakdown?.expense_total, 'PLN')} tone="negative" />
+        {Number(breakdown?.reimbursed_total ?? 0) > 0 && (
+          <>
+            <StatCard
+              label={t('Wyłożone za innych')}
+              value={formatMoney(breakdown?.reimbursed_total, 'PLN')}
+            />
+            <StatCard
+              label={t('Czeka na zwrot')}
+              value={formatMoney(breakdown?.reimbursement_pending, 'PLN')}
+              tone={Number(breakdown?.reimbursement_pending ?? 0) === 0 ? 'positive' : 'neutral'}
+            />
+          </>
+        )}
+      </div>
 
       <div className="grid grid-cols-1 gap-4 lg:grid-cols-2">
         <CategoryPieCard

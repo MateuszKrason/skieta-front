@@ -936,6 +936,58 @@ export const en: Record<string, string> = {
   'Analizuję zdjęcie paragonu…': 'Analysing the receipt photo…',
   'To może potrwać do pół minuty.': 'This can take up to half a minute.',
   'lub dodaj ręcznie': 'or add it manually',
+  'Podziel paragon na kategorie': 'Split the receipt across categories',
+  'Zaznacz kategorie, które spodziewasz się na tym paragonie, a potem zrób zdjęcie. Przejdziemy produkt po produkcie i rozdzielimy kwotę między te kategorie.':
+    'Tick the categories you expect on this receipt, then take the photo. We will go through it product by product and divide the amount between them.',
+  'Nic nie zaznaczone - Gemini wybierze spośród wszystkich Twoich kategorii.':
+    'Nothing ticked - Gemini will choose from all of your categories.',
+  'Zaznaczone: {0}': 'Ticked: {0}',
+  '📷 Zrób zdjęcie i podziel': '📷 Take a photo and split it',
+  '💡 Podział czyta paragon dokładniej, ale zużywa mocniejszy model - zostaw go na większe zakupy.':
+    '💡 Splitting reads the receipt more closely but uses the stronger model - save it for the bigger shops.',
+  'Paragon: {0}': 'Receipt: {0}',
+  'Podział paragonu': 'Receipt split',
+  'Odczytano {0} pozycji na {1}': 'Read {0} items totalling {1}',
+  '({0} poz.)': '({0} items)',
+  'Przenieś całą grupę do innej kategorii': 'Move the whole group to another category',
+  'pomiń tę pozycję': 'skip this item',
+  'Reszta paragonu': 'Remainder',
+  'reszta paragonu': 'remainder',
+  'Różnica między sumą pozycji a kwotą paragonu - np. rabat albo nieodczytany wiersz.':
+    'The difference between the items and the receipt total - a discount, say, or a line that could not be read.',
+  'Pozycje sumują się do {0}, czyli więcej niż kwota paragonu ({1}). Pomiń błędnie odczytaną pozycję, żeby zapisać.':
+    'The items add up to {0}, which is more than the receipt total ({1}). Skip the misread item to save.',
+  'Zapiszemy {0} transakcji na łączną kwotę {1}': 'This will save {0} transactions totalling {1}',
+  'Zapisuję…': 'Saving…',
+  'Zapisz podział': 'Save the split',
+  'Nie udało się zapisać podziału.': 'Could not save the split.',
+  'Dzienny limit mocniejszego modelu wyczerpany - paragon odczytany prościej, jedną kategorią.':
+    'The stronger model has run out of requests for today - the receipt was read the simpler way, as one category.',
+  'Mocniejszy model jest chwilowo niedostępny - paragon odczytany prościej, jedną kategorią.':
+    'The stronger model is unavailable right now - the receipt was read the simpler way, as one category.',
+  'Nie udało się odczytać pojedynczych pozycji - zapisz paragon jedną kategorią.':
+    'The individual items could not be read - save the receipt as one category.',
+  'Duże zakupy możesz też': 'A bigger shop can also be',
+  'podzielić na kategorie': 'split across categories',
+  '+ część za kogoś innego': '+ a share for someone else',
+  'Z tego za kogoś innego': 'Of that, for someone else',
+  'Już mi oddali': 'Already paid back',
+  'Ta część nie policzy się jako Twój wydatek - ani w kategoriach, ani w sklepach, ani w tagach. Saldo konta zmieni się o pełną kwotę, bo tyle faktycznie zapłaciłeś/aś.':
+    'This share will not count as your spending - not in categories, not in stores, not in tags. The account balance still moves by the full amount, because that is what you actually paid.',
+  'Wyłożone za kogoś innego - już oddane': 'Fronted for someone else - already paid back',
+  'Wyłożone za kogoś innego - jeszcze nie oddane': 'Fronted for someone else - not paid back yet',
+  'Wyłożone za innych (łącznie)': 'Fronted for others (total)',
+  'Od początku, nie tylko w wybranym okresie': 'All time, not just the selected period',
+  'Wszystko już Ci oddano': 'Everything has been paid back',
+  'Oznacz zwrot przy transakcji, gdy pieniądze wrócą': 'Mark the refund on the transaction once the money comes back',
+  'Pieniądze, które zapłaciłeś za kogoś innego - miesiąc po miesiącu. Nie liczą się jako Twoje wydatki.': 'Money you paid on someone else\'s behalf, month by month. It does not count as your spending.',
+  'Zwrócone': 'Paid back',
+  'Wyłożone za innych': 'Fronted for others',
+  'Czeka na zwrot': 'Owed back to you',
+  'Wyłożone za kogoś innego - już oddane. Kliknij, jeśli jednak nie.':
+    'Fronted for someone else - already paid back. Click if they have not after all.',
+  'Wyłożone za kogoś innego - kliknij, gdy oddadzą.':
+    'Fronted for someone else - click once they pay you back.',
   'Twoje dane, Twoja kontrola': 'Your data, your control',
   'Dostęp wyłącznie na zaproszenie, bez reklam i bez śledzenia. Historia logowań pokazuje dokładnie, kto i kiedy wchodził na Twoje konto.':
     'Invite-only access, no ads, no tracking. Login history shows exactly who accessed your account and when.',

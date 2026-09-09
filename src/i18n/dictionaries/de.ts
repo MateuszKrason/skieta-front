@@ -936,6 +936,60 @@ export const de: Record<string, string> = {
   'Analizuję zdjęcie paragonu…': 'Kassenbon wird analysiert…',
   'To może potrwać do pół minuty.': 'Das kann bis zu einer halben Minute dauern.',
   'lub dodaj ręcznie': 'oder manuell hinzufügen',
+  'Podziel paragon na kategorie': 'Kassenbon auf Kategorien aufteilen',
+  'Zaznacz kategorie, które spodziewasz się na tym paragonie, a potem zrób zdjęcie. Przejdziemy produkt po produkcie i rozdzielimy kwotę między te kategorie.':
+    'Hake die Kategorien ab, die du auf diesem Kassenbon erwartest, und mach dann das Foto. Wir gehen ihn Position für Position durch und teilen den Betrag darauf auf.',
+  'Nic nie zaznaczone - Gemini wybierze spośród wszystkich Twoich kategorii.':
+    'Nichts abgehakt - Gemini wählt aus allen deinen Kategorien.',
+  'Zaznaczone: {0}': 'Abgehakt: {0}',
+  '📷 Zrób zdjęcie i podziel': '📷 Foto aufnehmen und aufteilen',
+  '💡 Podział czyta paragon dokładniej, ale zużywa mocniejszy model - zostaw go na większe zakupy.':
+    '💡 Das Aufteilen liest den Kassenbon genauer, nutzt aber das stärkere Modell - heb es dir für größere Einkäufe auf.',
+  'Paragon: {0}': 'Kassenbon: {0}',
+  'Podział paragonu': 'Aufteilung des Kassenbons',
+  'Odczytano {0} pozycji na {1}': '{0} Positionen über insgesamt {1} gelesen',
+  '({0} poz.)': '({0} Pos.)',
+  'Przenieś całą grupę do innej kategorii': 'Die ganze Gruppe in eine andere Kategorie verschieben',
+  'pomiń tę pozycję': 'diese Position überspringen',
+  'Reszta paragonu': 'Restbetrag',
+  'reszta paragonu': 'Restbetrag',
+  'Różnica między sumą pozycji a kwotą paragonu - np. rabat albo nieodczytany wiersz.':
+    'Die Differenz zwischen den Positionen und der Summe des Kassenbons - etwa ein Rabatt oder eine nicht lesbare Zeile.',
+  'Pozycje sumują się do {0}, czyli więcej niż kwota paragonu ({1}). Pomiń błędnie odczytaną pozycję, żeby zapisać.':
+    'Die Positionen ergeben {0} und damit mehr als die Summe des Kassenbons ({1}). Überspringe die falsch gelesene Position, um zu speichern.',
+  'Zapiszemy {0} transakcji na łączną kwotę {1}':
+    'Es werden {0} Buchungen über insgesamt {1} gespeichert',
+  'Zapisuję…': 'Speichere…',
+  'Zapisz podział': 'Aufteilung speichern',
+  'Nie udało się zapisać podziału.': 'Die Aufteilung konnte nicht gespeichert werden.',
+  'Dzienny limit mocniejszego modelu wyczerpany - paragon odczytany prościej, jedną kategorią.':
+    'Das stärkere Modell hat für heute keine Anfragen mehr - der Kassenbon wurde einfacher gelesen, als eine Kategorie.',
+  'Mocniejszy model jest chwilowo niedostępny - paragon odczytany prościej, jedną kategorią.':
+    'Das stärkere Modell ist gerade nicht verfügbar - der Kassenbon wurde einfacher gelesen, als eine Kategorie.',
+  'Nie udało się odczytać pojedynczych pozycji - zapisz paragon jedną kategorią.':
+    'Die einzelnen Positionen konnten nicht gelesen werden - speichere den Kassenbon als eine Kategorie.',
+  'Duże zakupy możesz też': 'Einen größeren Einkauf kannst du auch',
+  'podzielić na kategorie': 'auf Kategorien aufteilen',
+  '+ część za kogoś innego': '+ ein Anteil für jemand anderen',
+  'Z tego za kogoś innego': 'Davon für jemand anderen',
+  'Już mi oddali': 'Schon zurückbekommen',
+  'Ta część nie policzy się jako Twój wydatek - ani w kategoriach, ani w sklepach, ani w tagach. Saldo konta zmieni się o pełną kwotę, bo tyle faktycznie zapłaciłeś/aś.':
+    'Dieser Anteil zählt nicht als deine Ausgabe - weder in Kategorien noch in Geschäften oder Tags. Der Kontostand ändert sich trotzdem um den vollen Betrag, denn so viel hast du tatsächlich bezahlt.',
+  'Wyłożone za kogoś innego - już oddane': 'Für jemand anderen ausgelegt - bereits zurückbekommen',
+  'Wyłożone za kogoś innego - jeszcze nie oddane':
+    'Für jemand anderen ausgelegt - noch nicht zurückbekommen',
+  'Wyłożone za innych (łącznie)': 'Für andere ausgelegt (gesamt)',
+  'Od początku, nie tylko w wybranym okresie': 'Seit Beginn, nicht nur im gewählten Zeitraum',
+  'Wszystko już Ci oddano': 'Alles wurde dir zurückgezahlt',
+  'Oznacz zwrot przy transakcji, gdy pieniądze wrócą': 'Markiere die Rückzahlung bei der Transaktion, sobald das Geld zurück ist',
+  'Pieniądze, które zapłaciłeś za kogoś innego - miesiąc po miesiącu. Nie liczą się jako Twoje wydatki.': 'Geld, das du für jemand anderen bezahlt hast, Monat für Monat. Es zählt nicht als deine Ausgabe.',
+  'Zwrócone': 'Zurückgezahlt',
+  'Wyłożone za innych': 'Für andere ausgelegt',
+  'Czeka na zwrot': 'Steht noch aus',
+  'Wyłożone za kogoś innego - już oddane. Kliknij, jeśli jednak nie.':
+    'Für jemand anderen ausgelegt - bereits zurückbekommen. Klicke, falls doch nicht.',
+  'Wyłożone za kogoś innego - kliknij, gdy oddadzą.':
+    'Für jemand anderen ausgelegt - klicke, sobald du es zurückbekommst.',
   'Twoje dane, Twoja kontrola': 'Deine Daten, deine Kontrolle',
   'Dostęp wyłącznie na zaproszenie, bez reklam i bez śledzenia. Historia logowań pokazuje dokładnie, kto i kiedy wchodził na Twoje konto.':
     'Zugang nur auf Einladung, keine Werbung und kein Tracking. Der Anmeldeverlauf zeigt genau, wer wann auf dein Konto zugegriffen hat.',

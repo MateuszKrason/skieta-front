@@ -162,11 +162,39 @@ export function ChartTypeSwitcher({
   )
 }
 
-export function StatCard({ label, value, tone }: { label: string; value: string; tone: 'positive' | 'negative' }) {
+// Green reads as good and red as bad, which is right for income and
+// spending but wrong for a figure that is neither - money fronted for other
+// people is just a fact about where the total went. Hence a third, neutral
+// tone rather than picking whichever of the two lies least.
+const STAT_CARD_TONES = {
+  positive: {
+    box: 'border-emerald-200 dark:border-emerald-800 bg-emerald-50 dark:bg-emerald-900/30',
+    value: 'text-emerald-700 dark:text-emerald-400',
+  },
+  negative: {
+    box: 'border-red-200 dark:border-red-800 bg-red-50 dark:bg-red-900/30',
+    value: 'text-red-700 dark:text-red-400',
+  },
+  neutral: {
+    box: 'border-slate-200 dark:border-slate-700 bg-white dark:bg-slate-800',
+    value: 'text-slate-900 dark:text-slate-100',
+  },
+} as const
+
+export function StatCard({
+  label,
+  value,
+  tone = 'neutral',
+}: {
+  label: string
+  value: string
+  tone?: keyof typeof STAT_CARD_TONES
+}) {
+  const colors = STAT_CARD_TONES[tone]
   return (
-    <div className={`rounded-xl border p-4 shadow-sm ${tone === 'positive' ? 'border-emerald-200 dark:border-emerald-800 bg-emerald-50 dark:bg-emerald-900/30' : 'border-red-200 dark:border-red-800 bg-red-50 dark:bg-red-900/30'}`}>
+    <div className={`rounded-xl border p-4 shadow-sm ${colors.box}`}>
       <p className="text-xs font-medium text-slate-500 dark:text-slate-400">{label}</p>
-      <p className={`mt-1 text-xl font-bold ${tone === 'positive' ? 'text-emerald-700 dark:text-emerald-400' : 'text-red-700 dark:text-red-400'}`}>{value}</p>
+      <p className={`mt-1 text-xl font-bold ${colors.value}`}>{value}</p>
     </div>
   )
 }
@@ -758,25 +786,22 @@ export function TransactionList({
   }
 
   const updateMutation = useMutation({
-    mutationFn: ({
-      id,
-      amount,
-      category,
-      store,
-      tags,
-      account,
-    }: {
-      id: number
-      amount: string
-      category: number | null
-      store: number | null
-      tags: number[]
-      account: number | null
-    }) => api.patch(`/budget/transactions/${id}/`, { amount, category, store, tags, account }),
+    mutationFn: ({ id, ...changes }: TransactionEdit & { id: number }) =>
+      api.patch(`/budget/transactions/${id}/`, changes),
     onSuccess: () => {
       setEditingId(null)
       invalidateAfterEdit()
     },
+  })
+
+  // Getting paid back happens days or weeks after the shop, so it has to be
+  // one click on the row rather than something buried in an edit form -
+  // this is the whole reason the flag exists. Reversible with a second
+  // click, so a mis-tap costs nothing.
+  const markReimbursement = useMutation({
+    mutationFn: ({ id, received }: { id: number; received: boolean }) =>
+      api.patch(`/budget/transactions/${id}/`, { reimbursement_received: received }),
+    onSuccess: invalidateAfterEdit,
   })
 
   return (
@@ -791,9 +816,7 @@ export function TransactionList({
               categories={(categories ?? []).filter((c) => c.type === tx.type)}
               stores={stores ?? []}
               accounts={(accounts ?? []).filter((a) => a.currency === tx.currency)}
-              onSave={(amount, category, store, tagIds, account) =>
-                updateMutation.mutate({ id: tx.id, amount, category, store, tags: tagIds, account })
-              }
+              onSave={(changes) => updateMutation.mutate({ id: tx.id, ...changes })}
               onCancel={() => setEditingId(null)}
               saving={updateMutation.isPending}
             />
@@ -806,6 +829,30 @@ export function TransactionList({
                 <span className={tx.type === 'income' ? 'text-emerald-600' : 'text-red-600 dark:text-red-400'}>
                   {tx.type === 'income' ? '+' : '−'} {formatMoney(tx.amount, tx.currency)}
                 </span>
+                {/* The row shows what was paid, so the share that was not
+                    the user's own has to be visible here too - otherwise the
+                    list and the category totals look like they disagree. */}
+                {Number(tx.reimbursed_amount) > 0 && (
+                  <button
+                    type="button"
+                    onClick={() =>
+                      markReimbursement.mutate({ id: tx.id, received: !tx.reimbursement_received })
+                    }
+                    disabled={markReimbursement.isPending}
+                    className={`rounded-full px-2 py-0.5 text-xs disabled:opacity-60 ${
+                      tx.reimbursement_received
+                        ? 'bg-emerald-50 dark:bg-emerald-950/40 text-emerald-700 dark:text-emerald-400'
+                        : 'bg-amber-50 dark:bg-amber-950/40 text-amber-700 dark:text-amber-400'
+                    }`}
+                    title={
+                      tx.reimbursement_received
+                        ? t('Wyłożone za kogoś innego - już oddane. Kliknij, jeśli jednak nie.')
+                        : t('Wyłożone za kogoś innego - kliknij, gdy oddadzą.')
+                    }
+                  >
+                    {tx.reimbursement_received ? '↩' : '⏳'} {formatMoney(tx.reimbursed_amount, tx.currency)}
+                  </button>
+                )}
                 <span className="text-slate-500 dark:text-slate-400">{tx.category_detail?.name ?? t('Bez kategorii')}</span>
                 {tx.store_detail && <span className="text-slate-400 dark:text-slate-500">· {tx.store_detail.name}</span>}
                 {tx.description && <span className="text-slate-400 dark:text-slate-500">- {tx.description}</span>}
@@ -954,6 +1001,19 @@ function TagPicker({ selected, onToggle }: { selected: number[]; onToggle: (id: 
   )
 }
 
+/** Everything the inline editor can change about a transaction. An object
+ * rather than a positional argument list - seven of those in a row is a bug
+ * waiting for the day someone swaps two of them. */
+type TransactionEdit = {
+  amount: string
+  category: number | null
+  store: number | null
+  tags: number[]
+  account: number | null
+  reimbursed_amount: string
+  reimbursement_received: boolean
+}
+
 function EditTransaction({
   tx,
   categories,
@@ -967,7 +1027,7 @@ function EditTransaction({
   categories: Category[]
   stores: Store[]
   accounts: BankAccount[]
-  onSave: (amount: string, category: number | null, store: number | null, tags: number[], account: number | null) => void
+  onSave: (changes: TransactionEdit) => void
   onCancel: () => void
   saving: boolean
 }) {
@@ -977,6 +1037,14 @@ function EditTransaction({
   const [store, setStore] = useState<number | ''>(tx.store ?? '')
   const [account, setAccount] = useState<number | ''>(tx.account ?? '')
   const [selectedTags, setSelectedTags] = useState<number[]>(tx.tags ?? [])
+  // Editable here and not only at creation time, because at the moment of
+  // paying you usually do not yet know whether anyone will pay you back -
+  // that turns up days later, by which point the expense is an old row in
+  // this list.
+  const [reimbursedAmount, setReimbursedAmount] = useState(
+    Number(tx.reimbursed_amount) > 0 ? tx.reimbursed_amount : '',
+  )
+  const [reimbursementReceived, setReimbursementReceived] = useState(tx.reimbursement_received)
 
   function toggleTag(id: number) {
     setSelectedTags((prev) => (prev.includes(id) ? prev.filter((t) => t !== id) : [...prev, id]))
@@ -988,6 +1056,21 @@ function EditTransaction({
       <Field label="Kwota">
         <AmountInput value={amount} onChange={setAmount} required className="input w-28" />
       </Field>
+      {tx.type === 'expense' && (
+        <>
+          <Field label="Z tego za kogoś innego">
+            <AmountInput value={reimbursedAmount} onChange={setReimbursedAmount} className="input w-28" />
+          </Field>
+          <label className="flex items-center gap-1.5 pb-2 text-xs text-slate-600 dark:text-slate-400">
+            <input
+              type="checkbox"
+              checked={reimbursementReceived}
+              onChange={(e) => setReimbursementReceived(e.target.checked)}
+            />
+            {t('Już mi oddali')}
+          </label>
+        </>
+      )}
       <Field label="Kategoria">
         <select value={category} onChange={(e) => setCategory(e.target.value ? Number(e.target.value) : '')} className="input">
           <option value="">{t('bez kategorii')}</option>
@@ -1024,7 +1107,19 @@ function EditTransaction({
       </Field>
       <TagPicker selected={selectedTags} onToggle={toggleTag} />
       <button
-        onClick={() => onSave(amount, category || null, store || null, selectedTags, account || null)}
+        onClick={() =>
+          onSave({
+            amount,
+            category: category || null,
+            store: store || null,
+            tags: selectedTags,
+            account: account || null,
+            // Always sent, so clearing the field really does clear the
+            // fronted share rather than leaving the old value in place.
+            reimbursed_amount: tx.type === 'expense' && reimbursedAmount ? reimbursedAmount : '0',
+            reimbursement_received: tx.type === 'expense' && reimbursedAmount ? reimbursementReceived : false,
+          })
+        }
         disabled={saving || !amount}
         className="btn-primary"
       >
@@ -1412,6 +1507,13 @@ export function AddTransactionForm({
   const [tags, setTags] = useState<number[]>([])
   const [account, setAccount] = useState<number | ''>(lockedAccount?.id ?? '')
   const [amount, setAmount] = useState(initialValues?.amount ?? '')
+  // Kept behind a toggle rather than shown as a permanent field: most
+  // expenses are entirely the user's own, and an always-visible "how much of
+  // this was for someone else" box would be one more thing to skip past on
+  // every single entry.
+  const [showFronted, setShowFronted] = useState(false)
+  const [reimbursedAmount, setReimbursedAmount] = useState('')
+  const [reimbursementReceived, setReimbursementReceived] = useState(false)
   const [currency, setCurrency] = useState<Currency>(initialValues?.currency ?? lockedAccount?.currency ?? 'PLN')
   const [date, setDate] = useState(() => initialValues?.date ?? new Date().toISOString().slice(0, 10))
   const [description, setDescription] = useState(initialValues?.description ?? '')
@@ -1530,6 +1632,11 @@ export function AddTransactionForm({
         tags,
         account: account || null,
         amount,
+        // Only ever sent for expenses, and only when the user actually
+        // opened the toggle - a stale value left behind by switching the
+        // type from expense to income would be rejected by the API.
+        reimbursed_amount: type === 'expense' && showFronted && reimbursedAmount ? reimbursedAmount : '0',
+        reimbursement_received: type === 'expense' && showFronted ? reimbursementReceived : false,
         currency,
         date,
         description,
@@ -1609,6 +1716,15 @@ export function AddTransactionForm({
       </Field>
       <Field label="Kwota">
         <AmountInput value={amount} onChange={setAmount} required className="input" />
+        {type === 'expense' && !showFronted && (
+          <button
+            type="button"
+            onClick={() => setShowFronted(true)}
+            className="mt-1 text-xs font-medium text-accent-700 dark:text-accent-400 hover:underline"
+          >
+            {t('+ część za kogoś innego')}
+          </button>
+        )}
       </Field>
       <Field label="Waluta">
         <select value={currency} onChange={(e) => setCurrency(e.target.value as Currency)} className="input">
@@ -1652,6 +1768,43 @@ export function AddTransactionForm({
       <Field label="Opis (opcjonalnie)">
         <input value={description} onChange={(e) => setDescription(e.target.value)} className="input" />
       </Field>
+      {/* Full width on purpose: it needs a sentence of explanation, and the
+          thing being explained - that this money is not your expense even
+          though you paid it - is easy to get wrong if it looks like just
+          another number box. */}
+      {type === 'expense' && showFronted && (
+        <div className="space-y-2 rounded-lg border border-slate-200 dark:border-slate-700 bg-slate-50 dark:bg-slate-900/40 p-3 sm:col-span-4">
+          <div className="flex flex-wrap items-end gap-3">
+            <Field label="Z tego za kogoś innego">
+              <AmountInput value={reimbursedAmount} onChange={setReimbursedAmount} className="input w-32" />
+            </Field>
+            <label className="flex items-center gap-2 pb-2 text-sm text-slate-700 dark:text-slate-300">
+              <input
+                type="checkbox"
+                checked={reimbursementReceived}
+                onChange={(e) => setReimbursementReceived(e.target.checked)}
+              />
+              {t('Już mi oddali')}
+            </label>
+            <button
+              type="button"
+              onClick={() => {
+                setShowFronted(false)
+                setReimbursedAmount('')
+                setReimbursementReceived(false)
+              }}
+              className="pb-2 text-xs font-medium text-slate-500 dark:text-slate-400 hover:underline"
+            >
+              {t('Usuń')}
+            </button>
+          </div>
+          <p className="text-xs text-slate-500 dark:text-slate-400">
+            {t(
+              'Ta część nie policzy się jako Twój wydatek - ani w kategoriach, ani w sklepach, ani w tagach. Saldo konta zmieni się o pełną kwotę, bo tyle faktycznie zapłaciłeś/aś.',
+            )}
+          </p>
+        </div>
+      )}
       <div className="sm:col-span-4">
         <TagPicker selected={tags} onToggle={toggleTag} />
       </div>

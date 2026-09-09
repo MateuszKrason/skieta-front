@@ -935,6 +935,58 @@ export const sq: Record<string, string> = {
   'Analizuję zdjęcie paragonu…': 'Po analizoj foton e kuponit…',
   'To może potrwać do pół minuty.': 'Kjo mund të zgjasë deri në gjysmë minuti.',
   'lub dodaj ręcznie': 'ose shtoje me dorë',
+  'Podziel paragon na kategorie': 'Ndaje kuponin sipas kategorive',
+  'Zaznacz kategorie, które spodziewasz się na tym paragonie, a potem zrób zdjęcie. Przejdziemy produkt po produkcie i rozdzielimy kwotę między te kategorie.':
+    'Shëno kategoritë që pret në këtë kupon dhe pastaj bëj foton. Do ta kalojmë produkt pas produkti dhe do ta ndajmë shumën mes tyre.',
+  'Nic nie zaznaczone - Gemini wybierze spośród wszystkich Twoich kategorii.':
+    'Asgjë e shënuar - Gemini do të zgjedhë mes të gjitha kategorive të tua.',
+  'Zaznaczone: {0}': 'Të shënuara: {0}',
+  '📷 Zrób zdjęcie i podziel': '📷 Bëj foton dhe ndaje',
+  '💡 Podział czyta paragon dokładniej, ale zużywa mocniejszy model - zostaw go na większe zakupy.':
+    '💡 Ndarja e lexon kuponin më imtësisht, por përdor modelin më të fuqishëm - ruaje për blerjet e mëdha.',
+  'Paragon: {0}': 'Kuponi: {0}',
+  'Podział paragonu': 'Ndarja e kuponit',
+  'Odczytano {0} pozycji na {1}': 'U lexuan {0} pozicione për gjithsej {1}',
+  '({0} poz.)': '({0} pozicione)',
+  'Przenieś całą grupę do innej kategorii': 'Zhvendos të gjithë grupin në një kategori tjetër',
+  'pomiń tę pozycję': 'kaloje këtë pozicion',
+  'Reszta paragonu': 'Pjesa e mbetur',
+  'reszta paragonu': 'pjesa e mbetur',
+  'Różnica między sumą pozycji a kwotą paragonu - np. rabat albo nieodczytany wiersz.':
+    'Diferenca mes pozicioneve dhe shumës së kuponit - për shembull një zbritje ose një rresht që nuk u lexua.',
+  'Pozycje sumują się do {0}, czyli więcej niż kwota paragonu ({1}). Pomiń błędnie odczytaną pozycję, żeby zapisać.':
+    'Pozicionet arrijnë {0}, pra më shumë se shuma e kuponit ({1}). Kalo pozicionin e lexuar gabim për të ruajtur.',
+  'Zapiszemy {0} transakcji na łączną kwotę {1}': 'Do të ruhen {0} transaksione për gjithsej {1}',
+  'Zapisuję…': 'Po ruaj…',
+  'Zapisz podział': 'Ruaj ndarjen',
+  'Nie udało się zapisać podziału.': 'Ndarja nuk u ruajt dot.',
+  'Dzienny limit mocniejszego modelu wyczerpany - paragon odczytany prościej, jedną kategorią.':
+    'Modelit më të fuqishëm i mbaruan kërkesat për sot - kuponi u lexua në mënyrën e thjeshtë, me një kategori.',
+  'Mocniejszy model jest chwilowo niedostępny - paragon odczytany prościej, jedną kategorią.':
+    'Modeli më i fuqishëm nuk është i disponueshëm tani - kuponi u lexua në mënyrën e thjeshtë, me një kategori.',
+  'Nie udało się odczytać pojedynczych pozycji - zapisz paragon jedną kategorią.':
+    'Pozicionet një nga një nuk u lexuan dot - ruaje kuponin me një kategori.',
+  'Duże zakupy możesz też': 'Një blerje e madhe mund ta',
+  'podzielić na kategorie': 'ndash sipas kategorive',
+  '+ część za kogoś innego': '+ një pjesë për dikë tjetër',
+  'Z tego za kogoś innego': 'Nga kjo për dikë tjetër',
+  'Już mi oddali': 'Ma kanë kthyer tashmë',
+  'Ta część nie policzy się jako Twój wydatek - ani w kategoriach, ani w sklepach, ani w tagach. Saldo konta zmieni się o pełną kwotę, bo tyle faktycznie zapłaciłeś/aś.':
+    'Kjo pjesë nuk do të llogaritet si shpenzimi yt - as te kategoritë, as te dyqanet, as te etiketat. Gjendja e llogarisë ndryshon me shumën e plotë, sepse aq pagove në të vërtetë.',
+  'Wyłożone za kogoś innego - już oddane': 'Paguar për dikë tjetër - tashmë e kthyer',
+  'Wyłożone za kogoś innego - jeszcze nie oddane': 'Paguar për dikë tjetër - ende e pakthyer',
+  'Wyłożone za innych (łącznie)': 'Paguar për të tjerët (gjithsej)',
+  'Od początku, nie tylko w wybranym okresie': 'Që nga fillimi, jo vetëm në periudhën e zgjedhur',
+  'Wszystko już Ci oddano': 'Gjithçka të është kthyer',
+  'Oznacz zwrot przy transakcji, gdy pieniądze wrócą': 'Shëno kthimin te transaksioni kur paratë të kthehen',
+  'Pieniądze, które zapłaciłeś za kogoś innego - miesiąc po miesiącu. Nie liczą się jako Twoje wydatki.': 'Paratë që ke paguar për dikë tjetër, muaj pas muaji. Nuk numërohen si shpenzimet e tua.',
+  'Zwrócone': 'Kthyer',
+  'Wyłożone za innych': 'Paguar për të tjerët',
+  'Czeka na zwrot': 'Pret të kthehet',
+  'Wyłożone za kogoś innego - już oddane. Kliknij, jeśli jednak nie.':
+    'Paguar për dikë tjetër - tashmë e kthyer. Kliko nëse në fakt jo.',
+  'Wyłożone za kogoś innego - kliknij, gdy oddadzą.':
+    'Paguar për dikë tjetër - kliko kur ta kthejnë.',
   'Twoje dane, Twoja kontrola': 'Të dhënat e tua, kontrolli yt',
   'Dostęp wyłącznie na zaproszenie, bez reklam i bez śledzenia. Historia logowań pokazuje dokładnie, kto i kiedy wchodził na Twoje konto.':
     'Akses vetëm me ftesë, pa reklama dhe pa gjurmim. Historiku i identifikimeve tregon saktësisht kush dhe kur ka hyrë në llogarinë tënde.',

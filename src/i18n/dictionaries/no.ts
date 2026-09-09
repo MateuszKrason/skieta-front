@@ -936,6 +936,59 @@ export const no: Record<string, string> = {
   'Analizuję zdjęcie paragonu…': 'Analyserer bildet av kvitteringen…',
   'To może potrwać do pół minuty.': 'Dette kan ta opptil et halvt minutt.',
   'lub dodaj ręcznie': 'eller legg den til manuelt',
+  'Podziel paragon na kategorie': 'Del kvitteringen på kategorier',
+  'Zaznacz kategorie, które spodziewasz się na tym paragonie, a potem zrób zdjęcie. Przejdziemy produkt po produkcie i rozdzielimy kwotę między te kategorie.':
+    'Kryss av for kategoriene du venter deg på denne kvitteringen, og ta så bildet. Vi går gjennom den vare for vare og fordeler beløpet mellom dem.',
+  'Nic nie zaznaczone - Gemini wybierze spośród wszystkich Twoich kategorii.':
+    'Ingenting krysset av - Gemini velger blant alle kategoriene dine.',
+  'Zaznaczone: {0}': 'Krysset av: {0}',
+  '📷 Zrób zdjęcie i podziel': '📷 Ta et bilde og del opp',
+  '💡 Podział czyta paragon dokładniej, ale zużywa mocniejszy model - zostaw go na większe zakupy.':
+    '💡 Oppdelingen leser kvitteringen grundigere, men bruker den sterkere modellen - spar den til de større handleturene.',
+  'Paragon: {0}': 'Kvittering: {0}',
+  'Podział paragonu': 'Oppdeling av kvitteringen',
+  'Odczytano {0} pozycji na {1}': 'Leste {0} varelinjer på til sammen {1}',
+  '({0} poz.)': '({0} linjer)',
+  'Przenieś całą grupę do innej kategorii': 'Flytt hele gruppen til en annen kategori',
+  'pomiń tę pozycję': 'hopp over denne linjen',
+  'Reszta paragonu': 'Restbeløp',
+  'reszta paragonu': 'restbeløp',
+  'Różnica między sumą pozycji a kwotą paragonu - np. rabat albo nieodczytany wiersz.':
+    'Differansen mellom varelinjene og summen på kvitteringen - for eksempel en rabatt eller en linje som ikke lot seg lese.',
+  'Pozycje sumują się do {0}, czyli więcej niż kwota paragonu ({1}). Pomiń błędnie odczytaną pozycję, żeby zapisać.':
+    'Varelinjene summerer seg til {0}, altså mer enn summen på kvitteringen ({1}). Hopp over den feillestene linjen for å lagre.',
+  'Zapiszemy {0} transakcji na łączną kwotę {1}': 'Det lagres {0} transaksjoner på til sammen {1}',
+  'Zapisuję…': 'Lagrer…',
+  'Zapisz podział': 'Lagre oppdelingen',
+  'Nie udało się zapisać podziału.': 'Oppdelingen kunne ikke lagres.',
+  'Dzienny limit mocniejszego modelu wyczerpany - paragon odczytany prościej, jedną kategorią.':
+    'Den sterkere modellen har ikke flere forespørsler i dag - kvitteringen ble lest på den enkle måten, som én kategori.',
+  'Mocniejszy model jest chwilowo niedostępny - paragon odczytany prościej, jedną kategorią.':
+    'Den sterkere modellen er utilgjengelig akkurat nå - kvitteringen ble lest på den enkle måten, som én kategori.',
+  'Nie udało się odczytać pojedynczych pozycji - zapisz paragon jedną kategorią.':
+    'De enkelte varelinjene lot seg ikke lese - lagre kvitteringen som én kategori.',
+  'Duże zakupy możesz też': 'En større handletur kan du også',
+  'podzielić na kategorie': 'dele opp på kategorier',
+  '+ część za kogoś innego': '+ en andel for en annen',
+  'Z tego za kogoś innego': 'Av det for en annen',
+  'Już mi oddali': 'Allerede betalt tilbake',
+  'Ta część nie policzy się jako Twój wydatek - ani w kategoriach, ani w sklepach, ani w tagach. Saldo konta zmieni się o pełną kwotę, bo tyle faktycznie zapłaciłeś/aś.':
+    'Denne andelen teller ikke som ditt forbruk - verken i kategorier, butikker eller tagger. Saldoen på kontoen endrer seg likevel med hele beløpet, for så mye betalte du faktisk.',
+  'Wyłożone za kogoś innego - już oddane': 'Lagt ut for en annen - allerede betalt tilbake',
+  'Wyłożone za kogoś innego - jeszcze nie oddane':
+    'Lagt ut for en annen - ikke betalt tilbake ennå',
+  'Wyłożone za innych (łącznie)': 'Lagt ut for andre (totalt)',
+  'Od początku, nie tylko w wybranym okresie': 'Fra begynnelsen, ikke bare i valgt periode',
+  'Wszystko już Ci oddano': 'Alt er betalt tilbake',
+  'Oznacz zwrot przy transakcji, gdy pieniądze wrócą': 'Merk tilbakebetalingen på transaksjonen når pengene kommer tilbake',
+  'Pieniądze, które zapłaciłeś za kogoś innego - miesiąc po miesiącu. Nie liczą się jako Twoje wydatki.': 'Penger du har betalt for noen andre, måned for måned. Det teller ikke som dine utgifter.',
+  'Zwrócone': 'Tilbakebetalt',
+  'Wyłożone za innych': 'Lagt ut for andre',
+  'Czeka na zwrot': 'Venter på tilbakebetaling',
+  'Wyłożone za kogoś innego - już oddane. Kliknij, jeśli jednak nie.':
+    'Lagt ut for en annen - allerede betalt tilbake. Klikk hvis det likevel ikke stemmer.',
+  'Wyłożone za kogoś innego - kliknij, gdy oddadzą.':
+    'Lagt ut for en annen - klikk når du får pengene tilbake.',
   'Twoje dane, Twoja kontrola': 'Dine data, din kontroll',
   'Dostęp wyłącznie na zaproszenie, bez reklam i bez śledzenia. Historia logowań pokazuje dokładnie, kto i kiedy wchodził na Twoje konto.':
     'Tilgang kun på invitasjon, uten reklame og uten sporing. Innloggingshistorikken viser nøyaktig hvem som har vært inne på kontoen din, og når.',

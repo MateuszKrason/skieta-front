@@ -935,6 +935,59 @@ export const es: Record<string, string> = {
   'Analizuję zdjęcie paragonu…': 'Analizando la foto del ticket…',
   'To może potrwać do pół minuty.': 'Esto puede tardar hasta medio minuto.',
   'lub dodaj ręcznie': 'o añadirlo a mano',
+  'Podziel paragon na kategorie': 'Dividir el ticket entre categorías',
+  'Zaznacz kategorie, które spodziewasz się na tym paragonie, a potem zrób zdjęcie. Przejdziemy produkt po produkcie i rozdzielimy kwotę między te kategorie.':
+    'Marca las categorías que esperas en este ticket y luego haz la foto. Lo recorreremos producto a producto y repartiremos el importe entre ellas.',
+  'Nic nie zaznaczone - Gemini wybierze spośród wszystkich Twoich kategorii.':
+    'Nada marcado: Gemini elegirá entre todas tus categorías.',
+  'Zaznaczone: {0}': 'Marcadas: {0}',
+  '📷 Zrób zdjęcie i podziel': '📷 Hacer una foto y dividir',
+  '💡 Podział czyta paragon dokładniej, ale zużywa mocniejszy model - zostaw go na większe zakupy.':
+    '💡 Dividir lee el ticket con más detalle, pero usa el modelo más potente: resérvalo para las compras grandes.',
+  'Paragon: {0}': 'Ticket: {0}',
+  'Podział paragonu': 'División del ticket',
+  'Odczytano {0} pozycji na {1}': 'Leídas {0} líneas por un total de {1}',
+  '({0} poz.)': '({0} líneas)',
+  'Przenieś całą grupę do innej kategorii': 'Mover todo el grupo a otra categoría',
+  'pomiń tę pozycję': 'omitir esta línea',
+  'Reszta paragonu': 'Resto del ticket',
+  'reszta paragonu': 'resto del ticket',
+  'Różnica między sumą pozycji a kwotą paragonu - np. rabat albo nieodczytany wiersz.':
+    'La diferencia entre las líneas y el total del ticket: un descuento, por ejemplo, o una línea que no se pudo leer.',
+  'Pozycje sumują się do {0}, czyli więcej niż kwota paragonu ({1}). Pomiń błędnie odczytaną pozycję, żeby zapisać.':
+    'Las líneas suman {0}, más que el total del ticket ({1}). Omite la línea mal leída para poder guardar.',
+  'Zapiszemy {0} transakcji na łączną kwotę {1}':
+    'Se guardarán {0} transacciones por un total de {1}',
+  'Zapisuję…': 'Guardando…',
+  'Zapisz podział': 'Guardar la división',
+  'Nie udało się zapisać podziału.': 'No se ha podido guardar la división.',
+  'Dzienny limit mocniejszego modelu wyczerpany - paragon odczytany prościej, jedną kategorią.':
+    'El modelo más potente se ha quedado sin peticiones por hoy: el ticket se ha leído de forma sencilla, con una sola categoría.',
+  'Mocniejszy model jest chwilowo niedostępny - paragon odczytany prościej, jedną kategorią.':
+    'El modelo más potente no está disponible ahora mismo: el ticket se ha leído de forma sencilla, con una sola categoría.',
+  'Nie udało się odczytać pojedynczych pozycji - zapisz paragon jedną kategorią.':
+    'No se han podido leer las líneas una a una: guarda el ticket con una sola categoría.',
+  'Duże zakupy możesz też': 'Una compra grande también se puede',
+  'podzielić na kategorie': 'dividir entre categorías',
+  '+ część za kogoś innego': '+ una parte para otra persona',
+  'Z tego za kogoś innego': 'De eso, para otra persona',
+  'Już mi oddali': 'Ya me lo han devuelto',
+  'Ta część nie policzy się jako Twój wydatek - ani w kategoriach, ani w sklepach, ani w tagach. Saldo konta zmieni się o pełną kwotę, bo tyle faktycznie zapłaciłeś/aś.':
+    'Esta parte no contará como gasto tuyo: ni en categorías, ni en tiendas, ni en etiquetas. El saldo de la cuenta sí cambia por el importe completo, porque es lo que pagaste de verdad.',
+  'Wyłożone za kogoś innego - już oddane': 'Adelantado por otra persona: ya devuelto',
+  'Wyłożone za kogoś innego - jeszcze nie oddane': 'Adelantado por otra persona: aún sin devolver',
+  'Wyłożone za innych (łącznie)': 'Adelantado por otros (total)',
+  'Od początku, nie tylko w wybranym okresie': 'Desde el principio, no solo en el periodo elegido',
+  'Wszystko już Ci oddano': 'Ya te lo han devuelto todo',
+  'Oznacz zwrot przy transakcji, gdy pieniądze wrócą': 'Marca la devolución en la transacción cuando recibas el dinero',
+  'Pieniądze, które zapłaciłeś za kogoś innego - miesiąc po miesiącu. Nie liczą się jako Twoje wydatki.': 'Dinero que pagaste por otra persona, mes a mes. No cuenta como gasto tuyo.',
+  'Zwrócone': 'Devuelto',
+  'Wyłożone za innych': 'Adelantado por otros',
+  'Czeka na zwrot': 'Pendiente de devolución',
+  'Wyłożone za kogoś innego - już oddane. Kliknij, jeśli jednak nie.':
+    'Adelantado por otra persona: ya devuelto. Haz clic si al final no.',
+  'Wyłożone za kogoś innego - kliknij, gdy oddadzą.':
+    'Adelantado por otra persona: haz clic cuando te lo devuelvan.',
   'Twoje dane, Twoja kontrola': 'Tus datos, tu control',
   'Dostęp wyłącznie na zaproszenie, bez reklam i bez śledzenia. Historia logowań pokazuje dokładnie, kto i kiedy wchodził na Twoje konto.':
     'Acceso solo por invitación, sin anuncios y sin rastreo. El historial de inicios de sesión muestra exactamente quién entró en tu cuenta y cuándo.',
