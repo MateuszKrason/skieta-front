@@ -5,7 +5,7 @@ import { api } from '../api/client'
 import { PageLoader } from '../components/Loader'
 import SockLogo from '../components/SockLogo'
 import { useLanguage } from '../i18n/LanguageContext'
-import { trackEvent } from '../lib/analytics'
+import { rememberSignupSource, trackEvent } from '../lib/analytics'
 import { formatDateTime } from '../lib/format'
 import { useNoindex } from '../lib/useNoindex'
 import type { Article } from '../types'
@@ -197,7 +197,10 @@ export default function ArticleDetail() {
               <div className="mt-4 flex flex-wrap items-center gap-3">
                 <Link
                   to="/register"
-                  onClick={() => trackEvent('register_clicked', { source: 'article', article: slug })}
+                  onClick={() => {
+                    trackEvent('register_clicked', { source: 'article', article: slug })
+                    rememberSignupSource('article', slug)
+                  }}
                   className="rounded-full bg-accent-700 px-5 py-2 text-sm font-semibold text-white shadow-sm transition hover:bg-accent-800"
                 >
                   {t('Załóż darmowe konto →')}

@@ -6,7 +6,7 @@ import { useAuth } from '../auth/AuthContext'
 import SockLogo from '../components/SockLogo'
 import { LANGUAGES, LANGUAGE_LABELS, useLanguage, type Language } from '../i18n/LanguageContext'
 import { useTheme } from '../theme/ThemeContext'
-import { trackEvent } from '../lib/analytics'
+import { rememberSignupSource, trackEvent } from '../lib/analytics'
 import { formatCountdown, formatDateTime } from '../lib/format'
 import type { ActiveLandingPromotion, Article } from '../types'
 
@@ -401,7 +401,11 @@ export default function Landing() {
             <div className="mt-8 flex flex-wrap items-center justify-center gap-4">
               <Link
                 to={user ? ctaHref : '/register'}
-                onClick={() => !user && trackEvent('register_clicked', { source: 'landing_hero' })}
+                onClick={() => {
+                  if (user) return
+                  trackEvent('register_clicked', { source: 'landing_hero' })
+                  rememberSignupSource('landing_hero')
+                }}
                 className="rounded-full bg-accent-700 px-7 py-3 text-base font-semibold text-white shadow-lg shadow-accent-600/30 transition hover:-translate-y-0.5 hover:bg-accent-800 hover:shadow-xl"
               >
                 {user ? ctaLabel : t('Załóż darmowe konto →')}
@@ -542,7 +546,10 @@ export default function Landing() {
             </p>
             <Link
               to="/register"
-              onClick={() => trackEvent('register_clicked', { source: 'landing_faq' })}
+              onClick={() => {
+                trackEvent('register_clicked', { source: 'landing_faq' })
+                rememberSignupSource('landing_faq')
+              }}
               className="mt-3 inline-block rounded-full bg-accent-700 px-6 py-2.5 text-sm font-semibold text-white shadow-sm transition hover:bg-accent-800"
             >
               {t('Załóż darmowe konto →')}

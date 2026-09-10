@@ -103,3 +103,44 @@ export function trackEvent(name: EventName, params: EventParams = {}) {
     // Analytics must never take a user flow down with it.
   }
 }
+
+// Where the visitor was when they decided to sign up, kept until they finish
+// registering so the account itself can be attributed - not just the click.
+//
+// sessionStorage, not localStorage: this describes one visit. Someone who
+// read an article in March and comes back in May to register did not come
+// from that article, and a value that outlived the tab would keep saying
+// otherwise. It is also why nothing here is ever sent anywhere except along
+// with the registration the visitor is deliberately completing.
+const SIGNUP_SOURCE_KEY = 'skieta.signupSource'
+const SIGNUP_ARTICLE_KEY = 'skieta.signupArticle'
+
+/** Called from the sign-up buttons, next to the analytics event they already
+ * fire, so the two always agree about where a conversion started. */
+export function rememberSignupSource(source: ConversionSource, article?: string) {
+  try {
+    sessionStorage.setItem(SIGNUP_SOURCE_KEY, source)
+    if (article) {
+      sessionStorage.setItem(SIGNUP_ARTICLE_KEY, article)
+    } else {
+      sessionStorage.removeItem(SIGNUP_ARTICLE_KEY)
+    }
+  } catch {
+    // Blocked site data. The registration still works; it just arrives
+    // unattributed, which the admin report counts as 'unknown'.
+  }
+}
+
+/** Read once, by the registration form. Absent for anyone who went straight
+ * to /register, which is a real answer ("came on their own"), not a gap to
+ * paper over with a guess. */
+export function takeSignupSource(): { signup_source?: string; signup_article?: string } {
+  try {
+    const source = sessionStorage.getItem(SIGNUP_SOURCE_KEY)
+    if (!source) return {}
+    const article = sessionStorage.getItem(SIGNUP_ARTICLE_KEY)
+    return article ? { signup_source: source, signup_article: article } : { signup_source: source }
+  } catch {
+    return {}
+  }
+}

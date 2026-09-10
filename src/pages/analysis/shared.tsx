@@ -24,6 +24,7 @@ import { LoadMoreButton } from '../../components/LoadMoreButton'
 import { useLanguage } from '../../i18n/LanguageContext'
 import { useTooltipStyle } from '../../lib/chartTooltip'
 import { formatAxisValue, formatDate, formatMoney, formatPct, groupAccountsByBank } from '../../lib/format'
+import { LAST_ACCOUNT_KEY_PREFIX, LAST_CATEGORY_KEY_PREFIX } from '../../lib/userScopedStorage'
 import type {
   BankAccount,
   BudgetTransaction,
@@ -1418,8 +1419,9 @@ export function CategoryManager({ type }: { type: BudgetType }) {
 // Remembers the last account picked per transaction type (expense/income),
 // so the form defaults to it next time instead of forcing the same manual
 // pick over and over. Per-device on purpose (localStorage) - this is a form
-// convenience, not data that needs to follow the user across devices.
-const LAST_ACCOUNT_KEY_PREFIX = 'skieta.lastTransactionAccount.'
+// convenience, not data that needs to follow the user across devices. The
+// key itself lives in lib/userScopedStorage so signing out can forget it:
+// it holds an account id, which belongs to one account, not to the browser.
 
 function readLastAccount(type: BudgetType): number | null {
   try {
@@ -1445,7 +1447,6 @@ function writeLastAccount(type: BudgetType, accountId: number) {
 // receipt: Gemini proposes store/date/amount but never a category, and
 // leaving it blank meant re-picking the same "Jedzenie" or "Transport"
 // every single time.
-const LAST_CATEGORY_KEY_PREFIX = 'skieta.lastTransactionCategory.'
 
 function readLastCategory(type: BudgetType): number | null {
   try {

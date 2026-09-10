@@ -27,6 +27,61 @@ const COLOR_VARIANT_LABELS: Record<string, string> = {
 /** Simple per-language bar list - shared shape for "visits by language" and
  * "invitations by language", no per-row drilldown needed unlike the
  * color-variant block above. */
+/** The labels the frontend sets alongside its analytics events (see
+ * lib/analytics.ts), plus 'unknown' for rows that were never labelled.
+ * Anything not listed falls through to the raw value, so a source added
+ * later shows up as itself rather than disappearing. */
+const SIGNUP_SOURCE_LABELS: Record<string, string> = {
+  landing_hero: 'Strona główna (góra)',
+  landing_faq: 'Strona główna (FAQ)',
+  article: 'Artykuł',
+  calculator: 'Kalkulator',
+  unknown: 'Nieznane / wejście wprost',
+}
+
+/** Same bars as LanguageCountBars, for lists that are already sorted and
+ * already have their labels resolved - a source breakdown has no fixed set
+ * of keys to look up and an article list has no lookup at all. */
+function CountBars({
+  title,
+  hint,
+  rows,
+}: {
+  title: string
+  hint?: string
+  rows: { label: string; count: number }[]
+}) {
+  const total = rows.reduce((sum, row) => sum + row.count, 0)
+  return (
+    <div className="rounded-xl border border-slate-200 dark:border-slate-700 bg-white dark:bg-slate-800 p-5 shadow-sm">
+      <h2 className="text-sm font-semibold text-slate-700 dark:text-slate-300">{title}</h2>
+      {hint && <p className="mt-0.5 mb-3 text-xs text-slate-400 dark:text-slate-500">{hint}</p>}
+      <div className="space-y-2">
+        {rows.length === 0 ? (
+          <p className="text-xs text-slate-400 dark:text-slate-500">Brak danych.</p>
+        ) : (
+          rows.map((row) => {
+            const pct = total ? (row.count / total) * 100 : 0
+            return (
+              <div key={row.label}>
+                <div className="mb-1 flex justify-between gap-2 text-xs text-slate-600 dark:text-slate-300">
+                  <span className="truncate">{row.label}</span>
+                  <span className="shrink-0">
+                    {row.count} ({pct.toFixed(0)}%)
+                  </span>
+                </div>
+                <div className="h-1.5 w-full rounded-full bg-slate-100 dark:bg-slate-700">
+                  <div className="h-1.5 rounded-full bg-accent-500" style={{ width: `${pct}%` }} />
+                </div>
+              </div>
+            )
+          })
+        )}
+      </div>
+    </div>
+  )
+}
+
 function LanguageCountBars({ title, counts }: { title: string; counts: Record<string, number> }) {
   const total = Object.values(counts).reduce((a, b) => a + b, 0)
   return (
@@ -195,6 +250,22 @@ export default function AdminStatystyki() {
       <div className="grid gap-4 sm:grid-cols-2">
         <LanguageCountBars title={t('Wizyty wg wariantu językowego')} counts={stats.language_visit_counts} />
         <LanguageCountBars title={t('Zaproszenia wysłane wg języka')} counts={stats.invitations_by_language} />
+      </div>
+
+      <div className="grid gap-4 sm:grid-cols-2">
+        <CountBars
+          title={t('Skąd przyszły konta')}
+          hint={t('Liczone przy rejestracji, nie przy kliknięciu - to konta, które faktycznie powstały.')}
+          rows={stats.signup_sources.by_source.map((row) => ({
+            label: t(SIGNUP_SOURCE_LABELS[row.source] ?? row.source),
+            count: row.count,
+          }))}
+        />
+        <CountBars
+          title={t('Konta z artykułów')}
+          hint={t('Który tekst realnie przyprowadził użytkownika, a nie tylko czytelnika.')}
+          rows={stats.signup_sources.by_article.map((row) => ({ label: row.article, count: row.count }))}
+        />
       </div>
 
       {funnel && (

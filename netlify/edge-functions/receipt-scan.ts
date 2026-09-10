@@ -75,6 +75,17 @@ const GEMINI_TIMEOUT_MS = 25000
 // function may run - if real receipts start timing out here, raise this
 // before assuming the model is at fault.
 const SPLIT_TIMEOUT_MS = Number(envOr('GEMINI_SPLIT_TIMEOUT_MS', '40000'))
+// Ceiling on the whole split attempt, retries included. runSplit can make
+// three calls in a row, and three individual timeouts add up to far longer
+// than the platform will keep an edge function alive - a function killed
+// mid-retry gives the user a blank failure instead of the plain scan the
+// retries exist to reach. So each attempt gets whatever is left of this
+// budget rather than its own full timeout, and an attempt with too little
+// time left is skipped instead of started and cut off.
+const SPLIT_BUDGET_MS = Number(envOr('GEMINI_SPLIT_BUDGET_MS', '45000'))
+// Below this there is not enough time left for a photo round trip to be
+// worth starting.
+const MIN_ATTEMPT_MS = 6000
 
 const MAX_PHOTO_BYTES = 8 * 1024 * 1024
 
@@ -282,9 +293,16 @@ interface ParsedReceipt {
   /** Only present when a split was asked for and the model that answered
    * could produce one. null when the scan fell back to the simpler model. */
   items: ReceiptItem[] | null
-  /** Set when a split was requested but could not be delivered, so the UI
-   * can say why rather than silently offering one category. */
-  degraded: 'quota' | 'model_missing' | null
+  /** How well the split went, when one was asked for.
+   *
+   * null       - the stronger model read it, item by item, as intended.
+   * lite_model - the everyday model read it item by item instead. Still a
+   *              real split, just from a model that misreads more thermal
+   *              print, so the UI says to check the rows a little harder.
+   * quota      - no split: the stronger model was out of daily requests.
+   * no_split   - no split: neither model would produce one. The receipt is
+   *              still read as a single amount. */
+  degraded: 'lite_model' | 'quota' | 'no_split' | null
 }
 
 const RECEIPT_FIELDS = ['store_name', 'date', 'amount', 'currency', 'description', 'category_name'] as const
@@ -328,6 +346,72 @@ function normalizeParsedReceipt(value: unknown): ParsedReceipt | null {
     items: normalizeItems(record.items),
     degraded: null,
   }
+}
+
+/** Three attempts, in descending order of how good the answer would be, and
+ * the reason the split is worth having at all rather than being a feature
+ * that works on a good day.
+ *
+ * The first version of this only retried on 429 and 404, and only ever
+ * retried the *plain* scan - so anything else the stronger model might say
+ * (a 400 on a schema it dislikes, a 503 while it is busy, a 403 on a key
+ * without access to that tier) came back to the user as a flat error, and
+ * even a clean 429 meant losing the split entirely for the rest of the day.
+ * With a 20-requests-a-day allowance on that model, "the rest of the day"
+ * is most of the time, which is what made the feature feel broken.
+ *
+ * So: ask the strong model; if it says anything other than yes, ask the
+ * everyday model for the same item-by-item reading (500 a day, less
+ * accurate on thermal print, but a split the user reviews anyway); and only
+ * if that fails too, give up on the split and read the receipt as one
+ * amount, which is still better than handing back nothing.
+ *
+ * Every failure is logged with its status - the body is deliberately not
+ * echoed to the browser (see the note at the call site) but it is the only
+ * thing that makes the next report diagnosable rather than guesswork. */
+async function runSplit(
+  apiKey: string,
+  categoryNames: string[],
+  mimeType: string,
+  base64Photo: string,
+): Promise<{ response: Response; degraded: ParsedReceipt['degraded'] }> {
+  const splitPrompt = buildSplitPrompt(categoryNames)
+  const deadline = Date.now() + SPLIT_BUDGET_MS
+  const remaining = () => deadline - Date.now()
+
+  const strong = await callGemini(
+    SPLIT_MODEL, apiKey, splitPrompt, SPLIT_RESPONSE_SCHEMA,
+    Math.min(SPLIT_TIMEOUT_MS, remaining()), mimeType, base64Photo,
+  )
+  if (strong.ok) return { response: strong, degraded: null }
+  const strongStatus = strong.status
+  console.error(
+    `Split on ${SPLIT_MODEL} failed (${strongStatus}): ${await strong.text().catch(() => '')}`,
+  )
+
+  // The plain scan is the floor this function must always be able to reach,
+  // so it gets first claim on what time is left - the second split attempt
+  // only happens if there is room for both.
+  if (remaining() > MIN_ATTEMPT_MS + GEMINI_TIMEOUT_MS) {
+    const lite = await callGemini(
+      SCAN_MODEL, apiKey, splitPrompt, SPLIT_RESPONSE_SCHEMA,
+      Math.min(SPLIT_TIMEOUT_MS, remaining() - GEMINI_TIMEOUT_MS), mimeType, base64Photo,
+    )
+    if (lite.ok) return { response: lite, degraded: 'lite_model' }
+    console.error(
+      `Split on ${SCAN_MODEL} also failed (${lite.status}): ${await lite.text().catch(() => '')}`,
+    )
+  } else {
+    console.error(`Skipping the ${SCAN_MODEL} split retry - only ${remaining()}ms of budget left`)
+  }
+
+  const plain = await callGemini(
+    SCAN_MODEL, apiKey, buildExtractionPrompt(categoryNames), RESPONSE_SCHEMA, GEMINI_TIMEOUT_MS, mimeType, base64Photo,
+  )
+  // Which of the two messages the user gets: being out of daily requests is
+  // worth saying plainly, because it fixes itself tomorrow. Anything else is
+  // ours to fix, not theirs to wait out.
+  return { response: plain, degraded: strongStatus === 429 ? 'quota' : 'no_split' }
 }
 
 function callGemini(
@@ -408,24 +492,9 @@ export default async (request: Request) => {
   let geminiResponse: Response
   let degraded: ParsedReceipt['degraded'] = null
   try {
-    geminiResponse = await callGemini(
-      wantsSplit ? SPLIT_MODEL : SCAN_MODEL,
-      apiKey,
-      wantsSplit ? buildSplitPrompt(categoryNames) : buildExtractionPrompt(categoryNames),
-      wantsSplit ? SPLIT_RESPONSE_SCHEMA : RESPONSE_SCHEMA,
-      wantsSplit ? SPLIT_TIMEOUT_MS : GEMINI_TIMEOUT_MS,
-      mimeType,
-      base64Photo,
-    )
-
-    // The stronger model is the one with 20 requests a day and the one most
-    // likely to be renamed out from under us, so both of its plausible
-    // failures get a second chance on the model that does the everyday
-    // scanning. Losing the per-item split is a far better outcome than
-    // losing the whole reading of the receipt.
-    if (wantsSplit && !geminiResponse.ok && (geminiResponse.status === 429 || geminiResponse.status === 404)) {
-      degraded = geminiResponse.status === 429 ? 'quota' : 'model_missing'
-      console.error(`Split model ${SPLIT_MODEL} unavailable (${geminiResponse.status}), falling back to ${SCAN_MODEL}`)
+    if (wantsSplit) {
+      ;({ response: geminiResponse, degraded } = await runSplit(apiKey, categoryNames, mimeType, base64Photo))
+    } else {
       geminiResponse = await callGemini(
         SCAN_MODEL,
         apiKey,

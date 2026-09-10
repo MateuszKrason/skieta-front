@@ -530,6 +530,14 @@ export interface AdminAppStats {
   signups_daily: { date: string; count: number }[]
   language_visit_counts: Record<string, number>
   invitations_by_language: Record<string, number>
+  /** Where the accounts themselves came from, not just the clicks - see
+   * accounts.services.signup_sources. 'unknown' covers everyone who
+   * registered before this was recorded and everyone who went straight to
+   * the form. */
+  signup_sources: {
+    by_source: { source: string; count: number }[]
+    by_article: { article: string; count: number }[]
+  }
 }
 
 export interface LandingPromotion {
@@ -1058,11 +1066,13 @@ export interface ParsedReceipt {
    * ever shown the real list. null when nothing fit (or the user has no
    * expense categories yet). */
   category_name: string | null
-  /** Present only when a per-product split was requested and the stronger
-   * model could deliver one. */
+  /** Present only when a per-product split was requested and one of the
+   * models could deliver it. */
   items?: ReceiptItem[] | null
-  /** Set when a split was asked for but could not be produced - the daily
-   * allowance on the stronger model ran out, or that model no longer
-   * exists. The scan still succeeded, just without the per-item breakdown. */
-  degraded?: 'quota' | 'model_missing' | null
+  /** How the split went - see the same field in the edge function
+   * (netlify/edge-functions/receipt-scan.ts) for the full reasoning.
+   * 'lite_model' still comes with items, just read by the everyday model;
+   * 'quota' and 'no_split' mean there are none and the receipt was read as
+   * a single amount instead. */
+  degraded?: 'lite_model' | 'quota' | 'no_split' | null
 }

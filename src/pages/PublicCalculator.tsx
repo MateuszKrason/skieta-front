@@ -3,7 +3,7 @@ import { Link } from 'react-router-dom'
 import SockLogo from '../components/SockLogo'
 import AuthTopBar from '../components/AuthTopBar'
 import { useLanguage } from '../i18n/LanguageContext'
-import { trackEvent } from '../lib/analytics'
+import { rememberSignupSource, trackEvent } from '../lib/analytics'
 
 // Dynamic, not a static import: this page is itself lazy-loaded so a
 // logged-out visitor's landing bundle stays small (see App.tsx), and a
@@ -53,7 +53,10 @@ export default function PublicCalculator() {
           <div className="mt-4">
             <Link
               to="/register"
-              onClick={() => trackEvent('register_clicked', { source: 'calculator' })}
+              onClick={() => {
+                trackEvent('register_clicked', { source: 'calculator' })
+                rememberSignupSource('calculator')
+              }}
               className="inline-block rounded-full bg-accent-700 px-6 py-2.5 text-sm font-semibold text-white shadow-sm transition hover:bg-accent-800"
             >
               {t('Załóż darmowe konto →')}

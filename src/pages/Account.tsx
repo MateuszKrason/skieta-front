@@ -851,6 +851,21 @@ function GeminiKeySection() {
           'Zamiast wpisywać wydatki ręcznie, możesz wgrywać zdjęcia paragonów - odczyta je za Ciebie Google. Trzeba mu to raz zezwolić, a poniżej masz instrukcję krok po kroku. Nic to nie kosztuje i nie wymaga karty płatniczej.',
         )}
       </p>
+      {/* The honest version of "your key, your account", placed where the
+          decision is actually made rather than buried in the regulamin -
+          but written as what it is: reassurance first (it is free, it is
+          yours, you can remove it), and the limits of our responsibility
+          second, in one sentence, instead of a wall of warnings that would
+          make a free feature look like a trap. */}
+      <p className="text-xs text-slate-400 dark:text-slate-500">
+        {t(
+          'Klucz jest Twój i działa w oparciu o Twoje konto Google - to Google ustala darmowe limity i ewentualne opłaty po ich przekroczeniu, więc za rozliczenia po stronie Google nie odpowiadamy. Klucz trzymamy zaszyfrowany i usuniesz go stąd jednym kliknięciem.',
+        )}{' '}
+        <Link to="/regulamin" className="underline hover:text-slate-500 dark:hover:text-slate-400">
+          {t('Szczegóły w regulaminie')}
+        </Link>
+        .
+      </p>
 
       {status?.has_key ? (
         <div className="flex items-center justify-between gap-3 rounded-md bg-emerald-50 dark:bg-emerald-950/30 px-3 py-2">

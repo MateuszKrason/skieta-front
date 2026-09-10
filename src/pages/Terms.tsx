@@ -32,7 +32,7 @@ export default function Terms() {
       <div className="mx-auto max-w-3xl space-y-8 px-4 py-12">
         <div>
           <h1 className="text-3xl font-bold text-slate-900 dark:text-slate-100">{t('Regulamin usługi')}</h1>
-          <p className="mt-2 text-sm text-slate-400 dark:text-slate-500">{t('Ostatnia aktualizacja: 24 sierpnia 2026')}</p>
+          <p className="mt-2 text-sm text-slate-400 dark:text-slate-500">{t('Ostatnia aktualizacja: 10 września 2026')}</p>
         </div>
 
         <Section title="1. Postanowienia ogólne">
@@ -135,7 +135,35 @@ export default function Terms() {
           </ul>
         </Section>
 
-        <Section title="7. Dostępność i ograniczenie odpowiedzialności">
+        <Section title="7. Skanowanie paragonów i własny klucz Gemini">
+          <p>
+            {t(
+              'Skanowanie paragonów jest opcjonalne i działa w oparciu o Twój własny klucz API do Google Gemini - to Ty decydujesz, czy w ogóle z niego korzystać. Dzięki temu zdjęcia trafiają bezpośrednio do Google w ramach Twojej własnej umowy z Google, a Usługodawca nie pośredniczy w rozliczeniach ani nie ma wglądu w Twoje zużycie.',
+            )}
+          </p>
+          <p>
+            {t(
+              'Klucz pochodzi od Google i to Google ustala zasady korzystania z niego: darmowy poziom, dzienne limity zapytań, ewentualne opłaty po jego przekroczeniu oraz warunki przetwarzania przesłanych zdjęć. Zasady te mogą się zmienić bez udziału Usługodawcy. Usługodawca nie jest stroną Twojej umowy z Google i nie odpowiada za wyczerpanie darmowego limitu, naliczone przez Google opłaty, zawieszenie klucza ani za zmianę warunków po stronie Google.',
+            )}
+          </p>
+          <p>
+            {t(
+              'W praktyce: przy typowym korzystaniu z aplikacji darmowy poziom zwykle wystarcza, a limity i ewentualne koszty sprawdzisz w każdej chwili na swoim koncie Google. Jeśli chcesz mieć pewność, że nic się nie naliczy, nie dodawaj klucza z aktywnym rozliczeniem - wydatki możesz wpisywać ręcznie, a wszystkie pozostałe funkcje działają tak samo.',
+            )}
+          </p>
+          <p>
+            {t(
+              'Wynik odczytu paragonu jest propozycją generowaną przez model AI - przed zapisaniem widzisz go w formularzu i to Ty potwierdzasz kwoty, daty i kategorie. Usługodawca nie gwarantuje poprawności odczytu i nie odpowiada za dane zapisane bez sprawdzenia.',
+            )}
+          </p>
+          <p>
+            {t(
+              'Klucz przechowujemy w postaci zaszyfrowanej i możesz go usunąć jednym kliknięciem w ustawieniach konta - szczegóły w Polityce prywatności.',
+            )}
+          </p>
+        </Section>
+
+        <Section title="8. Dostępność i ograniczenie odpowiedzialności">
           <p>
             {t(
               'Usługa znajduje się w aktywnym rozwoju i jest udostępniana w modelu „tak jak jest" (as is), bez gwarancji nieprzerwanego, bezbłędnego działania. Usługodawca dokłada starań, aby Usługa działała poprawnie, ale nie gwarantuje jej stałej dostępności i zastrzega sobie prawo do przerw technicznych, w tym bez wcześniejszego powiadomienia.',
@@ -148,7 +176,7 @@ export default function Terms() {
           </p>
         </Section>
 
-        <Section title="8. Własność intelektualna">
+        <Section title="9. Własność intelektualna">
           <p>
             {t(
               'Kod źródłowy, wygląd, nazwa, logo i treści redakcyjne publikowane w Usłudze stanowią własność Usługodawcy lub są wykorzystywane na podstawie odpowiednich licencji i podlegają ochronie prawnoautorskiej. Dane finansowe wprowadzone przez Użytkownika pozostają jego własnością - Usługodawca wykorzystuje je wyłącznie w celu świadczenia Usługi, zgodnie z Polityką prywatności.',
@@ -156,7 +184,7 @@ export default function Terms() {
           </p>
         </Section>
 
-        <Section title="9. Zawieszenie i usunięcie konta">
+        <Section title="10. Zawieszenie i usunięcie konta">
           <p>
             {t(
               'Usługodawca może zawiesić (zablokować logowanie) lub zarchiwizować Konto Użytkownika w przypadku naruszenia Regulaminu, próby nieautoryzowanego dostępu lub działania na szkodę Usługi bądź innych Użytkowników. Archiwizacja oznacza dezaktywację Konta z zachowaniem danych, nie ich usunięcie.',
@@ -169,7 +197,7 @@ export default function Terms() {
           </p>
         </Section>
 
-        <Section title="10. Reklamacje">
+        <Section title="11. Reklamacje">
           <p>
             {t(
               'Reklamacje dotyczące działania Usługi można zgłaszać na adres e-mail podany w sekcji „Kontakt" lub za pomocą widgetu „Zostaw feedback" w aplikacji. Usługodawca rozpatruje zgłoszenia w miarę możliwości najszybciej, jak to praktycznie wykonalne.',
@@ -177,7 +205,7 @@ export default function Terms() {
           </p>
         </Section>
 
-        <Section title="11. Zmiany Regulaminu">
+        <Section title="12. Zmiany Regulaminu">
           <p>
             {t(
               'Usługodawca zastrzega sobie prawo do zmiany Regulaminu, w szczególności w związku z rozwojem funkcjonalności Usługi lub zmianą przepisów prawa. O istotnych zmianach Użytkownicy zostaną poinformowani odpowiednim komunikatem w Usłudze. Data ostatniej aktualizacji widoczna jest na górze tej strony.',
@@ -185,7 +213,7 @@ export default function Terms() {
           </p>
         </Section>
 
-        <Section title="12. Postanowienia końcowe">
+        <Section title="13. Postanowienia końcowe">
           <p>
             {t(
               'W sprawach nieuregulowanych niniejszym Regulaminem zastosowanie mają przepisy prawa polskiego. Regulamin obowiązuje wraz z Polityką prywatności, dostępną pod adresem',

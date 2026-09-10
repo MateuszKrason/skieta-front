@@ -1,7 +1,10 @@
 import { createContext, useContext, useEffect, useRef, useState, type ReactNode } from 'react'
+import { useQueryClient } from '@tanstack/react-query'
 import { api, tokenStore } from '../api/client'
 import { useLanguage, type Language } from '../i18n/LanguageContext'
 import { useTheme } from '../theme/ThemeContext'
+import { takeSignupSource } from '../lib/analytics'
+import { clearUserScopedStorage } from '../lib/userScopedStorage'
 import type { User } from '../types'
 
 interface AuthContextValue {
@@ -35,6 +38,7 @@ const AuthContext = createContext<AuthContextValue | undefined>(undefined)
 export function AuthProvider({ children }: { children: ReactNode }) {
   const [user, setUser] = useState<User | null>(null)
   const [loading, setLoading] = useState(true)
+  const queryClient = useQueryClient()
   const { setTheme } = useTheme()
   const { setLanguage } = useLanguage()
   // Only apply the account's configured color variant/language once per
@@ -73,6 +77,14 @@ export function AuthProvider({ children }: { children: ReactNode }) {
 
   async function login(username: string, password: string) {
     const { data } = await api.post('/auth/login/', { username, password })
+    // Whatever is cached at this moment was fetched for somebody else -
+    // this is a login, so by definition nothing in there belongs to the
+    // account about to appear. Signing out already clears it; doing it
+    // again here covers the case where the previous session ended without
+    // anyone pressing the button (an expired token, a shared tablet handed
+    // over mid-session) and stops the new user's dashboard from opening on
+    // the old user's balances while the real ones are still in flight.
+    forgetPreviousUser()
     tokenStore.set(data.access, data.refresh)
     await fetchMe()
   }
@@ -98,10 +110,31 @@ export function AuthProvider({ children }: { children: ReactNode }) {
       invite_token: inviteToken,
       language,
       terms_accepted: termsAccepted,
+      // Read here rather than passed down from the form: the source was
+      // recorded pages ago, by a button in an article, and threading it
+      // through as a tenth positional argument to register() would put it
+      // everywhere except where it is actually used - the request body.
+      ...takeSignupSource(),
     })
+    forgetPreviousUser()
     tokenStore.set(data.access, data.refresh)
     setUser(data.user)
     syncPreferencesFromUser(data.user)
+  }
+
+  // Everything this device holds about whoever was signed in a moment ago.
+  // The query cache is the visible half: TanStack Query serves a cached
+  // entry immediately and refetches behind it, which is exactly what you
+  // want for the same person coming back to a page and exactly what you do
+  // not want after a handover - the incoming user watched somebody else's
+  // balance sit on screen for a second before it corrected itself.
+  //
+  // Tokens are cleared separately by the callers, because logout has to
+  // send one to the server before dropping it.
+  function forgetPreviousUser() {
+    queryClient.clear()
+    clearUserScopedStorage()
+    hasSyncedPreferences.current = false
   }
 
   // Also tells the server to kill the refresh token this device is holding
@@ -133,7 +166,7 @@ export function AuthProvider({ children }: { children: ReactNode }) {
     }
     tokenStore.clear()
     setUser(null)
-    hasSyncedPreferences.current = false
+    forgetPreviousUser()
   }
 
   async function logoutFromAllDevices() {
@@ -146,7 +179,7 @@ export function AuthProvider({ children }: { children: ReactNode }) {
       // doesn't log the person clicking it out.
       tokenStore.clear()
       setUser(null)
-      hasSyncedPreferences.current = false
+      forgetPreviousUser()
     }
   }
 

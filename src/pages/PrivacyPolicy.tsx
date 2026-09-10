@@ -32,7 +32,7 @@ export default function PrivacyPolicy() {
       <div className="mx-auto max-w-3xl space-y-8 px-4 py-12">
         <div>
           <h1 className="text-3xl font-bold text-slate-900 dark:text-slate-100">{t('Polityka prywatności')}</h1>
-          <p className="mt-2 text-sm text-slate-400 dark:text-slate-500">{t('Ostatnia aktualizacja: 4 września 2026')}</p>
+          <p className="mt-2 text-sm text-slate-400 dark:text-slate-500">{t('Ostatnia aktualizacja: 10 września 2026')}</p>
         </div>
 
         <Section title="Kim jesteśmy">
@@ -47,7 +47,7 @@ export default function PrivacyPolicy() {
           <p className="font-medium text-slate-700 dark:text-slate-300">{t('Dane konta')}</p>
           <p>
             {t(
-              'Nazwa użytkownika, imię i nazwisko, adres e-mail (jeśli podany) i hasło (przechowywane wyłącznie w postaci zahaszowanej, nigdy jawnym tekstem). Przy rejestracji zapisujemy też, z czyjego zaproszenia założono konto.',
+              'Nazwa użytkownika, imię i nazwisko, adres e-mail (jeśli podany) i hasło (przechowywane wyłącznie w postaci zahaszowanej, nigdy jawnym tekstem). Przy rejestracji zapisujemy też, z czyjego zaproszenia założono konto oraz z której strony naszego serwisu trafiłeś/aś do formularza rejestracji (np. „artykuł" wraz z jego adresem, strona główna, kalkulator) - żebyśmy wiedzieli, które treści są naprawdę pomocne. To informacja o naszej własnej stronie, nie o Twojej historii przeglądania, i nie trafia do nikogo poza nami.',
             )}
           </p>
           <p className="font-medium text-slate-700 dark:text-slate-300">{t('Dane finansowe, które sam(a) wprowadzasz')}</p>
@@ -60,6 +60,12 @@ export default function PrivacyPolicy() {
           <p>
             {t(
               'Przy każdym logowaniu zapisujemy adres IP oraz podstawowe informacje o przeglądarce/systemie (User-Agent) - to podstawa historii logowań widocznej w Twoim koncie oraz ochrony przed nieautoryzowanym dostępem. Zapisujemy też, w które dni byłeś/aś aktywny(a) (do serii logowań i statystyk).',
+            )}
+          </p>
+          <p className="font-medium text-slate-700 dark:text-slate-300">{t('Klucz Gemini, jeśli go dodasz')}</p>
+          <p>
+            {t(
+              'Skanowanie paragonów jest opcjonalne i działa w oparciu o Twój własny klucz API do Google Gemini. Klucz przechowujemy w postaci zaszyfrowanej, nie pokazujemy go z powrotem w aplikacji i używamy go wyłącznie do odczytania zdjęcia, które sam(a) wysłałeś/aś. Możesz go usunąć jednym kliknięciem w ustawieniach konta - wtedy znika z bazy razem z datą dodania.',
             )}
           </p>
           <p className="font-medium text-slate-700 dark:text-slate-300">{t('Zgłoszenia i zaproszenia')}</p>
@@ -108,13 +114,41 @@ export default function PrivacyPolicy() {
             </li>
             <li>
               {t(
-                'publiczne źródła danych rynkowych (np. Stooq, Yahoo Finance) - zapytania dotyczą wyłącznie tickerów giełdowych i kursów walut, nigdy Twoich danych osobowych.',
+                'publiczne źródła danych rynkowych (np. Stooq, Yahoo Finance) - zapytania dotyczą wyłącznie tickerów giełdowych i kursów walut, nigdy Twoich danych osobowych,',
+              )}
+            </li>
+            <li>
+              {t(
+                'dostawca hostingu strony (Netlify) - serwuje samą aplikację w przeglądarce i obsługuje wysyłkę zdjęcia paragonu do Google, jeśli korzystasz ze skanowania,'
+              )}
+            </li>
+            <li>
+              {t(
+                'Google (Gemini) - wyłącznie wtedy, gdy sam(a) dodasz swój klucz API i wyślesz zdjęcie paragonu do odczytania. Bez klucza żadne dane nie trafiają do Google.',
               )}
             </li>
           </ul>
           <p>
             {t(
-              'Aplikacja i baza danych stoją w centrum danych Microsoft Azure w Polsce (region Poland Central), a serwer pocztowy w Polsce. Zgłoszenia o awariach trafiają do europejskiego regionu dostawcy monitoringu. Twoje dane finansowe nie opuszczają Europejskiego Obszaru Gospodarczego.',
+              'Aplikacja i baza danych stoją w centrum danych Microsoft Azure w Polsce (region Poland Central), a serwer pocztowy w Polsce. Zgłoszenia o awariach trafiają do europejskiego regionu dostawcy monitoringu.',
+            )}
+          </p>
+          <p>
+            {t(
+              'Dane finansowe, które wpisujesz w aplikacji, nie opuszczają Europejskiego Obszaru Gospodarczego. Jeden wyjątek jest w Twoich rękach: skanowanie paragonów. Jeśli je włączysz, zdjęcie paragonu trafia do Google Gemini w oparciu o Twój własny klucz API i jest przetwarzane na serwerach Google, także poza EOG, zgodnie z warunkami Google dla API Gemini. Nie robimy tego automatycznie ani w tle - dzieje się to tylko wtedy, gdy sam(a) wyślesz konkretne zdjęcie. Zdjęcia nie przechowujemy - trafia prosto do Google, a u nas zostaje wyłącznie odczytany z niego tekst, który zatwierdzasz w formularzu.',
+            )}
+          </p>
+        </Section>
+
+        <Section title="Skanowanie paragonów">
+          <p>
+            {t(
+              'Ta funkcja jest w całości opcjonalna i domyślnie wyłączona - włącza ją dopiero dodanie własnego klucza Google Gemini w ustawieniach. Do Google trafia wtedy samo zdjęcie paragonu i lista nazw Twoich kategorii wydatków (żeby model mógł zaproponować jedną z nich), nigdy Twoje saldo, historia transakcji, dane logowania ani cokolwiek innego z konta.',
+            )}
+          </p>
+          <p>
+            {t(
+              'To, co Google robi z przesłanym zdjęciem i jak długo je przechowuje, regulują warunki Google dla API Gemini - obowiązują one między Tobą a Google, bo to Twój klucz. Usunięcie klucza w ustawieniach wyłącza funkcję natychmiast i nie zostawia po niej żadnych danych po naszej stronie.',
             )}
           </p>
         </Section>

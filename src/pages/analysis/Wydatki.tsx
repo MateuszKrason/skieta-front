@@ -97,9 +97,9 @@ export default function Wydatki() {
     applyScan(receipt)
     setScanError(
       receipt.degraded === 'quota'
-        ? t('Dzienny limit mocniejszego modelu wyczerpany - paragon odczytany prościej, jedną kategorią.')
-        : receipt.degraded === 'model_missing'
-          ? t('Mocniejszy model jest chwilowo niedostępny - paragon odczytany prościej, jedną kategorią.')
+        ? t('Dzienny limit mocniejszego modelu wyczerpany - paragon odczytany prościej, jedną kategorią. Spróbuj jutro.')
+        : receipt.degraded === 'no_split'
+          ? t('Nie udało się rozbić tego paragonu na pozycje - odczytaliśmy go jedną kwotą. Spróbuj wyraźniejszego zdjęcia.')
           : t('Nie udało się odczytać pojedynczych pozycji - zapisz paragon jedną kategorią.'),
     )
   }

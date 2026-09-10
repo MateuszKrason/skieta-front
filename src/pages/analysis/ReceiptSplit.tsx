@@ -162,11 +162,19 @@ export function ReceiptSplitReview({
   )
   const [error, setError] = useState<string | null>(null)
 
-  const totalGrosze = toGrosze(receipt.amount ?? '0')
   const includedGrosze = items.reduce(
     (sum, item, index) => (assignments[index] === 'excluded' ? sum : sum + toGrosze(item.amount)),
     0,
   )
+  // A receipt whose SUMA line came out blank or unreadable used to make this
+  // screen unusable: the total was 0, so every item looked like an overshoot
+  // and the save button never enabled, with a message about a discrepancy
+  // that did not exist. When there is no printed total to reconcile against,
+  // the items themselves are the best total available - and the user can
+  // still see and correct every row.
+  const printedTotalGrosze = toGrosze(receipt.amount ?? '0')
+  const hasPrintedTotal = printedTotalGrosze > 0
+  const totalGrosze = hasPrintedTotal ? printedTotalGrosze : includedGrosze
   const leftoverGrosze = totalGrosze - includedGrosze
   // Items adding up to more than the receipt means a line was read twice or
   // a price misread. There is no honest way to guess which, so saving is
@@ -246,8 +254,18 @@ export function ReceiptSplitReview({
               : t('Podział paragonu')}
           </h2>
           <p className="text-sm text-slate-500 dark:text-slate-400">
-            {t('Odczytano {0} pozycji na {1}', String(items.length), formatMoney(receipt.amount, currency))}
+            {t('Odczytano {0} pozycji na {1}', String(items.length), formatMoney(fromGrosze(totalGrosze), currency))}
           </p>
+          {!hasPrintedTotal && (
+            <p className="mt-1 text-xs text-amber-700 dark:text-amber-500">
+              {t('Nie udało się odczytać sumy z paragonu - liczymy ją z pozycji poniżej. Sprawdź, czy się zgadza.')}
+            </p>
+          )}
+          {receipt.degraded === 'lite_model' && (
+            <p className="mt-1 text-xs text-amber-700 dark:text-amber-500">
+              {t('Podziału dokonał prostszy model - warto sprawdzić pozycje.')}
+            </p>
+          )}
         </div>
         <button
           type="button"

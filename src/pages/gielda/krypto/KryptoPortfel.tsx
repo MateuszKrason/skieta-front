@@ -681,9 +681,15 @@ function EditCryptoTransactionForm({
   const [fee, setFee] = useState(tx.fee)
   const [executedAt, setExecutedAt] = useState(tx.executed_at)
   const [notes, setNotes] = useState(tx.notes)
+  const [chargeAccount, setChargeAccount] = useState(false)
   const [error, setError] = useState<string | null>(null)
 
   const eligibleAccounts = accounts.filter((a) => a.currency === tx.currency)
+  // See the identical control in gielda/Portfel.tsx: linking an account
+  // after the fact records where the position sits, it does not move money
+  // out of today's balance - unless the account was simply forgotten when
+  // the trade was entered, which is what this asks.
+  const linkingAccountForTheFirstTime = tx.account === null && account !== ''
 
   const mutation = useMutation({
     mutationFn: () =>
@@ -694,6 +700,7 @@ function EditCryptoTransactionForm({
         fee,
         executed_at: executedAt,
         notes,
+        ...(linkingAccountForTheFirstTime ? { affects_balance: chargeAccount } : {}),
       }),
     onSuccess: onDone,
     onError: (err: unknown) => {
@@ -756,6 +763,17 @@ function EditCryptoTransactionForm({
       <Field label="Notatki">
         <input value={notes} onChange={(e) => setNotes(e.target.value)} className="input" />
       </Field>
+      {linkingAccountForTheFirstTime && (
+        <label className="col-span-2 flex items-start gap-2 text-xs text-slate-500 dark:text-slate-400 sm:col-span-6">
+          <input
+            type="checkbox"
+            checked={chargeAccount}
+            onChange={(e) => setChargeAccount(e.target.checked)}
+            className="mt-0.5"
+          />
+          {t('Odejmij tę kwotę z salda konta - zaznacz tylko wtedy, gdy przy zakupie konto zostało pominięte przez pomyłkę. Domyślnie zapisujemy samo powiązanie.')}
+        </label>
+      )}
       <div className="col-span-2 flex items-end gap-2 sm:col-span-6">
         <button type="submit" className="btn-primary" disabled={mutation.isPending}>
           {t('Zapisz')}

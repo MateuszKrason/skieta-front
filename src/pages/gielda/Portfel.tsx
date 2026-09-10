@@ -700,9 +700,17 @@ function EditStockTransactionForm({
   const [fee, setFee] = useState(tx.fee)
   const [executedAt, setExecutedAt] = useState(tx.executed_at)
   const [notes, setNotes] = useState(tx.notes)
+  const [chargeAccount, setChargeAccount] = useState(false)
   const [error, setError] = useState<string | null>(null)
 
   const accountGroups = groupAccountsByBank(accounts)
+  // Pointing a position that had no account at one is normally just
+  // recording where it sits - the money moved (or didn't) on the day of the
+  // trade, and charging it now would come out of today's balance instead.
+  // Sometimes though the account was simply forgotten at purchase time, and
+  // then the balance really does need correcting, so ask - but only here,
+  // in the one situation where the question means anything.
+  const linkingAccountForTheFirstTime = tx.account === null && account !== ''
 
   const mutation = useMutation({
     mutationFn: () =>
@@ -713,6 +721,7 @@ function EditStockTransactionForm({
         fee,
         executed_at: executedAt,
         notes,
+        ...(linkingAccountForTheFirstTime ? { affects_balance: chargeAccount } : {}),
       }),
     onSuccess: onDone,
     onError: (err: unknown) => {
@@ -775,6 +784,17 @@ function EditStockTransactionForm({
       <Field label="Notatki" className="min-w-[140px] flex-1">
         <input value={notes} onChange={(e) => setNotes(e.target.value)} className="input" />
       </Field>
+      {linkingAccountForTheFirstTime && (
+        <label className="flex w-full items-start gap-2 text-xs text-slate-500 dark:text-slate-400">
+          <input
+            type="checkbox"
+            checked={chargeAccount}
+            onChange={(e) => setChargeAccount(e.target.checked)}
+            className="mt-0.5"
+          />
+          {t('Odejmij tę kwotę z salda konta - zaznacz tylko wtedy, gdy przy zakupie konto zostało pominięte przez pomyłkę. Domyślnie zapisujemy samo powiązanie.')}
+        </label>
+      )}
       <div className="flex items-end gap-2">
         <button type="submit" className="btn-primary" disabled={mutation.isPending}>
           {t('Zapisz')}
