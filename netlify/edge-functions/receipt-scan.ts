@@ -182,6 +182,39 @@ const RESPONSE_SCHEMA = {
   required: RECEIPT_REQUIRED,
 }
 
+// A fuel receipt is the one kind where the interesting number is not the
+// total. Asked for as its own schema rather than bolted onto the general one:
+// every extra field costs accuracy on the fields that matter, and a shop
+// receipt has no litres to find.
+const FUEL_RESPONSE_SCHEMA = {
+  type: 'object',
+  properties: {
+    ...RECEIPT_PROPERTIES,
+    litres: { type: 'string' },
+    price_per_litre: { type: 'string' },
+  },
+  required: [...RECEIPT_REQUIRED, 'litres', 'price_per_litre'],
+}
+
+function buildFuelPrompt(categoryNames: string[]): string {
+  return `Na zdjęciu jest paragon ze stacji paliw. Odczytaj z niego dane i zwróć JSON.
+
+- store_name: nazwa stacji (np. Orlen, BP, Shell, Circle K).
+- date: data w formacie RRRR-MM-DD.
+- amount: łączna kwota do zapłaty, kropka dziesiętna, bez waluty.
+- currency: kod waluty, np. PLN.
+- litres: liczba zatankowanych litrów, kropka dziesiętna (np. "48.20"). Na paragonach bywa
+  opisana jako ILOŚĆ, LITRY, LTR albo L.
+- price_per_litre: cena za jeden litr, kropka dziesiętna (np. "6.09"). Bywa opisana jako CENA
+  albo CENA/L. To NIE jest kwota łączna.
+${categoryInstruction(categoryNames, 'category_name')}
+- description: rodzaj paliwa, jeśli widać (np. "Pb95", "ON", "LPG").
+
+Nie mnóż ani nie dziel niczego samodzielnie - przepisz tylko to, co jest wydrukowane. Jeśli
+któregoś pola nie da się odczytać, zwróć dla niego pusty string "". Pusta wartość jest o wiele
+lepsza niż zgadnięta: brakującą liczbę aplikacja policzy sama z pozostałych dwóch.`
+}
+
 const SPLIT_RESPONSE_SCHEMA = {
   type: 'object',
   properties: {
@@ -303,6 +336,10 @@ interface ParsedReceipt {
    * no_split   - no split: neither model would produce one. The receipt is
    *              still read as a single amount. */
   degraded: 'lite_model' | 'quota' | 'no_split' | null
+  /** Only present for a fuel receipt. Either figure can be null on its own:
+   * the backend works the missing one out from the amount rather than
+   * demanding all three. */
+  fuel: { litres: string | null; price_per_litre: string | null } | null
 }
 
 const RECEIPT_FIELDS = ['store_name', 'date', 'amount', 'currency', 'description', 'category_name'] as const
@@ -345,6 +382,13 @@ function normalizeParsedReceipt(value: unknown): ParsedReceipt | null {
     category_name: blankToNull(record.category_name),
     items: normalizeItems(record.items),
     degraded: null,
+    fuel:
+      typeof record.litres === 'string' || typeof record.price_per_litre === 'string'
+        ? {
+            litres: blankToNull(record.litres),
+            price_per_litre: blankToNull(record.price_per_litre),
+          }
+        : null,
   }
 }
 
@@ -460,6 +504,7 @@ export default async (request: Request) => {
   }
 
   const wantsSplit = form.get('split') === '1'
+  const wantsFuel = form.get('fuel') === '1'
   const requestedCategories = parseRequestedCategories(form.get('categories'))
 
   let apiKey: string | null
@@ -494,6 +539,19 @@ export default async (request: Request) => {
   try {
     if (wantsSplit) {
       ;({ response: geminiResponse, degraded } = await runSplit(apiKey, categoryNames, mimeType, base64Photo))
+    } else if (wantsFuel) {
+      // The everyday model, not the stronger one: this is six short fields
+      // off a small receipt, not thirty product lines, and the stronger
+      // model's daily allowance is far too small to spend on refuelling.
+      geminiResponse = await callGemini(
+        SCAN_MODEL,
+        apiKey,
+        buildFuelPrompt(categoryNames),
+        FUEL_RESPONSE_SCHEMA,
+        GEMINI_TIMEOUT_MS,
+        mimeType,
+        base64Photo,
+      )
     } else {
       geminiResponse = await callGemini(
         SCAN_MODEL,

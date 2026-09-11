@@ -421,6 +421,7 @@ export interface User {
     interest_budget: boolean
     interest_planning: boolean
     interest_analysis: boolean
+  interest_vehicles: boolean
     interest_crypto: boolean
     permissions: string[]
     username_changed_at: string | null
@@ -849,6 +850,88 @@ export interface MonthlyTrendRow {
   net: string
 }
 
+export type VehicleFuelType = 'petrol' | 'diesel' | 'lpg' | 'hybrid' | 'electric' | 'other'
+
+export type VehicleCostKind =
+  | 'fuel'
+  | 'insurance'
+  | 'inspection'
+  | 'service'
+  | 'repair'
+  | 'tyres'
+  | 'parts'
+  | 'wash'
+  | 'parking'
+  | 'tax'
+  | 'finance'
+  | 'other'
+
+export interface Vehicle {
+  id: number
+  name: string
+  make: string
+  model: string
+  year: number | null
+  registration: string
+  vin: string
+  fuel_type: VehicleFuelType | ''
+  purchase_date: string | null
+  purchase_price: string | null
+  initial_odometer_km: number | null
+  warranty_until: string | null
+  notes: string
+  archived: boolean
+  display_order: number
+  created_at: string
+}
+
+export interface VehicleCost {
+  id: number
+  vehicle: number
+  vehicle_name: string
+  kind: VehicleCostKind
+  kind_display: string
+  transaction: BudgetTransaction
+  odometer_km: number | null
+  litres: string | null
+  price_per_litre: string | null
+  valid_from: string | null
+  valid_to: string | null
+  note: string
+}
+
+export interface VehicleSummary {
+  vehicle: Vehicle
+  total: string
+  entries: number
+  by_kind: { kind: VehicleCostKind; total: string }[]
+  fuel_litres: string
+  fuel_total: string
+  average_price_per_litre: string | null
+  /** Null until there are two fill-ups with an odometer reading - see
+   * vehicles.services.fuel_economy for why nothing is guessed before that. */
+  distance_km: number | null
+  litres_per_100km: string | null
+  fuel_cost_per_km: string | null
+  cost_per_km: string | null
+  last_odometer_km: number | null
+}
+
+export interface VehicleTrendRow {
+  month: string
+  fuel: string
+  other: string
+  total: string
+}
+
+export interface VehicleDeadline {
+  vehicle: Vehicle
+  kind: 'insurance' | 'inspection' | 'warranty'
+  date: string
+  /** Negative once the date has passed, which is exactly when it matters. */
+  days_left: number
+}
+
 export interface ReimbursementTrendRow {
   month: string
   fronted: string
@@ -1075,4 +1158,6 @@ export interface ParsedReceipt {
    * 'quota' and 'no_split' mean there are none and the receipt was read as
    * a single amount instead. */
   degraded?: 'lite_model' | 'quota' | 'no_split' | null
+  /** Only filled in for a fuel receipt - see the car page. */
+  fuel?: { litres: string | null; price_per_litre: string | null } | null
 }

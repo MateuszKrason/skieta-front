@@ -3,6 +3,7 @@ import { Link, useNavigate } from 'react-router-dom'
 import { tokenStore } from '../api/client'
 import { useAuth } from '../auth/AuthContext'
 import { useLanguage } from '../i18n/LanguageContext'
+import { supportsDirectCameraCapture } from '../lib/cameraCapture'
 import { trackEvent } from '../lib/analytics'
 import { useDismissableMenu } from '../lib/useDismissableMenu'
 import { setScanInFlight } from '../lib/scanStatus'
@@ -43,6 +44,7 @@ export function ScanReceiptButton({
   label,
   dataTour,
   split = false,
+  fuel = false,
   categoryNames,
 }: {
   onParsed: (result: ParsedReceipt) => void
@@ -57,6 +59,9 @@ export function ScanReceiptButton({
    * whole receipt. Costs a request against the stronger model's much
    * smaller daily allowance, so it is opt-in per scan, never the default. */
   split?: boolean
+  /** Read a petrol receipt: same everyday model, but asked for litres and
+   * the price per litre on top of the total. */
+  fuel?: boolean
   /** The few categories the user said this receipt is likely to fall into.
    * Narrowing the list Gemini chooses from raises the odds of a sensible
    * assignment; left out, the edge function uses every expense category. */
@@ -74,6 +79,8 @@ export function ScanReceiptButton({
   // 224px-wide menu anchored left-0 on a button near the right edge of a
   // 375px phone screen runs 66px past it).
   const [menuLeft, setMenuLeft] = useState(0)
+  // Read once per mount: the browser cannot change underneath us.
+  const [directCapture] = useState(() => supportsDirectCameraCapture(navigator.userAgent))
   const triggerRef = useRef<HTMLButtonElement>(null)
   const cameraInputRef = useRef<HTMLInputElement>(null)
   const galleryInputRef = useRef<HTMLInputElement>(null)
@@ -133,6 +140,7 @@ export function ScanReceiptButton({
       const form = new FormData()
       form.append('photo', file)
       if (split) form.append('split', '1')
+      if (fuel) form.append('fuel', '1')
       if (categoryNames && categoryNames.length > 0) {
         form.append('categories', JSON.stringify(categoryNames))
       }
@@ -206,16 +214,31 @@ export function ScanReceiptButton({
       )}
       {/* capture="environment" opens the camera app directly on a phone; on
           desktop it's ignored and this is a plain file picker, same as the
-          one below it. */}
+          one below it. Left off entirely where it breaks the camera - see
+          supportsDirectCameraCapture.
+
+          Visually hidden rather than display:none: a file input that is not
+          rendered at all is one more thing for a mobile browser to get wrong
+          when it opens a camera surface on top of it. */}
       <input
         ref={cameraInputRef}
         type="file"
         accept="image/*"
-        capture="environment"
+        capture={directCapture ? 'environment' : undefined}
         onChange={onFileSelected}
-        className="hidden"
+        className="sr-only"
+        tabIndex={-1}
+        aria-hidden="true"
       />
-      <input ref={galleryInputRef} type="file" accept="image/*" onChange={onFileSelected} className="hidden" />
+      <input
+        ref={galleryInputRef}
+        type="file"
+        accept="image/*"
+        onChange={onFileSelected}
+        className="sr-only"
+        tabIndex={-1}
+        aria-hidden="true"
+      />
     </div>
   )
 }

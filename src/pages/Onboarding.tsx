@@ -203,7 +203,13 @@ function Field({
 }
 
 const INTEREST_OPTIONS: {
-  field: 'interest_stocks' | 'interest_budget' | 'interest_planning' | 'interest_analysis' | 'interest_crypto'
+  field:
+    | 'interest_stocks'
+    | 'interest_budget'
+    | 'interest_planning'
+    | 'interest_analysis'
+    | 'interest_crypto'
+    | 'interest_vehicles'
   label: string
   hint: string
 }[] = [
@@ -212,6 +218,7 @@ const INTEREST_OPTIONS: {
   { field: 'interest_budget', label: 'Budżet', hint: 'Przychody i wydatki, w tym dodawanie ze zdjęcia paragonu' },
   { field: 'interest_planning', label: 'Planowanie', hint: 'Cele oszczędnościowe i planowane wydatki' },
   { field: 'interest_analysis', label: 'Analiza', hint: 'Kalkulator inwestycyjny - obligacje, lokaty, giełda' },
+  { field: 'interest_vehicles', label: 'Samochód', hint: 'Paliwo, ubezpieczenie, naprawy i spalanie' },
 ]
 
 function InterestsStep() {

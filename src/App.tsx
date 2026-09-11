@@ -56,13 +56,17 @@ const Przychody = lazy(() => import('./pages/analysis/Przychody'))
 const Wydatki = lazy(() => import('./pages/analysis/Wydatki'))
 const Kategorie = lazy(() => import('./pages/analysis/Kategorie'))
 const Statystyki = lazy(() => import('./pages/analysis/Statystyki'))
+const Samochod = lazy(() => import('./pages/Samochod'))
 const InvestmentCalculator = lazy(() => import('./pages/InvestmentCalculator'))
 const PublicCalculator = lazy(() => import('./pages/PublicCalculator'))
 
 const PAGE_TITLES: [string, string][] = [
   ['/polityka-prywatnosci', 'Polityka prywatności'],
   ['/regulamin', 'Regulamin usługi'],
-  ['/', 'Panuj nad swoimi finansami'],
+  // The phrase people search for, not the slogan - see the note on <title>
+  // in index.html. Google renders JavaScript, so this is the title it
+  // indexes; changing only the static one would be undone on load.
+  ['/', 'Darmowa aplikacja do budżetu domowego'],
   ['/logowanie', 'Logowanie'],
   ['/register', 'Rejestracja'],
   ['/zapomnialem-hasla', 'Reset hasła'],
@@ -91,6 +95,7 @@ const PAGE_TITLES: [string, string][] = [
   ['/budzet/wydatki', 'Wydatki'],
   ['/budzet/kategorie', 'Kategorie'],
   ['/budzet/statystyki', 'Statystyki'],
+  ['/samochod', 'Samochód'],
   ['/budzet', 'Budżet'],
   ['/kalkulator', 'Kalkulator inwestycyjny - lokata, obligacje czy giełda'],
   ['/analiza', 'Analiza'],
@@ -165,6 +170,7 @@ export default function App() {
           <Route path="/planowanie" element={<Planowanie />} />
           <Route path="/timeline" element={<Timeline />} />
           <Route path="/moje-konto" element={<Account />} />
+          <Route path="/samochod" element={<Samochod />} />
           <Route element={<EditorRoute />}>
             <Route path="/redakcja" element={<Redakcja />} />
           </Route>

@@ -30,7 +30,12 @@ const LANGUAGE_CODE_LABELS: Record<Language, string> = {
 // "Giełda"/"Budżet"/"Planowanie" are additionally hidden per the account's
 // own feature-interest toggles (set at onboarding, editable in Account.tsx) -
 // "Konta i lokaty" always shows since a bank account is required at signup.
-type InterestKey = 'interest_stocks' | 'interest_budget' | 'interest_planning' | 'interest_analysis'
+type InterestKey =
+  | 'interest_stocks'
+  | 'interest_budget'
+  | 'interest_planning'
+  | 'interest_analysis'
+  | 'interest_vehicles'
 
 const DASHBOARD_LINK = { to: '/dashboard', label: 'Dashboard', end: true, tourId: 'nav-dashboard' }
 
@@ -49,12 +54,17 @@ export const REORDERABLE_LINKS: Record<
   gielda: { to: '/gielda', label: 'Giełda', interest: 'interest_stocks', tourId: 'nav-gielda' },
   planowanie: { to: '/planowanie', label: 'Planowanie', interest: 'interest_planning', tourId: 'nav-planowanie' },
   analiza: { to: '/analiza', label: 'Analiza', interest: 'interest_analysis', tourId: 'nav-analiza' },
+  samochod: { to: '/samochod', label: 'Samochód', interest: 'interest_vehicles', tourId: 'nav-samochod' },
 }
-export const DEFAULT_NAV_ORDER = ['budzet', 'konta', 'gielda', 'planowanie', 'analiza']
+export const DEFAULT_NAV_ORDER = ['budzet', 'konta', 'gielda', 'planowanie', 'analiza', 'samochod']
 
 function getNavLinks(profile: User['profile'] | undefined, isStaff: boolean | undefined) {
-  const order =
-    profile?.nav_order && profile.nav_order.length === DEFAULT_NAV_ORDER.length ? profile.nav_order : DEFAULT_NAV_ORDER
+  // Saved orders are honoured even when they predate a tab: an order stored
+  // before "Samochód" existed lists five keys, and demanding an exact length
+  // would throw away a customisation the user made on purpose. Unknown keys
+  // are dropped, missing ones join at the end in their default order.
+  const saved = (profile?.nav_order ?? []).filter((key) => key in REORDERABLE_LINKS)
+  const order = [...saved, ...DEFAULT_NAV_ORDER.filter((key) => !saved.includes(key))]
   const ordered = order
     .map((key) => REORDERABLE_LINKS[key])
     .filter((link): link is (typeof REORDERABLE_LINKS)[string] => !!link)
