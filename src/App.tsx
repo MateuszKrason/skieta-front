@@ -95,7 +95,7 @@ const PAGE_TITLES: [string, string][] = [
   ['/budzet/wydatki', 'Wydatki'],
   ['/budzet/kategorie', 'Kategorie'],
   ['/budzet/statystyki', 'Statystyki'],
-  ['/samochod', 'Samochód'],
+  ['/budzet/samochod', 'Samochód'],
   ['/budzet', 'Budżet'],
   ['/kalkulator', 'Kalkulator inwestycyjny - lokata, obligacje czy giełda'],
   ['/analiza', 'Analiza'],
@@ -170,7 +170,6 @@ export default function App() {
           <Route path="/planowanie" element={<Planowanie />} />
           <Route path="/timeline" element={<Timeline />} />
           <Route path="/moje-konto" element={<Account />} />
-          <Route path="/samochod" element={<Samochod />} />
           <Route element={<EditorRoute />}>
             <Route path="/redakcja" element={<Redakcja />} />
           </Route>
@@ -209,7 +208,12 @@ export default function App() {
             <Route path="wydatki" element={<Wydatki />} />
             <Route path="kategorie" element={<Kategorie />} />
             <Route path="statystyki" element={<Statystyki />} />
+            <Route path="samochod" element={<Samochod />} />
           </Route>
+          {/* Lived at the top level for a day before moving in with the rest
+              of the budget - cheaper to keep the old address working than to
+              hand anyone who bookmarked it a 404. */}
+          <Route path="/samochod" element={<Navigate to="/budzet/samochod" replace />} />
 
           <Route path="/analiza" element={<InvestmentCalculator />} />
           {/* Old budget-analysis URLs, kept working under their new /budzet
