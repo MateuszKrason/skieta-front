@@ -16,7 +16,14 @@
     <link rel="manifest" href="/site.webmanifest" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <meta name="theme-color" content="#059669" />
-    <meta name="description" content="skieta - budżet domowy i tracker finansowy: zapisuj wydatki zdjęciem paragonu, pilnuj celów oszczędnościowych, a akcje, obligacje i lokaty policz w tym samym miejscu." />
+    <!-- Title and description lead with the phrase people actually type,
+         "aplikacja do budżetu domowego", not the slogan: nobody searches for
+         "panuj nad swoimi finansami", and "skieta" on its own is already
+         taken in search results by an unrelated sock shop (skieta.pl), so the
+         brand name cannot carry the page by itself. The slogan stays where a
+         person reads it - in the hero. Keep the description under ~155
+         characters or Google cuts it mid-sentence. -->
+    <meta name="description" content="Darmowa aplikacja do budżetu domowego, bez reklam. Wydatki dodasz zdjęciem paragonu, a obok budżetu policzysz też akcje, obligacje i lokaty." />
     <!-- The app itself (behind login) stays private, but the landing page and
          its articles at / and /artykuly/* are genuinely public marketing/
          educational content - index those. Logged-in-only routes have no
@@ -24,8 +31,8 @@
     <meta name="robots" content="index, follow" />
     <link rel="canonical" href="https://skieta.com/" />
     <meta property="og:site_name" content="skieta" />
-    <meta property="og:title" content="skieta - panuj nad swoimi finansami" />
-    <meta property="og:description" content="Budżet domowy i tracker finansowy - zapisuj wydatki zdjęciem paragonu, pilnuj celów, a akcje, obligacje i lokaty policz w tym samym miejscu." />
+    <meta property="og:title" content="skieta - darmowa aplikacja do budżetu domowego" />
+    <meta property="og:description" content="Bez reklam i bez sprzedawania danych. Wydatki dodasz zdjęciem paragonu, a obok budżetu policzysz też akcje, obligacje i lokaty." />
     <meta property="og:type" content="website" />
     <meta property="og:url" content="https://skieta.com/" />
     <meta property="og:image" content="https://skieta.com/og-image.png" />
@@ -33,20 +40,41 @@
     <meta property="og:image:height" content="630" />
     <meta property="og:locale" content="pl_PL" />
     <meta name="twitter:card" content="summary_large_image" />
-    <meta name="twitter:title" content="skieta - panuj nad swoimi finansami" />
-    <meta name="twitter:description" content="Budżet domowy i tracker finansowy - wydatki ze zdjęcia paragonu, cele oszczędnościowe oraz akcje, obligacje i lokaty w jednym miejscu." />
+    <meta name="twitter:title" content="skieta - darmowa aplikacja do budżetu domowego" />
+    <meta name="twitter:description" content="Bez reklam i bez sprzedawania danych. Wydatki dodasz zdjęciem paragonu, a obok budżetu policzysz też akcje, obligacje i lokaty." />
     <meta name="twitter:image" content="https://skieta.com/og-image.png" />
+    <!-- WebApplication alongside WebSite tells search engines this is a free
+         finance app rather than a blog. No aggregateRating on purpose: Google
+         only shows the star snippet with one, and there are no real ratings
+         to put there - an invented one would be the kind of fake review
+         structured-data guidelines ban outright. -->
     <script type="application/ld+json">
       {
         "@context": "https://schema.org",
-        "@type": "WebSite",
-        "name": "skieta",
-        "url": "https://skieta.com/",
-        "description": "Budżet domowy i tracker finansowy - wydatki ze zdjęcia paragonu, cele oszczędnościowe oraz akcje, obligacje i lokaty w jednym miejscu.",
-        "image": "https://skieta.com/og-image.png"
+        "@graph": [
+          {
+            "@type": "WebSite",
+            "name": "skieta",
+            "url": "https://skieta.com/",
+            "inLanguage": "pl-PL",
+            "description": "Darmowa aplikacja do budżetu domowego - wydatki ze zdjęcia paragonu, cele oszczędnościowe oraz akcje, obligacje i lokaty w jednym miejscu.",
+            "image": "https://skieta.com/og-image.png"
+          },
+          {
+            "@type": "WebApplication",
+            "name": "skieta",
+            "url": "https://skieta.com/",
+            "applicationCategory": "FinanceApplication",
+            "operatingSystem": "Web",
+            "inLanguage": "pl-PL",
+            "description": "Darmowa aplikacja do budżetu domowego, bez reklam. Wydatki dodasz zdjęciem paragonu, a obok budżetu policzysz też akcje, obligacje i lokaty.",
+            "offers": { "@type": "Offer", "price": "0", "priceCurrency": "PLN" },
+            "image": "https://skieta.com/og-image.png"
+          }
+        ]
       }
     </script>
-    <title>skieta - panuj nad swoimi finansami</title>
+    <title>Darmowa aplikacja do budżetu domowego - skieta</title>
   </head>
   <body>
     <div id="root"></div>

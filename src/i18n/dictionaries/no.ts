@@ -999,6 +999,8 @@ export const no: Record<string, string> = {
   'Artykuł': 'Artikkel',
   'Kalkulator': 'Kalkulator',
   'Nieznane / wejście wprost': 'Ukjent / direkte besøk',
+  'Darmowa aplikacja do budżetu domowego': 'Gratis app for husholdningsbudsjett',
+  'Dodaj skietę do ekranu początkowego: stuknij Udostępnij (w nowszym Safari pod przyciskiem ⋯), a potem „Do ekranu początkowego". Otworzysz ją jak zwykłą aplikację.': 'Legg skieta til på Hjem-skjermen: Trykk på Del (i nyere Safari ligger den under ⋯-knappen), og velg deretter «Legg til på Hjem-skjerm». Den åpnes som en vanlig app.',
   'Wyłożone za innych': 'Lagt ut for andre',
   'Czeka na zwrot': 'Venter på tilbakebetaling',
   'Wyłożone za kogoś innego - już oddane. Kliknij, jeśli jednak nie.':

@@ -998,6 +998,8 @@ export const en: Record<string, string> = {
   'Artykuł': 'Article',
   'Kalkulator': 'Calculator',
   'Nieznane / wejście wprost': 'Unknown / came directly',
+  'Darmowa aplikacja do budżetu domowego': 'Free household budget app',
+  'Dodaj skietę do ekranu początkowego: stuknij Udostępnij (w nowszym Safari pod przyciskiem ⋯), a potem „Do ekranu początkowego". Otworzysz ją jak zwykłą aplikację.': 'Add skieta to your Home Screen: tap Share (in newer Safari it sits under the ⋯ button), then “Add to Home Screen”. It will open like a regular app.',
   'Wyłożone za innych': 'Fronted for others',
   'Czeka na zwrot': 'Owed back to you',
   'Wyłożone za kogoś innego - już oddane. Kliknij, jeśli jednak nie.':

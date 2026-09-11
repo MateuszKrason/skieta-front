@@ -997,6 +997,8 @@ export const sq: Record<string, string> = {
   'Artykuł': 'Artikull',
   'Kalkulator': 'Kalkulator',
   'Nieznane / wejście wprost': 'E panjohur / hyrje e drejtpërdrejtë',
+  'Darmowa aplikacja do budżetu domowego': 'Aplikacion falas për buxhetin familjar',
+  'Dodaj skietę do ekranu początkowego: stuknij Udostępnij (w nowszym Safari pod przyciskiem ⋯), a potem „Do ekranu początkowego". Otworzysz ją jak zwykłą aplikację.': 'Shto skieta në ekranin kryesor: prek Ndaj (në Safari më të ri ndodhet nën butonin ⋯), pastaj „Shto në ekranin kryesor”. Do të hapet si një aplikacion i zakonshëm.',
   'Wyłożone za innych': 'Paguar për të tjerët',
   'Czeka na zwrot': 'Pret të kthehet',
   'Wyłożone za kogoś innego - już oddane. Kliknij, jeśli jednak nie.':

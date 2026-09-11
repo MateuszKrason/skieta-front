@@ -37,3 +37,29 @@ export function writeDismissedAt(now: number) {
     // See above.
   }
 }
+
+/** Browsers embedded inside another app. They open links from posts and
+ * messages - the whole Facebook campaign lands in one - and none of them can
+ * add a page to the home screen, so telling their users how would be telling
+ * them to do something their screen does not offer. */
+const IN_APP_BROWSER = /FBAN|FBAV|FB_IAB|Instagram|Line\/|MicroMessenger|LinkedInApp|TikTok|musical_ly|Snapchat|Twitter/i
+
+export interface BrowserEnvironment {
+  userAgent: string
+  platform: string
+  maxTouchPoints: number
+  /** Already opened from the home screen - nothing left to offer. */
+  standalone: boolean
+}
+
+/** Safari never fires beforeinstallprompt, so on an iPhone the app cannot
+ * offer installation itself - only explain the two taps that do it. This
+ * decides whether that explanation applies here at all. */
+export function canAddToIosHomeScreen(env: BrowserEnvironment): boolean {
+  if (env.standalone) return false
+  // iPadOS asks for desktop sites by default and reports itself as a Mac;
+  // the touch screen is what gives it away.
+  const isIos = /iPhone|iPad|iPod/.test(env.userAgent) || (env.platform === 'MacIntel' && env.maxTouchPoints > 1)
+  if (!isIos) return false
+  return !IN_APP_BROWSER.test(env.userAgent)
+}

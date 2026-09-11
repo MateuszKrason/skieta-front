@@ -998,6 +998,8 @@ export const es: Record<string, string> = {
   'Artykuł': 'Artículo',
   'Kalkulator': 'Calculadora',
   'Nieznane / wejście wprost': 'Desconocido / entrada directa',
+  'Darmowa aplikacja do budżetu domowego': 'Aplicación gratuita de presupuesto familiar',
+  'Dodaj skietę do ekranu początkowego: stuknij Udostępnij (w nowszym Safari pod przyciskiem ⋯), a potem „Do ekranu początkowego". Otworzysz ją jak zwykłą aplikację.': 'Añade skieta a tu pantalla de inicio: toca Compartir (en el Safari más reciente está bajo el botón ⋯) y luego «Añadir a pantalla de inicio». Se abrirá como una app normal.',
   'Wyłożone za innych': 'Adelantado por otros',
   'Czeka na zwrot': 'Pendiente de devolución',
   'Wyłożone za kogoś innego - już oddane. Kliknij, jeśli jednak nie.':

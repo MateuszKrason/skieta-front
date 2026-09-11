@@ -1000,6 +1000,8 @@ export const de: Record<string, string> = {
   'Artykuł': 'Artikel',
   'Kalkulator': 'Rechner',
   'Nieznane / wejście wprost': 'Unbekannt / direkt aufgerufen',
+  'Darmowa aplikacja do budżetu domowego': 'Kostenlose App für das Haushaltsbudget',
+  'Dodaj skietę do ekranu początkowego: stuknij Udostępnij (w nowszym Safari pod przyciskiem ⋯), a potem „Do ekranu początkowego". Otworzysz ją jak zwykłą aplikację.': 'Füge skieta zum Home-Bildschirm hinzu: Tippe auf Teilen (im neueren Safari unter der Taste ⋯), dann auf „Zum Home-Bildschirm“. Sie öffnet sich dann wie eine normale App.',
   'Wyłożone za innych': 'Für andere ausgelegt',
   'Czeka na zwrot': 'Steht noch aus',
   'Wyłożone za kogoś innego - już oddane. Kliknij, jeśli jednak nie.':
