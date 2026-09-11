@@ -918,10 +918,15 @@ export interface VehicleSummary {
 }
 
 export interface VehicleTrendRow {
-  month: string
-  fuel: string
-  other: string
-  total: string
+  kind: VehicleCostKind
+  /** One figure per month in `VehicleTrend.months`, zeros included. */
+  totals: string[]
+}
+
+export interface VehicleTrend {
+  months: string[]
+  /** Biggest spender first. Kinds this car never spent on are absent. */
+  rows: VehicleTrendRow[]
 }
 
 export interface VehicleDeadline {

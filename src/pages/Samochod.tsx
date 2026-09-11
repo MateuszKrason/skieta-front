@@ -1,6 +1,6 @@
 import { useMemo, useState, type FormEvent } from 'react'
 import { useMutation, useQuery, useQueryClient } from '@tanstack/react-query'
-import { Bar, BarChart, CartesianGrid, Legend, ResponsiveContainer, Tooltip, XAxis, YAxis } from 'recharts'
+import { Bar, BarChart, CartesianGrid, ResponsiveContainer, Tooltip, XAxis, YAxis } from 'recharts'
 import { api } from '../api/client'
 import { CardLoader } from '../components/Loader'
 import { ScanReceiptButton } from '../components/ScanReceiptButton'
@@ -16,7 +16,7 @@ import type {
   VehicleCostKind,
   VehicleDeadline,
   VehicleSummary,
-  VehicleTrendRow,
+  VehicleTrend,
 } from '../types'
 
 const COST_KINDS: { key: VehicleCostKind; label: string }[] = [
@@ -49,6 +49,10 @@ const FUEL_TYPES = [
   { key: 'other', label: 'Inny' },
 ]
 const TREND_MONTHS_OPTIONS = [6, 12, 24]
+// Same ten colours the portfolio pages keep locally, for the same reason:
+// importing them from the analysis pages would drag that whole bundle into
+// this one.
+const PALETTE = ['#059669', '#0ea5e9', '#f59e0b', '#ef4444', '#8b5cf6', '#ec4899', '#14b8a6', '#84cc16', '#f97316', '#6366f1']
 
 function Field({ label, children, hint }: { label: string; children: React.ReactNode; hint?: string }) {
   return (
@@ -445,6 +449,10 @@ function VehicleDetail({ vehicle }: { vehicle: Vehicle }) {
   const tooltipStyle = useTooltipStyle()
   const queryClient = useQueryClient()
   const [months, setMonths] = useState(12)
+  // Which single kind of cost the chart is showing, if any. Local to the
+  // chart, like the tag and store charts: isolating a series is a way of
+  // looking, not a filter the rest of the page should follow.
+  const [isolatedKind, setIsolatedKind] = useState<VehicleCostKind | null>(null)
   const [adding, setAdding] = useState(false)
   const [editing, setEditing] = useState(false)
 
@@ -455,7 +463,7 @@ function VehicleDetail({ vehicle }: { vehicle: Vehicle }) {
   const { data: trend } = useQuery({
     queryKey: ['vehicle-trend', vehicle.id, months],
     queryFn: async () =>
-      (await api.get<VehicleTrendRow[]>(`/vehicles/vehicles/${vehicle.id}/trend/`, { params: { months } })).data,
+      (await api.get<VehicleTrend>(`/vehicles/vehicles/${vehicle.id}/trend/`, { params: { months } })).data,
   })
   const { data: costs } = useQuery({
     queryKey: ['vehicle-costs', vehicle.id],
@@ -480,10 +488,22 @@ function VehicleDetail({ vehicle }: { vehicle: Vehicle }) {
     },
   })
 
-  const chartData = useMemo(
-    () => (trend ?? []).map((row) => ({ month: row.month, fuel: Number(row.fuel), other: Number(row.other) })),
-    [trend],
-  )
+  // One key per kind, like the tag chart: recharts wants a row per month
+  // with every series on it, not a series per row. Both come out of the same
+  // memo so the rows array keeps its identity between renders.
+  const { trendRows, chartData } = useMemo(() => {
+    const rows = trend?.rows ?? []
+    return {
+      trendRows: rows,
+      chartData: (trend?.months ?? []).map((month, index) => {
+        const point: Record<string, string | number> = { month }
+        rows.forEach((row) => {
+          point[row.kind] = Number(row.totals[index])
+        })
+        return point
+      }),
+    }
+  }, [trend])
 
   if (editing) return <VehicleForm vehicle={vehicle} onDone={() => setEditing(false)} />
 
@@ -577,21 +597,60 @@ function VehicleDetail({ vehicle }: { vehicle: Vehicle }) {
           </select>
         </div>
         <p className="mb-3 text-xs text-slate-400 dark:text-slate-500">
-          {t('Paliwo to stały wydatek, naprawy to skoki - dlatego są rozdzielone.')}
+          {t('Kliknij rodzaj kosztu pod wykresem, aby zobaczyć go samego. Kliknij ponownie, aby wrócić do wszystkich.')}
         </p>
-        <div className="h-56">
-          <ResponsiveContainer width="100%" height="100%">
-            <BarChart data={chartData}>
-              <CartesianGrid strokeDasharray="3 3" stroke="#94a3b8" strokeOpacity={0.15} />
-              <XAxis dataKey="month" tick={{ fontSize: 12 }} stroke="#94a3b8" />
-              <YAxis tickFormatter={formatAxisValue} tick={{ fontSize: 12 }} stroke="#94a3b8" width={44} />
-              <Tooltip {...tooltipStyle} formatter={(value) => formatMoney(value as number, 'PLN')} />
-              <Legend wrapperStyle={{ fontSize: 12 }} />
-              <Bar dataKey="fuel" stackId="v" name={t('Paliwo')} fill="#059669" />
-              <Bar dataKey="other" stackId="v" name={t('Pozostałe')} fill="#f59e0b" />
-            </BarChart>
-          </ResponsiveContainer>
-        </div>
+        {trendRows.length === 0 ? (
+          <p className="text-sm text-slate-400 dark:text-slate-500">{t('Brak danych.')}</p>
+        ) : (
+          <>
+            <div className="h-56">
+              <ResponsiveContainer width="100%" height="100%">
+                <BarChart data={chartData}>
+                  <CartesianGrid strokeDasharray="3 3" stroke="#94a3b8" strokeOpacity={0.15} />
+                  <XAxis dataKey="month" tick={{ fontSize: 12 }} stroke="#94a3b8" />
+                  <YAxis tickFormatter={formatAxisValue} tick={{ fontSize: 12 }} stroke="#94a3b8" width={44} />
+                  <Tooltip {...tooltipStyle} formatter={(value) => formatMoney(value as number, 'PLN')} />
+                  {trendRows.map((row, index) => (
+                    <Bar
+                      key={row.kind}
+                      dataKey={row.kind}
+                      name={t(KIND_LABELS[row.kind])}
+                      stackId="vehicle"
+                      fill={PALETTE[index % PALETTE.length]}
+                      hide={isolatedKind !== null && isolatedKind !== row.kind}
+                    />
+                  ))}
+                </BarChart>
+              </ResponsiveContainer>
+            </div>
+            {/* The legend is the control, so it is buttons rather than
+                recharts' own <Legend> - same as the tag and store charts. */}
+            <div className="mt-3 flex flex-wrap gap-2">
+              {trendRows.map((row, index) => {
+                const active = isolatedKind === row.kind
+                return (
+                  <button
+                    key={row.kind}
+                    type="button"
+                    onClick={() => setIsolatedKind(active ? null : row.kind)}
+                    aria-pressed={active}
+                    className={`flex items-center gap-1.5 rounded-full border px-2.5 py-1 text-xs font-medium transition ${
+                      active
+                        ? 'border-accent-400 dark:border-accent-600 bg-accent-50 dark:bg-accent-900/30 text-accent-700 dark:text-accent-400'
+                        : 'border-slate-200 dark:border-slate-700 text-slate-600 dark:text-slate-400 hover:bg-slate-50 dark:hover:bg-slate-700'
+                    }`}
+                  >
+                    <span
+                      className="h-2 w-2 rounded-full"
+                      style={{ backgroundColor: PALETTE[index % PALETTE.length] }}
+                    />
+                    {t(KIND_LABELS[row.kind])}
+                  </button>
+                )
+              })}
+            </div>
+          </>
+        )}
       </div>
 
       <div className="rounded-xl border border-slate-200 dark:border-slate-700 bg-white dark:bg-slate-800 p-5 shadow-sm">
