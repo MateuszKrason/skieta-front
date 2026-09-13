@@ -133,7 +133,11 @@ export default function AdminUsers() {
             ) : !activeOnDay || activeOnDay.length === 0 ? (
               <p className="text-xs text-slate-400 dark:text-slate-500">{t('Nikt nie był aktywny tego dnia.')}</p>
             ) : (
-              <ul className="grid grid-cols-1 gap-1 sm:grid-cols-2 lg:grid-cols-3">
+              // One per row rather than the multi-column grid this used to
+              // be: a name and an email are two different lengths, and a
+              // grid means the row someone is reading is not the row next
+              // to it - everything lines up better stacked.
+              <ul className="space-y-1">
                 {activeOnDay.map((u) => (
                   <li key={u.id} className="flex justify-between text-xs">
                     <Link

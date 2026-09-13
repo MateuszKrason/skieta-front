@@ -22,6 +22,8 @@ interface AuthContextValue {
     language: Language,
     termsAccepted: boolean,
   ) => Promise<void>
+  /** Opens a session on the shared, read-only demo account (see accounts.demo). */
+  startDemo: () => Promise<void>
   logout: () => void
   /** Kills every refresh token this account has ever been issued (see
    * accounts.views.LogoutAllView on the backend), then logs this device out
@@ -84,6 +86,13 @@ export function AuthProvider({ children }: { children: ReactNode }) {
     // anyone pressing the button (an expired token, a shared tablet handed
     // over mid-session) and stops the new user's dashboard from opening on
     // the old user's balances while the real ones are still in flight.
+    forgetPreviousUser()
+    tokenStore.set(data.access, data.refresh)
+    await fetchMe()
+  }
+
+  async function startDemo() {
+    const { data } = await api.post('/auth/demo/')
     forgetPreviousUser()
     tokenStore.set(data.access, data.refresh)
     await fetchMe()
@@ -198,7 +207,7 @@ export function AuthProvider({ children }: { children: ReactNode }) {
 
   return (
     <AuthContext.Provider
-      value={{ user, loading, login, register, logout, logoutFromAllDevices, refreshUser: fetchMe, updateProfile }}
+      value={{ user, loading, login, register, startDemo, logout, logoutFromAllDevices, refreshUser: fetchMe, updateProfile }}
     >
       {children}
     </AuthContext.Provider>

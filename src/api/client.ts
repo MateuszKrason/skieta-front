@@ -21,6 +21,9 @@ export const tokenStore = {
 
 export const api = axios.create({ baseURL: BASE_URL })
 
+/** Fired when the backend refuses a change because the session is the shared demo account. */
+export const DEMO_READ_ONLY_EVENT = 'skieta:demo-read-only'
+
 // Endpoints that are meaningful only when logged out. Sending a stale token
 // along with them used to have a nasty consequence on the login form: the
 // response interceptor below treats "401 on a request that carried a token"
@@ -35,6 +38,7 @@ const UNAUTHENTICATED_PATHS = [
   '/auth/password-reset/',
   '/auth/password-reset-confirm/',
   '/auth/cancel-deletion/',
+  '/auth/demo/',
 ]
 
 api.interceptors.request.use((config) => {
@@ -86,6 +90,9 @@ api.interceptors.response.use(
         return api(original)
       }
       window.location.href = '/logowanie'
+    }
+    if (error.response?.status === 403 && (error.response.data as { code?: string } | undefined)?.code === 'demo_read_only') {
+      window.dispatchEvent(new Event(DEMO_READ_ONLY_EVENT))
     }
     return Promise.reject(error)
   },

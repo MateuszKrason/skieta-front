@@ -47,6 +47,7 @@ const Portfel = lazy(() => import('./pages/gielda/Portfel'))
 const Dywidendy = lazy(() => import('./pages/gielda/Dywidendy'))
 const StatystykiPortfela = lazy(() => import('./pages/gielda/StatystykiPortfela'))
 const AnalizaSpolek = lazy(() => import('./pages/gielda/AnalizaSpolek'))
+const Wiadomosci = lazy(() => import('./pages/gielda/Wiadomosci'))
 const KryptoLayout = lazy(() => import('./pages/gielda/krypto/KryptoLayout'))
 const KryptoPortfel = lazy(() => import('./pages/gielda/krypto/KryptoPortfel'))
 const KryptoAnaliza = lazy(() => import('./pages/gielda/krypto/KryptoAnaliza'))
@@ -86,6 +87,7 @@ const PAGE_TITLES: [string, string][] = [
   ['/gielda/dywidendy', 'Dywidendy'],
   ['/gielda/statystyki', 'Statystyki portfela'],
   ['/gielda/analiza-spolek', 'Analiza spółek'],
+  ['/gielda/wiadomosci', 'Wiadomości'],
   ['/gielda/krypto/portfel', 'Krypto - Portfel'],
   ['/gielda/krypto/analiza', 'Krypto - Analiza'],
   ['/gielda/krypto', 'Krypto'],
@@ -194,6 +196,7 @@ export default function App() {
             <Route path="dywidendy" element={<Dywidendy />} />
             <Route path="statystyki" element={<StatystykiPortfela />} />
             <Route path="analiza-spolek" element={<AnalizaSpolek />} />
+            <Route path="wiadomosci" element={<Wiadomosci />} />
             <Route path="krypto" element={<KryptoLayout />}>
               <Route index element={<Navigate to="portfel" replace />} />
               <Route path="portfel" element={<KryptoPortfel />} />

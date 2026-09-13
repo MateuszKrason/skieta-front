@@ -32,7 +32,7 @@ export default function Terms() {
       <div className="mx-auto max-w-3xl space-y-8 px-4 py-12">
         <div>
           <h1 className="text-3xl font-bold text-slate-900 dark:text-slate-100">{t('Regulamin usługi')}</h1>
-          <p className="mt-2 text-sm text-slate-400 dark:text-slate-500">{t('Ostatnia aktualizacja: 10 września 2026')}</p>
+          <p className="mt-2 text-sm text-slate-400 dark:text-slate-500">{t('Ostatnia aktualizacja: 14 września 2026')}</p>
         </div>
 
         <Section title="1. Postanowienia ogólne">
@@ -49,10 +49,15 @@ export default function Terms() {
           <p className="font-medium text-slate-700 dark:text-slate-300">{t('Definicje')}</p>
           <ul className="list-disc space-y-1 pl-5">
             <li>{t('Użytkownik - osoba fizyczna posiadająca Konto w Usłudze.')}</li>
-            <li>{t('Konto - indywidualne konto Użytkownika, założone po skorzystaniu z Zaproszenia.')}</li>
+            <li>{t('Konto - indywidualne konto Użytkownika w Usłudze.')}</li>
             <li>
               {t(
-                'Zaproszenie - jednorazowy lub grupowy link/kod umożliwiający rejestrację, wygenerowany przez Użytkownika, administratora lub osobę do tego uprawnioną.',
+                'Konto demonstracyjne - wspólne konto z przykładowymi danymi, udostępniane bez rejestracji, żeby można było obejrzeć Usługę. Zmiany wprowadzane na tym koncie nie są zapisywane.',
+              )}
+            </li>
+            <li>
+              {t(
+                'Zaproszenie - link lub kod polecający Usługę, wygenerowany przez Użytkownika, administratora lub osobę do tego uprawnioną. Zaproszenie nie jest warunkiem rejestracji.',
               )}
             </li>
           </ul>
@@ -61,17 +66,17 @@ export default function Terms() {
         <Section title="2. Charakter usługi">
           <p>
             {t(
-              'skieta to osobisty tracker finansowy - narzędzie do samodzielnego zapisywania i wizualizowania własnych danych finansowych (konta, transakcje, inwestycje, budżet, plany oszczędnościowe). Usługa działa w modelu zaproszeń - rejestracja jest możliwa wyłącznie przy użyciu ważnego Zaproszenia.',
+              'skieta to osobisty tracker finansowy - narzędzie do samodzielnego zapisywania i wizualizowania własnych danych finansowych (konta, transakcje, inwestycje, budżet, plany oszczędnościowe). Rejestracja w Usłudze jest otwarta i bezpłatna.',
             )}
           </p>
           <p>
             {t(
-              'Usługa nie jest instytucją finansową, biurem maklerskim, doradcą inwestycyjnym ani podmiotem świadczącym usługi płatnicze. Kursy walut, notowania giełdowe i inne dane rynkowe pobierane są z publicznie dostępnych źródeł zewnętrznych (np. NBP, Stooq, Yahoo Finance) wyłącznie w celach informacyjnych - Usługodawca nie gwarantuje ich aktualności ani dokładności i nie ponosi odpowiedzialności za decyzje finansowe podjęte na ich podstawie.',
+              'Usługa nie jest instytucją finansową, biurem maklerskim, doradcą inwestycyjnym ani podmiotem świadczącym usługi płatnicze. Kursy walut, notowania giełdowe, komunikaty spółek i inne dane rynkowe pobierane są z publicznie dostępnych źródeł zewnętrznych (np. NBP, Stooq, Yahoo Finance, bankier.pl, SEC EDGAR) wyłącznie w celach informacyjnych - Usługodawca nie gwarantuje ich aktualności ani dokładności i nie ponosi odpowiedzialności za decyzje finansowe podjęte na ich podstawie.',
             )}
           </p>
           <p>
             {t(
-              'Żadna treść w Usłudze, w tym artykuły publikowane w dziale redakcyjnym ani wyniki kalkulatora inwestycyjnego, nie stanowi rekomendacji inwestycyjnej ani porady finansowej, prawnej lub podatkowej w rozumieniu obowiązujących przepisów.',
+              'Żadna treść w Usłudze, w tym artykuły publikowane w dziale redakcyjnym, wyniki kalkulatora inwestycyjnego ani analizy spółek, nie stanowi rekomendacji inwestycyjnej ani porady finansowej, prawnej lub podatkowej w rozumieniu obowiązujących przepisów.',
             )}
           </p>
           <p>
@@ -84,7 +89,16 @@ export default function Terms() {
         <Section title="3. Warunki korzystania i rejestracja">
           <ul className="list-disc space-y-1 pl-5">
             <li>{t('Z Usługi może korzystać wyłącznie osoba pełnoletnia, posiadająca pełną zdolność do czynności prawnych.')}</li>
-            <li>{t('Rejestracja wymaga ważnego, nieużytego i nieprzeterminowanego Zaproszenia.')}</li>
+            <li>
+              {t(
+                'Rejestracja jest otwarta - Konto zakłada się samodzielnie w formularzu rejestracji, akceptując Regulamin. Zaproszenie nie jest do tego potrzebne.',
+              )}
+            </li>
+            <li>
+              {t(
+                'Przed rejestracją można obejrzeć Usługę na Koncie demonstracyjnym. Jego dane są przykładowe i wspólne dla wszystkich odwiedzających, a zmiany nie są zapisywane - nie należy wpisywać tam żadnych własnych danych.',
+              )}
+            </li>
             <li>
               {t(
                 'Użytkownik zobowiązany jest podać prawdziwe dane przy rejestracji (imię, nazwisko, opcjonalnie adres e-mail) oraz aktualizować je w razie zmiany.',
@@ -115,12 +129,12 @@ export default function Terms() {
         <Section title="5. Zaproszenia">
           <p>
             {t(
-              'Zaproszenia osobiste są jednorazowe, imienne lub bezimienne, i tracą ważność po upływie określonego czasu od wygenerowania. Zaproszenia grupowe (link lub kod QR na określoną liczbę osób) tworzone są przez administratora lub osoby do tego uprawnione i posiadają własny limit miejsc oraz datę ważności ustaloną przy tworzeniu.',
+              'Zaproszenia służą do polecania Usługi innym osobom - dzięki nim Usługa odnotowuje, z czyjego polecenia założono Konto. Skorzystanie z Zaproszenia jest dobrowolne i nie jest warunkiem rejestracji. Zaproszenia osobiste tracą ważność po upływie określonego czasu od wygenerowania, a Zaproszenia grupowe (link lub kod QR) tworzone przez administratora lub osoby do tego uprawnione mają własny limit osób i datę ważności.',
             )}
           </p>
           <p>
             {t(
-              'Zaproszeniami nie wolno handlować ani udostępniać ich publicznie bez zgody Usługodawcy. Usługodawca zastrzega sobie prawo do unieważnienia Zaproszenia przed jego wykorzystaniem.',
+              'Zaproszeniami nie wolno handlować ani rozsyłać ich jako niezamówionych informacji handlowych (spamu). Usługodawca zastrzega sobie prawo do unieważnienia Zaproszenia.',
             )}
           </p>
         </Section>
@@ -135,15 +149,20 @@ export default function Terms() {
           </ul>
         </Section>
 
-        <Section title="7. Skanowanie paragonów i własny klucz Gemini">
+        <Section title="7. Własny klucz Gemini: skanowanie paragonów i analiza spółek">
           <p>
             {t(
-              'Skanowanie paragonów jest opcjonalne i działa w oparciu o Twój własny klucz API do Google Gemini - to Ty decydujesz, czy w ogóle z niego korzystać. Dzięki temu zdjęcia trafiają bezpośrednio do Google w ramach Twojej własnej umowy z Google, a Usługodawca nie pośredniczy w rozliczeniach ani nie ma wglądu w Twoje zużycie.',
+              'Skanowanie paragonów i analiza spółek są opcjonalne i działają w oparciu o Twój własny klucz API do Google Gemini - to Ty decydujesz, czy w ogóle z nich korzystać. Dzięki temu zapytania trafiają do Google w ramach Twojej własnej umowy z Google, a Usługodawca nie pośredniczy w rozliczeniach ani nie ma wglądu w Twoje zużycie.',
             )}
           </p>
           <p>
             {t(
-              'Klucz pochodzi od Google i to Google ustala zasady korzystania z niego: darmowy poziom, dzienne limity zapytań, ewentualne opłaty po jego przekroczeniu oraz warunki przetwarzania przesłanych zdjęć. Zasady te mogą się zmienić bez udziału Usługodawcy. Usługodawca nie jest stroną Twojej umowy z Google i nie odpowiada za wyczerpanie darmowego limitu, naliczone przez Google opłaty, zawieszenie klucza ani za zmianę warunków po stronie Google.',
+              'Klucz pochodzi od Google i to Google ustala zasady korzystania z niego: darmowy poziom, dzienne limity zapytań, ewentualne opłaty po jego przekroczeniu oraz warunki przetwarzania przesłanych danych. Zasady te mogą się zmienić bez udziału Usługodawcy. Usługodawca nie jest stroną Twojej umowy z Google i nie odpowiada za wyczerpanie darmowego limitu, naliczone przez Google opłaty, zawieszenie klucza ani za zmianę warunków po stronie Google.',
+            )}
+          </p>
+          <p>
+            {t(
+              'Analiza spółek to automatyczne podsumowanie publicznych komunikatów i wiadomości przygotowane przez model AI. Nie jest rekomendacją inwestycyjną ani poradą finansową, może zawierać błędy, pominięcia i nieaktualne informacje, a Usługodawca nie odpowiada za decyzje podjęte na jej podstawie. Przy każdym punkcie jest odnośnik do źródła - sprawdź informację u źródła, zanim cokolwiek zrobisz.',
             )}
           </p>
           <p>
@@ -192,7 +211,7 @@ export default function Terms() {
           </p>
           <p>
             {t(
-              'Użytkownik może w każdej chwili zrezygnować z korzystania z Usługi i zażądać usunięcia swojego Konta oraz danych, kontaktując się z Usługodawcą - zgodnie z zasadami opisanymi w Polityce prywatności.',
+              'Użytkownik może w każdej chwili samodzielnie usunąć Konto w ustawieniach konta. Konto jest od razu blokowane, a po 30 dniach wszystkie jego dane są trwale usuwane - do tego czasu decyzję można cofnąć linkiem wysłanym e-mailem. Szczegóły opisuje Polityka prywatności.',
             )}
           </p>
         </Section>

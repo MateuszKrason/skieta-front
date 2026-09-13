@@ -1,6 +1,8 @@
 export interface CurrentBondOfferEntry {
   rate: string | null
   series: string
+  /** Inflation-indexed types only: what is added to inflation from the second year. */
+  margin: string | null
   tenor_months: number
   source: 'live' | 'cache' | 'fallback'
 }

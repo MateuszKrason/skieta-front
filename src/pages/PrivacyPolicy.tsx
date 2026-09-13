@@ -32,13 +32,13 @@ export default function PrivacyPolicy() {
       <div className="mx-auto max-w-3xl space-y-8 px-4 py-12">
         <div>
           <h1 className="text-3xl font-bold text-slate-900 dark:text-slate-100">{t('Polityka prywatności')}</h1>
-          <p className="mt-2 text-sm text-slate-400 dark:text-slate-500">{t('Ostatnia aktualizacja: 10 września 2026')}</p>
+          <p className="mt-2 text-sm text-slate-400 dark:text-slate-500">{t('Ostatnia aktualizacja: 14 września 2026')}</p>
         </div>
 
         <Section title="Kim jesteśmy">
           <p>
             {t(
-              'skieta to osobisty tracker finansowy - aplikacja dostępna wyłącznie na zaproszenie, bez reklam i bez sprzedaży danych osobom trzecim. Administratorem danych jest osoba prowadząca serwis skieta, z którą można się skontaktować pod adresem podanym na dole tej strony.',
+              'skieta to osobisty tracker finansowy - aplikacja bez reklam i bez sprzedaży danych osobom trzecim. Administratorem danych jest osoba prowadząca serwis skieta, z którą można się skontaktować pod adresem podanym na dole tej strony.',
             )}
           </p>
         </Section>
@@ -65,7 +65,13 @@ export default function PrivacyPolicy() {
           <p className="font-medium text-slate-700 dark:text-slate-300">{t('Klucz Gemini, jeśli go dodasz')}</p>
           <p>
             {t(
-              'Skanowanie paragonów jest opcjonalne i działa w oparciu o Twój własny klucz API do Google Gemini. Klucz przechowujemy w postaci zaszyfrowanej, nie pokazujemy go z powrotem w aplikacji i używamy go wyłącznie do odczytania zdjęcia, które sam(a) wysłałeś/aś. Możesz go usunąć jednym kliknięciem w ustawieniach konta - wtedy znika z bazy razem z datą dodania.',
+              'Skanowanie paragonów i analiza spółek są opcjonalne i działają w oparciu o Twój własny klucz API do Google Gemini. Klucz przechowujemy w postaci zaszyfrowanej, nie pokazujemy go z powrotem w aplikacji i używamy go wyłącznie do tych dwóch funkcji: odczytania zdjęcia, które sam(a) wysłałeś/aś, oraz przygotowania analizy spółki. Możesz go usunąć jednym kliknięciem w ustawieniach konta - wtedy znika z bazy razem z datą dodania.',
+            )}
+          </p>
+          <p className="font-medium text-slate-700 dark:text-slate-300">{t('Analizy spółek, jeśli z nich korzystasz')}</p>
+          <p>
+            {t(
+              'Zapisujemy przygotowane analizy - podsumowanie, najważniejsze dane i listę źródeł - razem ze spółką, okresem i datą, żeby pokazać je ponownie bez zużywania Twojego limitu. Dla każdej spółki i okresu trzymamy najwyżej 30 ostatnich analiz. Są częścią eksportu Twoich danych i znikają razem z kontem.',
             )}
           </p>
           <p className="font-medium text-slate-700 dark:text-slate-300">{t('Zgłoszenia i zaproszenia')}</p>
@@ -114,7 +120,7 @@ export default function PrivacyPolicy() {
             </li>
             <li>
               {t(
-                'publiczne źródła danych rynkowych (np. Stooq, Yahoo Finance) - zapytania dotyczą wyłącznie tickerów giełdowych i kursów walut, nigdy Twoich danych osobowych,',
+                'publiczne źródła danych rynkowych i wiadomości (np. Stooq, Yahoo Finance, bankier.pl, SEC EDGAR) - zapytania dotyczą wyłącznie tickerów i nazw spółek oraz kursów walut, nigdy Twoich danych osobowych,',
               )}
             </li>
             <li>
@@ -124,7 +130,7 @@ export default function PrivacyPolicy() {
             </li>
             <li>
               {t(
-                'Google (Gemini) - wyłącznie wtedy, gdy sam(a) dodasz swój klucz API i wyślesz zdjęcie paragonu do odczytania. Bez klucza żadne dane nie trafiają do Google.',
+                'Google (Gemini) - wyłącznie wtedy, gdy sam(a) dodasz swój klucz API i skorzystasz ze skanowania paragonu albo z analizy spółek. Bez klucza żadne dane nie trafiają do Google.',
               )}
             </li>
           </ul>
@@ -135,7 +141,7 @@ export default function PrivacyPolicy() {
           </p>
           <p>
             {t(
-              'Dane finansowe, które wpisujesz w aplikacji, nie opuszczają Europejskiego Obszaru Gospodarczego. Jeden wyjątek jest w Twoich rękach: skanowanie paragonów. Jeśli je włączysz, zdjęcie paragonu trafia do Google Gemini w oparciu o Twój własny klucz API i jest przetwarzane na serwerach Google, także poza EOG, zgodnie z warunkami Google dla API Gemini. Nie robimy tego automatycznie ani w tle - dzieje się to tylko wtedy, gdy sam(a) wyślesz konkretne zdjęcie. Zdjęcia nie przechowujemy - trafia prosto do Google, a u nas zostaje wyłącznie odczytany z niego tekst, który zatwierdzasz w formularzu.',
+              'Dane finansowe, które wpisujesz w aplikacji, nie opuszczają Europejskiego Obszaru Gospodarczego. Wyjątek jest w Twoich rękach: funkcje działające na Twoim kluczu Gemini. Jeśli z nich korzystasz, do Google Gemini trafia zdjęcie paragonu albo - przy analizie spółek - dane opisane w sekcji o analizie spółek, i są one przetwarzane na serwerach Google, także poza EOG, zgodnie z warunkami Google dla API Gemini. Paragon wysyłasz zawsze sam(a), a analiza spółki uruchamia się, gdy o nią poprosisz albo gdy pierwszy raz danego dnia otworzysz jej zakładkę. Zdjęcia nie przechowujemy - trafia prosto do Google, a u nas zostaje wyłącznie odczytany z niego tekst, który zatwierdzasz w formularzu.',
             )}
           </p>
         </Section>
@@ -149,6 +155,19 @@ export default function PrivacyPolicy() {
           <p>
             {t(
               'To, co Google robi z przesłanym zdjęciem i jak długo je przechowuje, regulują warunki Google dla API Gemini - obowiązują one między Tobą a Google, bo to Twój klucz. Usunięcie klucza w ustawieniach wyłącza funkcję natychmiast i nie zostawia po niej żadnych danych po naszej stronie.',
+            )}
+          </p>
+        </Section>
+
+        <Section title="Analiza spółek">
+          <p>
+            {t(
+              'Ta funkcja też jest opcjonalna i działa tylko z Twoim kluczem Gemini. Przy analizie skieta zbiera publiczne materiały o spółce - jej komunikaty i nagłówki wiadomości - i wysyła je do Google razem z nazwą i tickerem spółki, wybranym okresem i językiem odpowiedzi. Jeśli masz w skiecie zapisaną nadchodzącą dywidendę tej spółki potwierdzoną jej komunikatem, dołączamy też kwotę na akcję i datę wypłaty. Nie wysyłamy liczby posiadanych akcji, wartości portfela, sald, historii transakcji ani danych logowania.',
+            )}
+          </p>
+          <p>
+            {t(
+              'Pamiętaj, że sama nazwa analizowanej spółki mówi Google, że się nią interesujesz. Analiza nie jest rekomendacją inwestycyjną - to podsumowanie cudzych materiałów przygotowane przez model AI, który może się pomylić.',
             )}
           </p>
         </Section>

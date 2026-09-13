@@ -14,6 +14,7 @@ export default function GieldaLayout() {
           { to: '/gielda/dywidendy', label: t('Dywidendy') },
           { to: '/gielda/statystyki', label: t('Statystyki portfela') },
           { to: '/gielda/analiza-spolek', label: t('Analiza spółek') },
+          { to: '/gielda/wiadomosci', label: t('Wiadomości') },
           ...(user?.profile.interest_crypto ? [{ to: '/gielda/krypto', label: t('Krypto') }] : []),
         ]}
       />

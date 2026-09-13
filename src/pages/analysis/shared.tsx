@@ -7,7 +7,6 @@ import {
   BarChart,
   CartesianGrid,
   Cell,
-  Legend,
   Line,
   LineChart,
   Pie,
@@ -246,7 +245,6 @@ export function CategoryPieCard({
                   ))}
                 </Pie>
                 <Tooltip {...tooltipStyle} formatter={(value) => formatMoney(value as number, 'PLN')} />
-                <Legend />
               </PieChart>
             ) : (
               <BarChart data={data} layout="vertical" margin={{ left: 24 }}>
@@ -1002,11 +1000,153 @@ function TagPicker({ selected, onToggle }: { selected: number[]; onToggle: (id: 
   )
 }
 
+/** Same shape as TagPicker below: chips instead of a dropdown, with a "+
+ * Dodaj sklep" chip that creates the store without leaving the form. Single
+ * choice rather than multi - clicking the active chip clears it, clicking
+ * another one replaces it. */
+function StorePicker({
+  value,
+  onChange,
+  stores,
+  pendingName,
+  onPendingCreated,
+}: {
+  value: number | ''
+  onChange: (id: number | '') => void
+  stores: Store[]
+  /** A store name a receipt scan suggested that doesn't match anything on
+   * the list yet - offered as a one-click "add it" alongside the manual
+   * chips, so a fresh account isn't stuck with the name stuck in the
+   * description forever (see the matching effect in AddTransactionForm). */
+  pendingName?: string | null
+  onPendingCreated?: (store: Store) => void
+}) {
+  const { t } = useLanguage()
+  const queryClient = useQueryClient()
+  const [adding, setAdding] = useState(false)
+  const [newStoreName, setNewStoreName] = useState('')
+  const [error, setError] = useState<string | null>(null)
+
+  const addStore = useMutation({
+    mutationFn: (name: string) => api.post<Store>('/budget/stores/', { name }),
+    onSuccess: ({ data: created }, name) => {
+      queryClient.invalidateQueries({ queryKey: ['budget-stores'] })
+      setNewStoreName('')
+      setAdding(false)
+      setError(null)
+      onChange(created.id)
+      // Distinguishes the pending-receipt-name add from a manually typed
+      // one, without a second mutation or a boolean threaded through state.
+      if (name === pendingName) onPendingCreated?.(created)
+    },
+    onError: () => setError(t('Nie udało się dodać sklepu.')),
+  })
+
+  function submitNewStore(name: string) {
+    if (!name.trim() || addStore.isPending) return
+    addStore.mutate(name.trim())
+  }
+
+  return (
+    <div>
+      <p className="mb-1 text-xs font-medium text-slate-500 dark:text-slate-400">{t('Sklep (opcjonalnie)')}</p>
+      <div className="flex flex-wrap items-center gap-1.5">
+        <button
+          type="button"
+          onClick={() => onChange('')}
+          className={`rounded-full border px-2.5 py-1 text-xs font-medium transition ${
+            value === ''
+              ? 'border-accent-400 dark:border-accent-600 bg-accent-50 dark:bg-accent-900/30 text-accent-700 dark:text-accent-400'
+              : 'border-slate-200 dark:border-slate-700 text-slate-600 dark:text-slate-400 hover:bg-slate-50 dark:hover:bg-slate-700'
+          }`}
+        >
+          {t('bez sklepu')}
+        </button>
+        {stores.map((s) => (
+          <button
+            key={s.id}
+            type="button"
+            onClick={() => onChange(value === s.id ? '' : s.id)}
+            className={`rounded-full border px-2.5 py-1 text-xs font-medium transition ${
+              value === s.id
+                ? 'border-accent-400 dark:border-accent-600 bg-accent-50 dark:bg-accent-900/30 text-accent-700 dark:text-accent-400'
+                : 'border-slate-200 dark:border-slate-700 text-slate-600 dark:text-slate-400 hover:bg-slate-50 dark:hover:bg-slate-700'
+            }`}
+          >
+            {s.name}
+          </button>
+        ))}
+        {adding ? (
+          <div className="flex items-center gap-1">
+            <input
+              autoFocus
+              value={newStoreName}
+              onChange={(e) => setNewStoreName(e.target.value)}
+              onKeyDown={(e) => {
+                if (e.key === 'Enter') {
+                  e.preventDefault()
+                  submitNewStore(newStoreName)
+                }
+              }}
+              placeholder={t('np. Biedronka')}
+              className="input h-7 w-28 py-0.5 text-xs"
+            />
+            <button
+              type="button"
+              onClick={() => submitNewStore(newStoreName)}
+              disabled={addStore.isPending}
+              className="rounded-full bg-accent-600 px-2.5 py-1 text-xs font-medium text-white hover:bg-accent-700 disabled:opacity-60"
+            >
+              {t('Dodaj')}
+            </button>
+            <button
+              type="button"
+              onClick={() => {
+                setAdding(false)
+                setNewStoreName('')
+                setError(null)
+              }}
+              className="rounded-full px-1.5 py-1 text-xs text-slate-400 hover:text-slate-600 dark:hover:text-slate-300"
+            >
+              ×
+            </button>
+          </div>
+        ) : (
+          <button
+            type="button"
+            onClick={() => setAdding(true)}
+            className="rounded-full border border-dashed border-slate-300 dark:border-slate-600 px-2.5 py-1 text-xs font-medium text-slate-500 dark:text-slate-400 hover:border-accent-400 dark:hover:border-accent-600 hover:text-accent-700 dark:hover:text-accent-400"
+          >
+            {t('+ Dodaj sklep')}
+          </button>
+        )}
+      </div>
+      {pendingName && (
+        <div className="mt-1.5 space-y-1">
+          <p className="text-xs text-amber-600 dark:text-amber-400">
+            {t('Sklepu "{0}" nie ma jeszcze na liście - na razie nazwa trafiła do opisu.', pendingName)}
+          </p>
+          <button
+            type="button"
+            onClick={() => submitNewStore(pendingName)}
+            disabled={addStore.isPending}
+            className="rounded-md border border-accent-300 dark:border-accent-700 px-2 py-0.5 text-xs font-medium text-accent-700 dark:text-accent-300 hover:bg-accent-50 dark:hover:bg-accent-950/40 disabled:opacity-60"
+          >
+            {addStore.isPending ? t('Dodaję…') : t('+ Dodaj "{0}" do sklepów', pendingName)}
+          </button>
+        </div>
+      )}
+      {error && <p className="mt-1 text-xs text-red-600 dark:text-red-400">{error}</p>}
+    </div>
+  )
+}
+
 /** Everything the inline editor can change about a transaction. An object
  * rather than a positional argument list - seven of those in a row is a bug
  * waiting for the day someone swaps two of them. */
 type TransactionEdit = {
   amount: string
+  date: string
   category: number | null
   store: number | null
   tags: number[]
@@ -1034,6 +1174,7 @@ function EditTransaction({
 }) {
   const { t } = useLanguage()
   const [amount, setAmount] = useState(tx.amount)
+  const [date, setDate] = useState(tx.date)
   const [category, setCategory] = useState<number | ''>(tx.category ?? '')
   const [store, setStore] = useState<number | ''>(tx.store ?? '')
   const [account, setAccount] = useState<number | ''>(tx.account ?? '')
@@ -1056,6 +1197,9 @@ function EditTransaction({
       {tx.description && <span className="text-xs text-slate-500 dark:text-slate-400">{tx.description}</span>}
       <Field label="Kwota">
         <AmountInput value={amount} onChange={setAmount} required className="input w-28" />
+      </Field>
+      <Field label="Data">
+        <input type="date" value={date} onChange={(e) => setDate(e.target.value)} required className="input" />
       </Field>
       {tx.type === 'expense' && (
         <>
@@ -1082,16 +1226,9 @@ function EditTransaction({
           ))}
         </select>
       </Field>
-      <Field label="Sklep (opcjonalnie)">
-        <select value={store} onChange={(e) => setStore(e.target.value ? Number(e.target.value) : '')} className="input">
-          <option value="">{t('bez sklepu')}</option>
-          {stores.map((s) => (
-            <option key={s.id} value={s.id}>
-              {s.name}
-            </option>
-          ))}
-        </select>
-      </Field>
+      {/* A store is where you bought something - income has no such thing,
+          so this only makes sense for expenses. */}
+      {tx.type === 'expense' && <StorePicker value={store} onChange={setStore} stores={stores} />}
       <Field label="Konto (opcjonalnie)">
         <select value={account} onChange={(e) => setAccount(e.target.value ? Number(e.target.value) : '')} className="input">
           <option value="">{t('bez powiązania')}</option>
@@ -1111,8 +1248,9 @@ function EditTransaction({
         onClick={() =>
           onSave({
             amount,
+            date,
             category: category || null,
-            store: store || null,
+            store: tx.type === 'expense' ? store || null : tx.store,
             tags: selectedTags,
             account: account || null,
             // Always sent, so clearing the field really does clear the
@@ -1121,7 +1259,7 @@ function EditTransaction({
             reimbursement_received: tx.type === 'expense' && reimbursedAmount ? reimbursementReceived : false,
           })
         }
-        disabled={saving || !amount}
+        disabled={saving || !amount || !date}
         className="btn-primary"
       >
         {t('Zapisz')}
@@ -1501,7 +1639,6 @@ export function AddTransactionForm({
   }
 }) {
   const { t } = useLanguage()
-  const queryClient = useQueryClient()
   const [type, setType] = useState<BudgetType>(lockedType ?? 'expense')
   const [category, setCategory] = useState<number | ''>('')
   const [store, setStore] = useState<number | ''>('')
@@ -1607,19 +1744,6 @@ export function AddTransactionForm({
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [stores])
 
-  const addStore = useMutation({
-    mutationFn: async (name: string) => (await api.post<Store>('/budget/stores/', { name })).data,
-    onSuccess: (created) => {
-      setStore(created.id)
-      // It's a real store on the transaction now, so drop the copy that was
-      // put in the description purely as a fallback for this case.
-      setDescription((prev) => stripStorePrefix(prev, created.name))
-      setUnmatchedStoreName(null)
-      queryClient.invalidateQueries({ queryKey: ['budget-stores'] })
-    },
-    onError: () => setError(t('Nie udało się dodać sklepu - dodaj go ręcznie w "Zarządzaj sklepami".')),
-  })
-
   function toggleTag(id: number) {
     setTags((prev) => (prev.includes(id) ? prev.filter((t) => t !== id) : [...prev, id]))
   }
@@ -1690,31 +1814,23 @@ export function AddTransactionForm({
           ))}
         </select>
       </Field>
-      <Field label="Sklep (opcjonalnie)">
-        <select value={store} onChange={(e) => setStore(e.target.value ? Number(e.target.value) : '')} className="input">
-          <option value="">{t('bez sklepu')}</option>
-          {(stores ?? []).map((s) => (
-            <option key={s.id} value={s.id}>
-              {s.name}
-            </option>
-          ))}
-        </select>
-        {unmatchedStoreName && (
-          <div className="mt-1 space-y-1">
-            <p className="text-xs text-amber-600 dark:text-amber-400">
-              {t('Sklepu "{0}" nie ma jeszcze na liście - na razie nazwa trafiła do opisu.', unmatchedStoreName)}
-            </p>
-            <button
-              type="button"
-              onClick={() => addStore.mutate(unmatchedStoreName)}
-              disabled={addStore.isPending}
-              className="rounded-md border border-accent-300 dark:border-accent-700 px-2 py-0.5 text-xs font-medium text-accent-700 dark:text-accent-300 hover:bg-accent-50 dark:hover:bg-accent-950/40 disabled:opacity-60"
-            >
-              {addStore.isPending ? t('Dodaję…') : t('+ Dodaj "{0}" do sklepów', unmatchedStoreName)}
-            </button>
-          </div>
-        )}
-      </Field>
+      {/* A store is where you bought something - income has no such thing,
+          so this only makes sense for expenses. */}
+      {type === 'expense' && (
+        <StorePicker
+          value={store}
+          onChange={setStore}
+          stores={stores ?? []}
+          pendingName={unmatchedStoreName}
+          onPendingCreated={(created) => {
+            // It's a real store on the transaction now, so drop the copy
+            // that was put in the description purely as a fallback for
+            // this case.
+            setDescription((prev) => stripStorePrefix(prev, created.name))
+            setUnmatchedStoreName(null)
+          }}
+        />
+      )}
       <Field label="Kwota">
         <AmountInput value={amount} onChange={setAmount} required className="input" />
         {type === 'expense' && !showFronted && (
@@ -2280,7 +2396,6 @@ export function StoreBreakdownCard({
                   ))}
                 </Pie>
                 <Tooltip {...tooltipStyle} formatter={(value) => formatMoney(value as number, 'PLN')} />
-                <Legend />
               </PieChart>
             </ResponsiveContainer>
           </div>
@@ -2495,7 +2610,6 @@ export function FlexibleTrendChart() {
                 <XAxis dataKey="month" tick={{ fontSize: 12 }} stroke="#94a3b8" />
                 <YAxis tickFormatter={formatAxisValue} tick={{ fontSize: 12 }} stroke="#94a3b8" width={40} />
                 <Tooltip {...tooltipStyle} formatter={(value) => formatMoney(value as number, 'PLN')} />
-                <Legend />
                 {metrics.map((m) => (
                   <Bar key={m} dataKey={m} name={t(TREND_METRIC_LABELS[m])} fill={TREND_METRIC_COLORS[m]} radius={[4, 4, 0, 0]} />
                 ))}
@@ -2506,7 +2620,6 @@ export function FlexibleTrendChart() {
                 <XAxis dataKey="month" tick={{ fontSize: 12 }} stroke="#94a3b8" />
                 <YAxis tickFormatter={formatAxisValue} tick={{ fontSize: 12 }} stroke="#94a3b8" width={40} />
                 <Tooltip {...tooltipStyle} formatter={(value) => formatMoney(value as number, 'PLN')} />
-                <Legend />
                 {metrics.map((m) => (
                   <Line
                     key={m}
@@ -2525,7 +2638,6 @@ export function FlexibleTrendChart() {
                 <XAxis dataKey="month" tick={{ fontSize: 12 }} stroke="#94a3b8" />
                 <YAxis tickFormatter={formatAxisValue} tick={{ fontSize: 12 }} stroke="#94a3b8" width={40} />
                 <Tooltip {...tooltipStyle} formatter={(value) => formatMoney(value as number, 'PLN')} />
-                <Legend />
                 {metrics.map((m) => (
                   <Area
                     key={m}

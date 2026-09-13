@@ -3,6 +3,7 @@ import { useMutation } from '@tanstack/react-query'
 import { Link, NavLink, Outlet } from 'react-router-dom'
 import { api } from '../api/client'
 import { useAuth } from '../auth/AuthContext'
+import DemoBanner from './DemoBanner'
 import FeedbackWidget from './FeedbackWidget'
 import InstallPrompt from './InstallPrompt'
 import InviteNudgeBubble from './InviteNudgeBubble'
@@ -176,7 +177,7 @@ function UserMenu({ onNavigate }: { onNavigate: () => void }) {
           ▾
         </span>
       </button>
-      <InviteNudgeBubble />
+      {!user?.is_demo && <InviteNudgeBubble />}
       {open && (
         <div
           role="menu"
@@ -291,6 +292,7 @@ export default function Layout() {
   return (
     <TourProvider>
     <div className="min-h-screen">
+      {user?.is_demo && <DemoBanner />}
       {/* Above the header rather than inside the page: it is an offer about
           the app as a whole, and it only ever renders when the browser has
           already decided the app is installable. */}
@@ -399,7 +401,7 @@ export default function Layout() {
           </div>
         </div>
       </footer>
-      <FeedbackWidget />
+      {!user?.is_demo && <FeedbackWidget />}
       <ScanningIndicator />
     </div>
     <TourOverlay />

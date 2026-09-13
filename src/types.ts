@@ -61,6 +61,7 @@ export interface Holding {
   current_fx_rate: string | null
   price_effect_base: string | null
   fx_effect_base: string | null
+  fx_effect_after_tax_base: string | null
 }
 
 export interface PortfolioSummary {
@@ -409,6 +410,7 @@ export interface User {
   first_name: string
   last_name: string
   is_staff: boolean
+  is_demo: boolean
   profile: {
     base_currency: Currency
     residency_country: string
@@ -428,6 +430,10 @@ export interface User {
     nav_order: string[]
     has_seen_tour: boolean
     calculator_presets: { name: string; keys: string[] }[]
+  /** null = hasn't answered the "which instruments interest you" question
+   * yet - including every account that used the calculator before this
+   * field existed, on purpose. A real answer is a list, even an empty one. */
+  calculator_selected_categories: string[] | null
     reengagement_emails_enabled: boolean
     monthly_summary_emails_enabled: boolean
     /** Whether the account has a Gemini key set - never the key itself. Lets
@@ -1029,6 +1035,56 @@ export interface CompanyNews {
   published_at: string
   fetched_at: string
   is_new: boolean
+}
+
+export type AnalysisPeriod = 'day' | 'week'
+
+export type AnalysisSectionKey =
+  | 'upcoming_dates'
+  | 'espi'
+  | 'transactions'
+  | 'financial_results'
+  | 'rumours'
+  | 'expectations'
+  | 'recommendations'
+  | 'company_overview'
+
+export interface AnalysisDividend {
+  amount_per_share: string | null
+  currency: string | null
+  status: 'recommended' | 'approved' | 'paid' | null
+  fiscal_year: number | null
+  record_date: string | null
+  payment_date: string | null
+}
+
+export interface AnalysisKeyData {
+  dividend?: AnalysisDividend
+  next_results_date?: string
+  next_general_meeting_date?: string
+  analyst_consensus?: string
+  target_price?: { amount: string; currency: string | null }
+  similar_companies?: { ticker: string; market: Market; name: string; reason: string }[]
+}
+
+export interface CompanyAnalysis {
+  id: number
+  stock: number
+  period: AnalysisPeriod
+  status: 'pending' | 'done' | 'failed'
+  error: string
+  summary: string
+  sections: Partial<Record<AnalysisSectionKey, string[]>>
+  key_data: AnalysisKeyData
+  sources: { kind: string; title: string; url: string | null; source: string; published_at: string | null }[]
+  model_name: string
+  created_at: string
+  finished_at: string | null
+}
+
+export interface CompanyAnalysisOverview {
+  periods: Record<AnalysisPeriod, { latest: CompanyAnalysis | null; last_done: CompanyAnalysis | null; checked_today: boolean }>
+  key_data: { [K in keyof AnalysisKeyData]?: { value: NonNullable<AnalysisKeyData[K]>; as_of: string } }
 }
 
 export interface MoneyThread {

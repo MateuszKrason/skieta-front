@@ -56,10 +56,11 @@ type EventName =
   | 'statement_imported'
   | 'receipt_scanned'
   | 'data_exported'
+  | 'demo_opened'
 
 /** Where a conversion came from, so articles can be compared against the
  * landing page and against each other. */
-export type ConversionSource = 'landing_hero' | 'landing_faq' | 'article' | 'calculator'
+export type ConversionSource = 'landing_hero' | 'landing_faq' | 'article' | 'calculator' | 'demo_banner'
 
 type EventParams = {
   source?: ConversionSource

@@ -367,6 +367,24 @@ export default function Portfel() {
                     }`}
                   >
                     {formatMoney(h.unrealized_pl_after_tax, h.stock.currency)} ({formatPct(h.unrealized_pl_after_tax_pct)})
+                    {/* Mirrors the line under Zysk/strata exactly - same
+                        condition, same "always render" reasoning - so the
+                        two cells in a row have the same number of lines and
+                        stop drifting out of vertical alignment with each
+                        other. The tax is split proportionally between the
+                        price and currency effects (see fx_effect_after_tax_base
+                        in stocks.services), so this is the after-tax share of
+                        the same currency movement, not a re-taxed copy of it. */}
+                    <div className="text-xs font-normal text-slate-400 dark:text-slate-500">
+                      {h.fx_effect_after_tax_base !== null ? (
+                        <>
+                          {t('z tego kurs waluty')}: {Number(h.fx_effect_after_tax_base) >= 0 ? '+' : ''}
+                          {formatMoney(h.fx_effect_after_tax_base, 'PLN')}
+                        </>
+                      ) : (
+                        ' '
+                      )}
+                    </div>
                   </td>
                   <td className="px-4 py-2 text-right text-xs text-slate-400 dark:text-slate-500">
                     {formatDateTime(h.price_fetched_at)}

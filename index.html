@@ -6,13 +6,23 @@
          then the classic .ico and PNG fallbacks for browsers/crawlers that
          don't support SVG icons, plus the platform-specific ones. See
          robots.txt - these files must stay crawlable or Google won't display
-         the icon in search results. -->
-    <link rel="icon" type="image/svg+xml" href="/favicon.svg" />
+         the icon in search results.
+
+         The ?v= on the touch/home-screen icons exists because iOS and
+         Google's own favicon service cache an icon against its exact URL,
+         seemingly forever, once they've fetched it once - a plain redeploy
+         under the same filename never reaches a phone or a search result
+         that already has the old one cached, even though the file on the
+         server is current. Bump this number (and the matching one in
+         site.webmanifest) whenever the icon artwork actually changes - not
+         on every deploy, or every cached copy would be invalidated for
+         nothing. -->
+    <link rel="icon" type="image/svg+xml" href="/favicon.svg?v=2" />
     <link rel="icon" href="/favicon.ico" sizes="48x48" />
     <link rel="icon" type="image/png" sizes="16x16" href="/favicon-16x16.png" />
     <link rel="icon" type="image/png" sizes="32x32" href="/favicon-32x32.png" />
     <link rel="icon" type="image/png" sizes="48x48" href="/favicon-48x48.png" />
-    <link rel="apple-touch-icon" sizes="180x180" href="/apple-touch-icon.png" />
+    <link rel="apple-touch-icon" sizes="180x180" href="/apple-touch-icon.png?v=2" />
     <link rel="manifest" href="/site.webmanifest" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <meta name="theme-color" content="#059669" />

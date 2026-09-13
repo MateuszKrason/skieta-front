@@ -1,4 +1,4 @@
-import { useMemo, useState } from 'react'
+import { useEffect, useMemo, useRef, useState } from 'react'
 import { useMutation, useQuery } from '@tanstack/react-query'
 import { Bar, BarChart, LabelList, ResponsiveContainer, Tooltip, XAxis, YAxis } from 'recharts'
 import { api } from '../api/client'
@@ -15,6 +15,7 @@ import { useIsMobile } from '../lib/useIsMobile'
 
 type Risk = 'bardzo-niskie' | 'niskie' | 'srednie' | 'wysokie'
 type BondNature = 'fixed' | 'variable' | 'inflation'
+type Translate = (s: string, ...a: (string | number)[]) => string
 
 const RISK_META: Record<Risk, { label: string; className: string }> = {
   'bardzo-niskie': {
@@ -51,7 +52,7 @@ const BOND_NATURE: Record<string, BondNature> = {
   ROD: 'inflation',
 }
 
-function bondNatureHint(nature: BondNature | undefined, t: (s: string, ...a: (string | number)[]) => string): string {
+function bondNatureHint(nature: BondNature | undefined, code: string, margin: number | null, t: Translate): string {
   switch (nature) {
     case 'fixed':
       return t('Oprocentowanie stałe przez cały okres trwania obligacji - nie zmienia się.')
@@ -59,10 +60,18 @@ function bondNatureHint(nature: BondNature | undefined, t: (s: string, ...a: (st
       return t(
         'Oprocentowanie zmienne, oparte o stawkę WIBOR - resetowane co okres odsetkowy. Pokazana stawka dotyczy tylko pierwszego okresu, kolejne mogą być inne.',
       )
-    case 'inflation':
-      return t(
-        'Pierwszy rok: stałe oprocentowanie. Kolejne lata: inflacja + marża. Pokazana stawka to tylko pierwszy okres - wynik w kolejnych latach zależy od przyszłej inflacji.',
-      )
+    case 'inflation': {
+      const hint =
+        margin !== null
+          ? t(
+              'Pierwszy rok: stałe oprocentowanie. Od drugiego roku: inflacja + marża {0}% - kalkulator liczy to z założonej inflacji, którą ustawiasz powyżej. Rzeczywisty wynik zależy od tego, jaka inflacja faktycznie będzie.',
+              formatNumber(margin, 2),
+            )
+          : t(
+              'Pierwszy rok: stałe oprocentowanie. Kolejne lata: inflacja + marża. Pokazana stawka to tylko pierwszy okres - wynik w kolejnych latach zależy od przyszłej inflacji.',
+            )
+      return code === 'COI' ? `${hint} ${t('Odsetki z COI są wypłacane co roku - wynik zakłada, że je reinwestujesz.')}` : hint
+    }
     default:
       return t('Aktualne oprocentowanie z pierwszego okresu odsetkowego (obligacjeskarbowe.pl).')
   }
@@ -121,6 +130,9 @@ interface StaticInstrument {
   hint: string
 }
 
+// No blended "Giełda (średnio)" row: it repeated the five index rows it was
+// averaged from, in the same group. The average still backs custom companies
+// without history and the explainer below the table.
 const STATIC_INSTRUMENTS: StaticInstrument[] = [
   {
     key: 'lokata',
@@ -157,17 +169,28 @@ const STATIC_INSTRUMENTS: StaticInstrument[] = [
     risk: 'srednie',
     hint: 'Xetra-Gold to realny, notowany ETC fizycznie zabezpieczony złotem 1:1 (dostępny też polskim inwestorom), więc jego zwrot odpowiada bezpośrednio cenie złota. Średnioroczna stopa zwrotu złota w PLN za ostatnie 20 lat: ok. 13% (dealfin.pl/atlasETF) - zaokrąglone tu w dół dla ostrożności, bo ostatnie 5 lat (~23% rocznie) to jeden z najlepszych okresów w historii i nie powinien być traktowany jako typowy. Nie generuje odsetek ani dywidendy - zysk to wyłącznie zmiana ceny kruszcu, a TER ok. 0,36% rocznie to dodatkowy koszt nieuwzględniony tutaj.',
   },
-  {
-    key: 'gielda',
-    label: 'Giełda (średnio, szeroki rynek)',
-    defaultRate: STOCK_AVERAGE_RATE,
-    risk: 'wysokie',
-    hint: 'Średnia z 5 ETF-ów/indeksów pokazanych osobno niżej w tej tabeli - historyczna, nie gwarantowana. Realny wynik pojedynczego roku może być mocno na plusie albo na minusie.',
-  },
 ]
 
-function futureValue(amount: number, ratePct: number, years: number): number {
-  return amount * (1 + ratePct / 100) ** years
+interface InstrumentRow {
+  key: string
+  label: string
+  defaultRate: number
+  risk: Risk
+  hint: string
+  /** Inflation-indexed bonds only: added to the assumed inflation from year two. */
+  margin: number | null
+}
+
+/** Month by month, so a regular contribution earns for exactly the months it has been invested. */
+function simulate(amount: number, monthly: number, years: number, rateForYear: (year: number) => number): number {
+  let balance = amount
+  for (let year = 1; year <= years; year++) {
+    const monthlyRate = (1 + rateForYear(year) / 100) ** (1 / 12) - 1
+    for (let month = 0; month < 12; month++) {
+      balance = balance * (1 + monthlyRate) + monthly
+    }
+  }
+  return balance
 }
 
 // Groups the flat instrument list into labelled sections so the table reads
@@ -190,25 +213,121 @@ function categoryForKey(key: string): Category {
   if (key === 'lokata' || key === 'oszczednosciowe') return 'bezpieczne'
   if (key === 'obligacje-korporacyjne' || key === 'fundusz-zrownowazony') return 'fundusze'
   if (key === 'zloto') return 'zloto'
-  if (key === 'gielda' || key.startsWith('index-')) return 'gielda'
+  if (key.startsWith('index-')) return 'gielda'
   return 'wlasne'
+}
+
+// "Twoje spółki" is deliberately not offered here: it starts empty
+// regardless of the answer, so there is nothing yet to show or hide.
+const ONBOARDING_CATEGORIES: Category[] = ['obligacje', 'bezpieczne', 'fundusze', 'gielda', 'zloto']
+
+// A visitor without an account answers the same question; the answer just
+// lives in this browser instead of on a profile.
+const PUBLIC_CATEGORIES_KEY = 'skieta_calculator_categories'
+
+function readPublicCategories(): string[] | null {
+  try {
+    const parsed: unknown = JSON.parse(localStorage.getItem(PUBLIC_CATEGORIES_KEY) ?? 'null')
+    return Array.isArray(parsed) ? parsed.filter((item): item is string => typeof item === 'string') : null
+  } catch {
+    return null
+  }
+}
+
+function writePublicCategories(categories: string[]) {
+  try {
+    localStorage.setItem(PUBLIC_CATEGORIES_KEY, JSON.stringify(categories))
+  } catch {
+    // Storage blocked - the question just comes back on the next visit.
+  }
+}
+
+/** The first-visit question this page used to skip entirely, going straight
+ * to every instrument at once. Answering hides everything outside the
+ * chosen categories - not permanently, the eye icons below still work row by
+ * row, this only decides what the first look shows. */
+function CategoryOnboarding({
+  onAnswer,
+  saving,
+}: {
+  onAnswer: (categories: Category[]) => void
+  saving: boolean
+}) {
+  const { t } = useLanguage()
+  const [selected, setSelected] = useState<Set<Category>>(new Set())
+
+  function toggle(category: Category) {
+    setSelected((prev) => {
+      const next = new Set(prev)
+      if (next.has(category)) next.delete(category)
+      else next.add(category)
+      return next
+    })
+  }
+
+  return (
+    <div className="rounded-xl border border-accent-300 dark:border-accent-800 bg-accent-50 dark:bg-accent-950/30 p-5">
+      <h2 className="text-base font-semibold text-slate-900 dark:text-slate-100">{t('Czym się interesujesz?')}</h2>
+      <p className="mt-1 text-sm text-slate-600 dark:text-slate-400">
+        {t(
+          'Zaznacz kategorie, które chcesz porównywać - reszta na razie się schowa, żeby zacząć od czytelnego widoku zamiast dwudziestu wierszy naraz. Nic z tego nie jest ostateczne: pojedyncze wiersze nadal odznaczysz i dodasz poniżej.',
+        )}
+      </p>
+      <div className="mt-4 grid grid-cols-1 gap-2 sm:grid-cols-2">
+        {ONBOARDING_CATEGORIES.map((category) => {
+          const active = selected.has(category)
+          return (
+            <label
+              key={category}
+              className={`flex cursor-pointer items-center gap-3 rounded-lg border px-3 py-2.5 transition ${
+                active
+                  ? 'border-accent-400 dark:border-accent-600 bg-white dark:bg-slate-800'
+                  : 'border-slate-200 dark:border-slate-700 bg-white/60 dark:bg-slate-800/40 hover:bg-white dark:hover:bg-slate-800'
+              }`}
+            >
+              <input type="checkbox" checked={active} onChange={() => toggle(category)} className="shrink-0" />
+              <span className="text-sm font-medium text-slate-800 dark:text-slate-200">{t(CATEGORY_LABELS[category])}</span>
+            </label>
+          )
+        })}
+      </div>
+      <div className="mt-4 flex flex-wrap items-center gap-4">
+        <button
+          type="button"
+          onClick={() => onAnswer([...selected])}
+          disabled={saving || selected.size === 0}
+          className="btn-primary disabled:opacity-60"
+        >
+          {saving ? t('Zapisuję…') : t('Pokaż wybrane')}
+        </button>
+        <button
+          type="button"
+          onClick={() => onAnswer(ONBOARDING_CATEGORIES)}
+          disabled={saving}
+          className="text-sm font-medium text-accent-700 dark:text-accent-400 hover:underline disabled:opacity-60"
+        >
+          {t('Pokaż mi wszystko')}
+        </button>
+      </div>
+    </div>
+  )
 }
 
 export default function InvestmentCalculator({ publicMode = false }: { publicMode?: boolean }) {
   const { t } = useLanguage()
-  const { user } = useAuth()
+  const { user, updateProfile } = useAuth()
   const base = user?.profile.base_currency ?? 'PLN'
   const country = user?.profile.residency_country || null
   const tooltipStyle = useTooltipStyle()
   const isMobile = useIsMobile()
   const [amount, setAmount] = useState('10000')
+  const [monthly, setMonthly] = useState('0')
   const [years, setYears] = useState(5)
+  const [inflation, setInflation] = useState('3')
   const [rateOverrides, setRateOverrides] = useState<Record<string, string>>({})
   const [openHintKey, setOpenHintKey] = useState<string | null>(null)
   const [hiddenKeys, setHiddenKeys] = useState<Set<string>>(new Set())
-  const [customCompanies, setCustomCompanies] = useState<
-    { key: string; label: string; defaultRate: number; risk: Risk; hint: string }[]
-  >([])
+  const [customCompanies, setCustomCompanies] = useState<InstrumentRow[]>([])
   const [companyError, setCompanyError] = useState<string | null>(null)
 
   const { data: bondOffer, isLoading: bondsLoading } = useQuery({
@@ -218,7 +337,7 @@ export default function InvestmentCalculator({ publicMode = false }: { publicMod
   })
 
   const addCompanyMutation = useMutation({
-    mutationFn: async (result: StockSearchResult) => {
+    mutationFn: async (result: StockSearchResult): Promise<InstrumentRow> => {
       const key = `custom-${result.symbol}-${result.market}`
       try {
         const { data } = await api.get<{ cagr: number; years: number; start_date: string; end_date: string }>(
@@ -229,7 +348,8 @@ export default function InvestmentCalculator({ publicMode = false }: { publicMod
           key,
           label: `${result.symbol} - ${result.name}`,
           defaultRate: data.cagr,
-          risk: 'wysokie' as Risk,
+          risk: 'wysokie',
+          margin: null,
           hint: t(
             'Średnioroczna stopa zwrotu z ostatnich {0} lat ({1} - {2}), tylko zmiana kursu bez uwzględnienia dywidend - dane Yahoo Finance.',
             String(data.years),
@@ -242,7 +362,8 @@ export default function InvestmentCalculator({ publicMode = false }: { publicMod
           key,
           label: `${result.symbol} - ${result.name}`,
           defaultRate: STOCK_AVERAGE_RATE,
-          risk: 'wysokie' as Risk,
+          risk: 'wysokie',
+          margin: null,
           hint: t(
             'Nie udało się pobrać historycznej stopy zwrotu dla tej spółki - to tylko przykładowa wartość początkowa (średnia z indeksów powyżej), zmień ją na własną.',
           ),
@@ -273,53 +394,121 @@ export default function InvestmentCalculator({ publicMode = false }: { publicMod
     })
   }
 
-  const amountNum = Number(amount) || 0
+  function resetRate(key: string) {
+    setRateOverrides((prev) => {
+      const next = { ...prev }
+      delete next[key]
+      return next
+    })
+  }
 
-  const baseRows = useMemo(() => {
+  const amountNum = Number(amount) || 0
+  const monthlyNum = Number(monthly) || 0
+  const inflationNum = Number(inflation) || 0
+  const contributed = amountNum + monthlyNum * 12 * years
+
+  const baseRows = useMemo<InstrumentRow[]>(() => {
     const bondRows = Object.entries(bondOffer ?? {})
       .filter(([, entry]) => entry.rate !== null)
-      .map(([code, entry]) => ({
-        key: `bond-${code}`,
-        label: t(BOND_TYPE_LABELS[code] ?? code),
-        defaultRate: Number(entry.rate),
-        risk: 'bardzo-niskie' as Risk,
-        hint:
-          entry.source === 'fallback'
-            ? `${t('Ostatnia znana stawka - nie udało się pobrać bieżącej oferty.')} ${bondNatureHint(BOND_NATURE[code], t)}`
-            : bondNatureHint(BOND_NATURE[code], t),
-      }))
+      .map(([code, entry]) => {
+        const margin = BOND_NATURE[code] === 'inflation' && entry.margin ? Number(entry.margin) : null
+        const hint = bondNatureHint(BOND_NATURE[code], code, margin, t)
+        return {
+          key: `bond-${code}`,
+          label: t(BOND_TYPE_LABELS[code] ?? code),
+          defaultRate: Number(entry.rate),
+          risk: 'bardzo-niskie' as Risk,
+          margin,
+          hint: entry.source === 'fallback' ? `${t('Ostatnia znana stawka - nie udało się pobrać bieżącej oferty.')} ${hint}` : hint,
+        }
+      })
     const staticRows = STATIC_INSTRUMENTS.map((i) => ({
       key: i.key,
       label: t(i.label),
       defaultRate: i.defaultRate,
       risk: i.risk,
+      margin: null,
       hint: t(i.hint),
     }))
-    // The 5 ETFs/indices behind the blended "Giełda" row above, shown
-    // individually too so they're directly comparable/editable instead of
-    // being buried in a separate explainer table.
     const indexRows = STOCK_INDEX_SOURCES.map((s) => ({
       key: `index-${s.key}`,
       label: s.name,
       defaultRate: s.cagr,
       risk: 'wysokie' as Risk,
+      margin: null,
       hint: t('Średnioroczna stopa zwrotu z ostatnich {0} ({1} rocznie) - {2}', s.period, `${formatNumber(s.cagr, 1)}%`, t(s.note)),
     }))
     return [...bondRows, ...staticRows, ...indexRows, ...customCompanies]
   }, [bondOffer, t, customCompanies])
 
+  // null means this person (or, on the public page, this browser) has never
+  // been asked - true for every account created before the question existed.
+  // Applied once bond rates have loaded, so the bond rows are there to hide.
+  const [showCategoryOnboarding, setShowCategoryOnboarding] = useState(false)
+  const appliedCategoryDefault = useRef(false)
+
+  function hiddenOutside(categories: string[]) {
+    return new Set(
+      baseRows.filter((r) => categoryForKey(r.key) !== 'wlasne' && !categories.includes(categoryForKey(r.key))).map((r) => r.key),
+    )
+  }
+
+  useEffect(() => {
+    if (appliedCategoryDefault.current || bondsLoading || (!publicMode && !user)) return
+    appliedCategoryDefault.current = true
+    const selected = publicMode ? readPublicCategories() : (user?.profile.calculator_selected_categories ?? null)
+    if (selected === null) {
+      setShowCategoryOnboarding(true)
+      return
+    }
+    setHiddenKeys(hiddenOutside(selected))
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [publicMode, user, bondsLoading])
+
+  const saveCategoriesMutation = useMutation({
+    mutationFn: (categories: string[]) => api.patch('/auth/me/', { calculator_selected_categories: categories }),
+    onSuccess: (_response, categories) => {
+      updateProfile({ calculator_selected_categories: categories })
+      setHiddenKeys(hiddenOutside(categories))
+      setShowCategoryOnboarding(false)
+    },
+  })
+
+  function answerCategories(categories: Category[]) {
+    if (!publicMode) {
+      saveCategoriesMutation.mutate(categories)
+      return
+    }
+    writePublicCategories(categories)
+    setHiddenKeys(hiddenOutside(categories))
+    setShowCategoryOnboarding(false)
+  }
+
   const rows = useMemo(() => {
+    const inflationFactor = (1 + inflationNum / 100) ** years
     return baseRows
       .map((row) => {
         const override = rateOverrides[row.key]
         const rate = override !== undefined && override !== '' ? Number(override) || 0 : row.defaultRate
-        const finalValue = futureValue(amountNum, rate, years)
-        const profit = finalValue - amountNum
+        // Negative inflation counts as zero for these bonds, per the issue terms.
+        const laterRate = row.margin !== null ? Math.max(inflationNum, 0) + row.margin : rate
+        const finalValue = simulate(amountNum, monthlyNum, years, (year) => (year === 1 ? rate : laterRate))
+        const profit = finalValue - contributed
         const profitAfterTax = afterBelkaTax(profit, country)
-        return { ...row, rate, finalValue, profit, profitAfterTax, finalValueAfterTax: amountNum + profitAfterTax }
+        const finalValueAfterTax = contributed + profitAfterTax
+        return {
+          ...row,
+          rate,
+          laterRate,
+          finalValue,
+          profit,
+          profitAfterTax,
+          finalValueAfterTax,
+          realValue: finalValueAfterTax / inflationFactor,
+        }
       })
       .sort((a, b) => b.finalValueAfterTax - a.finalValueAfterTax)
-  }, [baseRows, rateOverrides, amountNum, years, country])
+  }, [baseRows, rateOverrides, amountNum, monthlyNum, years, inflationNum, contributed, country])
 
   const chartRows = useMemo(() => rows.filter((r) => !hiddenKeys.has(r.key)), [rows, hiddenKeys])
   const hiddenRows = useMemo(() => rows.filter((r) => hiddenKeys.has(r.key)), [rows, hiddenKeys])
@@ -365,8 +554,12 @@ export default function InvestmentCalculator({ publicMode = false }: { publicMod
         </p>
         <div className="mt-4 flex flex-wrap items-end gap-4">
           <label className="flex flex-col gap-1 text-sm">
-            <span className="text-xs font-medium text-slate-500 dark:text-slate-400">{t('Kwota do zainwestowania')}</span>
-            <AmountInput min="0" value={amount} onChange={setAmount} className="input w-40" />
+            <span className="text-xs font-medium text-slate-500 dark:text-slate-400">{t('Kwota na start')}</span>
+            <AmountInput min="0" value={amount} onChange={setAmount} className="input w-36" />
+          </label>
+          <label className="flex flex-col gap-1 text-sm">
+            <span className="text-xs font-medium text-slate-500 dark:text-slate-400">{t('Wpłata co miesiąc')}</span>
+            <AmountInput min="0" value={monthly} onChange={setMonthly} className="input w-32" />
           </label>
           <label className="flex flex-col gap-1 text-sm">
             <span className="text-xs font-medium text-slate-500 dark:text-slate-400">{t('Horyzont (lata)')}</span>
@@ -380,262 +573,314 @@ export default function InvestmentCalculator({ publicMode = false }: { publicMod
               className="input w-24"
             />
           </label>
+          <label className="flex flex-col gap-1 text-sm">
+            <span className="text-xs font-medium text-slate-500 dark:text-slate-400">{t('Założona inflacja (% rocznie)')}</span>
+            <AmountInput value={inflation} onChange={setInflation} className="input w-24" />
+          </label>
         </div>
+        <p className="mt-3 text-xs text-slate-500 dark:text-slate-400">
+          {t(
+            'Wpłacisz łącznie {0}. Inflacja wycenia obligacje indeksowane od drugiego roku i przelicza wynik na dzisiejsze pieniądze - cel NBP to 2,5%.',
+            formatMoney(contributed, base),
+          )}
+        </p>
       </div>
 
-      {publicMode ? (
-        // StockAutocomplete and the CAGR lookup both call authenticated
-        // endpoints (a company search hitting Yahoo on the user's behalf
-        // needs its own rate limiting, which this public page doesn't carry
-        // yet) - so the public version prompts for an account instead of
-        // rendering a search box that would 401 on every keystroke.
-        <div className="rounded-xl border border-dashed border-slate-300 dark:border-slate-700 bg-slate-50 dark:bg-slate-800/50 p-5 text-sm text-slate-500 dark:text-slate-400">
-          {t('Zaloguj się, żeby dodać dowolną spółkę z realną, historyczną stopą zwrotu.')}
-        </div>
-      ) : (
-        <div className="rounded-xl border border-slate-200 dark:border-slate-700 bg-white dark:bg-slate-800 p-5 shadow-sm">
-          <p className="mb-1 text-sm font-semibold text-slate-700 dark:text-slate-300">
-            {t('Dodaj dowolną spółkę do porównania')}
-          </p>
-          <p className="mb-3 text-xs text-slate-400 dark:text-slate-500">
-            {t(
-              'Wyszukaj dowolną spółkę - jej wiersz w tabeli poniżej dostanie realną, historyczną stopę zwrotu (dane Yahoo Finance), którą możesz dowolnie zmienić.',
-            )}
-          </p>
-          <div className="flex items-center gap-2">
-            <div className="max-w-sm flex-1">
-              <StockAutocomplete onSelect={onPickCompany} />
-            </div>
-            {addCompanyMutation.isPending && (
-              <span className="inline-flex items-center gap-1.5 text-xs text-slate-400 dark:text-slate-500">
-                <Spinner size="sm" /> {t('pobieram dane…')}
-              </span>
-            )}
-          </div>
-          {companyError && <p className="mt-2 text-xs text-red-600 dark:text-red-400">{companyError}</p>}
-        </div>
-      )}
-
-      {bondsLoading ? (
-        <CardLoader />
+      {showCategoryOnboarding ? (
+        // Nothing else renders alongside this on purpose - showing the full,
+        // unfiltered table next to "which of these interest you?" would
+        // answer the question for the reader before they get to.
+        <CategoryOnboarding onAnswer={answerCategories} saving={saveCategoriesMutation.isPending} />
       ) : (
         <>
-          {/* Presets save to the user's profile (PATCH /auth/me/) - nothing
-              to show or save for a logged-out visitor. */}
-          {!publicMode && (
-            <PresetBar allKeys={baseRows.map((r) => r.key)} hiddenKeys={hiddenKeys} onLoad={setHiddenKeys} />
-          )}
-
-          <div className="rounded-xl border border-slate-200 dark:border-slate-700 bg-white dark:bg-slate-800 p-5 shadow-sm">
-            <p className="mb-3 text-sm font-semibold text-slate-700 dark:text-slate-300">
-              {t('Wynik po {0} {1} (po podatku Belki)', years, years === 1 ? t('roku') : t('latach'))}
-            </p>
-            {chartRows.length === 0 ? (
-              <p className="py-8 text-center text-sm text-slate-400 dark:text-slate-500">
-                {t('Wszystkie instrumenty odznaczone - zaznacz przynajmniej jeden w tabeli poniżej.')}
-              </p>
-            ) : (
-              <div style={{ height: Math.max(256, chartRows.length * (isMobile ? 48 : 34)) }}>
-                <ResponsiveContainer width="100%" height="100%">
-                  <BarChart data={chartRows} layout="vertical" margin={{ left: 8, right: isMobile ? 46 : 90 }}>
-                  <XAxis type="number" hide />
-                  <YAxis
-                    type="category"
-                    dataKey="label"
-                    width={isMobile ? 90 : 170}
-                    tick={{ fontSize: isMobile ? 10 : 11 }}
-                    interval={0}
-                  />
-                  <Tooltip {...tooltipStyle} formatter={(value) => formatMoney(value as number, base)} />
-                  <Bar
-                    dataKey="finalValueAfterTax"
-                    name={t('Wartość końcowa po podatku')}
-                    fill="#059669"
-                    radius={[0, 4, 4, 0]}
-                    isAnimationActive={false}
-                  >
-                    <LabelList
-                      dataKey="finalValueAfterTax"
-                      position="right"
-                      formatter={(value: unknown) => formatMoney(value as number, base)}
-                      style={{ fontSize: isMobile ? 9 : 11, fill: 'currentColor' }}
-                      className="fill-slate-700 dark:fill-slate-200"
-                    />
-                  </Bar>
-                </BarChart>
-              </ResponsiveContainer>
-            </div>
-            )}
-          </div>
-
-          {groupedVisibleRows.length === 0 ? (
-            <div className="rounded-xl border border-slate-200 dark:border-slate-700 bg-white dark:bg-slate-800 p-5 text-center text-sm text-slate-400 dark:text-slate-500 shadow-sm">
-              {t('Wszystkie instrumenty ukryte - dodaj je z powrotem poniżej.')}
+          {publicMode ? (
+            // StockAutocomplete and the CAGR lookup both call authenticated
+            // endpoints (a company search hitting Yahoo on the user's behalf
+            // needs its own rate limiting, which this public page doesn't carry
+            // yet) - so the public version prompts for an account instead of
+            // rendering a search box that would 401 on every keystroke.
+            <div className="rounded-xl border border-dashed border-slate-300 dark:border-slate-700 bg-slate-50 dark:bg-slate-800/50 p-5 text-sm text-slate-500 dark:text-slate-400">
+              {t('Zaloguj się, żeby dodać dowolną spółkę z realną, historyczną stopą zwrotu.')}
             </div>
           ) : (
-            <div className="overflow-x-auto rounded-xl border border-slate-200 dark:border-slate-700 bg-white dark:bg-slate-800 p-5 shadow-sm">
-              <table className="w-full text-left text-sm">
-                <thead>
-                  <tr className="text-xs font-medium text-slate-500 dark:text-slate-400">
-                    <th className="pb-2 pr-3">{t('Instrument')}</th>
-                    <th className="pb-2 pr-3">{t('Ryzyko')}</th>
-                    <th className="pb-2 pr-3">{t('Oprocentowanie')}</th>
-                    <th className="pb-2 pr-3">{t('Zysk (brutto)')}</th>
-                    <th className="pb-2 pr-3">{t('Zysk po podatku Belki')}</th>
-                    <th className="pb-2 pr-3">{t('Wartość końcowa po podatku')}</th>
-                    <th className="pb-2 pr-3" />
-                  </tr>
-                </thead>
-                {groupedVisibleRows.map(({ category, rows: categoryRows }) => (
-                  <tbody key={category}>
-                    <tr>
-                      <td
-                        colSpan={7}
-                        className="pt-4 pb-1.5 text-xs font-semibold uppercase tracking-wide text-slate-400 dark:text-slate-500"
-                      >
-                        {t(CATEGORY_LABELS[category])}
-                      </td>
-                    </tr>
-                    {categoryRows.map((row) => (
-                      <tr key={row.key} className="border-t border-slate-100 dark:border-slate-700 align-top">
-                        <td className="py-2 pr-3 text-slate-700 dark:text-slate-200">
-                          <span className="inline-flex items-center gap-1.5">
-                            {row.label}
-                            <button
-                              type="button"
-                              title={row.hint}
-                              onClick={() => setOpenHintKey((prev) => (prev === row.key ? null : row.key))}
-                              className={`flex h-4 w-4 shrink-0 items-center justify-center rounded-full border text-[10px] font-bold ${
-                                openHintKey === row.key
-                                  ? 'border-accent-500 text-accent-600 dark:text-accent-400'
-                                  : 'border-slate-300 dark:border-slate-600 text-slate-400 hover:border-accent-500 hover:text-accent-600 dark:text-slate-500 dark:hover:text-accent-400'
-                              }`}
-                            >
-                              i
-                            </button>
-                          </span>
-                          {openHintKey === row.key && (
-                            <p className="mt-1 max-w-xs text-xs font-normal text-slate-400 dark:text-slate-500">{row.hint}</p>
-                          )}
-                        </td>
-                        <td className="py-2 pr-3">
-                          <span className={`rounded-full px-2 py-0.5 text-xs font-medium ${RISK_META[row.risk].className}`}>
-                            {t(RISK_META[row.risk].label)}
-                          </span>
-                        </td>
-                        <td className="py-2 pr-3">
-                          <AmountInput
-                            value={rateOverrides[row.key] ?? String(row.defaultRate)}
-                            onChange={(value) => setRateOverrides((prev) => ({ ...prev, [row.key]: value }))}
-                            className="input w-24 tabular-nums"
-                          />
-                          <span className="ml-1 text-xs text-slate-400 dark:text-slate-500">%</span>
-                        </td>
-                        <td className="py-2 pr-3 tabular-nums text-slate-500 dark:text-slate-400">
-                          {formatMoney(row.profit, base)}
-                        </td>
-                        <td className="py-2 pr-3 tabular-nums text-emerald-600 dark:text-emerald-400">
-                          {formatMoney(row.profitAfterTax, base)}
-                        </td>
-                        <td className="py-2 pr-3 tabular-nums font-medium text-slate-900 dark:text-slate-100">
-                          {formatMoney(row.finalValueAfterTax, base)}
-                        </td>
-                        <td className="py-2 pr-3">
-                          <div className="flex items-center gap-2">
-                            <button
-                              type="button"
-                              onClick={() => hideRow(row.key)}
-                              title={t('Ukryj z porównania')}
-                              className="text-xs font-medium text-slate-400 hover:text-slate-700 dark:text-slate-500 dark:hover:text-slate-200"
-                            >
-                              {t('Ukryj')}
-                            </button>
-                            {row.key.startsWith('custom-') && (
-                              <button
-                                type="button"
-                                onClick={() => removeCustomCompany(row.key)}
-                                className="text-xs font-medium text-red-600 hover:underline dark:text-red-400"
-                              >
-                                {t('Usuń')}
-                              </button>
-                            )}
-                          </div>
-                        </td>
-                      </tr>
-                    ))}
-                  </tbody>
-                ))}
-              </table>
+            <div className="rounded-xl border border-slate-200 dark:border-slate-700 bg-white dark:bg-slate-800 p-5 shadow-sm">
+              <p className="mb-1 text-sm font-semibold text-slate-700 dark:text-slate-300">
+                {t('Dodaj dowolną spółkę do porównania')}
+              </p>
+              <p className="mb-3 text-xs text-slate-400 dark:text-slate-500">
+                {t(
+                  'Wyszukaj dowolną spółkę - jej wiersz w tabeli poniżej dostanie realną, historyczną stopę zwrotu (dane Yahoo Finance), którą możesz dowolnie zmienić.',
+                )}
+              </p>
+              <div className="flex items-center gap-2">
+                <div className="max-w-sm flex-1">
+                  <StockAutocomplete onSelect={onPickCompany} />
+                </div>
+                {addCompanyMutation.isPending && (
+                  <span className="inline-flex items-center gap-1.5 text-xs text-slate-400 dark:text-slate-500">
+                    <Spinner size="sm" /> {t('pobieram dane…')}
+                  </span>
+                )}
+              </div>
+              {companyError && <p className="mt-2 text-xs text-red-600 dark:text-red-400">{companyError}</p>}
             </div>
           )}
 
-          <div className="rounded-xl border border-slate-200 dark:border-slate-700 bg-white dark:bg-slate-800 p-5 shadow-sm">
-            <h2 className="text-sm font-semibold text-slate-700 dark:text-slate-300">
-              {t('Skąd wzięło się założenie dla giełdy ({0}% rocznie)?', formatNumber(STOCK_AVERAGE_RATE, 1))}
-            </h2>
-            <p className="mt-1 text-xs text-slate-500 dark:text-slate-400">
-              {t(
-                'To średnia z historycznych, średniorocznych stóp zwrotu 5 głównych indeksów akcyjnych (z reinwestowanymi dywidendami, gdzie dostępne) - nie prognoza, tylko punkt odniesienia. Te same 5 pozycji jest też pokazanych osobno w tabeli powyżej.',
-              )}
-            </p>
-            <div className="mt-3 overflow-x-auto">
-              <table className="w-full text-left text-xs">
-                <thead>
-                  <tr className="text-slate-500 dark:text-slate-400">
-                    <th className="pb-1.5 pr-3">{t('Indeks')}</th>
-                    <th className="pb-1.5 pr-3">{t('Okres')}</th>
-                    <th className="pb-1.5 pr-3">{t('Średniorocznie')}</th>
-                    <th className="pb-1.5 pr-3">{t('Źródło')}</th>
-                  </tr>
-                </thead>
-                <tbody>
-                  {STOCK_INDEX_SOURCES.map((s) => (
-                    <tr key={s.key} className="border-t border-slate-100 dark:border-slate-700">
-                      <td className="py-1.5 pr-3 text-slate-700 dark:text-slate-200">{s.name}</td>
-                      <td className="py-1.5 pr-3 text-slate-500 dark:text-slate-400">{s.period}</td>
-                      <td className="py-1.5 pr-3 tabular-nums text-slate-700 dark:text-slate-200">
-                        {formatNumber(s.cagr, 1)}%
-                      </td>
-                      <td className="py-1.5 pr-3 text-slate-400 dark:text-slate-500">{s.note}</td>
-                    </tr>
-                  ))}
-                  <tr className="border-t border-slate-200 dark:border-slate-600 font-semibold">
-                    <td className="py-1.5 pr-3 text-slate-800 dark:text-slate-100" colSpan={2}>
-                      {t('Średnia z powyższych')}
-                    </td>
-                    <td className="py-1.5 pr-3 tabular-nums text-slate-900 dark:text-slate-100">
-                      {formatNumber(STOCK_AVERAGE_RATE, 1)}%
-                    </td>
-                    <td className="py-1.5 pr-3" />
-                  </tr>
-                </tbody>
-              </table>
-            </div>
-            <p className="mt-3 text-xs text-slate-400 dark:text-slate-500">
-              {t(
-                'WIG20 i mWIG40 to indeksy warszawskiej giełdy (duże i średnie spółki), S&P 500 i Nasdaq to główne indeksy amerykańskie, a MSCI World / FTSE All-World obejmuje akcje z całego świata. Powyższe okresy to najdłuższe, dla których znalazłem wiarygodne, publicznie dostępne dane - dla WIG20/mWIG40 to karty funduszy śledzących te indeksy. Historyczne wyniki nie gwarantują przyszłych - pojedyncze lata potrafią być mocno ujemne.',
-              )}
-            </p>
-          </div>
-
-          {hiddenRows.length > 0 && (
-            <div className="rounded-xl border border-dashed border-slate-300 dark:border-slate-600 bg-white dark:bg-slate-800 p-4 shadow-sm">
-              <p className="mb-2 text-xs font-medium text-slate-500 dark:text-slate-400">
-                {t('Ukryte instrumenty ({0}) - kliknij, żeby dodać z powrotem do porównania', hiddenRows.length)}
-              </p>
-              <div className="flex flex-wrap gap-2">
-                {hiddenRows.map((row) => (
-                  <button
-                    key={row.key}
-                    type="button"
-                    onClick={() => showRow(row.key)}
-                    className="rounded-full border border-slate-300 dark:border-slate-600 px-3 py-1 text-xs font-medium text-slate-600 dark:text-slate-300 hover:border-accent-500 hover:text-accent-700 dark:hover:text-accent-400"
-                  >
-                    + {row.label}
-                  </button>
-                ))}
+          {bondsLoading ? (
+            <CardLoader />
+          ) : (
+            <>
+              <div className="flex flex-wrap items-center justify-between gap-2">
+                {/* Presets save to the user's profile (PATCH /auth/me/) - nothing
+                    to show or save for a logged-out visitor. */}
+                {!publicMode && <PresetBar allKeys={baseRows.map((r) => r.key)} hiddenKeys={hiddenKeys} onLoad={setHiddenKeys} />}
+                <button
+                  type="button"
+                  onClick={() => setShowCategoryOnboarding(true)}
+                  className="ml-auto text-xs font-medium text-accent-700 dark:text-accent-400 hover:underline"
+                >
+                  {t('Zmień, co Cię interesuje')}
+                </button>
               </div>
-            </div>
+
+              <div className="rounded-xl border border-slate-200 dark:border-slate-700 bg-white dark:bg-slate-800 p-5 shadow-sm">
+                <p className="mb-3 text-sm font-semibold text-slate-700 dark:text-slate-300">
+                  {t('Wynik po {0} {1} (po podatku Belki)', years, years === 1 ? t('roku') : t('latach'))}
+                </p>
+                {chartRows.length === 0 ? (
+                  <p className="py-8 text-center text-sm text-slate-400 dark:text-slate-500">
+                    {t('Wszystkie instrumenty odznaczone - zaznacz przynajmniej jeden w tabeli poniżej.')}
+                  </p>
+                ) : (
+                  <div style={{ height: Math.max(256, chartRows.length * (isMobile ? 48 : 34)) }}>
+                    <ResponsiveContainer width="100%" height="100%">
+                      <BarChart data={chartRows} layout="vertical" margin={{ left: 8, right: isMobile ? 46 : 90 }}>
+                        <XAxis type="number" hide />
+                        <YAxis
+                          type="category"
+                          dataKey="label"
+                          width={isMobile ? 90 : 170}
+                          tick={{ fontSize: isMobile ? 10 : 11 }}
+                          interval={0}
+                        />
+                        <Tooltip {...tooltipStyle} formatter={(value) => formatMoney(value as number, base)} />
+                        <Bar
+                          dataKey="finalValueAfterTax"
+                          name={t('Wartość końcowa po podatku')}
+                          fill="#059669"
+                          radius={[0, 4, 4, 0]}
+                          isAnimationActive={false}
+                        >
+                          <LabelList
+                            dataKey="finalValueAfterTax"
+                            position="right"
+                            formatter={(value: unknown) => formatMoney(value as number, base)}
+                            style={{ fontSize: isMobile ? 9 : 11, fill: 'currentColor' }}
+                            className="fill-slate-700 dark:fill-slate-200"
+                          />
+                        </Bar>
+                      </BarChart>
+                    </ResponsiveContainer>
+                  </div>
+                )}
+              </div>
+
+              {groupedVisibleRows.length === 0 ? (
+                <div className="rounded-xl border border-slate-200 dark:border-slate-700 bg-white dark:bg-slate-800 p-5 text-center text-sm text-slate-400 dark:text-slate-500 shadow-sm">
+                  {t('Wszystkie instrumenty ukryte - dodaj je z powrotem poniżej.')}
+                </div>
+              ) : (
+                <div className="overflow-x-auto rounded-xl border border-slate-200 dark:border-slate-700 bg-white dark:bg-slate-800 p-5 shadow-sm">
+                  <table className="w-full text-left text-sm">
+                    <thead>
+                      <tr className="text-xs font-medium text-slate-500 dark:text-slate-400">
+                        <th className="pb-2 pr-3">{t('Instrument')}</th>
+                        <th className="pb-2 pr-3">{t('Ryzyko')}</th>
+                        <th className="pb-2 pr-3">{t('Oprocentowanie')}</th>
+                        <th className="pb-2 pr-3">{t('Zysk (brutto)')}</th>
+                        <th className="pb-2 pr-3">{t('Zysk po podatku Belki')}</th>
+                        <th className="pb-2 pr-3">{t('Wartość końcowa po podatku')}</th>
+                        <th className="pb-2 pr-3">{t('Wartość realna (po inflacji)')}</th>
+                        <th className="pb-2 pr-3" />
+                      </tr>
+                    </thead>
+                    {groupedVisibleRows.map(({ category, rows: categoryRows }) => (
+                      <tbody key={category}>
+                        <tr>
+                          <td
+                            colSpan={8}
+                            className="pt-4 pb-1.5 text-xs font-semibold uppercase tracking-wide text-slate-400 dark:text-slate-500"
+                          >
+                            {t(CATEGORY_LABELS[category])}
+                          </td>
+                        </tr>
+                        {categoryRows.map((row) => {
+                          const override = rateOverrides[row.key]
+                          const rateChanged = override !== undefined && Number(override) !== row.defaultRate
+                          return (
+                            <tr key={row.key} className="border-t border-slate-100 dark:border-slate-700 align-top">
+                              <td className="py-2 pr-3 text-slate-700 dark:text-slate-200">
+                                <span className="inline-flex items-center gap-1.5">
+                                  {row.label}
+                                  <button
+                                    type="button"
+                                    title={row.hint}
+                                    onClick={() => setOpenHintKey((prev) => (prev === row.key ? null : row.key))}
+                                    className={`flex h-4 w-4 shrink-0 items-center justify-center rounded-full border text-[10px] font-bold ${
+                                      openHintKey === row.key
+                                        ? 'border-accent-500 text-accent-600 dark:text-accent-400'
+                                        : 'border-slate-300 dark:border-slate-600 text-slate-400 hover:border-accent-500 hover:text-accent-600 dark:text-slate-500 dark:hover:text-accent-400'
+                                    }`}
+                                  >
+                                    i
+                                  </button>
+                                </span>
+                                {openHintKey === row.key && (
+                                  <p className="mt-1 max-w-xs text-xs font-normal text-slate-400 dark:text-slate-500">{row.hint}</p>
+                                )}
+                              </td>
+                              <td className="py-2 pr-3">
+                                <span className={`rounded-full px-2 py-0.5 text-xs font-medium ${RISK_META[row.risk].className}`}>
+                                  {t(RISK_META[row.risk].label)}
+                                </span>
+                              </td>
+                              <td className="py-2 pr-3">
+                                <div className="flex items-center">
+                                  <AmountInput
+                                    value={override ?? String(row.defaultRate)}
+                                    onChange={(value) => setRateOverrides((prev) => ({ ...prev, [row.key]: value }))}
+                                    className="input w-24 tabular-nums"
+                                  />
+                                  <span className="ml-1 text-xs text-slate-400 dark:text-slate-500">%</span>
+                                  {rateChanged && (
+                                    <button
+                                      type="button"
+                                      onClick={() => resetRate(row.key)}
+                                      title={t('Przywróć domyślną stawkę ({0}%)', formatNumber(row.defaultRate, 2))}
+                                      aria-label={t('Przywróć domyślną stawkę ({0}%)', formatNumber(row.defaultRate, 2))}
+                                      className="ml-1.5 text-sm text-slate-400 hover:text-accent-700 dark:hover:text-accent-400"
+                                    >
+                                      ↺
+                                    </button>
+                                  )}
+                                </div>
+                                {row.margin !== null && (
+                                  <p className="mt-1 whitespace-nowrap text-[11px] text-slate-400 dark:text-slate-500">
+                                    {t('od 2. roku: {0}%', formatNumber(row.laterRate, 2))}
+                                  </p>
+                                )}
+                              </td>
+                              <td className="py-2 pr-3 tabular-nums text-slate-500 dark:text-slate-400">
+                                {formatMoney(row.profit, base)}
+                              </td>
+                              <td className="py-2 pr-3 tabular-nums text-emerald-600 dark:text-emerald-400">
+                                {formatMoney(row.profitAfterTax, base)}
+                              </td>
+                              <td className="py-2 pr-3 tabular-nums font-medium text-slate-900 dark:text-slate-100">
+                                {formatMoney(row.finalValueAfterTax, base)}
+                              </td>
+                              <td className="py-2 pr-3 tabular-nums text-slate-500 dark:text-slate-400">
+                                {formatMoney(row.realValue, base)}
+                              </td>
+                              <td className="py-2 pr-3">
+                                <div className="flex items-center gap-2">
+                                  <button
+                                    type="button"
+                                    onClick={() => hideRow(row.key)}
+                                    title={t('Ukryj z porównania')}
+                                    className="text-xs font-medium text-slate-400 hover:text-slate-700 dark:text-slate-500 dark:hover:text-slate-200"
+                                  >
+                                    {t('Ukryj')}
+                                  </button>
+                                  {row.key.startsWith('custom-') && (
+                                    <button
+                                      type="button"
+                                      onClick={() => removeCustomCompany(row.key)}
+                                      className="text-xs font-medium text-red-600 hover:underline dark:text-red-400"
+                                    >
+                                      {t('Usuń')}
+                                    </button>
+                                  )}
+                                </div>
+                              </td>
+                            </tr>
+                          )
+                        })}
+                      </tbody>
+                    ))}
+                  </table>
+                </div>
+              )}
+
+              {hiddenRows.length > 0 && (
+                <div className="rounded-xl border border-dashed border-slate-300 dark:border-slate-600 bg-white dark:bg-slate-800 p-4 shadow-sm">
+                  <p className="mb-2 text-xs font-medium text-slate-500 dark:text-slate-400">
+                    {t('Ukryte instrumenty ({0}) - kliknij, żeby dodać z powrotem do porównania', hiddenRows.length)}
+                  </p>
+                  <div className="flex flex-wrap gap-2">
+                    {hiddenRows.map((row) => (
+                      <button
+                        key={row.key}
+                        type="button"
+                        onClick={() => showRow(row.key)}
+                        className="rounded-full border border-slate-300 dark:border-slate-600 px-3 py-1 text-xs font-medium text-slate-600 dark:text-slate-300 hover:border-accent-500 hover:text-accent-700 dark:hover:text-accent-400"
+                      >
+                        + {row.label}
+                      </button>
+                    ))}
+                  </div>
+                </div>
+              )}
+
+              <details className="rounded-xl border border-slate-200 dark:border-slate-700 bg-white dark:bg-slate-800 p-5 shadow-sm">
+                <summary className="cursor-pointer text-sm font-semibold text-slate-700 dark:text-slate-300">
+                  {t('Skąd wzięło się założenie dla giełdy ({0}% rocznie)?', formatNumber(STOCK_AVERAGE_RATE, 1))}
+                </summary>
+                <p className="mt-2 text-xs text-slate-500 dark:text-slate-400">
+                  {t(
+                    'To średnia z historycznych, średniorocznych stóp zwrotu 5 głównych indeksów akcyjnych (z reinwestowanymi dywidendami, gdzie dostępne) - nie prognoza, tylko punkt odniesienia. Te same 5 pozycji jest też pokazanych osobno w tabeli powyżej.',
+                  )}
+                </p>
+                <div className="mt-3 overflow-x-auto">
+                  <table className="w-full text-left text-xs">
+                    <thead>
+                      <tr className="text-slate-500 dark:text-slate-400">
+                        <th className="pb-1.5 pr-3">{t('Indeks')}</th>
+                        <th className="pb-1.5 pr-3">{t('Okres')}</th>
+                        <th className="pb-1.5 pr-3">{t('Średniorocznie')}</th>
+                        <th className="pb-1.5 pr-3">{t('Źródło')}</th>
+                      </tr>
+                    </thead>
+                    <tbody>
+                      {STOCK_INDEX_SOURCES.map((s) => (
+                        <tr key={s.key} className="border-t border-slate-100 dark:border-slate-700">
+                          <td className="py-1.5 pr-3 text-slate-700 dark:text-slate-200">{s.name}</td>
+                          <td className="py-1.5 pr-3 text-slate-500 dark:text-slate-400">{s.period}</td>
+                          <td className="py-1.5 pr-3 tabular-nums text-slate-700 dark:text-slate-200">
+                            {formatNumber(s.cagr, 1)}%
+                          </td>
+                          <td className="py-1.5 pr-3 text-slate-400 dark:text-slate-500">{s.note}</td>
+                        </tr>
+                      ))}
+                      <tr className="border-t border-slate-200 dark:border-slate-600 font-semibold">
+                        <td className="py-1.5 pr-3 text-slate-800 dark:text-slate-100" colSpan={2}>
+                          {t('Średnia z powyższych')}
+                        </td>
+                        <td className="py-1.5 pr-3 tabular-nums text-slate-900 dark:text-slate-100">
+                          {formatNumber(STOCK_AVERAGE_RATE, 1)}%
+                        </td>
+                        <td className="py-1.5 pr-3" />
+                      </tr>
+                    </tbody>
+                  </table>
+                </div>
+                <p className="mt-3 text-xs text-slate-400 dark:text-slate-500">
+                  {t(
+                    'WIG20 i mWIG40 to indeksy warszawskiej giełdy (duże i średnie spółki), S&P 500 i Nasdaq to główne indeksy amerykańskie, a MSCI World / FTSE All-World obejmuje akcje z całego świata. Powyższe okresy to najdłuższe, dla których znalazłem wiarygodne, publicznie dostępne dane - dla WIG20/mWIG40 to karty funduszy śledzących te indeksy. Historyczne wyniki nie gwarantują przyszłych - pojedyncze lata potrafią być mocno ujemne.',
+                  )}
+                </p>
+              </details>
+            </>
           )}
         </>
       )}

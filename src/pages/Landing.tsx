@@ -1,13 +1,13 @@
 import { lazy, Suspense, useEffect, useState } from 'react'
 import { useQuery } from '@tanstack/react-query'
-import { Link } from 'react-router-dom'
+import { Link, useNavigate } from 'react-router-dom'
 import { api } from '../api/client'
 import { useAuth } from '../auth/AuthContext'
 import SockLogo from '../components/SockLogo'
 import { LANGUAGES, LANGUAGE_LABELS, useLanguage, type Language } from '../i18n/LanguageContext'
 import { useTheme } from '../theme/ThemeContext'
 import { rememberSignupSource, trackEvent } from '../lib/analytics'
-import { formatCountdown, formatDateTime } from '../lib/format'
+import { formatCountdown, formatDateTime, formatNumber } from '../lib/format'
 import type { ActiveLandingPromotion, Article } from '../types'
 
 // Only rendered when an admin has an active promotion running, which is
@@ -115,12 +115,14 @@ const FEATURES: { icon: keyof typeof ICONS; title: string; body: string }[] = [
   {
     icon: 'wallet',
     title: 'Przychody, wydatki i budżet',
-    body: 'Zarządzaj przychodami i wydatkami, monitoruj budżet miesiąc po miesiącu i sprawdzaj bilans - automatyczny import wyciągów, kategorie, sklepy i tagi robią to za Ciebie.',
+    body: 'Zarządzaj przychodami i wydatkami, monitoruj budżet miesiąc po miesiącu i sprawdzaj bilans - automatyczny import wyciągów, kategorie, sklepy i tagi robią to za Ciebie. Osobna zakładka pilnuje też kosztów samochodu: paliwo ze zdjęcia paragonu, ubezpieczenie, przeglądy i naprawy.',
   },
   {
     icon: 'camera',
     title: 'Wydatek ze zdjęcia paragonu',
-    body: 'Zrób paragonowi zdjęcie telefonem, a skieta odczyta kwotę, datę i sklep oraz sama zaproponuje kategorię z Twojej listy. Zostaje Ci sprawdzić i zapisać.',
+    // Says up front that it needs a one-time key: promising "a few seconds"
+    // and then asking for a Google key is how people bounced off this.
+    body: 'Zrób paragonowi zdjęcie telefonem, a skieta odczyta kwotę, datę i sklep, zaproponuje kategorię z Twojej listy, a dłuższy paragon rozbije na pozycje. Wystarczy raz podłączyć darmowy klucz Google - to dwie minuty.',
   },
   {
     icon: 'target',
@@ -137,7 +139,7 @@ const FEATURES: { icon: keyof typeof ICONS; title: string; body: string }[] = [
     // (a clean 3x2 grid) with budgeting now taking the first three.
     icon: 'trending',
     title: 'Realny zwrot, dywidendy i podatki',
-    body: 'Jeśli inwestujesz: zysk liczony osobno od wpłaconego kapitału, po podatku Belki, plus historia i prognoza dywidend wraz z szacowanym podatkiem do zapłaty.',
+    body: 'Jeśli inwestujesz: zysk liczony osobno od wpłaconego kapitału, po podatku Belki, historia i prognoza dywidend z szacowanym podatkiem oraz podsumowanie komunikatów i wiadomości o Twoich spółkach, z odnośnikiem do źródła przy każdym punkcie.',
   },
   {
     icon: 'shield',
@@ -186,7 +188,7 @@ const STEPS = [
 // that decide that - what it costs, whether it wants bank passwords, who
 // reads the data, and whether they can leave - rather than the ones that
 // happen to be easy to answer.
-const FAQ: { q: string; a: string }[] = [
+const FAQ: { q: string; a: string; requiresDemo?: boolean }[] = [
   {
     q: 'Ile to kosztuje?',
     // Present tense, and deliberately promising nothing about the future.
@@ -219,6 +221,15 @@ const FAQ: { q: string; a: string }[] = [
     a: 'Robisz paragonowi zdjęcie telefonem, a skieta odczytuje z niego kwotę, datę i nazwę sklepu oraz proponuje kategorię z Twojej własnej listy - poprawiasz, co trzeba, i zapisujesz. Odczytem zajmuje się Google Gemini na Twoim własnym, darmowym kluczu, który wklejasz raz przy pierwszym skanowaniu. Samego zdjęcia nigdzie nie zapisujemy - jest odczytywane w locie i nie trafia do naszej bazy.',
   },
   {
+    q: 'Czy skieta działa na telefonie?',
+    a: 'Tak, i nie trzeba niczego pobierać ze sklepu z aplikacjami. Otwórz skieta.com w telefonie i dodaj ją do ekranu głównego: na iPhonie w Safari stuknij „Udostępnij", a potem „Do ekranu początkowego"; na Androidzie przeglądarka sama zaproponuje instalację albo znajdziesz ją w menu jako „Zainstaluj aplikację". skieta otwiera się wtedy jak zwykła aplikacja - na pełnym ekranie i z własną ikoną - a paragon zeskanujesz jednym tapnięciem.',
+  },
+  {
+    q: 'Czy mogę zobaczyć aplikację przed założeniem konta?',
+    a: 'Tak. Przycisk „Zobacz demo" na górze strony otwiera przykładowe konto z budżetem, portfelem, celami oszczędnościowymi i samochodem - możesz wszystko przeklikać, tylko zmiany nie są zapisywane. Bez konta działa też kalkulator inwestycyjny.',
+    requiresDemo: true,
+  },
+  {
     q: 'Czy potrzebuję zaproszenia?',
     a: 'Nie. Rejestracja jest otwarta dla wszystkich - wystarczy założyć konto. Zaproszenia nadal działają: jeśli ktoś prześle Ci swój link, zapiszemy, że to dzięki niemu tu trafiłeś/aś, ale nie jest to warunek założenia konta.',
   },
@@ -232,7 +243,7 @@ const FAQ: { q: string; a: string }[] = [
   },
   {
     q: 'Skąd biorą się kursy i oprocentowanie?',
-    a: 'Z publicznych źródeł: notowania z Yahoo Finance i Stooq, kursy walut z NBP, aktualne oprocentowanie obligacji skarbowych z obligacjeskarbowe.pl. Dane odświeżane są automatycznie, a przy porównaniach zawsze widzisz, z jakiego okresu pochodzą.',
+    a: 'Z publicznych źródeł: notowania z Yahoo Finance i Stooq, kursy walut z NBP, aktualne oprocentowanie obligacji skarbowych z obligacjeskarbowe.pl, a w analizie spółek - komunikaty spółek z bankier.pl, raporty spółek amerykańskich z SEC EDGAR i wiadomości z Yahoo Finance. Dane odświeżane są automatycznie, a przy porównaniach zawsze widzisz, z jakiego okresu pochodzą.',
   },
   {
     q: 'Kto widzi moje finanse?',
@@ -255,20 +266,25 @@ const FAQ: { q: string; a: string }[] = [
 // attributes so the browser reserves the right space before the image arrives
 // instead of shoving the page down when it lands.
 const PRODUCT_SHOTS = {
-  dashboard: { width: 1262, height: 843 },
-  wydatki: { width: 1262, height: 1015 },
-  portfel: { width: 1262, height: 725 },
-  planowanie: { width: 1261, height: 788 },
+  dashboard: { width: 1248, height: 843 },
+  wydatki: { width: 1248, height: 1015 },
+  portfel: { width: 1248, height: 725 },
+  planowanie: { width: 1248, height: 788 },
+  // Phone captures: the app is used on a phone as much as on a computer, receipts most of all.
+  'dashboard-mobile': { width: 780, height: 1500 },
+  'wydatki-mobile': { width: 780, height: 1500 },
 } as const
 
 function ProductShot({
   name,
   alt,
   priority = false,
+  phone = false,
 }: {
   name: keyof typeof PRODUCT_SHOTS
   alt: string
   priority?: boolean
+  phone?: boolean
 }) {
   const { theme } = useTheme()
   // Only two sets of captures exist; the pink theme keeps the app's light
@@ -285,14 +301,48 @@ function ProductShot({
       // eagerly; everything below waits until the visitor scrolls to it.
       loading={priority ? 'eager' : 'lazy'}
       decoding="async"
-      className="w-full rounded-xl border border-slate-200/80 dark:border-slate-700/80 shadow-2xl shadow-slate-900/10"
+      className={
+        phone
+          ? 'w-full rounded-[1.4rem] border-[5px] border-slate-900 dark:border-slate-600 shadow-2xl shadow-slate-900/30'
+          : 'w-full rounded-xl border border-slate-200/80 dark:border-slate-700/80 shadow-2xl shadow-slate-900/10'
+      }
     />
   )
 }
 
 export default function Landing() {
   const { language, setLanguage, t } = useLanguage()
-  const { user } = useAuth()
+  const { user, startDemo } = useAuth()
+  const navigate = useNavigate()
+  const [openingDemo, setOpeningDemo] = useState(false)
+  const [demoFailed, setDemoFailed] = useState(false)
+
+  const { data: demo } = useQuery({
+    queryKey: ['demo-available'],
+    queryFn: async () => (await api.get<{ available: boolean }>('/auth/demo/')).data,
+    enabled: !user,
+  })
+  const demoAvailable = !user && !!demo?.available
+
+  const { data: publicStats } = useQuery({
+    queryKey: ['public-stats'],
+    queryFn: async () =>
+      (await api.get<{ visible: boolean; users: number | null; transactions: number | null }>('/auth/public-stats/')).data,
+  })
+
+  async function openDemo() {
+    setOpeningDemo(true)
+    setDemoFailed(false)
+    trackEvent('demo_opened', { source: 'landing_hero' })
+    try {
+      await startDemo()
+      navigate('/dashboard')
+    } catch {
+      setDemoFailed(true)
+    } finally {
+      setOpeningDemo(false)
+    }
+  }
 
   const { data: articlesData } = useQuery({
     queryKey: ['content-articles'],
@@ -382,8 +432,8 @@ export default function Landing() {
               {t('Bezpłatnie, bez reklam, bez karty')}
             </span>
             <h1 className="mt-5 text-4xl font-extrabold tracking-tight text-slate-900 dark:text-slate-100 sm:text-5xl lg:text-6xl">
-              {t('Panuj nad')}{' '}
-              <span className="bg-gradient-to-r from-accent-600 to-accent-400 bg-clip-text text-transparent">{t('swoimi finansami')}</span>
+              {t('Zobacz, gdzie znika')}{' '}
+              <span className="bg-gradient-to-r from-accent-600 to-accent-400 bg-clip-text text-transparent">{t('Twoja wypłata')}</span>
             </h1>
             <p className="mt-3 text-base font-medium italic text-accent-700 dark:text-accent-400">
               {t('skieta - Twoja wirtualna skarpeta z oszczędnościami.')}
@@ -410,13 +460,32 @@ export default function Landing() {
               >
                 {user ? ctaLabel : t('Załóż darmowe konto →')}
               </Link>
-              <Link
-                to="/kalkulator"
-                className="rounded-full border border-slate-300 dark:border-slate-600 px-7 py-3 text-base font-semibold text-slate-700 dark:text-slate-200 transition hover:border-accent-400 hover:text-accent-700 dark:hover:text-accent-400"
-              >
-                {t('Wypróbuj kalkulator →')}
-              </Link>
+              {/* The budgeting visitor this hero is written for learns more from
+                  clicking through a real account than from an investment
+                  calculator, which stays as the fallback and in the footer. */}
+              {demoAvailable ? (
+                <button
+                  type="button"
+                  onClick={openDemo}
+                  disabled={openingDemo}
+                  className="rounded-full border border-slate-300 dark:border-slate-600 px-7 py-3 text-base font-semibold text-slate-700 dark:text-slate-200 transition hover:border-accent-400 hover:text-accent-700 dark:hover:text-accent-400 disabled:opacity-60"
+                >
+                  {openingDemo ? t('Otwieram demo…') : t('Zobacz demo →')}
+                </button>
+              ) : (
+                <Link
+                  to="/kalkulator"
+                  className="rounded-full border border-slate-300 dark:border-slate-600 px-7 py-3 text-base font-semibold text-slate-700 dark:text-slate-200 transition hover:border-accent-400 hover:text-accent-700 dark:hover:text-accent-400"
+                >
+                  {t('Wypróbuj kalkulator →')}
+                </Link>
+              )}
             </div>
+            {demoFailed && (
+              <p className="mt-3 text-sm text-red-600 dark:text-red-400">
+                {t('Nie udało się otworzyć demo. Spróbuj ponownie za chwilę.')}
+              </p>
+            )}
             {/* Answered next to the decision, not only in the FAQ far below:
                 "what does it cost" is the question a stranger asks before
                 handing over an email address, and silence about price reads
@@ -426,10 +495,25 @@ export default function Landing() {
                 {t('Konto zakładasz w minutę. Bez zaproszenia, bez karty, bez zobowiązań.')}
               </p>
             )}
+            {/* Real counts only, and only once they are worth showing (backend threshold). */}
+            {publicStats?.visible && publicStats.users !== null && publicStats.transactions !== null && (
+              <p className="mt-2 text-sm font-medium text-slate-600 dark:text-slate-300">
+                {t(
+                  'Kont w skiecie: {0} · zapisanych przychodów i wydatków: {1}',
+                  formatNumber(publicStats.users, 0),
+                  formatNumber(publicStats.transactions, 0),
+                )}
+              </p>
+            )}
           </div>
 
           <figure className="mx-auto mt-14 max-w-5xl">
-            <ProductShot name="dashboard" alt={t('Dashboard skiety: wartość majątku, podział na akcje, gotówkę, lokaty i obligacje oraz wykres majątku w czasie')} priority />
+            <div className="relative pb-10 sm:pb-14">
+              <ProductShot name="dashboard" alt={t('Dashboard skiety: wartość majątku, podział na akcje, gotówkę, lokaty i obligacje oraz wykres majątku w czasie')} priority />
+              <div className="absolute -right-1 bottom-0 w-[26%] min-w-[110px] max-w-[230px] sm:-right-8">
+                <ProductShot name="dashboard-mobile" alt={t('Dashboard skiety na telefonie')} priority phone />
+              </div>
+            </div>
             {/* Says plainly whose numbers these are. They come from a demo
                 account, and a finance app showing balances owes the visitor
                 that much rather than letting them assume it's a real user. */}
@@ -481,8 +565,21 @@ export default function Landing() {
                 {/* Alternating sides, but only from lg up - stacked on a
                     phone the image always comes first, so the reader sees
                     what's being described before reading about it. */}
-                <div className={i % 2 === 1 ? 'lg:col-span-3 lg:order-2' : 'lg:col-span-3'}>
+                <div
+                  className={`relative ${i % 2 === 1 ? 'lg:col-span-3 lg:order-2' : 'lg:col-span-3'} ${
+                    item.name === 'wydatki' ? 'pb-10 sm:pb-12' : ''
+                  }`}
+                >
                   <ProductShot name={item.name} alt={t(item.alt)} />
+                  {item.name === 'wydatki' && (
+                    <div className="absolute -right-1 bottom-0 w-[30%] min-w-[104px] max-w-[190px] sm:-right-5">
+                      <ProductShot
+                        name="wydatki-mobile"
+                        alt={t('Wydatki w skiecie na telefonie, z przyciskiem skanowania paragonu w nagłówku')}
+                        phone
+                      />
+                    </div>
+                  )}
                 </div>
                 <div className={i % 2 === 1 ? 'lg:col-span-2 lg:order-1' : 'lg:col-span-2'}>
                   <h3 className="text-2xl font-bold text-slate-900 dark:text-slate-100">{t(item.title)}</h3>
@@ -519,7 +616,7 @@ export default function Landing() {
           {t('Częste pytania')}
         </h2>
         <div className="mt-10 flex flex-col gap-3">
-          {FAQ.map((item) => (
+          {FAQ.filter((item) => !item.requiresDemo || demoAvailable).map((item) => (
             <details
               key={item.q}
               className="group rounded-xl border border-slate-200 dark:border-slate-800 bg-white dark:bg-slate-900 px-5 py-4 shadow-sm transition hover:border-accent-300 dark:hover:border-accent-700"
@@ -602,7 +699,7 @@ export default function Landing() {
           <p className="mx-auto mt-2 max-w-md text-accent-50/90">
             {user
               ? t('Kontynuuj tam, gdzie skończyłeś/aś - Twój dashboard czeka.')
-              : t('Załóż konto i zacznij notować wydatki jeszcze dziś - pierwszy paragon wrzucisz zdjęciem w kilka sekund.')}
+              : t('Załóż konto i zacznij notować wydatki jeszcze dziś. Paragony wrzucisz zdjęciem, gdy raz podłączysz darmowy klucz Google - to dwie minuty.')}
           </p>
           <Link
             to={user ? ctaHref : '/register'}
@@ -628,7 +725,10 @@ export default function Landing() {
             <SockLogo className="h-5 w-5" />
             skieta
           </span>
-          <div className="flex items-center gap-5">
+          <div className="flex flex-wrap items-center justify-center gap-x-5 gap-y-2">
+            <Link to="/kalkulator" className="hover:text-accent-700 dark:hover:text-accent-400 hover:underline">
+              {t('Kalkulator inwestycyjny')}
+            </Link>
             <Link to="/polityka-prywatnosci" className="hover:text-accent-700 dark:hover:text-accent-400 hover:underline">
               {t('Polityka prywatności')}
             </Link>
