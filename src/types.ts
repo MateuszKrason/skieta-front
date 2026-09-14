@@ -411,6 +411,10 @@ export interface User {
   last_name: string
   is_staff: boolean
   is_demo: boolean
+  /** The shared demo everyone sees, as opposed to a visitor's own private copy of it. */
+  demo_read_only: boolean
+  /** When a private demo copy gets erased; null for every other account. */
+  demo_expires_at: string | null
   profile: {
     base_currency: Currency
     residency_country: string

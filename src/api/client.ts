@@ -21,8 +21,9 @@ export const tokenStore = {
 
 export const api = axios.create({ baseURL: BASE_URL })
 
-/** Fired when the backend refuses a change because the session is the shared demo account. */
-export const DEMO_READ_ONLY_EVENT = 'skieta:demo-read-only'
+/** Fired when the backend refuses something a demo session may not do; the event's `detail` is the refusal code. */
+export const DEMO_BLOCKED_EVENT = 'skieta:demo-blocked'
+const DEMO_BLOCKED_CODES = ['demo_read_only', 'demo_disabled']
 
 // Endpoints that are meaningful only when logged out. Sending a stale token
 // along with them used to have a nasty consequence on the login form: the
@@ -76,7 +77,10 @@ api.interceptors.response.use(
     // normal rejection, not a session timeout, and must reach the caller's
     // own catch block instead of forcing a hard redirect to /logowanie.
     const hadToken = !!original?.headers?.Authorization
-    if (error.response?.status === 401 && original && !original._retry && hadToken) {
+    // A request still in flight when the person logged out comes back 401 as well (leaving a demo copy erases
+    // the account at once) - they already left on purpose, so no refresh and no detour to /logowanie.
+    const loggedOut = !tokenStore.getRefresh()
+    if (error.response?.status === 401 && original && !original._retry && hadToken && !loggedOut) {
       original._retry = true
       if (!refreshPromise) {
         refreshPromise = refreshAccessToken().finally(() => {
@@ -91,8 +95,9 @@ api.interceptors.response.use(
       }
       window.location.href = '/logowanie'
     }
-    if (error.response?.status === 403 && (error.response.data as { code?: string } | undefined)?.code === 'demo_read_only') {
-      window.dispatchEvent(new Event(DEMO_READ_ONLY_EVENT))
+    const demoCode = (error.response?.data as { code?: string } | undefined)?.code
+    if (error.response?.status === 403 && demoCode && DEMO_BLOCKED_CODES.includes(demoCode)) {
+      window.dispatchEvent(new CustomEvent(DEMO_BLOCKED_EVENT, { detail: demoCode }))
     }
     return Promise.reject(error)
   },

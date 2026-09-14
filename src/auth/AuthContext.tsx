@@ -161,17 +161,20 @@ export function AuthProvider({ children }: { children: ReactNode }) {
     const access = tokenStore.getAccess()
     const refresh = tokenStore.getRefresh()
     if (refresh) {
-      // The Authorization header is set explicitly here rather than left to
-      // api's request interceptor, which reads tokenStore.getAccess() at
-      // dispatch time - and axios doesn't dispatch synchronously. clear()
-      // below runs before that interceptor gets a turn, so by the time it
-      // read the token itself it was already gone and the request went out
-      // unauthenticated (a real 401 this shipped with once, caught by
-      // clicking the actual "Wyloguj" button rather than just calling the
-      // endpoint directly with curl - the two took different code paths).
-      api
-        .post('/auth/logout/', { refresh }, access ? { headers: { Authorization: `Bearer ${access}` } } : undefined)
-        .catch(() => {})
+      // The Authorization header is set explicitly: clear() below runs before
+      // anything asynchronous gets a turn, and a request that read the token
+      // itself went out unauthenticated (a real 401 this shipped with once,
+      // caught by clicking the actual "Wyloguj" button rather than calling
+      // the endpoint with curl). A keepalive fetch rather than api.post:
+      // leaving the demo loads a new page straight after this, which cancels
+      // an ordinary request - and for a private demo copy this request is
+      // what erases it.
+      fetch(`${api.defaults.baseURL}/auth/logout/`, {
+        method: 'POST',
+        keepalive: true,
+        headers: { 'Content-Type': 'application/json', ...(access ? { Authorization: `Bearer ${access}` } : {}) },
+        body: JSON.stringify({ refresh }),
+      }).catch(() => {})
     }
     tokenStore.clear()
     setUser(null)

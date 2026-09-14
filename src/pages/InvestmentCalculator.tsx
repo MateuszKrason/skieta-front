@@ -472,6 +472,13 @@ export default function InvestmentCalculator({ publicMode = false }: { publicMod
       setHiddenKeys(hiddenOutside(categories))
       setShowCategoryOnboarding(false)
     },
+    onError: (_error, categories) => {
+      // The read-only demo refuses to save the answer, but it should still shape the calculator for this visit.
+      if (user?.demo_read_only) {
+        setHiddenKeys(hiddenOutside(categories))
+        setShowCategoryOnboarding(false)
+      }
+    },
   })
 
   function answerCategories(categories: Category[]) {

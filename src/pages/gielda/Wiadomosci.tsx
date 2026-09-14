@@ -1,10 +1,16 @@
-import { useState } from 'react'
+import { useEffect, useRef, useState } from 'react'
 import { useMutation, useQuery, useQueryClient } from '@tanstack/react-query'
 import { api } from '../../api/client'
 import { CardLoader } from '../../components/Loader'
 import { useLanguage } from '../../i18n/LanguageContext'
 import { formatDateTime } from '../../lib/format'
 import type { CompanyNews, Stock } from '../../types'
+
+interface NewsSyncState {
+  status: 'idle' | 'running' | 'done' | 'failed'
+  created: number | null
+  finished_at: string | null
+}
 
 export default function Wiadomosci() {
   const queryClient = useQueryClient()
@@ -30,9 +36,25 @@ export default function Wiadomosci() {
       ).data,
   })
 
+  // "Sprawdź teraz" runs on the server in the background, for this user's companies only; the page follows its state.
+  const { data: syncState } = useQuery({
+    queryKey: ['news-sync-state'],
+    queryFn: async () => (await api.get<NewsSyncState>('/news/sync/')).data,
+    refetchInterval: (query) => (query.state.data?.status === 'running' ? 3000 : false),
+  })
+  const running = syncState?.status === 'running'
+
+  const previousStatus = useRef(syncState?.status)
+  useEffect(() => {
+    if (previousStatus.current === 'running' && syncState?.status !== 'running') {
+      queryClient.invalidateQueries({ queryKey: ['company-news'] })
+    }
+    previousStatus.current = syncState?.status
+  }, [syncState?.status, queryClient])
+
   const sync = useMutation({
-    mutationFn: () => api.post('/news/sync/'),
-    onSuccess: () => queryClient.invalidateQueries({ queryKey: ['company-news'] }),
+    mutationFn: async () => (await api.post<NewsSyncState>('/news/sync/')).data,
+    onSuccess: (state) => queryClient.setQueryData(['news-sync-state'], state),
   })
 
   const deleteNews = useMutation({
@@ -51,13 +73,23 @@ export default function Wiadomosci() {
             {t('Komunikaty ESPI/EBI (GPW), raporty dla SEC i ważne newsy (USA) dla spółek z Twojego portfela - sprawdzane raz dziennie.')}
           </p>
         </div>
-        <button
-          onClick={() => sync.mutate()}
-          disabled={sync.isPending}
-          className="rounded-md border border-slate-300 dark:border-slate-600 px-3 py-1.5 text-sm font-medium text-slate-700 dark:text-slate-300 hover:bg-slate-100 dark:hover:bg-slate-700 disabled:opacity-60"
-        >
-          {sync.isPending ? t('Sprawdzam…') : t('⟳ Sprawdź teraz')}
-        </button>
+        <div className="flex flex-col items-end gap-1">
+          <button
+            onClick={() => sync.mutate()}
+            disabled={sync.isPending || running}
+            className="rounded-md border border-slate-300 dark:border-slate-600 px-3 py-1.5 text-sm font-medium text-slate-700 dark:text-slate-300 hover:bg-slate-100 dark:hover:bg-slate-700 disabled:opacity-60"
+          >
+            {sync.isPending || running ? t('Sprawdzam…') : t('⟳ Sprawdź teraz')}
+          </button>
+          {running && (
+            <p className="text-xs text-slate-400 dark:text-slate-500">
+              {t('Sprawdzam komunikaty Twoich spółek - to może potrwać do minuty.')}
+            </p>
+          )}
+          {!running && syncState?.status === 'done' && syncState.created !== null && (
+            <p className="text-xs text-slate-400 dark:text-slate-500">{t('Nowych wiadomości: {0}', syncState.created)}</p>
+          )}
+        </div>
       </div>
 
       <div className="flex flex-wrap items-center gap-3">

@@ -226,7 +226,7 @@ const FAQ: { q: string; a: string; requiresDemo?: boolean }[] = [
   },
   {
     q: 'Czy mogę zobaczyć aplikację przed założeniem konta?',
-    a: 'Tak. Przycisk „Zobacz demo" na górze strony otwiera przykładowe konto z budżetem, portfelem, celami oszczędnościowymi i samochodem - możesz wszystko przeklikać, tylko zmiany nie są zapisywane. Bez konta działa też kalkulator inwestycyjny.',
+    a: 'Tak. Przycisk „Zobacz demo" na górze strony otwiera przykładowe konto z budżetem, portfelem, celami oszczędnościowymi i samochodem. Dostajesz jego prywatną kopię: możesz dodawać, zmieniać i usuwać, nikt inny tego nie widzi, a kopia znika po 24 godzinach. Bez konta działa też kalkulator inwestycyjny.',
     requiresDemo: true,
   },
   {

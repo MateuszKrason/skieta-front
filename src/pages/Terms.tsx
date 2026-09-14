@@ -52,7 +52,7 @@ export default function Terms() {
             <li>{t('Konto - indywidualne konto Użytkownika w Usłudze.')}</li>
             <li>
               {t(
-                'Konto demonstracyjne - wspólne konto z przykładowymi danymi, udostępniane bez rejestracji, żeby można było obejrzeć Usługę. Zmiany wprowadzane na tym koncie nie są zapisywane.',
+                'Konto demonstracyjne - konto z przykładowymi danymi, udostępniane bez rejestracji, żeby można było obejrzeć Usługę. Każdy odwiedzający dostaje jego własną, tymczasową kopię. Gdy kopii nie da się utworzyć, odwiedzający ogląda wspólne konto, na którym zmiany nie są zapisywane.',
               )}
             </li>
             <li>
@@ -96,7 +96,7 @@ export default function Terms() {
             </li>
             <li>
               {t(
-                'Przed rejestracją można obejrzeć Usługę na Koncie demonstracyjnym. Jego dane są przykładowe i wspólne dla wszystkich odwiedzających, a zmiany nie są zapisywane - nie należy wpisywać tam żadnych własnych danych.',
+                'Przed rejestracją można obejrzeć Usługę na Koncie demonstracyjnym. Jego dane są przykładowe. Kopia Konta demonstracyjnego, razem ze wszystkim, co zostanie w niej wpisane, jest usuwana przy wyjściu z demo, a najpóźniej po 24 godzinach - nie należy wpisywać tam żadnych własnych danych. Część funkcji, m.in. wysyłanie wiadomości e-mail i zaproszeń, zmiana hasła, zapis klucza Gemini i import wyciągów, jest w demo wyłączona.',
               )}
             </li>
             <li>
