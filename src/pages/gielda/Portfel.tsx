@@ -536,7 +536,7 @@ function StockManager({ stocks, onChange }: { stocks: Stock[]; onChange: () => v
   }
 
   function onDelete(stock: Stock) {
-    if (window.confirm(t('Usunąć spółkę {0} ({1})?', stock.ticker, stock.market))) {
+    if (window.confirm(t('Usunąć {0} ({1}) ze swojej listy? Twoje transakcje i historia zostaną bez zmian.', stock.ticker, stock.market))) {
       deleteMutation.mutate(stock.id)
     }
   }

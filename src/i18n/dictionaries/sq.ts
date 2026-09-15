@@ -489,7 +489,6 @@ export const sq: Record<string, string> = {
   // Stock manager
   'Zarządzaj spółkami': 'Menaxho kompanitë',
   'Nie udało się usunąć spółki.': 'Fshirja e kompanisë dështoi.',
-  'Usunąć spółkę {0} ({1})?': 'Të fshihet kompania {0} ({1})?',
   'Przesuń w górę': 'Zhvendos lart',
   'Przesuń w dół': 'Zhvendos poshtë',
   'Brak spółek.': 'Nuk ka kompani.',
@@ -1086,6 +1085,8 @@ export const sq: Record<string, string> = {
   'Tak. Przycisk „Zobacz demo" na górze strony otwiera przykładowe konto z budżetem, portfelem, celami oszczędnościowymi i samochodem. Dostajesz jego prywatną kopię: możesz dodawać, zmieniać i usuwać, nikt inny tego nie widzi, a kopia znika po 24 godzinach. Bez konta działa też kalkulator inwestycyjny.': 'Po. Butoni “Shiko demon” në krye të faqes hap një llogari shembull me buxhet, portofol, synime kursimi dhe makinë. Merr kopjen tënde private të saj: mund të shtosh, ndryshosh dhe fshish, askush tjetër nuk e sheh, dhe kopja zhduket pas 24 orësh. Kalkulatori i investimeve funksionon edhe pa llogari.',
   'Ta funkcja nie działa w wersji demo. Załóż własne konto, żeby z niej skorzystać.': 'Ky funksion është i çaktivizuar në demo. Krijo llogarinë tënde për ta përdorur.',
   'To Twoja prywatna kopia demo: dodawaj, zmieniaj i usuwaj do woli - nikt inny jej nie widzi. Zniknie {0}.': 'Kjo është kopja jote private e demos: shto, ndrysho dhe fshi sa të duash - askush tjetër nuk e sheh. Zhduket më {0}.',
+  'Usunąć {0} ({1}) ze swojej listy? Twoje transakcje i historia zostaną bez zmian.': 'Të hiqet {0} ({1}) nga lista jote? Transaksionet dhe historiku yt mbeten të pandryshuar.',
+  'Usunąć {0} ze swojej listy? Twoje transakcje i historia zostaną bez zmian.': 'Të hiqet {0} nga lista jote? Transaksionet dhe historiku yt mbeten të pandryshuar.',
   'Wyłożone za innych': 'Paguar për të tjerët',
   'Czeka na zwrot': 'Pret të kthehet',
   'Wyłożone za kogoś innego - już oddane. Kliknij, jeśli jednak nie.':

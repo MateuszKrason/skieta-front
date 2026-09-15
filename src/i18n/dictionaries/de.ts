@@ -489,7 +489,6 @@ export const de: Record<string, string> = {
   // Stock manager
   'Zarządzaj spółkami': 'Aktien verwalten',
   'Nie udało się usunąć spółki.': 'Die Aktie konnte nicht gelöscht werden.',
-  'Usunąć spółkę {0} ({1})?': 'Aktie {0} ({1}) löschen?',
   'Przesuń w górę': 'Nach oben verschieben',
   'Przesuń w dół': 'Nach unten verschieben',
   'Brak spółek.': 'Keine Aktien.',
@@ -1089,6 +1088,8 @@ export const de: Record<string, string> = {
   'Tak. Przycisk „Zobacz demo" na górze strony otwiera przykładowe konto z budżetem, portfelem, celami oszczędnościowymi i samochodem. Dostajesz jego prywatną kopię: możesz dodawać, zmieniać i usuwać, nikt inny tego nie widzi, a kopia znika po 24 godzinach. Bez konta działa też kalkulator inwestycyjny.': 'Ja. Der Button „Demo ansehen“ oben auf der Seite öffnet ein Beispielkonto mit Budget, Portfolio, Sparzielen und Auto. Du bekommst eine private Kopie davon: Du kannst hinzufügen, ändern und löschen, niemand sonst sieht es, und die Kopie verschwindet nach 24 Stunden. Der Investitionsrechner funktioniert auch ohne Konto.',
   'Ta funkcja nie działa w wersji demo. Załóż własne konto, żeby z niej skorzystać.': 'Diese Funktion ist in der Demo deaktiviert. Erstelle ein eigenes Konto, um sie zu nutzen.',
   'To Twoja prywatna kopia demo: dodawaj, zmieniaj i usuwaj do woli - nikt inny jej nie widzi. Zniknie {0}.': 'Das ist deine private Kopie der Demo: Füge hinzu, ändere und lösche nach Belieben - niemand sonst sieht sie. Sie verschwindet am {0}.',
+  'Usunąć {0} ({1}) ze swojej listy? Twoje transakcje i historia zostaną bez zmian.': '{0} ({1}) von deiner Liste entfernen? Deine Transaktionen und dein Verlauf bleiben unverändert.',
+  'Usunąć {0} ze swojej listy? Twoje transakcje i historia zostaną bez zmian.': '{0} von deiner Liste entfernen? Deine Transaktionen und dein Verlauf bleiben unverändert.',
   'Wyłożone za innych': 'Für andere ausgelegt',
   'Czeka na zwrot': 'Steht noch aus',
   'Wyłożone za kogoś innego - już oddane. Kliknij, jeśli jednak nie.':

@@ -489,7 +489,6 @@ export const no: Record<string, string> = {
   // Stock manager
   'Zarządzaj spółkami': 'Administrer selskaper',
   'Nie udało się usunąć spółki.': 'Kunne ikke slette selskapet.',
-  'Usunąć spółkę {0} ({1})?': 'Slette selskapet {0} ({1})?',
   'Przesuń w górę': 'Flytt opp',
   'Przesuń w dół': 'Flytt ned',
   'Brak spółek.': 'Ingen selskaper.',
@@ -1088,6 +1087,8 @@ export const no: Record<string, string> = {
   'Tak. Przycisk „Zobacz demo" na górze strony otwiera przykładowe konto z budżetem, portfelem, celami oszczędnościowymi i samochodem. Dostajesz jego prywatną kopię: możesz dodawać, zmieniać i usuwać, nikt inny tego nie widzi, a kopia znika po 24 godzinach. Bez konta działa też kalkulator inwestycyjny.': 'Ja. Knappen «Se demoen» øverst på siden åpner en eksempelkonto med budsjett, portefølje, sparemål og bil. Du får din egen private kopi: du kan legge til, endre og slette, ingen andre ser det, og kopien forsvinner etter 24 timer. Investeringskalkulatoren fungerer også uten konto.',
   'Ta funkcja nie działa w wersji demo. Załóż własne konto, żeby z niej skorzystać.': 'Denne funksjonen er slått av i demoen. Opprett din egen konto for å bruke den.',
   'To Twoja prywatna kopia demo: dodawaj, zmieniaj i usuwaj do woli - nikt inny jej nie widzi. Zniknie {0}.': 'Dette er din private kopi av demoen: legg til, endre og slett som du vil - ingen andre ser den. Den forsvinner {0}.',
+  'Usunąć {0} ({1}) ze swojej listy? Twoje transakcje i historia zostaną bez zmian.': 'Fjerne {0} ({1}) fra listen din? Transaksjonene og historikken din forblir uendret.',
+  'Usunąć {0} ze swojej listy? Twoje transakcje i historia zostaną bez zmian.': 'Fjerne {0} fra listen din? Transaksjonene og historikken din forblir uendret.',
   'Wyłożone za innych': 'Lagt ut for andre',
   'Czeka na zwrot': 'Venter på tilbakebetaling',
   'Wyłożone za kogoś innego - już oddane. Kliknij, jeśli jednak nie.':

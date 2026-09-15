@@ -489,7 +489,6 @@ export const es: Record<string, string> = {
   // Stock manager
   'Zarządzaj spółkami': 'Gestionar empresas',
   'Nie udało się usunąć spółki.': 'No se pudo eliminar la empresa.',
-  'Usunąć spółkę {0} ({1})?': '¿Eliminar la empresa {0} ({1})?',
   'Przesuń w górę': 'Mover arriba',
   'Przesuń w dół': 'Mover abajo',
   'Brak spółek.': 'No hay empresas.',
@@ -1087,6 +1086,8 @@ export const es: Record<string, string> = {
   'Tak. Przycisk „Zobacz demo" na górze strony otwiera przykładowe konto z budżetem, portfelem, celami oszczędnościowymi i samochodem. Dostajesz jego prywatną kopię: możesz dodawać, zmieniać i usuwać, nikt inny tego nie widzi, a kopia znika po 24 godzinach. Bez konta działa też kalkulator inwestycyjny.': 'Sí. El botón «Ver la demo» de la parte superior abre una cuenta de ejemplo con presupuesto, cartera, metas de ahorro y coche. Recibes tu propia copia privada: puedes añadir, cambiar y borrar, nadie más lo ve y la copia desaparece a las 24 horas. La calculadora de inversiones también funciona sin cuenta.',
   'Ta funkcja nie działa w wersji demo. Załóż własne konto, żeby z niej skorzystać.': 'Esta función no está disponible en la demo. Crea tu propia cuenta para usarla.',
   'To Twoja prywatna kopia demo: dodawaj, zmieniaj i usuwaj do woli - nikt inny jej nie widzi. Zniknie {0}.': 'Esta es tu copia privada de la demo: añade, cambia y borra lo que quieras; nadie más la ve. Desaparecerá el {0}.',
+  'Usunąć {0} ({1}) ze swojej listy? Twoje transakcje i historia zostaną bez zmian.': '¿Quitar {0} ({1}) de tu lista? Tus operaciones y tu historial no cambian.',
+  'Usunąć {0} ze swojej listy? Twoje transakcje i historia zostaną bez zmian.': '¿Quitar {0} de tu lista? Tus operaciones y tu historial no cambian.',
   'Wyłożone za innych': 'Adelantado por otros',
   'Czeka na zwrot': 'Pendiente de devolución',
   'Wyłożone za kogoś innego - już oddane. Kliknij, jeśli jednak nie.':

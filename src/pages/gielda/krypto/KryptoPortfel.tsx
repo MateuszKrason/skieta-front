@@ -532,7 +532,7 @@ function CryptoAssetManager({ assets, onChange }: { assets: CryptoAsset[]; onCha
   }
 
   function onDelete(asset: CryptoAsset) {
-    if (window.confirm(t('Usunąć monetę {0}?', asset.symbol))) {
+    if (window.confirm(t('Usunąć {0} ze swojej listy? Twoje transakcje i historia zostaną bez zmian.', asset.symbol))) {
       deleteMutation.mutate(asset.id)
     }
   }
