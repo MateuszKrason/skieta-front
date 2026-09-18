@@ -1090,6 +1090,13 @@ export const de: Record<string, string> = {
   'To Twoja prywatna kopia demo: dodawaj, zmieniaj i usuwaj do woli - nikt inny jej nie widzi. Zniknie {0}.': 'Das ist deine private Kopie der Demo: Füge hinzu, ändere und lösche nach Belieben - niemand sonst sieht sie. Sie verschwindet am {0}.',
   'Usunąć {0} ({1}) ze swojej listy? Twoje transakcje i historia zostaną bez zmian.': '{0} ({1}) von deiner Liste entfernen? Deine Transaktionen und dein Verlauf bleiben unverändert.',
   'Usunąć {0} ze swojej listy? Twoje transakcje i historia zostaną bez zmian.': '{0} von deiner Liste entfernen? Deine Transaktionen und dein Verlauf bleiben unverändert.',
+  'Pokaż': 'Anzeigen',
+  'Ukryj': 'Ausblenden',
+  '(opcjonalnie)': '(optional)',
+  'Załóż konto w minutę. Wystarczą e-mail i hasło.': 'Konto in einer Minute anlegen. E-Mail und Passwort genügen.',
+  'Co najmniej 8 znaków, nie same cyfry.': 'Mindestens 8 Zeichen, nicht nur Ziffern.',
+  'Imię, język i walutę ustawisz później w ustawieniach konta.': 'Name, Sprache und Währung legst du später in den Kontoeinstellungen fest.',
+  'Jak mamy się do Ciebie zwracać?': 'Wie sollen wir dich nennen?',
   'Wyłożone za innych': 'Für andere ausgelegt',
   'Czeka na zwrot': 'Steht noch aus',
   'Wyłożone za kogoś innego - już oddane. Kliknij, jeśli jednak nie.':

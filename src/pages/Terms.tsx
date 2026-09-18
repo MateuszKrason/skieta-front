@@ -32,7 +32,7 @@ export default function Terms() {
       <div className="mx-auto max-w-3xl space-y-8 px-4 py-12">
         <div>
           <h1 className="text-3xl font-bold text-slate-900 dark:text-slate-100">{t('Regulamin usługi')}</h1>
-          <p className="mt-2 text-sm text-slate-400 dark:text-slate-500">{t('Ostatnia aktualizacja: 14 września 2026')}</p>
+          <p className="mt-2 text-sm text-slate-400 dark:text-slate-500">{t('Ostatnia aktualizacja: 18 września 2026')}</p>
         </div>
 
         <Section title="1. Postanowienia ogólne">
@@ -101,7 +101,7 @@ export default function Terms() {
             </li>
             <li>
               {t(
-                'Użytkownik zobowiązany jest podać prawdziwe dane przy rejestracji (imię, nazwisko, opcjonalnie adres e-mail) oraz aktualizować je w razie zmiany.',
+                'Do rejestracji wystarczą adres e-mail i hasło. Użytkownik podaje adres e-mail, do którego ma dostęp. Imię i nazwisko są dobrowolne - jeśli Użytkownik je poda, powinny być prawdziwe.',
               )}
             </li>
             <li>{t('Jedna osoba fizyczna może posiadać jedno Konto, chyba że Usługodawca postanowi inaczej.')}</li>

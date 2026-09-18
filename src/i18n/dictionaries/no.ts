@@ -1089,6 +1089,13 @@ export const no: Record<string, string> = {
   'To Twoja prywatna kopia demo: dodawaj, zmieniaj i usuwaj do woli - nikt inny jej nie widzi. Zniknie {0}.': 'Dette er din private kopi av demoen: legg til, endre og slett som du vil - ingen andre ser den. Den forsvinner {0}.',
   'Usunąć {0} ({1}) ze swojej listy? Twoje transakcje i historia zostaną bez zmian.': 'Fjerne {0} ({1}) fra listen din? Transaksjonene og historikken din forblir uendret.',
   'Usunąć {0} ze swojej listy? Twoje transakcje i historia zostaną bez zmian.': 'Fjerne {0} fra listen din? Transaksjonene og historikken din forblir uendret.',
+  'Pokaż': 'Vis',
+  'Ukryj': 'Skjul',
+  '(opcjonalnie)': '(valgfritt)',
+  'Załóż konto w minutę. Wystarczą e-mail i hasło.': 'Opprett en konto på ett minutt. E-post og passord er nok.',
+  'Co najmniej 8 znaków, nie same cyfry.': 'Minst 8 tegn, ikke bare tall.',
+  'Imię, język i walutę ustawisz później w ustawieniach konta.': 'Navn, språk og valuta kan du stille inn senere i kontoinnstillingene.',
+  'Jak mamy się do Ciebie zwracać?': 'Hva skal vi kalle deg?',
   'Wyłożone za innych': 'Lagt ut for andre',
   'Czeka na zwrot': 'Venter på tilbakebetaling',
   'Wyłożone za kogoś innego - już oddane. Kliknij, jeśli jednak nie.':

@@ -7,21 +7,19 @@ import { takeSignupSource } from '../lib/analytics'
 import { clearUserScopedStorage } from '../lib/userScopedStorage'
 import type { User } from '../types'
 
+export interface RegisterDetails {
+  email: string
+  password: string
+  language: Language
+  inviteToken: string
+  termsAccepted: boolean
+}
+
 interface AuthContextValue {
   user: User | null
   loading: boolean
   login: (username: string, password: string) => Promise<void>
-  register: (
-    username: string,
-    email: string,
-    password: string,
-    firstName: string,
-    lastName: string,
-    baseCurrency: string,
-    inviteToken: string,
-    language: Language,
-    termsAccepted: boolean,
-  ) => Promise<void>
+  register: (details: RegisterDetails) => Promise<void>
   /** Opens a session on the shared, read-only demo account (see accounts.demo). */
   startDemo: () => Promise<void>
   logout: () => void
@@ -98,31 +96,21 @@ export function AuthProvider({ children }: { children: ReactNode }) {
     await fetchMe()
   }
 
-  async function register(
-    username: string,
-    email: string,
-    password: string,
-    firstName: string,
-    lastName: string,
-    baseCurrency: string,
-    inviteToken: string,
-    language: Language,
-    termsAccepted: boolean,
-  ) {
+  async function register({ email, password, language, inviteToken, termsAccepted }: RegisterDetails) {
+    // No login, name or currency here: the server makes the login from the
+    // address and picks the currency from the language
+    // (accounts.serializers.RegisterSerializer); the rest waits for the
+    // account settings.
     const { data } = await api.post('/auth/register/', {
-      username,
       email,
       password,
-      first_name: firstName,
-      last_name: lastName,
-      base_currency: baseCurrency,
-      invite_token: inviteToken,
       language,
+      invite_token: inviteToken,
       terms_accepted: termsAccepted,
       // Read here rather than passed down from the form: the source was
       // recorded pages ago, by a button in an article, and threading it
-      // through as a tenth positional argument to register() would put it
-      // everywhere except where it is actually used - the request body.
+      // through the form would put it everywhere except where it is
+      // actually used - the request body.
       ...takeSignupSource(),
     })
     forgetPreviousUser()

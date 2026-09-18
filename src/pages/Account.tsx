@@ -767,11 +767,11 @@ function ProfileForm() {
       <div className="flex gap-3">
         <label className="block flex-1 text-xs font-medium text-slate-500 dark:text-slate-400">
           {t('Imię')}
-          <input value={firstName} onChange={(e) => setFirstName(e.target.value)} required className="input mt-1" />
+          <input value={firstName} onChange={(e) => setFirstName(e.target.value)} autoComplete="given-name" className="input mt-1" />
         </label>
         <label className="block flex-1 text-xs font-medium text-slate-500 dark:text-slate-400">
           {t('Nazwisko')}
-          <input value={lastName} onChange={(e) => setLastName(e.target.value)} required className="input mt-1" />
+          <input value={lastName} onChange={(e) => setLastName(e.target.value)} autoComplete="family-name" className="input mt-1" />
         </label>
       </div>
       <label className="block text-xs font-medium text-slate-500 dark:text-slate-400">

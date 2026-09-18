@@ -1088,6 +1088,13 @@ export const en: Record<string, string> = {
   'To Twoja prywatna kopia demo: dodawaj, zmieniaj i usuwaj do woli - nikt inny jej nie widzi. Zniknie {0}.': 'This is your private copy of the demo: add, edit and delete as you like - nobody else can see it. It disappears on {0}.',
   'Usunąć {0} ({1}) ze swojej listy? Twoje transakcje i historia zostaną bez zmian.': 'Remove {0} ({1}) from your list? Your transactions and history stay as they are.',
   'Usunąć {0} ze swojej listy? Twoje transakcje i historia zostaną bez zmian.': 'Remove {0} from your list? Your transactions and history stay as they are.',
+  'Pokaż': 'Show',
+  'Ukryj': 'Hide',
+  '(opcjonalnie)': '(optional)',
+  'Załóż konto w minutę. Wystarczą e-mail i hasło.': 'Create an account in a minute. An email and a password are all it takes.',
+  'Co najmniej 8 znaków, nie same cyfry.': 'At least 8 characters, not only digits.',
+  'Imię, język i walutę ustawisz później w ustawieniach konta.': 'You can set your name, language and currency later in your account settings.',
+  'Jak mamy się do Ciebie zwracać?': 'What should we call you?',
   'Wyłożone za innych': 'Fronted for others',
   'Czeka na zwrot': 'Owed back to you',
   'Wyłożone za kogoś innego - już oddane. Kliknij, jeśli jednak nie.':

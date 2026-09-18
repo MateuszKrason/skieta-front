@@ -224,14 +224,34 @@ const INTEREST_OPTIONS: {
 function InterestsStep() {
   const { user, refreshUser } = useAuth()
   const { t } = useLanguage()
+  const [firstName, setFirstName] = useState(user?.first_name ?? '')
 
   const mutation = useMutation({
-    mutationFn: (payload: Record<string, boolean>) => api.patch('/auth/me/', payload),
+    mutationFn: (payload: Record<string, boolean | string>) => api.patch('/auth/me/', payload),
     onSuccess: refreshUser,
   })
 
+  // Sign-up no longer asks for a name, so this is the one friendly place it is offered - and it can stay empty.
+  function saveFirstName() {
+    const value = firstName.trim()
+    if (value !== (user?.first_name ?? '')) mutation.mutate({ first_name: value })
+  }
+
   return (
     <div className="space-y-3 rounded-xl border border-slate-200 dark:border-slate-700 bg-white dark:bg-slate-800 p-4 shadow-sm">
+      <label className="block max-w-xs text-sm">
+        <span className="font-medium text-slate-800 dark:text-slate-200">{t('Jak mamy się do Ciebie zwracać?')}</span>{' '}
+        <span className="text-xs text-slate-400 dark:text-slate-500">{t('(opcjonalnie)')}</span>
+        <input
+          value={firstName}
+          onChange={(e) => setFirstName(e.target.value)}
+          onBlur={saveFirstName}
+          autoComplete="given-name"
+          placeholder={t('Imię')}
+          maxLength={150}
+          className="input mt-1"
+        />
+      </label>
       <p className="text-sm text-slate-500 dark:text-slate-400">
         {t('Z czego chcesz korzystać? Odznacz to, czego nie potrzebujesz - zawsze możesz to zmienić później w ustawieniach konta.')}
       </p>

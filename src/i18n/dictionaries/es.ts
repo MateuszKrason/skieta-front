@@ -1088,6 +1088,13 @@ export const es: Record<string, string> = {
   'To Twoja prywatna kopia demo: dodawaj, zmieniaj i usuwaj do woli - nikt inny jej nie widzi. Zniknie {0}.': 'Esta es tu copia privada de la demo: añade, cambia y borra lo que quieras; nadie más la ve. Desaparecerá el {0}.',
   'Usunąć {0} ({1}) ze swojej listy? Twoje transakcje i historia zostaną bez zmian.': '¿Quitar {0} ({1}) de tu lista? Tus operaciones y tu historial no cambian.',
   'Usunąć {0} ze swojej listy? Twoje transakcje i historia zostaną bez zmian.': '¿Quitar {0} de tu lista? Tus operaciones y tu historial no cambian.',
+  'Pokaż': 'Mostrar',
+  'Ukryj': 'Ocultar',
+  '(opcjonalnie)': '(opcional)',
+  'Załóż konto w minutę. Wystarczą e-mail i hasło.': 'Crea tu cuenta en un minuto. Solo necesitas un correo y una contraseña.',
+  'Co najmniej 8 znaków, nie same cyfry.': 'Al menos 8 caracteres, no solo números.',
+  'Imię, język i walutę ustawisz później w ustawieniach konta.': 'Tu nombre, idioma y moneda los configuras después en los ajustes de la cuenta.',
+  'Jak mamy się do Ciebie zwracać?': '¿Cómo quieres que te llamemos?',
   'Wyłożone za innych': 'Adelantado por otros',
   'Czeka na zwrot': 'Pendiente de devolución',
   'Wyłożone za kogoś innego - już oddane. Kliknij, jeśli jednak nie.':

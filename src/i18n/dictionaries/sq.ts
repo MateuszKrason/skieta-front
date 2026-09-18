@@ -1087,6 +1087,13 @@ export const sq: Record<string, string> = {
   'To Twoja prywatna kopia demo: dodawaj, zmieniaj i usuwaj do woli - nikt inny jej nie widzi. Zniknie {0}.': 'Kjo është kopja jote private e demos: shto, ndrysho dhe fshi sa të duash - askush tjetër nuk e sheh. Zhduket më {0}.',
   'Usunąć {0} ({1}) ze swojej listy? Twoje transakcje i historia zostaną bez zmian.': 'Të hiqet {0} ({1}) nga lista jote? Transaksionet dhe historiku yt mbeten të pandryshuar.',
   'Usunąć {0} ze swojej listy? Twoje transakcje i historia zostaną bez zmian.': 'Të hiqet {0} nga lista jote? Transaksionet dhe historiku yt mbeten të pandryshuar.',
+  'Pokaż': 'Shfaq',
+  'Ukryj': 'Fshih',
+  '(opcjonalnie)': '(opsionale)',
+  'Załóż konto w minutę. Wystarczą e-mail i hasło.': 'Krijo llogari për një minutë. Mjaftojnë emaili dhe fjalëkalimi.',
+  'Co najmniej 8 znaków, nie same cyfry.': 'Të paktën 8 karaktere, jo vetëm shifra.',
+  'Imię, język i walutę ustawisz później w ustawieniach konta.': 'Emrin, gjuhën dhe monedhën i cakton më vonë te cilësimet e llogarisë.',
+  'Jak mamy się do Ciebie zwracać?': 'Si të të thërrasim?',
   'Wyłożone za innych': 'Paguar për të tjerët',
   'Czeka na zwrot': 'Pret të kthehet',
   'Wyłożone za kogoś innego - już oddane. Kliknij, jeśli jednak nie.':

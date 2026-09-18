@@ -51,6 +51,7 @@ type EventName =
   | 'register_clicked'
   | 'invite_nudge_clicked'
   | 'article_login_clicked'
+  | 'register_started'
   | 'registered'
   | 'onboarding_completed'
   | 'statement_imported'
