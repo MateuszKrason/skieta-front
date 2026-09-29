@@ -18,6 +18,7 @@ Allow: /site.webmanifest
 Allow: /og-
 Allow: /icons.svg
 Allow: /sitemap.xml
+Allow: /rss.xml
 Allow: /llms.txt
 # The app's scripts, styles and screenshots: without them Google cannot render any page that is built in the browser.
 Allow: /assets/

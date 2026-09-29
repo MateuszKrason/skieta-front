@@ -7,6 +7,7 @@
 # Order matters here: first match wins, so this must precede the SPA fallback.
 /api/*         https://api.skieta.com/api/:splat    200
 /sitemap.xml   https://api.skieta.com/sitemap.xml   200
+/rss.xml       https://api.skieta.com/rss.xml       200
 
 # No rule for /og/* on purpose. A `/og/* -> /og-image.png 200` fallback used to
 # sit here, and it was the only structural difference between /og-image.png,
