@@ -1,6 +1,13 @@
-<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 48 48" fill="none">
-  <rect x="14" y="4" width="16" height="24" rx="5" fill="#059669"/>
-  <rect x="14" y="22" width="26" height="16" rx="6" fill="#059669"/>
-  <rect x="15" y="5" width="14" height="5" fill="#a7f3d0"/>
-  <rect x="31" y="26" width="7" height="10" rx="2" fill="#a7f3d0"/>
+<!-- The sock, drawn as one outline instead of two overlapping rectangles. The
+     old version stacked a leg rect on a foot rect, which left a visible pinch
+     where their rounded corners met and a cuff that did not reach the edges;
+     both showed up as soon as the mark was drawn larger than a favicon.
+     Every raster in this folder is generated from this file by
+     scripts/generate_icons.mjs - change the artwork here, never there. -->
+<!-- The viewBox is cropped to the mark plus a small even margin, so the sock
+     fills a 16 px favicon instead of floating in the middle of it. -->
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="4.5 4.5 39 39" fill="none">
+  <path d="M11 6.9h16v17.5h3.9a6.1 6.1 0 0 1 6.1 6.1v4.6a6.1 6.1 0 0 1-6.1 6.1H17.1a6.1 6.1 0 0 1-6.1-6.1z" fill="#059669"/>
+  <path d="M11 6.9h16v5.3H11z" fill="#a7f3d0"/>
+  <rect x="28" y="28.3" width="7" height="10.4" rx="2.6" fill="#a7f3d0"/>
 </svg>
