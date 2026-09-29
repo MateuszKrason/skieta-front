@@ -541,6 +541,16 @@ export interface AdminAppStats {
   signups_daily: { date: string; count: number }[]
   language_visit_counts: Record<string, number>
   invitations_by_language: Record<string, number>
+  /** How often "Zobacz demo" handed out a session. The copies are erased
+   * within a day (accounts.demo_sandbox), so this tally is the only lasting
+   * record that anyone tried the demo at all. */
+  demo_launches: {
+    total: number
+    last_7_days: number
+    last_30_days: number
+    /** The rest fell back to the shared read-only demo because the copy limit was full. */
+    private_copies: number
+  }
   /** Where the accounts themselves came from, not just the clicks - see
    * accounts.services.signup_sources. 'unknown' covers everyone who
    * registered before this was recorded and everyone who went straight to

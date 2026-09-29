@@ -739,6 +739,10 @@ export const sq: Record<string, string> = {
   // Admin: Statystyki tab
   'Statystyki': 'Statistikat',
   'Zaproszenia wysłane': 'Ftesat e dërguara',
+  'Uruchomienia demo': 'Nisje të demos',
+  'w tym {0} z własną kopią': 'nga të cilat {0} me kopje të vetën',
+  'Demo, ostatnie 7 dni': 'Demo, 7 ditët e fundit',
+  'Demo, ostatnie 30 dni': 'Demo, 30 ditët e fundit',
   'Zaproszenia przyjęte': 'Ftesat e pranuara',
   'Zaproszenia mailem': 'Ftesat me e-mail',
   'Redaktorzy': 'Redaktorët',

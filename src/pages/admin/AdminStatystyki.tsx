@@ -9,11 +9,12 @@ import { formatDate, formatDateTime, formatDuration } from '../../lib/format'
 import type { AdminAppStats, AdminInvitedEmail, AdminUser, InvitationFunnelStats } from '../../types'
 import { DailyRangePicker, useDailyRange } from './dailyRange'
 
-function StatCard({ label, value }: { label: string; value: string | number }) {
+function StatCard({ label, value, hint }: { label: string; value: string | number; hint?: string }) {
   return (
     <div className="rounded-xl border border-slate-200 dark:border-slate-700 bg-white dark:bg-slate-800 p-4 shadow-sm">
       <p className="text-xs font-medium text-slate-500 dark:text-slate-400">{label}</p>
       <p className="mt-1 text-xl font-bold text-slate-900 dark:text-slate-100">{value}</p>
+      {hint && <p className="mt-0.5 text-xs text-slate-400 dark:text-slate-500">{hint}</p>}
     </div>
   )
 }
@@ -160,6 +161,13 @@ export default function AdminStatystyki() {
         <StatCard label={t('Konta bankowe')} value={stats.bank_account_count} />
         <StatCard label={t('Role niestandardowe')} value={stats.role_count} />
         <StatCard label={t('Średni czas sesji')} value={formatDuration(stats.avg_session_duration_seconds)} />
+        <StatCard
+          label={t('Uruchomienia demo')}
+          value={stats.demo_launches.total}
+          hint={t('w tym {0} z własną kopią', stats.demo_launches.private_copies)}
+        />
+        <StatCard label={t('Demo, ostatnie 7 dni')} value={stats.demo_launches.last_7_days} />
+        <StatCard label={t('Demo, ostatnie 30 dni')} value={stats.demo_launches.last_30_days} />
       </div>
 
       <div className="rounded-xl border border-slate-200 dark:border-slate-700 bg-white dark:bg-slate-800 p-5 shadow-sm">

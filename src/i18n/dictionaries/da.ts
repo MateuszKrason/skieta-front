@@ -739,6 +739,10 @@ export const da: Record<string, string> = {
   // Admin: Statystyki tab
   'Statystyki': 'Statistik',
   'Zaproszenia wysłane': 'Sendte invitationer',
+  'Uruchomienia demo': 'Demo-starter',
+  'w tym {0} z własną kopią': 'heraf {0} med egen kopi',
+  'Demo, ostatnie 7 dni': 'Demo, sidste 7 dage',
+  'Demo, ostatnie 30 dni': 'Demo, sidste 30 dage',
   'Zaproszenia przyjęte': 'Accepterede invitationer',
   'Zaproszenia mailem': 'Invitationer via e-mail',
   'Redaktorzy': 'Redaktører',
