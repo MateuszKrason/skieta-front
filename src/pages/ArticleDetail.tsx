@@ -6,7 +6,7 @@ import { PageLoader } from '../components/Loader'
 import SockLogo from '../components/SockLogo'
 import { useLanguage } from '../i18n/LanguageContext'
 import { rememberSignupSource, trackEvent } from '../lib/analytics'
-import { formatDateTime } from '../lib/format'
+import { formatDate } from '../lib/format'
 import { useNoindex } from '../lib/useNoindex'
 import type { Article } from '../types'
 
@@ -146,7 +146,7 @@ export default function ArticleDetail() {
       </header>
 
       <article className="mx-auto max-w-3xl px-4 py-12">
-        <Link to="/" className="text-sm font-medium text-accent-700 dark:text-accent-400 hover:underline">
+        <Link to="/artykuly" className="text-sm font-medium text-accent-700 dark:text-accent-400 hover:underline">
           {t('← Wszystkie artykuły')}
         </Link>
 
@@ -174,8 +174,8 @@ export default function ArticleDetail() {
           <>
             <time dateTime={article.published_at} className="mt-6 block text-xs text-slate-400 dark:text-slate-500">
               {article.author_name
-                ? t('Autor: {0} • {1}', article.author_name, formatDateTime(article.published_at))
-                : formatDateTime(article.published_at)}
+                ? t('Autor: {0} • {1}', article.author_name, formatDate(article.published_at))
+                : formatDate(article.published_at)}
             </time>
             <h1 className="mt-1 text-3xl font-bold text-slate-900 dark:text-slate-100">{article.title}</h1>
             <p className="mt-3 text-lg text-slate-600 dark:text-slate-400">{article.summary}</p>

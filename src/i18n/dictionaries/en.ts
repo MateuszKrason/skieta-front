@@ -835,42 +835,23 @@ export const en: Record<string, string> = {
   'Dostępne wyłącznie na zaproszenie': 'Invite-only access',
   'Zobacz, gdzie znika': 'See where',
   'Twoja wypłata': 'your paycheck goes',
-  'Zbudowane, żeby faktycznie z tego korzystać': 'Built to actually get used',
-  'Nie kolejny arkusz kalkulacyjny - narzędzie, które samo liczy to, co dla Ciebie ważne.':
-    "Not another spreadsheet - a tool that does the math on what matters to you.",
-  'Wszystko w jednym miejscu': 'Everything in one place',
-  'Konta bankowe, akcje, obligacje i lokaty - jeden widok na cały Twój majątek, bez przełączania się między aplikacjami banków i domów maklerskich.':
-    'Bank accounts, stocks, bonds and deposits - one view of your entire net worth, no switching between bank and broker apps.',
   'Realny zwrot z inwestycji': 'Real investment return',
   'Zysk liczony osobno od wpłaconego kapitału - zobaczysz dokładnie, ile realnie zarobiłeś na lokatach, obligacjach i akcjach, po podatku Belki.':
     "Profit tracked separately from contributed capital - see exactly what you've earned on deposits, bonds and stocks, after capital gains tax.",
   'Budżet pod kontrolą': 'Budget under control',
   'Automatyczny import wyciągów, kategorie, sklepy i tagi - analiza przychodów i wydatków, która sama się aktualizuje.':
     'Automatic statement import, categories, stores and tags - income/expense analysis that updates itself.',
-  'Ustaw cel, rezerwuj kwoty z konkretnych wypłat lub z bieżących oszczędności i śledź postęp na żywo.':
-    'Set a goal, reserve amounts from specific paychecks or your current savings, and track progress live.',
   'Dywidendy i podatki': 'Dividends and taxes',
   'Historia i prognoza wypłat dywidend, szacowany podatek Belki do zapłaty - żadnych niespodzianek przy rozliczeniu.':
     'Dividend history and forecast, estimated capital gains tax owed - no surprises at tax time.',
   // Landing - budget-first positioning + receipt scanning
-  'Zapisuj wydatki zdjęciem paragonu i zobacz, gdzie naprawdę idą Twoje pieniądze. A jeśli inwestujesz - skieta doliczy do tego akcje, lokaty i obligacje i pokaże realny zysk, a nie samo saldo.':
-    'Log expenses by photographing the receipt and see where your money actually goes. And if you invest - skieta adds stocks, deposits and bonds on top and shows your real profit, not just a balance.',
-  'Wydatek ze zdjęcia paragonu': 'An expense from a photo of the receipt',
   'Zrób paragonowi zdjęcie telefonem, a skieta odczyta kwotę, datę i sklep oraz sama zaproponuje kategorię z Twojej listy. Zostaje Ci sprawdzić i zapisać.':
     'Photograph the receipt with your phone and skieta reads the amount, date and store, then suggests a category from your own list. All that is left is to check it and save.',
-  'Realny zwrot, dywidendy i podatki': 'Real return, dividends and taxes',
   'Jeśli inwestujesz: zysk liczony osobno od wpłaconego kapitału, po podatku Belki, plus historia i prognoza dywidend wraz z szacowanym podatkiem do zapłaty.':
     'If you invest: profit counted separately from the capital you put in, after capital gains tax, plus dividend history and forecasts with the tax you can expect to owe.',
   'Widać, na co naprawdę idą pieniądze': 'You can see where the money really goes',
-  'Wydatki z podziałem na kategorie, sklepy i tagi, miesiąc po miesiącu. Nowy wydatek dodajesz zdjęciem paragonu - kwota, data i sklep odczytują się same, a kategoria jest proponowana z Twojej własnej listy.':
-    'Expenses split by category, store and tag, month after month. A new expense goes in as a photo of the receipt - amount, date and store read themselves, and the category is suggested from your own list.',
   'Strona wydatków w skiecie: podział na kategorie i sklepy, wykres wydatków w czasie i przycisk wgrywania paragonu':
     'The expenses page in skieta: a breakdown by category and store, a spending-over-time chart and the upload-receipt button',
-  'Zaczynasz notować': 'You start logging',
-  'Dodajesz konto bankowe, a wydatki wrzucasz zdjęciem paragonu. Portfel akcji, lokaty i obligacje - jeśli je masz.':
-    'You add a bank account and put expenses in by photographing receipts. Stock portfolio, deposits and bonds - if you have them.',
-  'Dashboard aktualizuje się na bieżąco - budżet, majątek i zwrot z inwestycji w jednym miejscu.':
-    'The dashboard updates continuously - budget, net worth and investment return in one place.',
   'Czy mogę używać skiety tylko do budżetu, bez inwestycji?':
     'Can I use skieta only for budgeting, without investing?',
   'Tak, i nie musisz niczego obchodzić. Przy zakładaniu konta zaznaczasz, co Cię interesuje - jeśli nie zaznaczysz giełdy, cała część inwestycyjna po prostu znika z menu i zostaje czysta aplikacja do przychodów, wydatków, paragonów i celów oszczędnościowych. Możesz to zmienić w każdej chwili w ustawieniach konta.':
@@ -879,8 +860,6 @@ export const en: Record<string, string> = {
     'How does adding an expense from a photo of a receipt work?',
   'Robisz paragonowi zdjęcie telefonem, a skieta odczytuje z niego kwotę, datę i nazwę sklepu oraz proponuje kategorię z Twojej własnej listy - poprawiasz, co trzeba, i zapisujesz. Odczytem zajmuje się Google Gemini na Twoim własnym, darmowym kluczu, który wklejasz raz przy pierwszym skanowaniu. Samego zdjęcia nigdzie nie zapisujemy - jest odczytywane w locie i nie trafia do naszej bazy.':
     'You photograph the receipt with your phone, and skieta reads the amount, date and store name from it and suggests a category from your own list - you correct whatever needs correcting and save. The reading is done by Google Gemini on your own free key, which you paste once the first time you scan. We never store the photo itself - it is read on the fly and never reaches our database.',
-  'Arkusz nie zrobi za Ciebie zdjęcia paragonu i nie policzy, ile realnie zarobiłeś. skieta odczytuje wydatek ze zdjęcia i sama pilnuje kategorii, a przy inwestycjach liczy zysk osobno od wpłaconego kapitału, po podatku Belki, z kosztem zakupu akcji przeliczonym po kursie NBP z dnia transakcji, a nie dzisiejszym. To rzeczy, które w arkuszu trzeba utrzymywać ręcznie i łatwo w nich o błąd.':
-    'A spreadsheet will not photograph a receipt for you, and it will not work out how much you actually earned. skieta reads an expense off a photo and keeps track of categories for you, and for investments it counts profit separately from the capital you put in, after capital gains tax, with the purchase cost of shares converted at the NBP rate from the transaction date rather than the rate today. Those are things a spreadsheet needs kept up by hand, and they are easy to get wrong.',
   'Załóż konto i zacznij notować wydatki jeszcze dziś - pierwszy paragon wrzucisz zdjęciem w kilka sekund.':
     'Create an account and start logging expenses today - your first receipt goes in as a photo in seconds.',
   '📷 Paragon': '📷 Receipt',
@@ -1059,13 +1038,9 @@ export const en: Record<string, string> = {
   'Zobacz demo →': 'See the demo →',
   'Nie udało się otworzyć demo. Spróbuj ponownie za chwilę.': 'The demo could not be opened. Try again in a moment.',
   'Kont w skiecie: {0} · zapisanych przychodów i wydatków: {1}': 'Accounts in skieta: {0} · income and expenses recorded: {1}',
-  'Załóż konto i zacznij notować wydatki jeszcze dziś. Paragony wrzucisz zdjęciem, gdy raz podłączysz darmowy klucz Google - to dwie minuty.': 'Create an account and start tracking your spending today. You can add receipts with a photo once you connect a free Google key - it takes two minutes.',
-  'Zrób paragonowi zdjęcie telefonem, a skieta odczyta kwotę, datę i sklep, zaproponuje kategorię z Twojej listy, a dłuższy paragon rozbije na pozycje. Wystarczy raz podłączyć darmowy klucz Google - to dwie minuty.': 'Take a photo of a receipt with your phone and skieta reads the amount, date and shop, suggests a category from your own list, and splits a longer receipt into items. You only need to connect a free Google key once - it takes two minutes.',
-  'Jeśli inwestujesz: zysk liczony osobno od wpłaconego kapitału, po podatku Belki, historia i prognoza dywidend z szacowanym podatkiem oraz podsumowanie komunikatów i wiadomości o Twoich spółkach, z odnośnikiem do źródła przy każdym punkcie.': 'If you invest: profit calculated separately from the capital you put in, after Belka tax, dividend history and forecast with estimated tax, plus a summary of filings and news about your companies with a source link on every point.',
   'Czy skieta działa na telefonie?': 'Does skieta work on a phone?',
   'Tak, i nie trzeba niczego pobierać ze sklepu z aplikacjami. Otwórz skieta.com w telefonie i dodaj ją do ekranu głównego: na iPhonie w Safari stuknij „Udostępnij", a potem „Do ekranu początkowego"; na Androidzie przeglądarka sama zaproponuje instalację albo znajdziesz ją w menu jako „Zainstaluj aplikację". skieta otwiera się wtedy jak zwykła aplikacja - na pełnym ekranie i z własną ikoną - a paragon zeskanujesz jednym tapnięciem.': 'Yes, and there is nothing to download from an app store. Open skieta.com on your phone and add it to your home screen: on an iPhone, tap “Share” in Safari and then “Add to Home Screen”; on Android the browser offers to install it, or you will find “Install app” in its menu. skieta then opens like a regular app - full screen, with its own icon - and you can scan a receipt with a single tap.',
   'Czy mogę zobaczyć aplikację przed założeniem konta?': 'Can I see the app before creating an account?',
-  'Z publicznych źródeł: notowania z Yahoo Finance i Stooq, kursy walut z NBP, aktualne oprocentowanie obligacji skarbowych z obligacjeskarbowe.pl, a w analizie spółek - komunikaty spółek z bankier.pl, raporty spółek amerykańskich z SEC EDGAR i wiadomości z Yahoo Finance. Dane odświeżane są automatycznie, a przy porównaniach zawsze widzisz, z jakiego okresu pochodzą.': 'From public sources: share prices from Yahoo Finance and Stooq, exchange rates from NBP, current treasury bond rates from obligacjeskarbowe.pl, and for company analysis - company filings from bankier.pl, US company filings from SEC EDGAR and news from Yahoo Finance. Data refreshes automatically, and comparisons always show which period they come from.',
   'Tej zmiany nie zapisaliśmy - to konto demonstracyjne. Załóż własne konto, żeby prowadzić swoje finanse.': 'This change was not saved - this is a demo account. Create your own account to track your finances.',
   'Oglądasz konto demonstracyjne z przykładowymi danymi. Możesz wszystko przeklikać, ale zmiany nie są zapisywane.': 'You are looking at a demo account with sample data. Click through anything you like, but changes are not saved.',
   'Załóż własne konto →': 'Create your own account →',
@@ -1105,17 +1080,14 @@ export const en: Record<string, string> = {
     'Fronted for someone else - already paid back. Click if they have not after all.',
   'Wyłożone za kogoś innego - kliknij, gdy oddadzą.':
     'Fronted for someone else - click once they pay you back.',
-  'Twoje dane, Twoja kontrola': 'Your data, your control',
   'Dostęp wyłącznie na zaproszenie, bez reklam i bez śledzenia. Historia logowań pokazuje dokładnie, kto i kiedy wchodził na Twoje konto.':
     'Invite-only access, no ads, no tracking. Login history shows exactly who accessed your account and when.',
-  'Jak to działa': 'How it works',
   'Dostajesz zaproszenie': 'You get an invite',
   'Rejestracja jest możliwa tylko na zaproszenie od kogoś, kto już korzysta ze skieta.':
     'Registration is only possible with an invite from someone already using skieta.',
   'Dodajesz swoje konta': 'You add your accounts',
   'Kilka minut wystarczy, żeby dodać konta bankowe, portfel akcji, lokaty i obligacje.':
     "A few minutes is enough to add bank accounts, your stock portfolio, deposits and bonds.",
-  'Widzisz cały obraz': 'You see the full picture',
   'Dashboard aktualizuje się na bieżąco - majątek, zwrot z inwestycji i budżet w jednym miejscu.':
     'The dashboard updates live - net worth, investment return and budget in one place.',
   'Masz już zaproszenie?': 'Already have an invite?',
@@ -1158,9 +1130,6 @@ export const en: Record<string, string> = {
 
   // Login back-link, updated budget feature card
   '← Strona główna': '← Homepage',
-  'Przychody, wydatki i budżet': 'Income, expenses and budget',
-  'Zarządzaj przychodami i wydatkami, monitoruj budżet miesiąc po miesiącu i sprawdzaj bilans - automatyczny import wyciągów, kategorie, sklepy i tagi robią to za Ciebie. Osobna zakładka pilnuje też kosztów samochodu: paliwo ze zdjęcia paragonu, ubezpieczenie, przeglądy i naprawy.':
-    'Manage your income and expenses, track your budget month to month, and check your balance - automatic statement import, categories, stores and tags do the work for you. A separate tab also keeps track of car costs: fuel from a photo of the receipt, insurance, inspections and repairs.',
 
   // Translation coverage sweep - everything a distinct-strings audit found
   // with no English entry yet, across Planowanie, AdminUsers, AnalizaSpolek,
@@ -1563,11 +1532,7 @@ export const en: Record<string, string> = {
   'Dashboard skiety: wartość majątku, podział na akcje, gotówkę, lokaty i obligacje oraz wykres majątku w czasie':
     'The skieta dashboard: net worth, the split across stocks, cash, deposits and bonds, and a chart of net worth over time',
   'Zobacz, jak to wygląda w środku': 'See what it looks like inside',
-  'Poniżej prawdziwe ekrany aplikacji - te same, które zobaczysz po zalogowaniu.':
-    'Real screens from the app below - the same ones you get after logging in.',
   'Zysk, a nie tylko saldo': 'Profit, not just a balance',
-  'Portfel pokazuje osobno wpłacony kapitał i osobno zysk - brutto oraz po podatku Belki. Przy akcjach kupionych w obcej walucie widzisz dodatkowo, ile z wyniku zrobił sam kurs, a nie kurs spółki.':
-    'The portfolio shows contributed capital and profit separately - before and after capital gains tax. For shares bought in a foreign currency you also see how much of the result came from the exchange rate rather than the share price.',
   'Portfel akcji w skiecie z kolumnami zysku brutto i po podatku Belki oraz wpływem kursu waluty':
     'The stock portfolio in skieta, with profit columns before and after capital gains tax and the exchange-rate effect',
   'Dywidendy policzone w przód': 'Dividends worked out ahead of time',
@@ -1576,8 +1541,6 @@ export const en: Record<string, string> = {
   'Profil dywidendowy w skiecie: suma wypłat, projekcja rocznego dochodu i planowane dywidendy':
     'The dividend profile in skieta: total paid out, projected annual income and upcoming dividends',
   'Cele, które same się pilnują': 'Goals that keep track of themselves',
-  'Ustaw cel i zarezerwuj na niego kwotę z konkretnej wypłaty albo z bieżących oszczędności. skieta liczy, ile wypłat zostało i ile trzeba odkładać z każdej, żeby zdążyć.':
-    'Set a goal and reserve money for it from a specific payslip or from your current savings. skieta works out how many paydays are left and how much to set aside from each one to get there in time.',
   'Planowanie budżetu w skiecie z celami oszczędnościowymi i postępem zbierania':
     'Budget planning in skieta, with savings goals and the progress towards each one',
 
@@ -1585,21 +1548,11 @@ export const en: Record<string, string> = {
   'Bezpłatnie, bez reklam, bez karty': 'Free, no ads, no card',
   'Załóż darmowe konto →': 'Create a free account →',
   'Załóż konto': 'Sign up',
-  'Konto zakładasz w minutę. Bez zaproszenia, bez karty, bez zobowiązań.':
-    'Setting up an account takes a minute. No invitation, no card, no strings attached.',
   'Przekonaliśmy Cię?': 'Convinced?',
   'Zacznij dziś': 'Start today',
   'Załóż konto i zobacz cały swój majątek w jednym miejscu - od razu po pierwszym dodaniu konta.':
     'Create an account and see your whole net worth in one place - from the moment you add your first account.',
   'Rejestrujesz się z zaproszenia.': "You're signing up from an invitation.",
-  'Zakładasz konto': 'You create an account',
-  'Rejestracja jest otwarta i zajmuje minutę. Nie potrzebujesz zaproszenia ani karty płatniczej.':
-    'Registration is open and takes a minute. You need neither an invitation nor a payment card.',
-  'Czy potrzebuję zaproszenia?': 'Do I need an invitation?',
-  'Nie. Rejestracja jest otwarta dla wszystkich - wystarczy założyć konto. Zaproszenia nadal działają: jeśli ktoś prześle Ci swój link, zapiszemy, że to dzięki niemu tu trafiłeś/aś, ale nie jest to warunek założenia konta.':
-    'No. Registration is open to everyone - just create an account. Invitations still work: if someone sends you their link, we record that they brought you here, but it is not a condition of signing up.',
-  'Bez reklam i bez sprzedawania danych. Nikt nie zagląda w Twoje konta - Twoje liczby służą wyłącznie do wyliczeń, które widzisz w aplikacji. Historia logowań pokazuje, kto i kiedy wchodził na Twoje konto.':
-    'No ads and no selling of data. Nobody looks inside your accounts - your figures serve only the calculations you see in the app. The login history shows who accessed your account and when.',
   'skieta liczy to samo dla Twojego prawdziwego portfela - konta bankowe, akcje, obligacje i lokaty w jednym miejscu, z zyskiem po podatku Belki. Konto jest bezpłatne i zakładasz je w minutę.':
     'skieta does the same maths for your real portfolio - bank accounts, shares, bonds and deposits in one place, with profit after Polish capital gains tax. An account is free and takes a minute to set up.',
   'skieta pokazuje każdy zysk brutto i po podatku, a kalkulator porównuje lokaty, obligacje i giełdę na Twojej kwocie. Konto jest bezpłatne i zakładasz je w minutę.':
@@ -1610,4 +1563,29 @@ export const en: Record<string, string> = {
   'Tag': 'Tag',
   'Wszystkie': 'All',
   'Wyczyść filtry': 'Clear filters',
+  // Landing page (September 2026 rewrite) and its FAQ
+  'Bez haczyków': 'No catches',
+  'Bez podpinania banku': 'No bank connection',
+  'Nikomu nie podajesz haseł do banku.': 'You never give anyone your bank passwords.',
+  'Bez reklam': 'No ads',
+  'I bez sprzedawania Twoich danych.': 'And we never sell your data.',
+  'Sam budżet też wystarczy': 'Just budgeting is fine too',
+  'Nie inwestujesz? Część giełdowa po prostu znika z menu.': 'Don\'t invest? The investing section simply disappears from the menu.',
+  'Wychodzisz, kiedy chcesz': 'Leave whenever you like',
+  'Pobierasz swoje dane i usuwasz konto sam, z ustawień.': 'You download your data and delete your account yourself, from the settings.',
+  'Budżet, cele oszczędnościowe i inwestycje w jednym miejscu. Z zyskiem liczonym po podatku Belki, a nie samym saldem.': 'Budget, savings goals and investments in one place. With profit counted after capital gains tax, not just the balance.',
+  'Konto zakładasz w minutę, wystarczy e-mail i hasło.': 'Sign up in a minute, all it takes is an email and a password.',
+  'Wydatki z podziałem na kategorie, sklepy i tagi, miesiąc po miesiącu. Paragon dodasz zdjęciem.': 'Spending by category, shop and tag, month by month. Add a receipt with a photo.',
+  'Wpłacony kapitał osobno, zysk osobno, brutto i po podatku Belki. Przy akcjach z zagranicy widać też, ile zrobił sam kurs waluty.': 'What you paid in and what you earned, shown separately, before and after capital gains tax. For foreign shares you also see how much came from the exchange rate alone.',
+  'Rezerwujesz kwotę z konkretnej wypłaty, a skieta liczy, ile odkładać z każdej, żeby zdążyć.': 'You set money aside from a specific payday, and skieta works out how much to save from each one to make it in time.',
+  'Wszystkie artykuły ({0}) →': 'All articles ({0}) →',
+  'Załóż konto i zacznij notować wydatki jeszcze dziś.': 'Create an account and start tracking your spending today.',
+  'Oszczędzanie i inwestowanie w polskich realiach: podatek Belki, obligacje skarbowe, lokaty, ETF-y, IKE i IKZE, budżet domowy.': 'Saving and investing in Poland: the Belka tax, Treasury bonds, deposits, ETFs, IKE and IKZE, the household budget.',
+  'Częste pytania': 'Frequently asked questions',
+  'Kto widzi moje finanse?': 'Who can see my finances?',
+  'Tylko Ty. Nikt nie przegląda sald ani transakcji poszczególnych użytkowników - dane są przetwarzane po to, żeby wyliczyć to, co widzisz na swoim dashboardzie. W ustawieniach konta znajdziesz historię logowań, więc sam sprawdzisz, kto i kiedy wchodził na Twoje konto.': 'Only you. Nobody browses individual users\' balances or transactions - the data is processed only to calculate what you see on your dashboard. Your account settings show your login history, so you can check for yourself who signed in to your account and when.',
+  'Czy muszę podawać dane logowania do banku?': 'Do I have to give you my bank login details?',
+  'Nie. skieta nie łączy się z bankami i nigdy nie prosi o hasła bankowe. Konta, lokaty i transakcje dodajesz sam, a historię możesz zaimportować z pliku wyciągu. Automatycznie pobierane są wyłącznie publiczne dane rynkowe: notowania akcji, kursy walut NBP i oprocentowanie obligacji skarbowych.': 'No. skieta does not connect to banks and never asks for bank passwords. You add accounts, deposits and transactions yourself, and you can import your history from a statement file. The only data fetched automatically is public market data: share prices, NBP exchange rates and Treasury bond rates.',
+  'Czy mogę usunąć swoje konto i dane?': 'Can I delete my account and data?',
+  'Tak, w każdej chwili i samodzielnie, z poziomu ustawień konta - bez pisania do kogokolwiek.': 'Yes, at any time and on your own, from your account settings - no need to write to anyone.',
 }

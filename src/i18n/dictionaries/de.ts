@@ -835,42 +835,23 @@ export const de: Record<string, string> = {
   'Dostępne wyłącznie na zaproszenie': 'Nur auf Einladung verfügbar',
   'Zobacz, gdzie znika': 'Sieh, wohin',
   'Twoja wypłata': 'dein Gehalt verschwindet',
-  'Zbudowane, żeby faktycznie z tego korzystać': 'Gebaut, damit du es wirklich nutzt',
-  'Nie kolejny arkusz kalkulacyjny - narzędzie, które samo liczy to, co dla Ciebie ważne.':
-    'Keine weitere Tabellenkalkulation - ein Tool, das selbst berechnet, was für dich wichtig ist.',
-  'Wszystko w jednym miejscu': 'Alles an einem Ort',
-  'Konta bankowe, akcje, obligacje i lokaty - jeden widok na cały Twój majątek, bez przełączania się między aplikacjami banków i domów maklerskich.':
-    'Bankkonten, Aktien, Anleihen und Festgelder - ein Überblick über dein gesamtes Vermögen, ohne zwischen Bank- und Broker-Apps zu wechseln.',
   'Realny zwrot z inwestycji': 'Reale Rendite deiner Investitionen',
   'Zysk liczony osobno od wpłaconego kapitału - zobaczysz dokładnie, ile realnie zarobiłeś na lokatach, obligacjach i akcjach, po podatku Belki.':
     'Gewinn getrennt vom eingezahlten Kapital berechnet - du siehst genau, wie viel du mit Festgeldern, Anleihen und Aktien nach Kapitalertragsteuer wirklich verdient hast.',
   'Budżet pod kontrolą': 'Budget unter Kontrolle',
   'Automatyczny import wyciągów, kategorie, sklepy i tagi - analiza przychodów i wydatków, która sama się aktualizuje.':
     'Automatischer Kontoauszugsimport, Kategorien, Geschäfte und Tags - eine Einnahmen-/Ausgabenanalyse, die sich selbst aktualisiert.',
-  'Ustaw cel, rezerwuj kwoty z konkretnych wypłat lub z bieżących oszczędności i śledź postęp na żywo.':
-    'Setze ein Ziel, reserviere Beträge aus bestimmten Gehältern oder deinen aktuellen Ersparnissen und verfolge den Fortschritt live.',
   'Dywidendy i podatki': 'Dividenden und Steuern',
   'Historia i prognoza wypłat dywidend, szacowany podatek Belki do zapłaty - żadnych niespodzianek przy rozliczeniu.':
     'Dividendenhistorie und -prognose, geschätzte fällige Kapitalertragsteuer - keine Überraschungen bei der Steuererklärung.',
   // Landing - budget-first positioning + receipt scanning
-  'Zapisuj wydatki zdjęciem paragonu i zobacz, gdzie naprawdę idą Twoje pieniądze. A jeśli inwestujesz - skieta doliczy do tego akcje, lokaty i obligacje i pokaże realny zysk, a nie samo saldo.':
-    'Erfasse Ausgaben mit einem Foto des Kassenbons und sieh, wohin dein Geld wirklich geht. Und wenn du investierst - skieta rechnet Aktien, Festgeld und Anleihen dazu und zeigt den echten Gewinn, nicht nur den Kontostand.',
-  'Wydatek ze zdjęcia paragonu': 'Ausgabe aus dem Foto des Kassenbons',
   'Zrób paragonowi zdjęcie telefonem, a skieta odczyta kwotę, datę i sklep oraz sama zaproponuje kategorię z Twojej listy. Zostaje Ci sprawdzić i zapisać.':
     'Fotografiere den Kassenbon mit dem Handy, und skieta liest Betrag, Datum und Geschäft aus und schlägt selbst eine Kategorie aus deiner Liste vor. Du musst nur noch prüfen und speichern.',
-  'Realny zwrot, dywidendy i podatki': 'Echte Rendite, Dividenden und Steuern',
   'Jeśli inwestujesz: zysk liczony osobno od wpłaconego kapitału, po podatku Belki, plus historia i prognoza dywidend wraz z szacowanym podatkiem do zapłaty.':
     'Wenn du investierst: Gewinn getrennt vom eingezahlten Kapital berechnet, nach Kapitalertragsteuer, dazu Dividendenhistorie und -prognose samt geschätzter fälliger Steuer.',
   'Widać, na co naprawdę idą pieniądze': 'Man sieht, wohin das Geld wirklich geht',
-  'Wydatki z podziałem na kategorie, sklepy i tagi, miesiąc po miesiącu. Nowy wydatek dodajesz zdjęciem paragonu - kwota, data i sklep odczytują się same, a kategoria jest proponowana z Twojej własnej listy.':
-    'Ausgaben nach Kategorien, Geschäften und Tags, Monat für Monat. Eine neue Ausgabe fügst du mit einem Foto des Kassenbons hinzu - Betrag, Datum und Geschäft lesen sich selbst aus, und die Kategorie wird aus deiner eigenen Liste vorgeschlagen.',
   'Strona wydatków w skiecie: podział na kategorie i sklepy, wykres wydatków w czasie i przycisk wgrywania paragonu':
     'Die Ausgabenseite in skieta: Aufteilung nach Kategorien und Geschäften, Ausgabenverlauf und die Schaltfläche zum Hochladen des Kassenbons',
-  'Zaczynasz notować': 'Du fängst an zu erfassen',
-  'Dodajesz konto bankowe, a wydatki wrzucasz zdjęciem paragonu. Portfel akcji, lokaty i obligacje - jeśli je masz.':
-    'Du fügst ein Bankkonto hinzu und erfasst Ausgaben per Foto des Kassenbons. Aktiendepot, Festgeld und Anleihen - falls du sie hast.',
-  'Dashboard aktualizuje się na bieżąco - budżet, majątek i zwrot z inwestycji w jednym miejscu.':
-    'Das Dashboard aktualisiert sich laufend - Budget, Vermögen und Anlagerendite an einem Ort.',
   'Czy mogę używać skiety tylko do budżetu, bez inwestycji?':
     'Kann ich skieta nur für das Budget nutzen, ohne Investitionen?',
   'Tak, i nie musisz niczego obchodzić. Przy zakładaniu konta zaznaczasz, co Cię interesuje - jeśli nie zaznaczysz giełdy, cała część inwestycyjna po prostu znika z menu i zostaje czysta aplikacja do przychodów, wydatków, paragonów i celów oszczędnościowych. Możesz to zmienić w każdej chwili w ustawieniach konta.':
@@ -879,8 +860,6 @@ export const de: Record<string, string> = {
     'Wie funktioniert das Hinzufügen einer Ausgabe aus dem Foto eines Kassenbons?',
   'Robisz paragonowi zdjęcie telefonem, a skieta odczytuje z niego kwotę, datę i nazwę sklepu oraz proponuje kategorię z Twojej własnej listy - poprawiasz, co trzeba, i zapisujesz. Odczytem zajmuje się Google Gemini na Twoim własnym, darmowym kluczu, który wklejasz raz przy pierwszym skanowaniu. Samego zdjęcia nigdzie nie zapisujemy - jest odczytywane w locie i nie trafia do naszej bazy.':
     'Du fotografierst den Kassenbon mit dem Handy, und skieta liest Betrag, Datum und Name des Geschäfts aus und schlägt eine Kategorie aus deiner eigenen Liste vor - du korrigierst, was nötig ist, und speicherst. Das Auslesen übernimmt Google Gemini mit deinem eigenen, kostenlosen Schlüssel, den du beim ersten Scan einmal einfügst. Das Foto selbst speichern wir nirgends - es wird direkt ausgelesen und landet nicht in unserer Datenbank.',
-  'Arkusz nie zrobi za Ciebie zdjęcia paragonu i nie policzy, ile realnie zarobiłeś. skieta odczytuje wydatek ze zdjęcia i sama pilnuje kategorii, a przy inwestycjach liczy zysk osobno od wpłaconego kapitału, po podatku Belki, z kosztem zakupu akcji przeliczonym po kursie NBP z dnia transakcji, a nie dzisiejszym. To rzeczy, które w arkuszu trzeba utrzymywać ręcznie i łatwo w nich o błąd.':
-    'Eine Tabelle fotografiert keinen Kassenbon für dich und rechnet nicht aus, wie viel du wirklich verdient hast. skieta liest die Ausgabe aus dem Foto und achtet auf die Kategorien, und bei Investitionen berechnet sie den Gewinn getrennt vom eingezahlten Kapital, nach Kapitalertragsteuer, mit dem Kaufkurs der Aktien zum NBP-Kurs vom Transaktionstag statt zum heutigen. Das alles muss man in einer Tabelle von Hand pflegen, und dabei passieren leicht Fehler.',
   'Załóż konto i zacznij notować wydatki jeszcze dziś - pierwszy paragon wrzucisz zdjęciem w kilka sekund.':
     'Leg ein Konto an und fang noch heute an, Ausgaben zu erfassen - den ersten Kassenbon fügst du in Sekunden als Foto hinzu.',
   '📷 Paragon': '📷 Kassenbon',
@@ -1061,13 +1040,9 @@ export const de: Record<string, string> = {
   'Zobacz demo →': 'Demo ansehen →',
   'Nie udało się otworzyć demo. Spróbuj ponownie za chwilę.': 'Die Demo konnte nicht geöffnet werden. Versuche es gleich noch einmal.',
   'Kont w skiecie: {0} · zapisanych przychodów i wydatków: {1}': 'Konten in skieta: {0} · erfasste Einnahmen und Ausgaben: {1}',
-  'Załóż konto i zacznij notować wydatki jeszcze dziś. Paragony wrzucisz zdjęciem, gdy raz podłączysz darmowy klucz Google - to dwie minuty.': 'Erstelle ein Konto und erfasse deine Ausgaben noch heute. Kassenbons fotografierst du, sobald du einmal einen kostenlosen Google-Schlüssel verbunden hast - das dauert zwei Minuten.',
-  'Zrób paragonowi zdjęcie telefonem, a skieta odczyta kwotę, datę i sklep, zaproponuje kategorię z Twojej listy, a dłuższy paragon rozbije na pozycje. Wystarczy raz podłączyć darmowy klucz Google - to dwie minuty.': 'Fotografiere einen Kassenbon mit dem Handy, und skieta liest Betrag, Datum und Geschäft aus, schlägt eine Kategorie aus deiner Liste vor und zerlegt einen längeren Bon in Positionen. Du musst nur einmal einen kostenlosen Google-Schlüssel verbinden - das dauert zwei Minuten.',
-  'Jeśli inwestujesz: zysk liczony osobno od wpłaconego kapitału, po podatku Belki, historia i prognoza dywidend z szacowanym podatkiem oraz podsumowanie komunikatów i wiadomości o Twoich spółkach, z odnośnikiem do źródła przy każdym punkcie.': 'Wenn du investierst: Gewinn getrennt vom eingezahlten Kapital berechnet, nach Belka-Steuer, Dividendenhistorie und -prognose mit geschätzter Steuer sowie eine Zusammenfassung von Mitteilungen und Nachrichten zu deinen Unternehmen, mit Quellenlink bei jedem Punkt.',
   'Czy skieta działa na telefonie?': 'Funktioniert skieta auf dem Handy?',
   'Tak, i nie trzeba niczego pobierać ze sklepu z aplikacjami. Otwórz skieta.com w telefonie i dodaj ją do ekranu głównego: na iPhonie w Safari stuknij „Udostępnij", a potem „Do ekranu początkowego"; na Androidzie przeglądarka sama zaproponuje instalację albo znajdziesz ją w menu jako „Zainstaluj aplikację". skieta otwiera się wtedy jak zwykła aplikacja - na pełnym ekranie i z własną ikoną - a paragon zeskanujesz jednym tapnięciem.': 'Ja, und du musst nichts aus einem App-Store herunterladen. Öffne skieta.com auf dem Handy und füge es zum Startbildschirm hinzu: Auf dem iPhone tippst du in Safari auf „Teilen“ und dann auf „Zum Home-Bildschirm“; unter Android bietet der Browser die Installation selbst an, oder du findest im Menü „App installieren“. skieta öffnet sich dann wie eine normale App - im Vollbild und mit eigenem Symbol - und einen Kassenbon scannst du mit einem Tippen.',
   'Czy mogę zobaczyć aplikację przed założeniem konta?': 'Kann ich mir die App ansehen, bevor ich ein Konto erstelle?',
-  'Z publicznych źródeł: notowania z Yahoo Finance i Stooq, kursy walut z NBP, aktualne oprocentowanie obligacji skarbowych z obligacjeskarbowe.pl, a w analizie spółek - komunikaty spółek z bankier.pl, raporty spółek amerykańskich z SEC EDGAR i wiadomości z Yahoo Finance. Dane odświeżane są automatycznie, a przy porównaniach zawsze widzisz, z jakiego okresu pochodzą.': 'Aus öffentlichen Quellen: Kurse von Yahoo Finance und Stooq, Wechselkurse der NBP, aktuelle Verzinsung der Staatsanleihen von obligacjeskarbowe.pl und für die Unternehmensanalyse Unternehmensmitteilungen von bankier.pl, Berichte US-amerikanischer Unternehmen aus SEC EDGAR und Nachrichten von Yahoo Finance. Die Daten werden automatisch aktualisiert, und bei Vergleichen siehst du immer, aus welchem Zeitraum sie stammen.',
   'Tej zmiany nie zapisaliśmy - to konto demonstracyjne. Załóż własne konto, żeby prowadzić swoje finanse.': 'Diese Änderung wurde nicht gespeichert - das ist ein Demokonto. Erstelle ein eigenes Konto, um deine Finanzen zu führen.',
   'Oglądasz konto demonstracyjne z przykładowymi danymi. Możesz wszystko przeklikać, ale zmiany nie są zapisywane.': 'Du siehst ein Demokonto mit Beispieldaten. Du kannst dich überall durchklicken, aber Änderungen werden nicht gespeichert.',
   'Załóż własne konto →': 'Eigenes Konto erstellen →',
@@ -1107,17 +1082,14 @@ export const de: Record<string, string> = {
     'Für jemand anderen ausgelegt - bereits zurückbekommen. Klicke, falls doch nicht.',
   'Wyłożone za kogoś innego - kliknij, gdy oddadzą.':
     'Für jemand anderen ausgelegt - klicke, sobald du es zurückbekommst.',
-  'Twoje dane, Twoja kontrola': 'Deine Daten, deine Kontrolle',
   'Dostęp wyłącznie na zaproszenie, bez reklam i bez śledzenia. Historia logowań pokazuje dokładnie, kto i kiedy wchodził na Twoje konto.':
     'Zugang nur auf Einladung, keine Werbung und kein Tracking. Der Anmeldeverlauf zeigt genau, wer wann auf dein Konto zugegriffen hat.',
-  'Jak to działa': 'So funktioniert es',
   'Dostajesz zaproszenie': 'Du bekommst eine Einladung',
   'Rejestracja jest możliwa tylko na zaproszenie od kogoś, kto już korzysta ze skieta.':
     'Die Registrierung ist nur mit einer Einladung von jemandem möglich, der skieta bereits nutzt.',
   'Dodajesz swoje konta': 'Du fügst deine Konten hinzu',
   'Kilka minut wystarczy, żeby dodać konta bankowe, portfel akcji, lokaty i obligacje.':
     'Ein paar Minuten reichen, um Bankkonten, dein Aktienportfolio, Festgelder und Anleihen hinzuzufügen.',
-  'Widzisz cały obraz': 'Du siehst das große Ganze',
   'Dashboard aktualizuje się na bieżąco - majątek, zwrot z inwestycji i budżet w jednym miejscu.':
     'Das Dashboard aktualisiert sich laufend - Vermögen, Anlagerendite und Budget an einem Ort.',
   'Masz już zaproszenie?': 'Hast du schon eine Einladung?',
@@ -1160,9 +1132,6 @@ export const de: Record<string, string> = {
 
   // Login back-link, updated budget feature card
   '← Strona główna': '← Startseite',
-  'Przychody, wydatki i budżet': 'Einnahmen, Ausgaben und Budget',
-  'Zarządzaj przychodami i wydatkami, monitoruj budżet miesiąc po miesiącu i sprawdzaj bilans - automatyczny import wyciągów, kategorie, sklepy i tagi robią to za Ciebie. Osobna zakładka pilnuje też kosztów samochodu: paliwo ze zdjęcia paragonu, ubezpieczenie, przeglądy i naprawy.':
-    'Verwalte deine Einnahmen und Ausgaben, behalte dein Budget Monat für Monat im Blick und prüfe deine Bilanz - automatischer Kontoauszugsimport, Kategorien, Geschäfte und Tags erledigen das für dich. Ein eigener Tab behält außerdem die Autokosten im Blick: Kraftstoff per Fotobeleg, Versicherung, Untersuchungen und Reparaturen.',
 
   // Translation coverage sweep - everything a distinct-strings audit found
   // with no English entry yet, across Planowanie, AdminUsers, AnalizaSpolek,
@@ -1565,11 +1534,7 @@ export const de: Record<string, string> = {
   'Dashboard skiety: wartość majątku, podział na akcje, gotówkę, lokaty i obligacje oraz wykres majątku w czasie':
     'Das skieta-Dashboard: Nettovermögen, die Aufteilung auf Aktien, Bargeld, Festgelder und Anleihen sowie ein Diagramm des Vermögens im Zeitverlauf',
   'Zobacz, jak to wygląda w środku': 'Sieh, wie es von innen aussieht',
-  'Poniżej prawdziwe ekrany aplikacji - te same, które zobaczysz po zalogowaniu.':
-    'Unten echte Ansichten aus der App - dieselben, die du nach dem Anmelden siehst.',
   'Zysk, a nie tylko saldo': 'Gewinn, nicht nur ein Kontostand',
-  'Portfel pokazuje osobno wpłacony kapitał i osobno zysk - brutto oraz po podatku Belki. Przy akcjach kupionych w obcej walucie widzisz dodatkowo, ile z wyniku zrobił sam kurs, a nie kurs spółki.':
-    'Das Depot zeigt eingezahltes Kapital und Gewinn getrennt - vor und nach Kapitalertragsteuer. Bei Aktien in Fremdwährung siehst du zusätzlich, wie viel vom Ergebnis der Wechselkurs ausgemacht hat und nicht der Aktienkurs.',
   'Portfel akcji w skiecie z kolumnami zysku brutto i po podatku Belki oraz wpływem kursu waluty':
     'Das Aktiendepot in skieta mit Gewinnspalten vor und nach Kapitalertragsteuer sowie dem Wechselkurseffekt',
   'Dywidendy policzone w przód': 'Dividenden im Voraus berechnet',
@@ -1578,8 +1543,6 @@ export const de: Record<string, string> = {
   'Profil dywidendowy w skiecie: suma wypłat, projekcja rocznego dochodu i planowane dywidendy':
     'Das Dividendenprofil in skieta: Summe der Auszahlungen, prognostiziertes Jahreseinkommen und geplante Dividenden',
   'Cele, które same się pilnują': 'Ziele, die sich selbst im Blick behalten',
-  'Ustaw cel i zarezerwuj na niego kwotę z konkretnej wypłaty albo z bieżących oszczędności. skieta liczy, ile wypłat zostało i ile trzeba odkładać z każdej, żeby zdążyć.':
-    'Lege ein Ziel fest und reserviere dafür einen Betrag aus einem bestimmten Gehalt oder aus deinen laufenden Ersparnissen. skieta berechnet, wie viele Gehälter bleiben und wie viel du von jedem zurücklegen musst, um rechtzeitig anzukommen.',
   'Planowanie budżetu w skiecie z celami oszczędnościowymi i postępem zbierania':
     'Budgetplanung in skieta mit Sparzielen und dem Fortschritt beim Ansparen',
 
@@ -1587,21 +1550,11 @@ export const de: Record<string, string> = {
   'Bezpłatnie, bez reklam, bez karty': 'Kostenlos, ohne Werbung, ohne Karte',
   'Załóż darmowe konto →': 'Kostenloses Konto erstellen →',
   'Załóż konto': 'Konto erstellen',
-  'Konto zakładasz w minutę. Bez zaproszenia, bez karty, bez zobowiązań.':
-    'Die Kontoerstellung dauert eine Minute. Ohne Einladung, ohne Karte, ohne Verpflichtungen.',
   'Przekonaliśmy Cię?': 'Überzeugt?',
   'Zacznij dziś': 'Heute anfangen',
   'Załóż konto i zobacz cały swój majątek w jednym miejscu - od razu po pierwszym dodaniu konta.':
     'Erstelle ein Konto und sieh dein gesamtes Vermögen an einem Ort - schon nach dem ersten hinzugefügten Konto.',
   'Rejestrujesz się z zaproszenia.': 'Du registrierst dich über eine Einladung.',
-  'Zakładasz konto': 'Du erstellst ein Konto',
-  'Rejestracja jest otwarta i zajmuje minutę. Nie potrzebujesz zaproszenia ani karty płatniczej.':
-    'Die Registrierung ist offen und dauert eine Minute. Du brauchst weder eine Einladung noch eine Zahlungskarte.',
-  'Czy potrzebuję zaproszenia?': 'Brauche ich eine Einladung?',
-  'Nie. Rejestracja jest otwarta dla wszystkich - wystarczy założyć konto. Zaproszenia nadal działają: jeśli ktoś prześle Ci swój link, zapiszemy, że to dzięki niemu tu trafiłeś/aś, ale nie jest to warunek założenia konta.':
-    'Nein. Die Registrierung steht allen offen - erstelle einfach ein Konto. Einladungen funktionieren weiterhin: Wenn dir jemand seinen Link schickt, halten wir fest, dass du über ihn hergekommen bist, aber Voraussetzung für ein Konto ist das nicht.',
-  'Bez reklam i bez sprzedawania danych. Nikt nie zagląda w Twoje konta - Twoje liczby służą wyłącznie do wyliczeń, które widzisz w aplikacji. Historia logowań pokazuje, kto i kiedy wchodził na Twoje konto.':
-    'Keine Werbung und kein Verkauf von Daten. Niemand sieht in deine Konten - deine Zahlen dienen ausschließlich den Berechnungen, die du in der App siehst. Die Login-Historie zeigt, wer wann auf dein Konto zugegriffen hat.',
   'skieta liczy to samo dla Twojego prawdziwego portfela - konta bankowe, akcje, obligacje i lokaty w jednym miejscu, z zyskiem po podatku Belki. Konto jest bezpłatne i zakładasz je w minutę.':
     'skieta rechnet dasselbe für dein echtes Portfolio - Bankkonten, Aktien, Anleihen und Festgeld an einem Ort, mit Gewinn nach polnischer Kapitalertragsteuer. Ein Konto ist kostenlos und in einer Minute erstellt.',
   'skieta pokazuje każdy zysk brutto i po podatku, a kalkulator porównuje lokaty, obligacje i giełdę na Twojej kwocie. Konto jest bezpłatne i zakładasz je w minutę.':
@@ -1612,4 +1565,29 @@ export const de: Record<string, string> = {
   'Tag': 'Tag',
   'Wszystkie': 'Alle',
   'Wyczyść filtry': 'Filter zurücksetzen',
+  // Landing page (September 2026 rewrite) and its FAQ
+  'Bez haczyków': 'Ohne Haken',
+  'Bez podpinania banku': 'Ohne Bankverbindung',
+  'Nikomu nie podajesz haseł do banku.': 'Du gibst niemandem deine Bankpasswörter.',
+  'Bez reklam': 'Keine Werbung',
+  'I bez sprzedawania Twoich danych.': 'Und kein Verkauf deiner Daten.',
+  'Sam budżet też wystarczy': 'Nur das Budget reicht auch',
+  'Nie inwestujesz? Część giełdowa po prostu znika z menu.': 'Du investierst nicht? Der Börsenteil verschwindet einfach aus dem Menü.',
+  'Wychodzisz, kiedy chcesz': 'Du gehst, wann du willst',
+  'Pobierasz swoje dane i usuwasz konto sam, z ustawień.': 'Du lädst deine Daten herunter und löschst dein Konto selbst, in den Einstellungen.',
+  'Budżet, cele oszczędnościowe i inwestycje w jednym miejscu. Z zyskiem liczonym po podatku Belki, a nie samym saldem.': 'Budget, Sparziele und Investitionen an einem Ort. Mit Gewinn nach Kapitalertragsteuer statt nur dem Kontostand.',
+  'Konto zakładasz w minutę, wystarczy e-mail i hasło.': 'Konto in einer Minute, E-Mail und Passwort genügen.',
+  'Wydatki z podziałem na kategorie, sklepy i tagi, miesiąc po miesiącu. Paragon dodasz zdjęciem.': 'Ausgaben nach Kategorien, Geschäften und Tags, Monat für Monat. Belege fügst du per Foto hinzu.',
+  'Wpłacony kapitał osobno, zysk osobno, brutto i po podatku Belki. Przy akcjach z zagranicy widać też, ile zrobił sam kurs waluty.': 'Eingezahltes Kapital und Gewinn getrennt, brutto und nach Kapitalertragsteuer. Bei ausländischen Aktien siehst du auch, wie viel allein der Wechselkurs ausmacht.',
+  'Rezerwujesz kwotę z konkretnej wypłaty, a skieta liczy, ile odkładać z każdej, żeby zdążyć.': 'Du legst einen Betrag aus einem bestimmten Gehalt zurück, und skieta rechnet aus, wie viel du von jedem sparen musst, um es rechtzeitig zu schaffen.',
+  'Wszystkie artykuły ({0}) →': 'Alle Artikel ({0}) →',
+  'Załóż konto i zacznij notować wydatki jeszcze dziś.': 'Erstelle ein Konto und fang noch heute an, deine Ausgaben zu erfassen.',
+  'Oszczędzanie i inwestowanie w polskich realiach: podatek Belki, obligacje skarbowe, lokaty, ETF-y, IKE i IKZE, budżet domowy.': 'Sparen und Investieren in Polen: Belka-Steuer, Staatsanleihen, Festgeld, ETFs, IKE und IKZE, Haushaltsbudget.',
+  'Częste pytania': 'Häufige Fragen',
+  'Kto widzi moje finanse?': 'Wer sieht meine Finanzen?',
+  'Tylko Ty. Nikt nie przegląda sald ani transakcji poszczególnych użytkowników - dane są przetwarzane po to, żeby wyliczyć to, co widzisz na swoim dashboardzie. W ustawieniach konta znajdziesz historię logowań, więc sam sprawdzisz, kto i kiedy wchodził na Twoje konto.': 'Nur du. Niemand sieht sich die Salden oder Transaktionen einzelner Nutzer an - die Daten werden nur verarbeitet, um zu berechnen, was du auf deinem Dashboard siehst. In den Kontoeinstellungen findest du den Anmeldeverlauf und kannst selbst prüfen, wer sich wann in dein Konto eingeloggt hat.',
+  'Czy muszę podawać dane logowania do banku?': 'Muss ich meine Bank-Zugangsdaten angeben?',
+  'Nie. skieta nie łączy się z bankami i nigdy nie prosi o hasła bankowe. Konta, lokaty i transakcje dodajesz sam, a historię możesz zaimportować z pliku wyciągu. Automatycznie pobierane są wyłącznie publiczne dane rynkowe: notowania akcji, kursy walut NBP i oprocentowanie obligacji skarbowych.': 'Nein. skieta verbindet sich nicht mit Banken und fragt nie nach Bankpasswörtern. Konten, Festgelder und Transaktionen trägst du selbst ein, und den Verlauf kannst du aus einer Kontoauszugsdatei importieren. Automatisch abgerufen werden nur öffentliche Marktdaten: Aktienkurse, NBP-Wechselkurse und die Zinsen für Staatsanleihen.',
+  'Czy mogę usunąć swoje konto i dane?': 'Kann ich mein Konto und meine Daten löschen?',
+  'Tak, w każdej chwili i samodzielnie, z poziomu ustawień konta - bez pisania do kogokolwiek.': 'Ja, jederzeit und selbst, in den Kontoeinstellungen - ohne jemandem schreiben zu müssen.',
 }

@@ -835,42 +835,23 @@ export const no: Record<string, string> = {
   'Dostępne wyłącznie na zaproszenie': 'Kun tilgjengelig på invitasjon',
   'Zobacz, gdzie znika': 'Se hvor',
   'Twoja wypłata': 'lønnen din blir av',
-  'Zbudowane, żeby faktycznie z tego korzystać': 'Bygget for at du faktisk skal bruke det',
-  'Nie kolejny arkusz kalkulacyjny - narzędzie, które samo liczy to, co dla Ciebie ważne.':
-    'Ikke nok et regneark - et verktøy som selv regner ut det som betyr noe for deg.',
-  'Wszystko w jednym miejscu': 'Alt på ett sted',
-  'Konta bankowe, akcje, obligacje i lokaty - jeden widok na cały Twój majątek, bez przełączania się między aplikacjami banków i domów maklerskich.':
-    'Bankkontoer, aksjer, obligasjoner og innskudd - én oversikt over hele formuen din, uten å bytte mellom bank- og meglerapper.',
   'Realny zwrot z inwestycji': 'Reell investeringsavkastning',
   'Zysk liczony osobno od wpłaconego kapitału - zobaczysz dokładnie, ile realnie zarobiłeś na lokatach, obligacjach i akcjach, po podatku Belki.':
     'Gevinst beregnes separat fra innskutt kapital - du ser nøyaktig hvor mye du reelt har tjent på innskudd, obligasjoner og aksjer, etter skatt.',
   'Budżet pod kontrolą': 'Budsjettet under kontroll',
   'Automatyczny import wyciągów, kategorie, sklepy i tagi - analiza przychodów i wydatków, która sama się aktualizuje.':
     'Automatisk import av kontoutskrifter, kategorier, butikker og tagger - analyse av inntekter og utgifter som oppdaterer seg selv.',
-  'Ustaw cel, rezerwuj kwoty z konkretnych wypłat lub z bieżących oszczędności i śledź postęp na żywo.':
-    'Sett et mål, reserver beløp fra bestemte lønnsutbetalinger eller løpende sparepenger, og følg fremdriften i sanntid.',
   'Dywidendy i podatki': 'Utbytte og skatt',
   'Historia i prognoza wypłat dywidend, szacowany podatek Belki do zapłaty - żadnych niespodzianek przy rozliczeniu.':
     'Historikk og prognose for utbytteutbetalinger, anslått skatt som skal betales - ingen overraskelser ved skatteoppgjøret.',
   // Landing - budget-first positioning + receipt scanning
-  'Zapisuj wydatki zdjęciem paragonu i zobacz, gdzie naprawdę idą Twoje pieniądze. A jeśli inwestujesz - skieta doliczy do tego akcje, lokaty i obligacje i pokaże realny zysk, a nie samo saldo.':
-    'Registrer utgifter med et bilde av kvitteringen, og se hvor pengene faktisk tar veien. Og hvis du investerer, legger skieta til aksjer, innskudd og obligasjoner og viser den reelle gevinsten, ikke bare saldoen.',
-  'Wydatek ze zdjęcia paragonu': 'En utgift fra et bilde av kvitteringen',
   'Zrób paragonowi zdjęcie telefonem, a skieta odczyta kwotę, datę i sklep oraz sama zaproponuje kategorię z Twojej listy. Zostaje Ci sprawdzić i zapisać.':
     'Ta bilde av kvitteringen med telefonen, så leser skieta av beløp, dato og butikk og foreslår selv en kategori fra din egen liste. Du trenger bare å sjekke og lagre.',
-  'Realny zwrot, dywidendy i podatki': 'Reell avkastning, utbytte og skatt',
   'Jeśli inwestujesz: zysk liczony osobno od wpłaconego kapitału, po podatku Belki, plus historia i prognoza dywidend wraz z szacowanym podatkiem do zapłaty.':
     'Hvis du investerer: gevinsten regnes ut separat fra innskutt kapital, etter kapitalskatt, i tillegg til utbyttehistorikk og prognose med anslått skatt.',
   'Widać, na co naprawdę idą pieniądze': 'Du ser hvor pengene faktisk tar veien',
-  'Wydatki z podziałem na kategorie, sklepy i tagi, miesiąc po miesiącu. Nowy wydatek dodajesz zdjęciem paragonu - kwota, data i sklep odczytują się same, a kategoria jest proponowana z Twojej własnej listy.':
-    'Utgifter fordelt på kategorier, butikker og tagger, måned for måned. En ny utgift legger du inn med et bilde av kvitteringen - beløp, dato og butikk leses av seg selv, og kategorien foreslås fra din egen liste.',
   'Strona wydatków w skiecie: podział na kategorie i sklepy, wykres wydatków w czasie i przycisk wgrywania paragonu':
     'Utgiftssiden i skieta: fordeling på kategorier og butikker, graf over utgifter over tid og knappen for å laste opp kvitteringen',
-  'Zaczynasz notować': 'Du begynner å registrere',
-  'Dodajesz konto bankowe, a wydatki wrzucasz zdjęciem paragonu. Portfel akcji, lokaty i obligacje - jeśli je masz.':
-    'Du legger til en bankkonto og fører utgifter med bilde av kvitteringen. Aksjeportefølje, innskudd og obligasjoner - hvis du har dem.',
-  'Dashboard aktualizuje się na bieżąco - budżet, majątek i zwrot z inwestycji w jednym miejscu.':
-    'Dashbordet oppdateres fortløpende - budsjett, formue og avkastning på investeringer på ett sted.',
   'Czy mogę używać skiety tylko do budżetu, bez inwestycji?':
     'Kan jeg bruke skieta bare til budsjett, uten investeringer?',
   'Tak, i nie musisz niczego obchodzić. Przy zakładaniu konta zaznaczasz, co Cię interesuje - jeśli nie zaznaczysz giełdy, cała część inwestycyjna po prostu znika z menu i zostaje czysta aplikacja do przychodów, wydatków, paragonów i celów oszczędnościowych. Możesz to zmienić w każdej chwili w ustawieniach konta.':
@@ -879,8 +860,6 @@ export const no: Record<string, string> = {
     'Hvordan fungerer det å legge til en utgift fra et bilde av en kvittering?',
   'Robisz paragonowi zdjęcie telefonem, a skieta odczytuje z niego kwotę, datę i nazwę sklepu oraz proponuje kategorię z Twojej własnej listy - poprawiasz, co trzeba, i zapisujesz. Odczytem zajmuje się Google Gemini na Twoim własnym, darmowym kluczu, który wklejasz raz przy pierwszym skanowaniu. Samego zdjęcia nigdzie nie zapisujemy - jest odczytywane w locie i nie trafia do naszej bazy.':
     'Du tar bilde av kvitteringen med telefonen, og skieta leser av beløp, dato og butikknavn og foreslår en kategori fra din egen liste - du retter det som må rettes, og lagrer. Avlesningen gjøres av Google Gemini med din egen gratis nøkkel, som du limer inn én gang første gang du skanner. Selve bildet lagrer vi ingen steder - det leses av fortløpende og havner ikke i databasen vår.',
-  'Arkusz nie zrobi za Ciebie zdjęcia paragonu i nie policzy, ile realnie zarobiłeś. skieta odczytuje wydatek ze zdjęcia i sama pilnuje kategorii, a przy inwestycjach liczy zysk osobno od wpłaconego kapitału, po podatku Belki, z kosztem zakupu akcji przeliczonym po kursie NBP z dnia transakcji, a nie dzisiejszym. To rzeczy, które w arkuszu trzeba utrzymywać ręcznie i łatwo w nich o błąd.':
-    'Et regneark tar ikke bilde av kvitteringen for deg og regner ikke ut hvor mye du faktisk har tjent. skieta leser utgiften fra bildet og holder orden på kategoriene, og ved investeringer regnes gevinsten separat fra innskutt kapital, etter kapitalskatt, med kjøpskursen på aksjene omregnet til NBP-kursen fra handelsdagen og ikke dagens. Dette er ting som må vedlikeholdes for hånd i et regneark, og der det er lett å gjøre feil.',
   'Załóż konto i zacznij notować wydatki jeszcze dziś - pierwszy paragon wrzucisz zdjęciem w kilka sekund.':
     'Opprett en konto og begynn å registrere utgifter allerede i dag - den første kvitteringen legger du inn som et bilde på noen sekunder.',
   '📷 Paragon': '📷 Kvittering',
@@ -1060,13 +1039,9 @@ export const no: Record<string, string> = {
   'Zobacz demo →': 'Se demoen →',
   'Nie udało się otworzyć demo. Spróbuj ponownie za chwilę.': 'Demoen kunne ikke åpnes. Prøv igjen om litt.',
   'Kont w skiecie: {0} · zapisanych przychodów i wydatków: {1}': 'Kontoer i skieta: {0} · registrerte inntekter og utgifter: {1}',
-  'Załóż konto i zacznij notować wydatki jeszcze dziś. Paragony wrzucisz zdjęciem, gdy raz podłączysz darmowy klucz Google - to dwie minuty.': 'Opprett en konto og begynn å registrere utgiftene dine i dag. Kvitteringer legger du inn med et bilde når du én gang har koblet til en gratis Google-nøkkel - det tar to minutter.',
-  'Zrób paragonowi zdjęcie telefonem, a skieta odczyta kwotę, datę i sklep, zaproponuje kategorię z Twojej listy, a dłuższy paragon rozbije na pozycje. Wystarczy raz podłączyć darmowy klucz Google - to dwie minuty.': 'Ta et bilde av kvitteringen med telefonen, så leser skieta beløp, dato og butikk, foreslår en kategori fra listen din og deler en lengre kvittering opp i varer. Du trenger bare å koble til en gratis Google-nøkkel én gang - det tar to minutter.',
-  'Jeśli inwestujesz: zysk liczony osobno od wpłaconego kapitału, po podatku Belki, historia i prognoza dywidend z szacowanym podatkiem oraz podsumowanie komunikatów i wiadomości o Twoich spółkach, z odnośnikiem do źródła przy każdym punkcie.': 'Hvis du investerer: gevinst beregnet adskilt fra innskutt kapital, etter Belka-skatt, utbyttehistorikk og -prognose med anslått skatt og en oppsummering av meldinger og nyheter om selskapene dine, med kildelenke ved hvert punkt.',
   'Czy skieta działa na telefonie?': 'Fungerer skieta på telefonen?',
   'Tak, i nie trzeba niczego pobierać ze sklepu z aplikacjami. Otwórz skieta.com w telefonie i dodaj ją do ekranu głównego: na iPhonie w Safari stuknij „Udostępnij", a potem „Do ekranu początkowego"; na Androidzie przeglądarka sama zaproponuje instalację albo znajdziesz ją w menu jako „Zainstaluj aplikację". skieta otwiera się wtedy jak zwykła aplikacja - na pełnym ekranie i z własną ikoną - a paragon zeskanujesz jednym tapnięciem.': 'Ja, og du trenger ikke laste ned noe fra en appbutikk. Åpne skieta.com på telefonen og legg den til på hjemskjermen: På iPhone trykker du «Del» i Safari og deretter «Legg til på Hjem-skjerm»; på Android tilbyr nettleseren selv å installere den, ellers finner du «Installer app» i menyen. skieta åpnes da som en vanlig app - i fullskjerm og med eget ikon - og en kvittering skanner du med ett trykk.',
   'Czy mogę zobaczyć aplikację przed założeniem konta?': 'Kan jeg se appen før jeg oppretter en konto?',
-  'Z publicznych źródeł: notowania z Yahoo Finance i Stooq, kursy walut z NBP, aktualne oprocentowanie obligacji skarbowych z obligacjeskarbowe.pl, a w analizie spółek - komunikaty spółek z bankier.pl, raporty spółek amerykańskich z SEC EDGAR i wiadomości z Yahoo Finance. Dane odświeżane są automatycznie, a przy porównaniach zawsze widzisz, z jakiego okresu pochodzą.': 'Fra offentlige kilder: kurser fra Yahoo Finance og Stooq, valutakurser fra NBP, gjeldende rente på statsobligasjoner fra obligacjeskarbowe.pl og til selskapsanalysen meldinger fra bankier.pl, rapporter fra amerikanske selskaper i SEC EDGAR og nyheter fra Yahoo Finance. Dataene oppdateres automatisk, og ved sammenligninger ser du alltid hvilken periode de gjelder.',
   'Tej zmiany nie zapisaliśmy - to konto demonstracyjne. Załóż własne konto, żeby prowadzić swoje finanse.': 'Endringen ble ikke lagret - dette er en demokonto. Opprett din egen konto for å holde styr på økonomien din.',
   'Oglądasz konto demonstracyjne z przykładowymi danymi. Możesz wszystko przeklikać, ale zmiany nie są zapisywane.': 'Du ser på en demokonto med eksempeldata. Du kan klikke deg gjennom alt, men endringer blir ikke lagret.',
   'Załóż własne konto →': 'Opprett din egen konto →',
@@ -1106,17 +1081,14 @@ export const no: Record<string, string> = {
     'Lagt ut for en annen - allerede betalt tilbake. Klikk hvis det likevel ikke stemmer.',
   'Wyłożone za kogoś innego - kliknij, gdy oddadzą.':
     'Lagt ut for en annen - klikk når du får pengene tilbake.',
-  'Twoje dane, Twoja kontrola': 'Dine data, din kontroll',
   'Dostęp wyłącznie na zaproszenie, bez reklam i bez śledzenia. Historia logowań pokazuje dokładnie, kto i kiedy wchodził na Twoje konto.':
     'Tilgang kun på invitasjon, uten reklame og uten sporing. Innloggingshistorikken viser nøyaktig hvem som har vært inne på kontoen din, og når.',
-  'Jak to działa': 'Slik fungerer det',
   'Dostajesz zaproszenie': 'Du får en invitasjon',
   'Rejestracja jest możliwa tylko na zaproszenie od kogoś, kto już korzysta ze skieta.':
     'Registrering er bare mulig på invitasjon fra noen som allerede bruker skieta.',
   'Dodajesz swoje konta': 'Du legger til kontoene dine',
   'Kilka minut wystarczy, żeby dodać konta bankowe, portfel akcji, lokaty i obligacje.':
     'Noen minutter er nok til å legge til bankkontoer, aksjeportefølje, innskudd og obligasjoner.',
-  'Widzisz cały obraz': 'Du ser hele bildet',
   'Dashboard aktualizuje się na bieżąco - majątek, zwrot z inwestycji i budżet w jednym miejscu.':
     'Dashbordet oppdateres fortløpende - formue, investeringsavkastning og budsjett på ett sted.',
   'Masz już zaproszenie?': 'Har du allerede en invitasjon?',
@@ -1159,9 +1131,6 @@ export const no: Record<string, string> = {
 
   // Login back-link, updated budget feature card
   '← Strona główna': '← Forsiden',
-  'Przychody, wydatki i budżet': 'Inntekter, utgifter og budsjett',
-  'Zarządzaj przychodami i wydatkami, monitoruj budżet miesiąc po miesiącu i sprawdzaj bilans - automatyczny import wyciągów, kategorie, sklepy i tagi robią to za Ciebie. Osobna zakładka pilnuje też kosztów samochodu: paliwo ze zdjęcia paragonu, ubezpieczenie, przeglądy i naprawy.':
-    'Administrer inntekter og utgifter, følg budsjettet måned for måned og sjekk balansen - automatisk import av kontoutskrifter, kategorier, butikker og tagger gjør jobben for deg. En egen fane holder også styr på bilkostnader: drivstoff fra et bilde av kvitteringen, forsikring, EU-kontroll og reparasjoner.',
 
   // Translation coverage sweep - everything a distinct-strings audit found
   // with no English entry yet, across Planowanie, AdminUsers, AnalizaSpolek,
@@ -1407,23 +1376,13 @@ export const no: Record<string, string> = {
   'Bezpłatnie, bez reklam, bez karty': 'Gratis, uten reklame, uten kort',
   'Załóż darmowe konto →': 'Opprett en gratis konto →',
   'Załóż konto': 'Opprett konto',
-  'Konto zakładasz w minutę. Bez zaproszenia, bez karty, bez zobowiązań.':
-    'Det tar ett minutt å opprette en konto. Uten invitasjon, uten kort og uten forpliktelser.',
   'Przekonaliśmy Cię?': 'Er du overbevist?',
   'Zacznij dziś': 'Kom i gang i dag',
   'Załóż konto i zobacz cały swój majątek w jednym miejscu - od razu po pierwszym dodaniu konta.':
     'Opprett en konto og se hele formuen din på ett sted - fra du legger til den første kontoen.',
   'Rejestrujesz się z zaproszenia.': 'Du registrerer deg via en invitasjon.',
-  'Zakładasz konto': 'Du oppretter en konto',
-  'Rejestracja jest otwarta i zajmuje minutę. Nie potrzebujesz zaproszenia ani karty płatniczej.':
-    'Registreringen er åpen og tar ett minutt. Du trenger verken invitasjon eller betalingskort.',
-  'Czy potrzebuję zaproszenia?': 'Trenger jeg en invitasjon?',
   'Nic. skieta jest dziś w całości bezpłatna - bez abonamentu, bez reklam i bez podawania numeru karty. Gdyby w przyszłości pojawiła się wersja płatna, uprzedzimy o tym z wyprzedzeniem, a pobranie kopii swoich danych pozostanie bezpłatne - to Twoje prawo wynikające z RODO, nie element oferty.':
     'Ingenting. skieta er i dag helt gratis - ingen abonnementer, ingen reklame og ingen kortnummer. Skulle det i fremtiden komme en betalt versjon, sier vi fra i god tid, og nedlasting av en kopi av dataene dine forblir gratis - det er din rett etter GDPR, ikke en del av et abonnement.',
-  'Nie. Rejestracja jest otwarta dla wszystkich - wystarczy założyć konto. Zaproszenia nadal działają: jeśli ktoś prześle Ci swój link, zapiszemy, że to dzięki niemu tu trafiłeś/aś, ale nie jest to warunek założenia konta.':
-    'Nei. Registreringen er åpen for alle - du trenger bare å opprette en konto. Invitasjoner fungerer fortsatt: Hvis noen sender deg lenken sin, noterer vi at det var de som førte deg hit, men det er ikke et vilkår for å opprette konto.',
-  'Bez reklam i bez sprzedawania danych. Nikt nie zagląda w Twoje konta - Twoje liczby służą wyłącznie do wyliczeń, które widzisz w aplikacji. Historia logowań pokazuje, kto i kiedy wchodził na Twoje konto.':
-    'Ingen reklame og ingen salg av data. Ingen ser inn i kontoene dine - tallene dine brukes utelukkende til beregningene du ser i appen. Innloggingshistorikken viser hvem som har vært inne på kontoen din, og når.',
   'skieta liczy to samo dla Twojego prawdziwego portfela - konta bankowe, akcje, obligacje i lokaty w jednym miejscu, z zyskiem po podatku Belki. Konto jest bezpłatne i zakładasz je w minutę.':
     'skieta regner det samme for den virkelige porteføljen din - bankkontoer, aksjer, obligasjoner og innskudd på ett sted, med gevinst etter polsk kapitalskatt. En konto er gratis og opprettes på ett minutt.',
   'skieta pokazuje każdy zysk brutto i po podatku, a kalkulator porównuje lokaty, obligacje i giełdę na Twojej kwocie. Konto jest bezpłatne i zakładasz je w minutę.':
@@ -1434,4 +1393,29 @@ export const no: Record<string, string> = {
   'Tag': 'Tag',
   'Wszystkie': 'Alle',
   'Wyczyść filtry': 'Fjern filtre',
+  // Landing page (September 2026 rewrite) and its FAQ
+  'Bez haczyków': 'Ingen hake',
+  'Bez podpinania banku': 'Ingen bankkobling',
+  'Nikomu nie podajesz haseł do banku.': 'Du gir aldri noen bankpassordene dine.',
+  'Bez reklam': 'Ingen reklame',
+  'I bez sprzedawania Twoich danych.': 'Og vi selger aldri dataene dine.',
+  'Sam budżet też wystarczy': 'Bare budsjettet holder også',
+  'Nie inwestujesz? Część giełdowa po prostu znika z menu.': 'Investerer du ikke? Investeringsdelen forsvinner bare fra menyen.',
+  'Wychodzisz, kiedy chcesz': 'Du går når du vil',
+  'Pobierasz swoje dane i usuwasz konto sam, z ustawień.': 'Du laster ned dataene dine og sletter kontoen selv, fra innstillingene.',
+  'Budżet, cele oszczędnościowe i inwestycje w jednym miejscu. Z zyskiem liczonym po podatku Belki, a nie samym saldem.': 'Budsjett, sparemål og investeringer på ett sted. Med gevinst beregnet etter skatt, ikke bare saldoen.',
+  'Konto zakładasz w minutę, wystarczy e-mail i hasło.': 'Du oppretter konto på et minutt, du trenger bare e-post og passord.',
+  'Wydatki z podziałem na kategorie, sklepy i tagi, miesiąc po miesiącu. Paragon dodasz zdjęciem.': 'Utgifter fordelt på kategorier, butikker og tagger, måned for måned. Kvitteringer legger du til med et bilde.',
+  'Wpłacony kapitał osobno, zysk osobno, brutto i po podatku Belki. Przy akcjach z zagranicy widać też, ile zrobił sam kurs waluty.': 'Innbetalt kapital og gevinst hver for seg, før og etter skatt. For utenlandske aksjer ser du også hvor mye valutakursen alene står for.',
+  'Rezerwujesz kwotę z konkretnej wypłaty, a skieta liczy, ile odkładać z każdej, żeby zdążyć.': 'Du setter av et beløp fra en bestemt lønning, og skieta regner ut hvor mye du må spare av hver for å rekke det.',
+  'Wszystkie artykuły ({0}) →': 'Alle artikler ({0}) →',
+  'Załóż konto i zacznij notować wydatki jeszcze dziś.': 'Opprett en konto og begynn å føre utgiftene dine i dag.',
+  'Oszczędzanie i inwestowanie w polskich realiach: podatek Belki, obligacje skarbowe, lokaty, ETF-y, IKE i IKZE, budżet domowy.': 'Sparing og investering i Polen: Belka-skatten, statsobligasjoner, innskudd, ETF-er, IKE og IKZE, husholdningsbudsjett.',
+  'Częste pytania': 'Ofte stilte spørsmål',
+  'Kto widzi moje finanse?': 'Hvem ser økonomien min?',
+  'Tylko Ty. Nikt nie przegląda sald ani transakcji poszczególnych użytkowników - dane są przetwarzane po to, żeby wyliczyć to, co widzisz na swoim dashboardzie. W ustawieniach konta znajdziesz historię logowań, więc sam sprawdzisz, kto i kiedy wchodził na Twoje konto.': 'Bare du. Ingen ser på enkeltbrukeres saldoer eller transaksjoner - dataene behandles bare for å beregne det du ser på dashbordet ditt. I kontoinnstillingene finner du innloggingshistorikken, så du selv kan sjekke hvem som logget inn på kontoen din og når.',
+  'Czy muszę podawać dane logowania do banku?': 'Må jeg oppgi innloggingsdetaljene til banken?',
+  'Nie. skieta nie łączy się z bankami i nigdy nie prosi o hasła bankowe. Konta, lokaty i transakcje dodajesz sam, a historię możesz zaimportować z pliku wyciągu. Automatycznie pobierane są wyłącznie publiczne dane rynkowe: notowania akcji, kursy walut NBP i oprocentowanie obligacji skarbowych.': 'Nei. skieta kobler seg ikke til banker og ber aldri om bankpassord. Kontoer, innskudd og transaksjoner legger du inn selv, og historikken kan du importere fra en kontoutskriftsfil. Det eneste som hentes automatisk, er offentlige markedsdata: aksjekurser, NBP-valutakurser og renten på statsobligasjoner.',
+  'Czy mogę usunąć swoje konto i dane?': 'Kan jeg slette kontoen og dataene mine?',
+  'Tak, w każdej chwili i samodzielnie, z poziomu ustawień konta - bez pisania do kogokolwiek.': 'Ja, når som helst og selv, fra kontoinnstillingene - uten å skrive til noen.',
 }

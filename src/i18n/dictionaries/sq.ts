@@ -835,42 +835,23 @@ export const sq: Record<string, string> = {
   'Dostępne wyłącznie na zaproszenie': 'I disponueshëm vetëm me ftesë',
   'Zobacz, gdzie znika': 'Shiko ku shkon',
   'Twoja wypłata': 'rroga jote',
-  'Zbudowane, żeby faktycznie z tego korzystać': 'Ndërtuar që ta përdorësh vërtet',
-  'Nie kolejny arkusz kalkulacyjny - narzędzie, które samo liczy to, co dla Ciebie ważne.':
-    'Jo edhe një fletëllogaritëse tjetër - një mjet që llogarit vetë çfarë ka rëndësi për ty.',
-  'Wszystko w jednym miejscu': 'Gjithçka në një vend',
-  'Konta bankowe, akcje, obligacje i lokaty - jeden widok na cały Twój majątek, bez przełączania się między aplikacjami banków i domów maklerskich.':
-    'Llogaritë bankare, aksionet, obligacionet dhe depozitat - një pamje e vetme mbi gjithë pasurinë tënde, pa kaluar nga një aplikacion në tjetrin i bankave dhe brokerave.',
   'Realny zwrot z inwestycji': 'Kthimi real nga investimet',
   'Zysk liczony osobno od wpłaconego kapitału - zobaczysz dokładnie, ile realnie zarobiłeś na lokatach, obligacjach i akcjach, po podatku Belki.':
     'Fitimi llogaritet veç nga kapitali i depozituar - do të shohësh saktësisht sa ke fituar realisht nga depozitat, obligacionet dhe aksionet, pas tatimit mbi fitimet kapitale.',
   'Budżet pod kontrolą': 'Buxheti nën kontroll',
   'Automatyczny import wyciągów, kategorie, sklepy i tagi - analiza przychodów i wydatków, która sama się aktualizuje.':
     'Importim automatik i ekstrakteve bankare, kategori, dyqane dhe etiketa - analizë e të ardhurave dhe shpenzimeve që përditësohet vetë.',
-  'Ustaw cel, rezerwuj kwoty z konkretnych wypłat lub z bieżących oszczędności i śledź postęp na żywo.':
-    'Vendos një qëllim, rezervo shuma nga paga konkrete ose nga kursimet aktuale, dhe ndiq ecurinë në kohë reale.',
   'Dywidendy i podatki': 'Dividendët dhe tatimet',
   'Historia i prognoza wypłat dywidend, szacowany podatek Belki do zapłaty - żadnych niespodzianek przy rozliczeniu.':
     'Historiku dhe parashikimi i pagesave të dividendëve, tatimi i vlerësuar për pagesë - asnjë befasi kur vjen koha e llogarive.',
   // Landing - budget-first positioning + receipt scanning
-  'Zapisuj wydatki zdjęciem paragonu i zobacz, gdzie naprawdę idą Twoje pieniądze. A jeśli inwestujesz - skieta doliczy do tego akcje, lokaty i obligacje i pokaże realny zysk, a nie samo saldo.':
-    'Regjistro shpenzimet me një foto të kuponit dhe shiko ku shkojnë vërtet paratë e tua. Dhe nëse investon, skieta shton aksionet, depozitat dhe obligacionet dhe tregon fitimin real, jo vetëm gjendjen.',
-  'Wydatek ze zdjęcia paragonu': 'Një shpenzim nga fotoja e kuponit',
   'Zrób paragonowi zdjęcie telefonem, a skieta odczyta kwotę, datę i sklep oraz sama zaproponuje kategorię z Twojej listy. Zostaje Ci sprawdzić i zapisać.':
     'Fotografo kuponin me telefon dhe skieta lexon shumën, datën dhe dyqanin, si dhe propozon vetë një kategori nga lista jote. Të mbetet vetëm ta kontrollosh dhe ta ruash.',
-  'Realny zwrot, dywidendy i podatki': 'Kthim real, dividendë dhe taksa',
   'Jeśli inwestujesz: zysk liczony osobno od wpłaconego kapitału, po podatku Belki, plus historia i prognoza dywidend wraz z szacowanym podatkiem do zapłaty.':
     'Nëse investon: fitimi llogaritet veçmas nga kapitali i derdhur, pas taksës mbi fitimet kapitale, plus historiku dhe parashikimi i dividendëve së bashku me taksën e vlerësuar që duhet paguar.',
   'Widać, na co naprawdę idą pieniądze': 'Duket ku shkojnë vërtet paratë',
-  'Wydatki z podziałem na kategorie, sklepy i tagi, miesiąc po miesiącu. Nowy wydatek dodajesz zdjęciem paragonu - kwota, data i sklep odczytują się same, a kategoria jest proponowana z Twojej własnej listy.':
-    'Shpenzimet të ndara sipas kategorive, dyqaneve dhe etiketave, muaj pas muaji. Një shpenzim të ri e shton me një foto të kuponit - shuma, data dhe dyqani lexohen vetë, ndërsa kategoria propozohet nga lista jote.',
   'Strona wydatków w skiecie: podział na kategorie i sklepy, wykres wydatków w czasie i przycisk wgrywania paragonu':
     'Faqja e shpenzimeve në skieta: ndarja sipas kategorive dhe dyqaneve, grafiku i shpenzimeve në kohë dhe butoni për ngarkimin e kuponit',
-  'Zaczynasz notować': 'Fillon të regjistrosh',
-  'Dodajesz konto bankowe, a wydatki wrzucasz zdjęciem paragonu. Portfel akcji, lokaty i obligacje - jeśli je masz.':
-    'Shton një llogari bankare dhe shpenzimet i fut me foto të kuponit. Portofoli i aksioneve, depozitat dhe obligacionet - nëse i ke.',
-  'Dashboard aktualizuje się na bieżąco - budżet, majątek i zwrot z inwestycji w jednym miejscu.':
-    'Paneli përditësohet vazhdimisht - buxheti, pasuria dhe kthimi nga investimet në një vend.',
   'Czy mogę używać skiety tylko do budżetu, bez inwestycji?':
     'A mund ta përdor skieta vetëm për buxhetin, pa investime?',
   'Tak, i nie musisz niczego obchodzić. Przy zakładaniu konta zaznaczasz, co Cię interesuje - jeśli nie zaznaczysz giełdy, cała część inwestycyjna po prostu znika z menu i zostaje czysta aplikacja do przychodów, wydatków, paragonów i celów oszczędnościowych. Możesz to zmienić w każdej chwili w ustawieniach konta.':
@@ -879,8 +860,6 @@ export const sq: Record<string, string> = {
     'Si funksionon shtimi i një shpenzimi nga fotoja e një kuponi?',
   'Robisz paragonowi zdjęcie telefonem, a skieta odczytuje z niego kwotę, datę i nazwę sklepu oraz proponuje kategorię z Twojej własnej listy - poprawiasz, co trzeba, i zapisujesz. Odczytem zajmuje się Google Gemini na Twoim własnym, darmowym kluczu, który wklejasz raz przy pierwszym skanowaniu. Samego zdjęcia nigdzie nie zapisujemy - jest odczytywane w locie i nie trafia do naszej bazy.':
     'Fotografon kuponin me telefon dhe skieta lexon prej tij shumën, datën dhe emrin e dyqanit, si dhe propozon një kategori nga lista jote - korrigjon çfarë duhet dhe ruan. Leximin e kryen Google Gemini me çelësin tënd falas, të cilin e ngjit një herë herën e parë që skanon. Vetë foton nuk e ruajmë askund - lexohet aty për aty dhe nuk përfundon në bazën tonë të të dhënave.',
-  'Arkusz nie zrobi za Ciebie zdjęcia paragonu i nie policzy, ile realnie zarobiłeś. skieta odczytuje wydatek ze zdjęcia i sama pilnuje kategorii, a przy inwestycjach liczy zysk osobno od wpłaconego kapitału, po podatku Belki, z kosztem zakupu akcji przeliczonym po kursie NBP z dnia transakcji, a nie dzisiejszym. To rzeczy, które w arkuszu trzeba utrzymywać ręcznie i łatwo w nich o błąd.':
-    'Një fletëllogaritëse nuk e fotografon kuponin për ty dhe nuk llogarit sa ke fituar vërtet. skieta e lexon shpenzimin nga fotoja dhe kujdeset për kategoritë, ndërsa te investimet e llogarit fitimin veçmas nga kapitali i derdhur, pas taksës mbi fitimet kapitale, me koston e blerjes së aksioneve të konvertuar me kursin e NBP-së të ditës së transaksionit dhe jo të sotmen. Këto janë gjëra që në një fletëllogaritëse duhen mbajtur me dorë dhe ku gabimi vjen lehtë.',
   'Załóż konto i zacznij notować wydatki jeszcze dziś - pierwszy paragon wrzucisz zdjęciem w kilka sekund.':
     'Hap një llogari dhe fillo të regjistrosh shpenzimet që sot - kuponin e parë e shton si foto brenda pak sekondash.',
   '📷 Paragon': '📷 Kupon',
@@ -1058,13 +1037,9 @@ export const sq: Record<string, string> = {
   'Zobacz demo →': 'Shiko demon →',
   'Nie udało się otworzyć demo. Spróbuj ponownie za chwilę.': 'Demoja nuk u hap dot. Provo sërish pas pak.',
   'Kont w skiecie: {0} · zapisanych przychodów i wydatków: {1}': 'Llogari në skieta: {0} · të ardhura dhe shpenzime të regjistruara: {1}',
-  'Załóż konto i zacznij notować wydatki jeszcze dziś. Paragony wrzucisz zdjęciem, gdy raz podłączysz darmowy klucz Google - to dwie minuty.': 'Krijo një llogari dhe nis të shënosh shpenzimet që sot. Faturat i shton me foto sapo të lidhësh një herë një çelës falas Google - zgjat dy minuta.',
-  'Zrób paragonowi zdjęcie telefonem, a skieta odczyta kwotę, datę i sklep, zaproponuje kategorię z Twojej listy, a dłuższy paragon rozbije na pozycje. Wystarczy raz podłączyć darmowy klucz Google - to dwie minuty.': 'Bëji foto faturës me telefon dhe skieta lexon shumën, datën dhe dyqanin, sugjeron një kategori nga lista jote dhe e ndan një faturë më të gjatë në artikuj. Duhet vetëm të lidhësh një herë një çelës falas Google - zgjat dy minuta.',
-  'Jeśli inwestujesz: zysk liczony osobno od wpłaconego kapitału, po podatku Belki, historia i prognoza dywidend z szacowanym podatkiem oraz podsumowanie komunikatów i wiadomości o Twoich spółkach, z odnośnikiem do źródła przy każdym punkcie.': 'Nëse investon: fitimi llogaritet veçmas nga kapitali i futur, pas tatimit Belka, historiku dhe parashikimi i dividendëve me tatimin e vlerësuar, si dhe një përmbledhje e njoftimeve dhe lajmeve për kompanitë e tua, me lidhje te burimi për çdo pikë.',
   'Czy skieta działa na telefonie?': 'A funksionon skieta në telefon?',
   'Tak, i nie trzeba niczego pobierać ze sklepu z aplikacjami. Otwórz skieta.com w telefonie i dodaj ją do ekranu głównego: na iPhonie w Safari stuknij „Udostępnij", a potem „Do ekranu początkowego"; na Androidzie przeglądarka sama zaproponuje instalację albo znajdziesz ją w menu jako „Zainstaluj aplikację". skieta otwiera się wtedy jak zwykła aplikacja - na pełnym ekranie i z własną ikoną - a paragon zeskanujesz jednym tapnięciem.': 'Po, dhe s’ka nevojë të shkarkosh asgjë nga dyqani i aplikacioneve. Hap skieta.com në telefon dhe shtoje në ekranin kryesor: në iPhone, në Safari prek “Ndaj” dhe pastaj “Shto në ekranin bazë”; në Android shfletuesi ta ofron vetë instalimin ose e gjen te menyja si “Instalo aplikacionin”. Pas kësaj skieta hapet si një aplikacion i zakonshëm - në ekran të plotë dhe me ikonën e vet - dhe një faturë e skanon me një prekje.',
   'Czy mogę zobaczyć aplikację przed założeniem konta?': 'A mund ta shoh aplikacionin para se të krijoj llogari?',
-  'Z publicznych źródeł: notowania z Yahoo Finance i Stooq, kursy walut z NBP, aktualne oprocentowanie obligacji skarbowych z obligacjeskarbowe.pl, a w analizie spółek - komunikaty spółek z bankier.pl, raporty spółek amerykańskich z SEC EDGAR i wiadomości z Yahoo Finance. Dane odświeżane są automatycznie, a przy porównaniach zawsze widzisz, z jakiego okresu pochodzą.': 'Nga burime publike: kuotimet nga Yahoo Finance dhe Stooq, kurset e këmbimit nga NBP, interesi aktual i obligacioneve të thesarit nga obligacjeskarbowe.pl, dhe për analizën e kompanive - njoftimet nga bankier.pl, raportet e kompanive amerikane nga SEC EDGAR dhe lajmet nga Yahoo Finance. Të dhënat rifreskohen automatikisht dhe në krahasime sheh gjithmonë nga cila periudhë vijnë.',
   'Tej zmiany nie zapisaliśmy - to konto demonstracyjne. Załóż własne konto, żeby prowadzić swoje finanse.': 'Ky ndryshim nuk u ruajt - kjo është një llogari demo. Krijo llogarinë tënde për të mbajtur financat e tua.',
   'Oglądasz konto demonstracyjne z przykładowymi danymi. Możesz wszystko przeklikać, ale zmiany nie są zapisywane.': 'Po shikon një llogari demo me të dhëna shembull. Mund t’i shfletosh të gjitha, por ndryshimet nuk ruhen.',
   'Załóż własne konto →': 'Krijo llogarinë tënde →',
@@ -1104,17 +1079,14 @@ export const sq: Record<string, string> = {
     'Paguar për dikë tjetër - tashmë e kthyer. Kliko nëse në fakt jo.',
   'Wyłożone za kogoś innego - kliknij, gdy oddadzą.':
     'Paguar për dikë tjetër - kliko kur ta kthejnë.',
-  'Twoje dane, Twoja kontrola': 'Të dhënat e tua, kontrolli yt',
   'Dostęp wyłącznie na zaproszenie, bez reklam i bez śledzenia. Historia logowań pokazuje dokładnie, kto i kiedy wchodził na Twoje konto.':
     'Akses vetëm me ftesë, pa reklama dhe pa gjurmim. Historiku i identifikimeve tregon saktësisht kush dhe kur ka hyrë në llogarinë tënde.',
-  'Jak to działa': 'Si funksionon',
   'Dostajesz zaproszenie': 'Merr një ftesë',
   'Rejestracja jest możliwa tylko na zaproszenie od kogoś, kto już korzysta ze skieta.':
     'Regjistrimi është i mundur vetëm me ftesë nga dikush që përdor tashmë skieta.',
   'Dodajesz swoje konta': 'Shton llogaritë e tua',
   'Kilka minut wystarczy, żeby dodać konta bankowe, portfel akcji, lokaty i obligacje.':
     'Mjaftojnë pak minuta për të shtuar llogaritë bankare, portofolin e aksioneve, depozitat dhe obligacionet.',
-  'Widzisz cały obraz': 'Shikon pamjen e plotë',
   'Dashboard aktualizuje się na bieżąco - majątek, zwrot z inwestycji i budżet w jednym miejscu.':
     'Paneli përditësohet vazhdimisht - pasuria, kthimi nga investimet dhe buxheti në një vend.',
   'Masz już zaproszenie?': 'Ke tashmë një ftesë?',
@@ -1157,9 +1129,6 @@ export const sq: Record<string, string> = {
 
   // Login back-link, updated budget feature card
   '← Strona główna': '← Faqja kryesore',
-  'Przychody, wydatki i budżet': 'Të ardhurat, shpenzimet dhe buxheti',
-  'Zarządzaj przychodami i wydatkami, monitoruj budżet miesiąc po miesiącu i sprawdzaj bilans - automatyczny import wyciągów, kategorie, sklepy i tagi robią to za Ciebie. Osobna zakładka pilnuje też kosztów samochodu: paliwo ze zdjęcia paragonu, ubezpieczenie, przeglądy i naprawy.':
-    'Menaxho të ardhurat dhe shpenzimet, monitoro buxhetin muaj pas muaji dhe kontrollo bilancin - importimi automatik i ekstrakteve, kategoritë, dyqanet dhe etiketat e bëjnë këtë punë për ty. Një skedë e veçantë ndjek edhe shpenzimet e makinës: karburanti nga një foto e faturës, sigurimi, kontrollet teknike dhe riparimet.',
 
   // Translation coverage sweep - everything a distinct-strings audit found
   // with no English entry yet, across Planowanie, AdminUsers, AnalizaSpolek,
@@ -1405,23 +1374,13 @@ export const sq: Record<string, string> = {
   'Bezpłatnie, bez reklam, bez karty': 'Falas, pa reklama, pa kartë',
   'Załóż darmowe konto →': 'Krijo një llogari falas →',
   'Załóż konto': 'Krijo llogari',
-  'Konto zakładasz w minutę. Bez zaproszenia, bez karty, bez zobowiązań.':
-    'Krijimi i llogarisë zgjat një minutë. Pa ftesë, pa kartë, pa detyrime.',
   'Przekonaliśmy Cię?': 'Të bindëm?',
   'Zacznij dziś': 'Fillo sot',
   'Załóż konto i zobacz cały swój majątek w jednym miejscu - od razu po pierwszym dodaniu konta.':
     'Krijo një llogari dhe shih gjithë pasurinë tënde në një vend - që nga çasti kur shton llogarinë e parë.',
   'Rejestrujesz się z zaproszenia.': 'Po regjistrohesh me një ftesë.',
-  'Zakładasz konto': 'Krijon një llogari',
-  'Rejestracja jest otwarta i zajmuje minutę. Nie potrzebujesz zaproszenia ani karty płatniczej.':
-    'Regjistrimi është i hapur dhe zgjat një minutë. Nuk të duhet as ftesë, as kartë pagese.',
-  'Czy potrzebuję zaproszenia?': 'A më duhet një ftesë?',
   'Nic. skieta jest dziś w całości bezpłatna - bez abonamentu, bez reklam i bez podawania numeru karty. Gdyby w przyszłości pojawiła się wersja płatna, uprzedzimy o tym z wyprzedzeniem, a pobranie kopii swoich danych pozostanie bezpłatne - to Twoje prawo wynikające z RODO, nie element oferty.':
     'Asgjë. skieta sot është plotësisht falas - pa abonim, pa reklama dhe pa numër karte. Nëse në të ardhmen del një version me pagesë, do të të njoftojmë paraprakisht, ndërsa shkarkimi i një kopjeje të të dhënave të tua do të mbetet falas - kjo është e drejta jote sipas GDPR-së, jo pjesë e një plani.',
-  'Nie. Rejestracja jest otwarta dla wszystkich - wystarczy założyć konto. Zaproszenia nadal działają: jeśli ktoś prześle Ci swój link, zapiszemy, że to dzięki niemu tu trafiłeś/aś, ale nie jest to warunek założenia konta.':
-    'Jo. Regjistrimi është i hapur për të gjithë - mjafton të krijosh një llogari. Ftesat vazhdojnë të funksionojnë: nëse dikush të dërgon lidhjen e vet, e shënojmë se ai të solli këtu, por nuk është kusht për të hapur llogari.',
-  'Bez reklam i bez sprzedawania danych. Nikt nie zagląda w Twoje konta - Twoje liczby służą wyłącznie do wyliczeń, które widzisz w aplikacji. Historia logowań pokazuje, kto i kiedy wchodził na Twoje konto.':
-    'Pa reklama dhe pa shitje të dhënash. Askush nuk shikon brenda llogarive të tua - shifrat e tua shërbejnë vetëm për llogaritjet që sheh në aplikacion. Historiku i hyrjeve tregon kush ka hyrë në llogarinë tënde dhe kur.',
   'skieta liczy to samo dla Twojego prawdziwego portfela - konta bankowe, akcje, obligacje i lokaty w jednym miejscu, z zyskiem po podatku Belki. Konto jest bezpłatne i zakładasz je w minutę.':
     'skieta llogarit të njëjtën gjë për portofolin tënd të vërtetë - llogari bankare, aksione, obligacione dhe depozita në një vend, me fitimin pas tatimit polak mbi fitimet kapitale. Llogaria është falas dhe krijohet për një minutë.',
   'skieta pokazuje każdy zysk brutto i po podatku, a kalkulator porównuje lokaty, obligacje i giełdę na Twojej kwocie. Konto jest bezpłatne i zakładasz je w minutę.':
@@ -1432,4 +1391,29 @@ export const sq: Record<string, string> = {
   'Tag': 'Etiketë',
   'Wszystkie': 'Të gjitha',
   'Wyczyść filtry': 'Pastro filtrat',
+  // Landing page (September 2026 rewrite) and its FAQ
+  'Bez haczyków': 'Pa kurthe',
+  'Bez podpinania banku': 'Pa lidhje me bankën',
+  'Nikomu nie podajesz haseł do banku.': 'Nuk i jep askujt fjalëkalimet e bankës.',
+  'Bez reklam': 'Pa reklama',
+  'I bez sprzedawania Twoich danych.': 'Dhe pa shitur të dhënat e tua.',
+  'Sam budżet też wystarczy': 'Vetëm buxheti mjafton gjithashtu',
+  'Nie inwestujesz? Część giełdowa po prostu znika z menu.': 'Nuk investon? Pjesa e bursës thjesht zhduket nga menyja.',
+  'Wychodzisz, kiedy chcesz': 'Largohesh kur të duash',
+  'Pobierasz swoje dane i usuwasz konto sam, z ustawień.': 'I shkarkon të dhënat dhe e fshin llogarinë vetë, nga cilësimet.',
+  'Budżet, cele oszczędnościowe i inwestycje w jednym miejscu. Z zyskiem liczonym po podatku Belki, a nie samym saldem.': 'Buxheti, objektivat e kursimit dhe investimet në një vend. Me fitimin e llogaritur pas taksës, jo vetëm bilancin.',
+  'Konto zakładasz w minutę, wystarczy e-mail i hasło.': 'Llogarinë e krijon për një minutë, mjafton një email dhe një fjalëkalim.',
+  'Wydatki z podziałem na kategorie, sklepy i tagi, miesiąc po miesiącu. Paragon dodasz zdjęciem.': 'Shpenzimet sipas kategorive, dyqaneve dhe etiketave, muaj pas muaji. Faturën e shton me një foto.',
+  'Wpłacony kapitał osobno, zysk osobno, brutto i po podatku Belki. Przy akcjach z zagranicy widać też, ile zrobił sam kurs waluty.': 'Kapitali i derdhur dhe fitimi veç e veç, bruto dhe pas taksës. Te aksionet e huaja sheh edhe sa ka bërë vetëm kursi i këmbimit.',
+  'Rezerwujesz kwotę z konkretnej wypłaty, a skieta liczy, ile odkładać z każdej, żeby zdążyć.': 'Rezervon një shumë nga një rrogë e caktuar dhe skieta llogarit sa të kursesh nga secila që të arrish në kohë.',
+  'Wszystkie artykuły ({0}) →': 'Të gjithë artikujt ({0}) →',
+  'Załóż konto i zacznij notować wydatki jeszcze dziś.': 'Krijo një llogari dhe fillo të shënosh shpenzimet që sot.',
+  'Oszczędzanie i inwestowanie w polskich realiach: podatek Belki, obligacje skarbowe, lokaty, ETF-y, IKE i IKZE, budżet domowy.': 'Kursimi dhe investimi në Poloni: taksa Belka, obligacionet e thesarit, depozitat, ETF-të, IKE dhe IKZE, buxheti familjar.',
+  'Częste pytania': 'Pyetje të shpeshta',
+  'Kto widzi moje finanse?': 'Kush i sheh financat e mia?',
+  'Tylko Ty. Nikt nie przegląda sald ani transakcji poszczególnych użytkowników - dane są przetwarzane po to, żeby wyliczyć to, co widzisz na swoim dashboardzie. W ustawieniach konta znajdziesz historię logowań, więc sam sprawdzisz, kto i kiedy wchodził na Twoje konto.': 'Vetëm ti. Askush nuk i shikon bilancet ose transaksionet e përdoruesve të veçantë - të dhënat përpunohen vetëm për të llogaritur atë që sheh në panelin tënd. Te cilësimet e llogarisë gjen historikun e hyrjeve, kështu që mund të kontrollosh vetë kush ka hyrë në llogarinë tënde dhe kur.',
+  'Czy muszę podawać dane logowania do banku?': 'A duhet të jap të dhënat e hyrjes në bankë?',
+  'Nie. skieta nie łączy się z bankami i nigdy nie prosi o hasła bankowe. Konta, lokaty i transakcje dodajesz sam, a historię możesz zaimportować z pliku wyciągu. Automatycznie pobierane są wyłącznie publiczne dane rynkowe: notowania akcji, kursy walut NBP i oprocentowanie obligacji skarbowych.': 'Jo. skieta nuk lidhet me bankat dhe nuk kërkon kurrë fjalëkalime bankare. Llogaritë, depozitat dhe transaksionet i shton vetë, ndërsa historikun mund ta importosh nga një skedar pasqyre. Automatikisht merren vetëm të dhëna publike të tregut: kuotimet e aksioneve, kurset e këmbimit të NBP dhe interesi i obligacioneve të thesarit.',
+  'Czy mogę usunąć swoje konto i dane?': 'A mund ta fshij llogarinë dhe të dhënat e mia?',
+  'Tak, w każdej chwili i samodzielnie, z poziomu ustawień konta - bez pisania do kogokolwiek.': 'Po, në çdo kohë dhe vetë, nga cilësimet e llogarisë - pa i shkruar askujt.',
 }

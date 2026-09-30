@@ -25,21 +25,35 @@ const PAGES: Record<string, Page> = {
   '/': {
     title: 'Darmowa aplikacja do budżetu domowego - skieta',
     description:
-      'Darmowa aplikacja do budżetu domowego, bez reklam. Wydatki dodasz zdjęciem paragonu, a obok budżetu policzysz też akcje, obligacje i lokaty.',
+      'Darmowa aplikacja do budżetu domowego, bez reklam i bez podpinania banku. Budżet, cele oszczędnościowe i inwestycje w jednym miejscu, z zyskiem po podatku Belki.',
+    // Mirrors what Landing.tsx renders, section by section, so a crawler that
+    // reads the HTML before running the app sees the same page a person does.
     body:
       `<main style="${WRAPPER_STYLE}">` +
       '<h1>Zobacz, gdzie znika Twoja wypłata</h1>' +
       '<p>skieta - Twoja wirtualna skarpeta z oszczędnościami. Bezpłatnie, bez reklam, bez karty.</p>' +
-      '<p>Zapisuj wydatki zdjęciem paragonu i zobacz, gdzie naprawdę idą Twoje pieniądze. A jeśli inwestujesz - skieta doliczy do tego akcje, lokaty i obligacje i pokaże realny zysk, a nie samo saldo.</p>' +
+      '<p>Budżet, cele oszczędnościowe i inwestycje w jednym miejscu. Z zyskiem liczonym po podatku Belki, a nie samym saldem.</p>' +
       '<p><a href="/register">Załóż darmowe konto</a> · <a href="/kalkulator">Kalkulator: lokata, obligacje czy giełda</a></p>' +
-      '<h2>Przychody, wydatki i budżet</h2>' +
-      '<p>Budżet miesiąc po miesiącu, kategorie, sklepy i tagi, a w osobnej zakładce koszty samochodu: paliwo, ubezpieczenie, przeglądy i naprawy.</p>' +
-      '<h2>Cele oszczędnościowe</h2>' +
-      '<p>Ustaw cel, rezerwuj kwoty z konkretnych wypłat lub z bieżących oszczędności i śledź postęp na żywo.</p>' +
-      '<h2>Wszystko w jednym miejscu</h2>' +
-      '<p>Konta bankowe, akcje, obligacje i lokaty - jeden widok na cały majątek, bez podawania danych logowania do banku.</p>' +
-      '<h2>Realny zwrot, dywidendy i podatki</h2>' +
-      '<p>Zysk liczony osobno od wpłaconego kapitału, po podatku Belki, historia i prognoza dywidend oraz podsumowanie komunikatów o Twoich spółkach.</p>' +
+      '<h2>Widać, na co naprawdę idą pieniądze</h2>' +
+      '<p>Wydatki z podziałem na kategorie, sklepy i tagi, miesiąc po miesiącu. Paragon dodasz zdjęciem.</p>' +
+      '<h2>Zysk, a nie tylko saldo</h2>' +
+      '<p>Wpłacony kapitał osobno, zysk osobno, brutto i po podatku Belki. Przy akcjach z zagranicy widać też, ile zrobił sam kurs waluty.</p>' +
+      '<h2>Cele, które same się pilnują</h2>' +
+      '<p>Rezerwujesz kwotę z konkretnej wypłaty, a skieta liczy, ile odkładać z każdej, żeby zdążyć.</p>' +
+      '<h2>Bez haczyków</h2>' +
+      '<p>Bez podpinania banku. Bez reklam i bez sprzedawania Twoich danych. Sam budżet też wystarczy: jeśli nie inwestujesz, część giełdowa znika z menu. Dane pobierasz i konto usuwasz sam, z ustawień.</p>' +
+      '<p><a href="/artykuly">Artykuły o finansach osobistych</a></p>' +
+      '</main>',
+  },
+  '/artykuly': {
+    title: 'Artykuły o finansach osobistych - skieta',
+    description:
+      'Oszczędzanie i inwestowanie w polskich realiach: podatek Belki, obligacje skarbowe, lokaty, ETF-y, IKE i IKZE, budżet domowy.',
+    body:
+      `<main style="${WRAPPER_STYLE}">` +
+      '<h1>Artykuły o finansach osobistych</h1>' +
+      '<p>Oszczędzanie i inwestowanie w polskich realiach: podatek Belki, obligacje skarbowe, lokaty, ETF-y, IKE i IKZE, budżet domowy.</p>' +
+      '<p><a href="/">skieta - darmowa aplikacja do budżetu domowego</a></p>' +
       '</main>',
   },
   '/kalkulator': {
@@ -114,4 +128,4 @@ export default async (request: Request, context: { next: () => Promise<Response>
   return new Response(html, { status: response.status, headers })
 }
 
-export const config = { path: ['/', '/kalkulator', '/regulamin', '/polityka-prywatnosci'] }
+export const config = { path: ['/', '/artykuly', '/kalkulator', '/regulamin', '/polityka-prywatnosci'] }

@@ -9,6 +9,7 @@ import EditorRoute from './components/EditorRoute'
 import ProtectedRoute from './components/ProtectedRoute'
 import { PageLoader } from './components/Loader'
 import ArticleDetail from './pages/ArticleDetail'
+import ArticlesIndex from './pages/ArticlesIndex'
 import Landing from './pages/Landing'
 import PrivacyPolicy from './pages/PrivacyPolicy'
 import Terms from './pages/Terms'
@@ -100,6 +101,7 @@ const PAGE_TITLES: [string, string][] = [
   ['/budzet/samochod', 'Samochód'],
   ['/budzet', 'Budżet'],
   ['/kalkulator', 'Kalkulator inwestycyjny - lokata, obligacje czy giełda'],
+  ['/artykuly', 'Artykuły o finansach osobistych'],
   ['/analiza', 'Analiza'],
   ['/dashboard', 'Dashboard'],
 ]
@@ -112,11 +114,18 @@ function AdminIndexRedirect() {
   return <Navigate to="/dashboard" replace />
 }
 
+// Matched exactly rather than as a prefix: '/' prefixes everything, and
+// '/artykuly' prefixes every article, whose own title (ArticleDetail) has to
+// be the one that sticks.
+const EXACT_TITLE_PATHS = new Set(['/', '/artykuly'])
+
 function useDocumentTitle() {
   const location = useLocation()
   const { t } = useLanguage()
   useEffect(() => {
-    const match = PAGE_TITLES.find(([path]) => (path === '/' ? location.pathname === '/' : location.pathname.startsWith(path)))
+    const match = PAGE_TITLES.find(([path]) =>
+      EXACT_TITLE_PATHS.has(path) ? location.pathname === path : location.pathname.startsWith(path),
+    )
     document.title = match ? `${t(match[1])} - skieta` : 'skieta'
   }, [location.pathname, t])
 }
@@ -125,7 +134,7 @@ function useDocumentTitle() {
 // canonical tag pointing at themselves - everything else (the app itself,
 // behind login) points back at the landing page, since that's the one real
 // entry point search engines should treat as canonical for those paths.
-const CANONICAL_SELF_PATHS = ['/', '/polityka-prywatnosci', '/regulamin', '/kalkulator']
+const CANONICAL_SELF_PATHS = ['/', '/artykuly', '/polityka-prywatnosci', '/regulamin', '/kalkulator']
 
 function useCanonicalLink() {
   const location = useLocation()
@@ -154,6 +163,7 @@ export default function App() {
       <Route path="/witaj" element={<Navigate to="/" replace />} />
       <Route path="/polityka-prywatnosci" element={<PrivacyPolicy />} />
       <Route path="/regulamin" element={<Terms />} />
+      <Route path="/artykuly" element={<ArticlesIndex />} />
       <Route path="/artykuly/:slug" element={<ArticleDetail />} />
       <Route path="/logowanie" element={<Login />} />
       <Route path="/login" element={<Navigate to="/logowanie" replace />} />
