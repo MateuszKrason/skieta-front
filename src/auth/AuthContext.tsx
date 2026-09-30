@@ -39,7 +39,7 @@ export function AuthProvider({ children }: { children: ReactNode }) {
   const [user, setUser] = useState<User | null>(null)
   const [loading, setLoading] = useState(true)
   const queryClient = useQueryClient()
-  const { setTheme } = useTheme()
+  const { theme, setTheme } = useTheme()
   const { setLanguage } = useLanguage()
   // Only apply the account's configured color variant/language once per
   // session (app load, or right after login/register) - not on every later
@@ -105,6 +105,11 @@ export function AuthProvider({ children }: { children: ReactNode }) {
       email,
       password,
       language,
+      // The variant the visitor is looking at right now - picked on the
+      // landing page or left at the default. Without it the new account got
+      // the default and syncPreferencesFromUser below switched the colours
+      // on them at the very first screen.
+      color_variant: theme,
       invite_token: inviteToken,
       terms_accepted: termsAccepted,
       // Read here rather than passed down from the form: the source was
