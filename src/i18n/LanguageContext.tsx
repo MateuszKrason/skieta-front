@@ -35,9 +35,9 @@ type Dictionary = Record<string, string>
 // Fetched on demand, one language at a time. These three files are ~90 KB
 // gzipped between them, and they used to be static imports - which put all of
 // them in the chunk every single visitor downloads before anything renders,
-// on a site whose source language is Polish and whose default (and fallback
-// for any unrecognised browser locale) is therefore the one language with no
-// dictionary at all. A Polish visitor now downloads none of this.
+// on a site whose source language is Polish and whose default is therefore
+// the one language with no dictionary at all. A Polish visitor now downloads
+// none of this.
 //
 // pl is absent on purpose: it is the source language, so its own keys are the
 // text and `t()` falls through to them.
@@ -63,31 +63,28 @@ interface LanguageContextValue {
 
 const LanguageContext = createContext<LanguageContextValue | undefined>(undefined)
 
-// Best-effort browser-locale -> supported Language mapping, used only when
-// nothing has been saved yet (fresh visitor, incl. the logged-out landing
-// page - LanguageProvider is the outermost provider, see main.tsx). Matches
-// on the primary subtag (e.g. "de-AT" -> "de").
-function detectBrowserLanguage(): Language {
-  const candidates = typeof navigator !== 'undefined' ? navigator.languages ?? [navigator.language] : []
-  for (const raw of candidates) {
-    const primary = raw?.toLowerCase().split('-')[0]
-    if (primary === 'de') return 'de'
-    if (primary === 'es') return 'es'
-    if (primary === 'en') return 'en'
-    if (primary === 'pl') return 'pl'
-  }
-  return 'pl'
-}
-
+// Polish unless the visitor has picked something else themselves.
+//
+// The language used to follow the browser's locale, which sounds helpful and
+// was wrong for this site three ways. Google renders pages as an
+// English-language browser, so after the Polish HTML it was shown an English
+// page titled "Free household budget app" - on a site about Polish tax,
+// whose articles exist only in Polish. Poles whose phones are set to English,
+// common in exactly the age group the app is for, got an English app, and
+// signing up then stored English and with it a default currency of USD. And
+// the English page was never the whole product anyway.
+//
+// The switcher is still there, and an account's own language still applies
+// once someone is signed in (AuthContext.syncPreferencesFromUser).
 function readInitialLanguage(): Language {
   try {
     const stored = localStorage.getItem(STORAGE_KEY)
     if (stored && (LANGUAGES as string[]).includes(stored)) return stored as Language
   } catch {
     // Storage can be unreadable (Safari private mode, blocked site data) -
-    // fall back to the browser locale rather than failing to boot.
+    // the default below is the right answer then too.
   }
-  return detectBrowserLanguage()
+  return 'pl'
 }
 
 // Resolved once, at module evaluation, so the dictionary request is already in
