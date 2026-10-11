@@ -110,6 +110,67 @@ function LanguageCountBars({ title, counts }: { title: string; counts: Record<st
   )
 }
 
+function share(part: number, whole: number): string {
+  return whole > 0 ? `${Math.round((part / whole) * 100)}%` : ''
+}
+
+// What happens to people after they arrive, by week of sign-up. The last
+// column is the one everything else is judged by: traffic and sign-ups say
+// the page works, coming back in the second week says the app does.
+function FunnelTable({ weeks }: { weeks: AdminAppStats['funnel'] }) {
+  const { t } = useLanguage()
+  return (
+    <div className="rounded-xl border border-slate-200 dark:border-slate-700 bg-white dark:bg-slate-800 p-5 shadow-sm">
+      <h2 className="text-sm font-semibold text-slate-700 dark:text-slate-300">{t('Lejek: od demo do powrotu')}</h2>
+      <p className="mt-1 text-xs text-slate-500 dark:text-slate-400">
+        {t(
+          'Każdy wiersz to konta założone w danym tygodniu. „Wpisali dane” oznacza pierwszą transakcję albo konto bankowe, „wrócili” to aktywność między 7. a 13. dniem po rejestracji. Demo liczy uruchomienia, a nie te same osoby.',
+        )}
+      </p>
+      <div className="mt-3 overflow-x-auto">
+        <table className="w-full min-w-[30rem] text-sm tabular-nums">
+          <thead>
+            <tr className="text-left text-xs uppercase tracking-wide text-slate-400 dark:text-slate-500">
+              <th className="py-2 pr-3 font-medium">{t('Tydzień od')}</th>
+              <th className="py-2 pr-3 text-right font-medium">{t('Demo')}</th>
+              <th className="py-2 pr-3 text-right font-medium">{t('Rejestracje')}</th>
+              <th className="py-2 pr-3 text-right font-medium">{t('Wpisali dane')}</th>
+              <th className="py-2 text-right font-medium">{t('Wrócili w 2. tygodniu')}</th>
+            </tr>
+          </thead>
+          <tbody>
+            {[...weeks].reverse().map((week) => (
+              <tr key={week.week_start} className="border-t border-slate-100 dark:border-slate-700 text-slate-700 dark:text-slate-200">
+                <td className="py-2 pr-3">{formatDate(week.week_start)}</td>
+                <td className="py-2 pr-3 text-right">{week.demo_launches}</td>
+                <td className="py-2 pr-3 text-right font-semibold">{week.signups}</td>
+                <td className="py-2 pr-3 text-right">
+                  {week.activated}{' '}
+                  <span className="text-xs text-slate-400 dark:text-slate-500">{share(week.activated, week.signups)}</span>
+                </td>
+                <td className="py-2 text-right">
+                  {week.week_2_complete ? (
+                    <>
+                      {week.returned_week_2}{' '}
+                      <span className="text-xs text-slate-400 dark:text-slate-500">
+                        {share(week.returned_week_2, week.signups)}
+                      </span>
+                    </>
+                  ) : (
+                    <span className="text-xs text-slate-400 dark:text-slate-500">
+                      {t('{0}, w toku', String(week.returned_week_2))}
+                    </span>
+                  )}
+                </td>
+              </tr>
+            ))}
+          </tbody>
+        </table>
+      </div>
+    </div>
+  )
+}
+
 export default function AdminStatystyki() {
   const { t } = useLanguage()
   const tooltipStyle = useTooltipStyle()
@@ -169,6 +230,8 @@ export default function AdminStatystyki() {
         <StatCard label={t('Demo, ostatnie 7 dni')} value={stats.demo_launches.last_7_days} />
         <StatCard label={t('Demo, ostatnie 30 dni')} value={stats.demo_launches.last_30_days} />
       </div>
+
+      <FunnelTable weeks={stats.funnel ?? []} />
 
       <div className="rounded-xl border border-slate-200 dark:border-slate-700 bg-white dark:bg-slate-800 p-5 shadow-sm">
         <div className="mb-3 flex flex-wrap items-center justify-between gap-2">

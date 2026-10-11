@@ -39,6 +39,9 @@ Dla osób, które chcą widzieć, na co idą pieniądze, bez oddawania komukolwi
 
 - [Strona główna](https://skieta.com/): opis aplikacji, demo bez rejestracji i zakładanie konta.
 - [Kalkulator inwestycyjny](https://skieta.com/kalkulator): porównanie lokaty, obligacji skarbowych i giełdy dla własnej kwoty i horyzontu, po podatku Belki i po inflacji. Działa bez konta, stawki obligacji skarbowych pobiera na bieżąco.
+- [Kalkulator procentu składanego](https://skieta.com/kalkulator/procent-skladany): ile urosną oszczędności z wpłatą co miesiąc, z wynikiem po podatku Belki; rozróżnia lokatę, fundusz akumulujący i IKE.
+- [Kalkulator podatku Belki](https://skieta.com/kalkulator/podatek-belki): 19% od odsetek z lokaty albo od zysku ze sprzedaży akcji i ETF-ów, z zaokrągleniami jak w banku i w PIT-38.
+- [Ile odkładać na cel](https://skieta.com/kalkulator/cel-oszczednosciowy): miesięczna kwota potrzebna, żeby uzbierać daną sumę w danym terminie.
 - [Artykuły o finansach osobistych](https://skieta.com/artykuly): podatek Belki, obligacje skarbowe (COI, EDO, ROD, TOS), lokaty i konta oszczędnościowe, ETF-y, IKE i IKZE, poduszka bezpieczeństwa, budżet domowy.
 - [Kanał RSS z artykułami](https://skieta.com/rss.xml)
 - [Rejestracja](https://skieta.com/register)

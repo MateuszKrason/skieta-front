@@ -1590,4 +1590,87 @@ export const de: Record<string, string> = {
   'Nie. skieta nie łączy się z bankami i nigdy nie prosi o hasła bankowe. Konta, lokaty i transakcje dodajesz sam, a historię możesz zaimportować z pliku wyciągu. Automatycznie pobierane są wyłącznie publiczne dane rynkowe: notowania akcji, kursy walut NBP i oprocentowanie obligacji skarbowych.': 'Nein. skieta verbindet sich nicht mit Banken und fragt nie nach Bankpasswörtern. Konten, Festgelder und Transaktionen trägst du selbst ein, und den Verlauf kannst du aus einer Kontoauszugsdatei importieren. Automatisch abgerufen werden nur öffentliche Marktdaten: Aktienkurse, NBP-Wechselkurse und die Zinsen für Staatsanleihen.',
   'Czy mogę usunąć swoje konto i dane?': 'Kann ich mein Konto und meine Daten löschen?',
   'Tak, w każdej chwili i samodzielnie, z poziomu ustawień konta - bez pisania do kogokolwiek.': 'Ja, jederzeit und selbst, in den Kontoeinstellungen - ohne jemandem schreiben zu müssen.',
+  'Przypomnij mi e-mailem, jeśli przestanę zaglądać do skiety.':
+    'Erinnere mich per E-Mail, wenn ich skieta nicht mehr öffne.',
+  'Nieobowiązkowe. Najwyżej raz w tygodniu, wyłączysz jednym kliknięciem.':
+    'Freiwillig. Höchstens einmal pro Woche, mit einem Klick abschaltbar.',
+  'Kod jest nieprawidłowy albo już wygasł.': 'Der Code ist falsch oder bereits abgelaufen.',
+  'Za dużo błędnych kodów. Spróbuj ponownie za 15 minut.':
+    'Zu viele falsche Codes. Versuche es in 15 Minuten erneut.',
+  'Kod z aplikacji uwierzytelniającej': 'Code aus deiner Authenticator-App',
+  'Sześć cyfr z aplikacji. Jeśli nie masz telefonu pod ręką, wpisz jeden z kodów zapasowych.':
+    'Sechs Ziffern aus der App. Wenn du dein Telefon nicht zur Hand hast, gib einen deiner Ersatzcodes ein.',
+  'Zgadzam się na przypomnienie e-mailem, jeśli dawno się nie logowałem/am':
+    'Ich bin einverstanden, per E-Mail erinnert zu werden, wenn ich mich länger nicht angemeldet habe',
+  'Najwyżej raz w tygodniu. Zgodę wycofasz tutaj albo jednym kliknięciem w wiadomości.':
+    'Höchstens einmal pro Woche. Deine Einwilligung widerrufst du hier oder mit einem Klick in der E-Mail.',
+  'Twoje własne liczby z poprzedniego miesiąca. Część usługi, którą możesz wyłączyć.':
+    'Deine eigenen Zahlen aus dem Vormonat. Teil des Dienstes, den du abschalten kannst.',
+  'Nie udało się rozpocząć konfiguracji.': 'Die Einrichtung konnte nicht gestartet werden.',
+  'Nie udało się potwierdzić kodu.': 'Der Code konnte nicht bestätigt werden.',
+  'Nie udało się wyłączyć logowania dwuetapowego.': 'Die zweistufige Anmeldung konnte nicht deaktiviert werden.',
+  'Logowanie dwuetapowe': 'Zweistufige Anmeldung',
+  'Logowanie dwuetapowe jest włączone.': 'Die zweistufige Anmeldung ist aktiv.',
+  'Zapisz kody zapasowe w bezpiecznym miejscu. Każdy działa jeden raz i pozwala się zalogować, gdy nie masz telefonu. Nie pokażemy ich drugi raz.':
+    'Bewahre deine Ersatzcodes an einem sicheren Ort auf. Jeder funktioniert einmal und ermöglicht die Anmeldung, wenn du dein Telefon nicht hast. Wir zeigen sie kein zweites Mal an.',
+  'Skopiowano': 'Kopiert',
+  'Kopiuj kody': 'Codes kopieren',
+  'Mam je zapisane': 'Ich habe sie gespeichert',
+  'Otwórz aplikację uwierzytelniającą, na przykład Google Authenticator, Aegis albo 1Password.':
+    'Öffne eine Authenticator-App, zum Beispiel Google Authenticator, Aegis oder 1Password.',
+  'Zeskanuj kod QR albo przepisz klucz ręcznie.': 'Scanne den QR-Code oder gib den Schlüssel von Hand ein.',
+  'Wpisz sześć cyfr, które pokaże aplikacja.': 'Gib die sechs Ziffern ein, die die App anzeigt.',
+  'Klucz do wpisania ręcznie': 'Schlüssel zur manuellen Eingabe',
+  'Włączone od {0}. Przy logowaniu oprócz hasła podajesz kod z aplikacji.':
+    'Aktiv seit {0}. Bei der Anmeldung gibst du zusätzlich zum Passwort einen Code aus der App ein.',
+  'Niewykorzystane kody zapasowe: {0}': 'Unbenutzte Ersatzcodes: {0}',
+  'Kod z aplikacji albo kod zapasowy': 'Code aus der App oder Ersatzcode',
+  'Wyłącz logowanie dwuetapowe': 'Zweistufige Anmeldung deaktivieren',
+  'Dodaj drugi krok do logowania: oprócz hasła podasz sześciocyfrowy kod z aplikacji w telefonie. Nawet jeśli ktoś pozna Twoje hasło, nie wejdzie na konto.':
+    'Füge der Anmeldung einen zweiten Schritt hinzu: Neben dem Passwort gibst du einen sechsstelligen Code aus einer App auf deinem Telefon ein. Selbst wer dein Passwort kennt, kommt nicht in dein Konto.',
+  'Włącz logowanie dwuetapowe': 'Zweistufige Anmeldung aktivieren',
+  'Procent składany': 'Zinseszins',
+  'Podatek Belki': 'Belka-Steuer',
+  'Ile odkładać na cel': 'Wie viel für ein Ziel sparen',
+  'Inne kalkulatory': 'Weitere Rechner',
+  'Kalkulator procentu składanego': 'Zinseszinsrechner',
+  'Kalkulator podatku Belki': 'Belka-Steuerrechner',
+  'Lokata, obligacje czy giełda': 'Festgeld, Anleihen oder Börse',
+  'Ostatnia aktualizacja: 11 października 2026': 'Letzte Aktualisierung: 11. Oktober 2026',
+  'skieta to osobisty tracker finansowy - aplikacja bez reklam i bez sprzedaży danych osobom trzecim. Administratorem danych osobowych jest Mateusz Krasoń, prowadzący działalność gospodarczą pod firmą Mateusz Krasoń Software. W sprawach danych osobowych napisz na adres podany na dole tej strony.':
+    'skieta ist ein persönlicher Finanz-Tracker - eine App ohne Werbung und ohne Verkauf von Daten an Dritte. Verantwortlicher für die personenbezogenen Daten ist Mateusz Krasoń, der sein Gewerbe unter der Firma Mateusz Krasoń Software führt. Bei Fragen zu personenbezogenen Daten schreibe an die Adresse am Ende dieser Seite.',
+  'Po co i na jakiej podstawie przetwarzamy dane': 'Wozu und auf welcher Rechtsgrundlage wir Daten verarbeiten',
+  'Założenie i prowadzenie konta oraz działanie funkcji aplikacji - wykonanie umowy o świadczenie usługi, czyli Regulaminu (art. 6 ust. 1 lit. b RODO).':
+    'Einrichtung und Führung des Kontos sowie die Funktionen der App - Erfüllung des Dienstleistungsvertrags, also der Nutzungsbedingungen (Art. 6 Abs. 1 lit. b DSGVO).',
+  'Bezpieczeństwo: historia logowań, ochrona przed nadużyciami i nieautoryzowanym dostępem - nasz prawnie uzasadniony interes (art. 6 ust. 1 lit. f RODO).':
+    'Sicherheit: Anmeldeverlauf, Schutz vor Missbrauch und unbefugtem Zugriff - unser berechtigtes Interesse (Art. 6 Abs. 1 lit. f DSGVO).',
+  'Statystyki korzystania z serwisu i rozwój aplikacji, w tym informacja, z której naszej strony przyszła rejestracja - nasz prawnie uzasadniony interes (art. 6 ust. 1 lit. f RODO).':
+    'Nutzungsstatistiken und Weiterentwicklung der App, einschließlich der Angabe, von welcher unserer Seiten eine Registrierung kam - unser berechtigtes Interesse (Art. 6 Abs. 1 lit. f DSGVO).',
+  'Przypomnienie e-mailem o aplikacji - wyłącznie na podstawie Twojej zgody (art. 6 ust. 1 lit. a RODO), którą możesz wycofać w każdej chwili.':
+    'E-Mail-Erinnerungen an die App - ausschließlich mit deiner Einwilligung (Art. 6 Abs. 1 lit. a DSGVO), die du jederzeit widerrufen kannst.',
+  'Odpowiedzi na zgłoszenia i reklamacje oraz ustalenie, dochodzenie lub obrona roszczeń - nasz prawnie uzasadniony interes (art. 6 ust. 1 lit. f RODO).':
+    'Beantwortung von Meldungen und Beschwerden sowie Feststellung, Geltendmachung oder Abwehr von Ansprüchen - unser berechtigtes Interesse (Art. 6 Abs. 1 lit. f DSGVO).',
+  'Podanie adresu e-mail i hasła jest dobrowolne, ale bez nich nie da się założyć konta. Pozostałe dane wpisujesz tylko wtedy, gdy chcesz korzystać z danej funkcji. Nie podejmujemy wobec Ciebie decyzji w sposób zautomatyzowany i nie profilujemy Cię w rozumieniu art. 22 RODO.':
+    'Die Angabe von E-Mail-Adresse und Passwort ist freiwillig, ohne sie lässt sich jedoch kein Konto anlegen. Alle weiteren Daten gibst du nur ein, wenn du eine bestimmte Funktion nutzen möchtest. Wir treffen keine automatisierten Entscheidungen über dich und erstellen kein Profil im Sinne von Art. 22 DSGVO.',
+  'Jeśli włączysz logowanie dwuetapowe, przechowujemy zaszyfrowany klucz Twojej aplikacji uwierzytelniającej oraz skróty kodów zapasowych. Samych kodów nie da się z nich odczytać, a klucza nie pokazujemy drugi raz.':
+    'Wenn du die zweistufige Anmeldung aktivierst, speichern wir den verschlüsselten Schlüssel deiner Authenticator-App und Hashwerte deiner Ersatzcodes. Die Codes selbst lassen sich daraus nicht auslesen, und den Schlüssel zeigen wir kein zweites Mal an.',
+  'Wiadomości e-mail': 'E-Mails',
+  'Wiadomości związane z kontem wysyłamy zawsze, bo bez nich usługa nie działa: potwierdzenie adresu, reset hasła, potwierdzenie usunięcia konta oraz zaproszenia, które sam(a) wysyłasz. Jeśli dodasz pojazd z datą końca polisy, przypomnimy też o kończącym się ubezpieczeniu.':
+    'E-Mails, die zu deinem Konto gehören, senden wir immer, weil der Dienst ohne sie nicht funktioniert: Bestätigung der Adresse, Zurücksetzen des Passworts, Bestätigung der Kontolöschung sowie Einladungen, die du selbst verschickst. Wenn du ein Fahrzeug mit dem Ablaufdatum der Police einträgst, erinnern wir dich außerdem an die auslaufende Versicherung.',
+  'Miesięczne podsumowanie to raport z Twoich własnych liczb za poprzedni miesiąc, wysyłany tylko na potwierdzony adres. Jest częścią usługi i możesz je wyłączyć w ustawieniach konta albo jednym kliknięciem w wiadomości.':
+    'Die monatliche Zusammenfassung ist ein Bericht über deine eigenen Zahlen des Vormonats und wird nur an eine bestätigte Adresse gesendet. Sie ist Teil des Dienstes; du kannst sie in den Kontoeinstellungen oder mit einem Klick in der E-Mail abschalten.',
+  'Przypomnienie o aplikacji wysyłamy tylko wtedy, gdy wyrazisz na nie zgodę - przy rejestracji albo w ustawieniach konta - najwyżej raz w tygodniu i dopiero po co najmniej 14 dniach bez logowania. Zgodę wycofasz w ustawieniach albo jednym kliknięciem w wiadomości. Wycofanie zgody nie wpływa na zgodność z prawem wysyłek sprzed jej wycofania.':
+    'Eine Erinnerung an die App senden wir nur, wenn du eingewilligt hast - bei der Registrierung oder in den Kontoeinstellungen -, höchstens einmal pro Woche und erst nach mindestens 14 Tagen ohne Anmeldung. Die Einwilligung widerrufst du in den Einstellungen oder mit einem Klick in der E-Mail. Der Widerruf berührt nicht die Rechtmäßigkeit der zuvor erfolgten Zusendungen.',
+  'dostawca poczty e-mail (home.pl) - do wysyłki wiadomości opisanych w sekcji o e-mailach,':
+    'der E-Mail-Anbieter (home.pl) - für den Versand der im Abschnitt über E-Mails beschriebenen Nachrichten,',
+  'dostawca analityki bez ciasteczek (Umami) - zbiorcze statystyki odwiedzin (patrz sekcja wyżej),':
+    'der cookielose Analyseanbieter (Umami) - zusammengefasste Besuchsstatistiken (siehe Abschnitt oben),',
+  'dostawca monitoringu błędów (Sentry) - dostaje techniczne zgłoszenie awarii (adres strony i ślad błędu w kodzie), nigdy treści Twoich danych finansowych ani zawartości formularzy,':
+    'der Anbieter für Fehlerüberwachung (Sentry) - erhält einen technischen Absturzbericht (Seitenadresse und Fehlerspur im Code), niemals deine Finanzdaten oder Formularinhalte,',
+  'Część danych technicznych usuwamy wcześniej, automatycznie: historię logowań (adres IP i przeglądarka) po 12 miesiącach, zapis dni aktywności po 410 dniach, a rozpatrzone zgłoszenia po 12 miesiącach od zamknięcia.':
+    'Einen Teil der technischen Daten löschen wir früher und automatisch: den Anmeldeverlauf (IP-Adresse und Browser) nach 12 Monaten, die Aufzeichnung der aktiven Tage nach 410 Tagen und erledigte Meldungen 12 Monate nach ihrem Abschluss.',
+  'Masz prawo do wglądu w swoje dane, ich poprawienia, przeniesienia i usunięcia, a także do ograniczenia przetwarzania i do sprzeciwu wobec przetwarzania opartego na naszym prawnie uzasadnionym interesie. Dwa z nich załatwisz sam(a) w ustawieniach konta: "Pobierz swoje dane" daje pełną kopię wszystkiego, co przechowujemy (JSON plus tabele CSV do Excela), a "Usuń konto" uruchamia trwałe skasowanie danych. Większość informacji poprawisz bezpośrednio w ustawieniach. W pozostałych sprawach napisz na adres podany niżej albo skorzystaj z widgetu "Zostaw feedback" w aplikacji.':
+    'Du hast das Recht auf Auskunft über deine Daten, auf Berichtigung, Übertragbarkeit und Löschung sowie auf Einschränkung der Verarbeitung und auf Widerspruch gegen eine Verarbeitung, die auf unserem berechtigten Interesse beruht. Zwei davon erledigst du selbst in den Kontoeinstellungen: "Deine Daten herunterladen" liefert eine vollständige Kopie von allem, was wir speichern (JSON plus CSV-Tabellen für Excel), und "Konto löschen" startet die endgültige Löschung der Daten. Die meisten Angaben korrigierst du direkt in den Einstellungen. In allen anderen Fällen schreibe an die unten genannte Adresse oder nutze das Widget "Feedback geben" in der App.',
+  'Jeśli uznasz, że przetwarzamy Twoje dane niezgodnie z prawem, możesz wnieść skargę do Prezesa Urzędu Ochrony Danych Osobowych (ul. Stawki 2, 00-193 Warszawa, uodo.gov.pl). Zachęcamy, żeby najpierw napisać do nas - większość spraw wyjaśniamy od ręki.':
+    'Wenn du der Ansicht bist, dass wir deine Daten rechtswidrig verarbeiten, kannst du Beschwerde beim Präsidenten des polnischen Amtes für den Schutz personenbezogener Daten einlegen (ul. Stawki 2, 00-193 Warszawa, uodo.gov.pl). Wir bitten dich, uns zuerst zu schreiben - die meisten Fragen klären wir sofort.',
 }

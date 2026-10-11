@@ -13,12 +13,17 @@ export interface RegisterDetails {
   language: Language
   inviteToken: string
   termsAccepted: boolean
+  /** Consent to the "we miss you" reminder. Off unless the box was ticked. */
+  reminderEmails: boolean
 }
 
 interface AuthContextValue {
   user: User | null
   loading: boolean
-  login: (username: string, password: string) => Promise<void>
+  /** `otp` is the second step for accounts with two-step login: the server
+   * answers the first attempt with code `two_factor_required` and the form
+   * sends the same login and password again, this time with the code. */
+  login: (username: string, password: string, otp?: string) => Promise<void>
   register: (details: RegisterDetails) => Promise<void>
   /** Opens a session on the shared, read-only demo account (see accounts.demo). */
   startDemo: () => Promise<void>
@@ -75,8 +80,8 @@ export function AuthProvider({ children }: { children: ReactNode }) {
     }
   }, [])
 
-  async function login(username: string, password: string) {
-    const { data } = await api.post('/auth/login/', { username, password })
+  async function login(username: string, password: string, otp?: string) {
+    const { data } = await api.post('/auth/login/', otp ? { username, password, otp } : { username, password })
     // Whatever is cached at this moment was fetched for somebody else -
     // this is a login, so by definition nothing in there belongs to the
     // account about to appear. Signing out already clears it; doing it
@@ -96,7 +101,7 @@ export function AuthProvider({ children }: { children: ReactNode }) {
     await fetchMe()
   }
 
-  async function register({ email, password, language, inviteToken, termsAccepted }: RegisterDetails) {
+  async function register({ email, password, language, inviteToken, termsAccepted, reminderEmails }: RegisterDetails) {
     // No login, name or currency here: the server makes the login from the
     // address and picks the currency from the language
     // (accounts.serializers.RegisterSerializer); the rest waits for the
@@ -112,6 +117,7 @@ export function AuthProvider({ children }: { children: ReactNode }) {
       color_variant: theme,
       invite_token: inviteToken,
       terms_accepted: termsAccepted,
+      reminder_emails: reminderEmails,
       // Read here rather than passed down from the form: the source was
       // recorded pages ago, by a button in an article, and threading it
       // through the form would put it everywhere except where it is

@@ -5,6 +5,7 @@ import { Link, useNavigate } from 'react-router-dom'
 import { api } from '../api/client'
 import { useAuth } from '../auth/AuthContext'
 import { GeminiKeyForm } from '../components/GeminiKeyForm'
+import TwoFactorSettings from '../components/TwoFactorSettings'
 import { DEFAULT_NAV_ORDER, REORDERABLE_LINKS } from '../components/Layout'
 import { useLanguage, LANGUAGES, LANGUAGE_LABELS, type Language } from '../i18n/LanguageContext'
 import { trackEvent } from '../lib/analytics'
@@ -62,6 +63,7 @@ export default function Account() {
       <NavOrderForm />
       <GeminiKeySection />
       <PasswordForm />
+      {!user?.is_demo && <TwoFactorSettings />}
       <InviteFriends />
       <LoginHistorySection />
       <ExportDataSection />
@@ -299,24 +301,37 @@ function InterestsForm() {
 // Two switches, not one "marketing e-mails" master toggle: the reminder is
 // for people who stopped showing up, the summary is for people who didn't,
 // and wanting one is no reason to be signed up for the other.
-const EMAIL_PREFERENCES: { field: 'reengagement_emails_enabled' | 'monthly_summary_emails_enabled'; label: string }[] = [
+//
+// They also differ in kind. The reminder is an invitation to come back, so
+// it runs on consent and is off until ticked (`fallback: false`). The
+// summary is a report on the person's own numbers - part of the service,
+// on until switched off.
+const EMAIL_PREFERENCES: {
+  field: 'reengagement_emails_enabled' | 'monthly_summary_emails_enabled'
+  label: string
+  hint: string
+  fallback: boolean
+}[] = [
   {
     field: 'reengagement_emails_enabled',
-    label: 'Przypomnij mi e-mailem, jeśli dawno się nie logowałem/am',
+    label: 'Zgadzam się na przypomnienie e-mailem, jeśli dawno się nie logowałem/am',
+    hint: 'Najwyżej raz w tygodniu. Zgodę wycofasz tutaj albo jednym kliknięciem w wiadomości.',
+    fallback: false,
   },
   {
     field: 'monthly_summary_emails_enabled',
     label: 'Przyślij mi na początku miesiąca podsumowanie poprzedniego',
+    hint: 'Twoje własne liczby z poprzedniego miesiąca. Część usługi, którą możesz wyłączyć.',
+    fallback: true,
   },
 ]
 
 function EmailPreferenceToggle({
   field,
   label,
-}: {
-  field: (typeof EMAIL_PREFERENCES)[number]['field']
-  label: string
-}) {
+  hint,
+  fallback,
+}: (typeof EMAIL_PREFERENCES)[number]) {
   const { user, refreshUser } = useAuth()
   const { t } = useLanguage()
 
@@ -328,21 +343,25 @@ function EmailPreferenceToggle({
   })
 
   return (
-    <label className="flex items-center gap-2 text-sm text-slate-700 dark:text-slate-300">
+    <label className="flex items-start gap-2 text-sm text-slate-700 dark:text-slate-300">
       {mutation.isPending ? (
         <span
-          className="inline-block h-4 w-4 shrink-0 animate-spin rounded-full border-2 border-slate-300 border-t-accent-600 dark:border-slate-600"
+          className="mt-0.5 inline-block h-4 w-4 shrink-0 animate-spin rounded-full border-2 border-slate-300 border-t-accent-600 dark:border-slate-600"
           aria-hidden="true"
         />
       ) : (
         <input
           type="checkbox"
-          checked={user?.profile[field] ?? true}
+          className="mt-0.5"
+          checked={user?.profile[field] ?? fallback}
           disabled={mutation.isPending}
           onChange={(e) => mutation.mutate(e.target.checked)}
         />
       )}
-      {t(label)}
+      <span>
+        {t(label)}
+        <span className="block text-xs text-slate-400 dark:text-slate-500">{t(hint)}</span>
+      </span>
     </label>
   )
 }
@@ -353,7 +372,7 @@ function EmailPreferencesForm() {
     <div className="space-y-3 rounded-xl border border-slate-200 dark:border-slate-700 bg-white dark:bg-slate-800 p-5 shadow-sm">
       <h2 className="text-sm font-semibold text-slate-700 dark:text-slate-300">{t('Powiadomienia e-mail')}</h2>
       {EMAIL_PREFERENCES.map((pref) => (
-        <EmailPreferenceToggle key={pref.field} field={pref.field} label={pref.label} />
+        <EmailPreferenceToggle key={pref.field} {...pref} />
       ))}
     </div>
   )

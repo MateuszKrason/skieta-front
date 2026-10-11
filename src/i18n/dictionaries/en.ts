@@ -1588,4 +1588,86 @@ export const en: Record<string, string> = {
   'Nie. skieta nie łączy się z bankami i nigdy nie prosi o hasła bankowe. Konta, lokaty i transakcje dodajesz sam, a historię możesz zaimportować z pliku wyciągu. Automatycznie pobierane są wyłącznie publiczne dane rynkowe: notowania akcji, kursy walut NBP i oprocentowanie obligacji skarbowych.': 'No. skieta does not connect to banks and never asks for bank passwords. You add accounts, deposits and transactions yourself, and you can import your history from a statement file. The only data fetched automatically is public market data: share prices, NBP exchange rates and Treasury bond rates.',
   'Czy mogę usunąć swoje konto i dane?': 'Can I delete my account and data?',
   'Tak, w każdej chwili i samodzielnie, z poziomu ustawień konta - bez pisania do kogokolwiek.': 'Yes, at any time and on your own, from your account settings - no need to write to anyone.',
+  'Przypomnij mi e-mailem, jeśli przestanę zaglądać do skiety.':
+    'Remind me by email if I stop coming back to skieta.',
+  'Nieobowiązkowe. Najwyżej raz w tygodniu, wyłączysz jednym kliknięciem.':
+    'Optional. Once a week at most, and one click turns it off.',
+  'Kod jest nieprawidłowy albo już wygasł.': 'The code is wrong or has already expired.',
+  'Za dużo błędnych kodów. Spróbuj ponownie za 15 minut.': 'Too many wrong codes. Try again in 15 minutes.',
+  'Kod z aplikacji uwierzytelniającej': 'Code from your authenticator app',
+  'Sześć cyfr z aplikacji. Jeśli nie masz telefonu pod ręką, wpisz jeden z kodów zapasowych.':
+    'Six digits from the app. If you do not have your phone with you, enter one of your backup codes.',
+  'Zgadzam się na przypomnienie e-mailem, jeśli dawno się nie logowałem/am':
+    'I agree to be reminded by email if I have not logged in for a while',
+  'Najwyżej raz w tygodniu. Zgodę wycofasz tutaj albo jednym kliknięciem w wiadomości.':
+    'Once a week at most. You can withdraw your consent here or with one click in the email.',
+  'Twoje własne liczby z poprzedniego miesiąca. Część usługi, którą możesz wyłączyć.':
+    'Your own numbers from the previous month. Part of the service, and you can turn it off.',
+  'Nie udało się rozpocząć konfiguracji.': 'Could not start the setup.',
+  'Nie udało się potwierdzić kodu.': 'Could not confirm the code.',
+  'Nie udało się wyłączyć logowania dwuetapowego.': 'Could not turn off two-step login.',
+  'Logowanie dwuetapowe': 'Two-step login',
+  'Logowanie dwuetapowe jest włączone.': 'Two-step login is on.',
+  'Zapisz kody zapasowe w bezpiecznym miejscu. Każdy działa jeden raz i pozwala się zalogować, gdy nie masz telefonu. Nie pokażemy ich drugi raz.':
+    'Keep your backup codes somewhere safe. Each one works once and lets you log in when you do not have your phone. We will not show them again.',
+  'Skopiowano': 'Copied',
+  'Kopiuj kody': 'Copy the codes',
+  'Mam je zapisane': 'I have saved them',
+  'Otwórz aplikację uwierzytelniającą, na przykład Google Authenticator, Aegis albo 1Password.':
+    'Open an authenticator app, for example Google Authenticator, Aegis or 1Password.',
+  'Zeskanuj kod QR albo przepisz klucz ręcznie.': 'Scan the QR code or type the key in by hand.',
+  'Wpisz sześć cyfr, które pokaże aplikacja.': 'Enter the six digits the app shows.',
+  'Klucz do wpisania ręcznie': 'Key to type in by hand',
+  'Włączone od {0}. Przy logowaniu oprócz hasła podajesz kod z aplikacji.':
+    'On since {0}. When you log in you enter a code from the app as well as your password.',
+  'Niewykorzystane kody zapasowe: {0}': 'Unused backup codes: {0}',
+  'Kod z aplikacji albo kod zapasowy': 'Code from the app or a backup code',
+  'Wyłącz logowanie dwuetapowe': 'Turn off two-step login',
+  'Dodaj drugi krok do logowania: oprócz hasła podasz sześciocyfrowy kod z aplikacji w telefonie. Nawet jeśli ktoś pozna Twoje hasło, nie wejdzie na konto.':
+    'Add a second step to logging in: besides your password you enter a six-digit code from an app on your phone. Even if someone learns your password, they cannot get into your account.',
+  'Włącz logowanie dwuetapowe': 'Turn on two-step login',
+  'Procent składany': 'Compound interest',
+  'Podatek Belki': 'Belka tax',
+  'Ile odkładać na cel': 'How much to save for a goal',
+  'Inne kalkulatory': 'Other calculators',
+  'Kalkulator procentu składanego': 'Compound interest calculator',
+  'Kalkulator podatku Belki': 'Belka tax calculator',
+  'Lokata, obligacje czy giełda': 'Deposit, bonds or the stock market',
+  'Ostatnia aktualizacja: 11 października 2026': 'Last updated: 11 October 2026',
+  'skieta to osobisty tracker finansowy - aplikacja bez reklam i bez sprzedaży danych osobom trzecim. Administratorem danych osobowych jest Mateusz Krasoń, prowadzący działalność gospodarczą pod firmą Mateusz Krasoń Software. W sprawach danych osobowych napisz na adres podany na dole tej strony.':
+    'skieta is a personal finance tracker - an app with no ads and no selling of data to third parties. The controller of your personal data is Mateusz Krasoń, running a business under the name Mateusz Krasoń Software. For anything about personal data, write to the address at the bottom of this page.',
+  'Po co i na jakiej podstawie przetwarzamy dane': 'Why we process data and on what legal basis',
+  'Założenie i prowadzenie konta oraz działanie funkcji aplikacji - wykonanie umowy o świadczenie usługi, czyli Regulaminu (art. 6 ust. 1 lit. b RODO).':
+    'Creating and running your account and making the app\'s features work - performance of the service contract, that is the Terms (Art. 6(1)(b) GDPR).',
+  'Bezpieczeństwo: historia logowań, ochrona przed nadużyciami i nieautoryzowanym dostępem - nasz prawnie uzasadniony interes (art. 6 ust. 1 lit. f RODO).':
+    'Security: login history, protection against abuse and unauthorised access - our legitimate interest (Art. 6(1)(f) GDPR).',
+  'Statystyki korzystania z serwisu i rozwój aplikacji, w tym informacja, z której naszej strony przyszła rejestracja - nasz prawnie uzasadniony interes (art. 6 ust. 1 lit. f RODO).':
+    'Usage statistics and developing the app, including which of our pages a registration came from - our legitimate interest (Art. 6(1)(f) GDPR).',
+  'Przypomnienie e-mailem o aplikacji - wyłącznie na podstawie Twojej zgody (art. 6 ust. 1 lit. a RODO), którą możesz wycofać w każdej chwili.':
+    'Email reminders about the app - only with your consent (Art. 6(1)(a) GDPR), which you can withdraw at any time.',
+  'Odpowiedzi na zgłoszenia i reklamacje oraz ustalenie, dochodzenie lub obrona roszczeń - nasz prawnie uzasadniony interes (art. 6 ust. 1 lit. f RODO).':
+    'Answering reports and complaints, and establishing, pursuing or defending legal claims - our legitimate interest (Art. 6(1)(f) GDPR).',
+  'Podanie adresu e-mail i hasła jest dobrowolne, ale bez nich nie da się założyć konta. Pozostałe dane wpisujesz tylko wtedy, gdy chcesz korzystać z danej funkcji. Nie podejmujemy wobec Ciebie decyzji w sposób zautomatyzowany i nie profilujemy Cię w rozumieniu art. 22 RODO.':
+    'Giving an email address and a password is voluntary, but an account cannot be created without them. You enter everything else only if you want to use a given feature. We make no automated decisions about you and do not profile you within the meaning of Art. 22 GDPR.',
+  'Jeśli włączysz logowanie dwuetapowe, przechowujemy zaszyfrowany klucz Twojej aplikacji uwierzytelniającej oraz skróty kodów zapasowych. Samych kodów nie da się z nich odczytać, a klucza nie pokazujemy drugi raz.':
+    'If you turn on two-step login, we store the encrypted key of your authenticator app and hashes of your backup codes. The codes themselves cannot be read back from them, and we never show the key a second time.',
+  'Wiadomości e-mail': 'Emails',
+  'Wiadomości związane z kontem wysyłamy zawsze, bo bez nich usługa nie działa: potwierdzenie adresu, reset hasła, potwierdzenie usunięcia konta oraz zaproszenia, które sam(a) wysyłasz. Jeśli dodasz pojazd z datą końca polisy, przypomnimy też o kończącym się ubezpieczeniu.':
+    'We always send the emails that belong to your account, because the service does not work without them: address confirmation, password reset, confirmation of account deletion, and the invitations you send yourself. If you add a vehicle with the date its policy ends, we will also remind you that the insurance is about to expire.',
+  'Miesięczne podsumowanie to raport z Twoich własnych liczb za poprzedni miesiąc, wysyłany tylko na potwierdzony adres. Jest częścią usługi i możesz je wyłączyć w ustawieniach konta albo jednym kliknięciem w wiadomości.':
+    'The monthly summary is a report on your own numbers for the previous month, sent only to a confirmed address. It is part of the service, and you can turn it off in your account settings or with one click in the email.',
+  'Przypomnienie o aplikacji wysyłamy tylko wtedy, gdy wyrazisz na nie zgodę - przy rejestracji albo w ustawieniach konta - najwyżej raz w tygodniu i dopiero po co najmniej 14 dniach bez logowania. Zgodę wycofasz w ustawieniach albo jednym kliknięciem w wiadomości. Wycofanie zgody nie wpływa na zgodność z prawem wysyłek sprzed jej wycofania.':
+    'We send a reminder about the app only if you have agreed to it - when registering or in your account settings - once a week at most, and only after at least 14 days without logging in. You can withdraw your consent in the settings or with one click in the email. Withdrawing it does not affect the lawfulness of anything sent before.',
+  'dostawca poczty e-mail (home.pl) - do wysyłki wiadomości opisanych w sekcji o e-mailach,':
+    'the email provider (home.pl) - to send the messages described in the section on emails,',
+  'dostawca analityki bez ciasteczek (Umami) - zbiorcze statystyki odwiedzin (patrz sekcja wyżej),':
+    'the cookieless analytics provider (Umami) - aggregate visit statistics (see the section above),',
+  'dostawca monitoringu błędów (Sentry) - dostaje techniczne zgłoszenie awarii (adres strony i ślad błędu w kodzie), nigdy treści Twoich danych finansowych ani zawartości formularzy,':
+    'the error monitoring provider (Sentry) - receives a technical crash report (the page address and the error trace in the code), never your financial data or what you typed into forms,',
+  'Część danych technicznych usuwamy wcześniej, automatycznie: historię logowań (adres IP i przeglądarka) po 12 miesiącach, zapis dni aktywności po 410 dniach, a rozpatrzone zgłoszenia po 12 miesiącach od zamknięcia.':
+    'Some technical data is deleted earlier, automatically: login history (IP address and browser) after 12 months, the record of active days after 410 days, and resolved reports 12 months after they were closed.',
+  'Masz prawo do wglądu w swoje dane, ich poprawienia, przeniesienia i usunięcia, a także do ograniczenia przetwarzania i do sprzeciwu wobec przetwarzania opartego na naszym prawnie uzasadnionym interesie. Dwa z nich załatwisz sam(a) w ustawieniach konta: "Pobierz swoje dane" daje pełną kopię wszystkiego, co przechowujemy (JSON plus tabele CSV do Excela), a "Usuń konto" uruchamia trwałe skasowanie danych. Większość informacji poprawisz bezpośrednio w ustawieniach. W pozostałych sprawach napisz na adres podany niżej albo skorzystaj z widgetu "Zostaw feedback" w aplikacji.':
+    'You have the right to access your data, correct it, take it with you and have it deleted, as well as to restrict processing and to object to processing based on our legitimate interest. Two of these you can handle yourself in your account settings: "Download your data" gives you a full copy of everything we store (JSON plus CSV tables for Excel), and "Delete account" starts the permanent erasure of your data. Most information you can correct directly in the settings. For anything else, write to the address below or use the "Leave feedback" widget in the app.',
+  'Jeśli uznasz, że przetwarzamy Twoje dane niezgodnie z prawem, możesz wnieść skargę do Prezesa Urzędu Ochrony Danych Osobowych (ul. Stawki 2, 00-193 Warszawa, uodo.gov.pl). Zachęcamy, żeby najpierw napisać do nas - większość spraw wyjaśniamy od ręki.':
+    'If you believe we are processing your data unlawfully, you can lodge a complaint with the President of the Personal Data Protection Office in Poland (ul. Stawki 2, 00-193 Warszawa, uodo.gov.pl). We encourage you to write to us first - most matters are cleared up straight away.',
 }

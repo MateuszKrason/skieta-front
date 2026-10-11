@@ -71,6 +71,48 @@ const PAGES: Record<string, Page> = {
       '<p><a href="/">skieta - darmowa aplikacja do budżetu domowego</a></p>' +
       '</main>',
   },
+  '/kalkulator/procent-skladany': {
+    title: 'Kalkulator procentu składanego po podatku Belki - skieta',
+    description:
+      'Policz, ile urosną Twoje oszczędności: kwota na start, wpłata co miesiąc, oprocentowanie i lata. Wynik od razu po podatku Belki, bez zakładania konta.',
+    body:
+      `<main style="${WRAPPER_STYLE}">` +
+      '<h1>Kalkulator procentu składanego</h1>' +
+      '<p>Wpisz, ile masz, ile dokładasz co miesiąc i na ile procent. Zobaczysz, ile z końcowej kwoty to Twoje wpłaty, a ile dopisały odsetki, już po podatku Belki.</p>' +
+      '<p>Procent składany to odsetki od odsetek: po pierwszym okresie zarabia nie tylko Twoja wpłata, ale też to, co do niej dopisano.</p>' +
+      '<p>Kalkulator rozróżnia lokatę i konto oszczędnościowe (podatek od każdych dopisanych odsetek), fundusz albo ETF akumulujący (podatek raz, przy wypłacie) oraz IKE (bez podatku).</p>' +
+      '<p>Kalkulator działa bez zakładania konta. To symulacja, nie porada inwestycyjna ani podatkowa.</p>' +
+      '<p><a href="/kalkulator">Kalkulator inwestycyjny: lokata, obligacje czy giełda</a> · <a href="/">skieta - darmowa aplikacja do budżetu domowego</a></p>' +
+      '</main>',
+  },
+  '/kalkulator/podatek-belki': {
+    title: 'Kalkulator podatku Belki - ile zostaje z odsetek i zysku',
+    description:
+      'Sprawdź, ile podatku Belki zapłacisz od lokaty albo od zysku ze sprzedaży akcji i ile zostanie na rękę. 19% policzone z zaokrągleniami, bez konta.',
+    body:
+      `<main style="${WRAPPER_STYLE}">` +
+      '<h1>Kalkulator podatku Belki</h1>' +
+      '<p>Podatek Belki to 19% od zysków z oszczędności i inwestycji. Sprawdź, ile zabierze z odsetek od lokaty albo z zysku ze sprzedaży akcji i ile naprawdę zostanie Ci na rękę.</p>' +
+      '<p>Od lokat, kont oszczędnościowych i obligacji podatek pobiera bank albo emitent. Sprzedaż akcji, ETF-ów i jednostek funduszy rozliczasz sam w PIT-38.</p>' +
+      '<p>Oprocentowanie po podatku to oprocentowanie nominalne razy 0,81. Żeby lokata dotrzymała kroku inflacji, musi płacić więcej niż inflacja podzielona przez 0,81.</p>' +
+      '<p>Kalkulator działa bez zakładania konta. To symulacja, nie porada inwestycyjna ani podatkowa.</p>' +
+      '<p><a href="/kalkulator">Kalkulator inwestycyjny: lokata, obligacje czy giełda</a> · <a href="/">skieta - darmowa aplikacja do budżetu domowego</a></p>' +
+      '</main>',
+  },
+  '/kalkulator/cel-oszczednosciowy': {
+    title: 'Ile odkładać miesięcznie na cel - kalkulator oszczędzania',
+    description:
+      'Wpisz cel, termin i to, co już masz. Kalkulator pokaże, ile odkładać co miesiąc i ile dołożą odsetki po podatku Belki. Bez zakładania konta.',
+    body:
+      `<main style="${WRAPPER_STYLE}">` +
+      '<h1>Ile odkładać miesięcznie, żeby uzbierać na cel</h1>' +
+      '<p>Wkład własny, wesele, samochód albo poduszka bezpieczeństwa. Wpisz kwotę i termin, a zobaczysz, ile trzeba odkładać co miesiąc i ile z tego dołożą odsetki.</p>' +
+      '<p>Wpłata trafia na konto na początku każdego miesiąca, a odsetki są dopisywane co miesiąc. Od odsetek z konta oszczędnościowego i lokaty odchodzi 19% podatku Belki.</p>' +
+      '<p>Jeśli miesięczna kwota jest za wysoka, masz trzy ruchy: wydłużyć termin, obniżyć cel albo zacząć z większą kwotą na start.</p>' +
+      '<p>Kalkulator działa bez zakładania konta. To symulacja, nie porada inwestycyjna ani podatkowa.</p>' +
+      '<p><a href="/kalkulator">Kalkulator inwestycyjny: lokata, obligacje czy giełda</a> · <a href="/">skieta - darmowa aplikacja do budżetu domowego</a></p>' +
+      '</main>',
+  },
   '/regulamin': {
     title: 'Regulamin - skieta',
     description: 'Zasady korzystania z aplikacji skieta: rejestracja, konto demonstracyjne, odpowiedzialność i usuwanie konta.',
@@ -130,4 +172,15 @@ export default async (request: Request, context: { next: () => Promise<Response>
   return new Response(html, { status: response.status, headers })
 }
 
-export const config = { path: ['/', '/artykuly', '/kalkulator', '/regulamin', '/polityka-prywatnosci'] }
+export const config = {
+  path: [
+    '/',
+    '/artykuly',
+    '/kalkulator',
+    '/kalkulator/procent-skladany',
+    '/kalkulator/podatek-belki',
+    '/kalkulator/cel-oszczednosciowy',
+    '/regulamin',
+    '/polityka-prywatnosci',
+  ],
+}

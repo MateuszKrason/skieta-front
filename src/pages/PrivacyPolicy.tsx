@@ -32,13 +32,48 @@ export default function PrivacyPolicy() {
       <div className="mx-auto max-w-3xl space-y-8 px-4 py-12">
         <div>
           <h1 className="text-3xl font-bold text-slate-900 dark:text-slate-100">{t('Polityka prywatności')}</h1>
-          <p className="mt-2 text-sm text-slate-400 dark:text-slate-500">{t('Ostatnia aktualizacja: 18 września 2026')}</p>
+          <p className="mt-2 text-sm text-slate-400 dark:text-slate-500">{t('Ostatnia aktualizacja: 11 października 2026')}</p>
         </div>
 
         <Section title="Kim jesteśmy">
           <p>
             {t(
-              'skieta to osobisty tracker finansowy - aplikacja bez reklam i bez sprzedaży danych osobom trzecim. Administratorem danych jest osoba prowadząca serwis skieta, z którą można się skontaktować pod adresem podanym na dole tej strony.',
+              'skieta to osobisty tracker finansowy - aplikacja bez reklam i bez sprzedaży danych osobom trzecim. Administratorem danych osobowych jest Mateusz Krasoń, prowadzący działalność gospodarczą pod firmą Mateusz Krasoń Software. W sprawach danych osobowych napisz na adres podany na dole tej strony.',
+            )}
+          </p>
+        </Section>
+
+        <Section title="Po co i na jakiej podstawie przetwarzamy dane">
+          <ul className="list-disc space-y-1 pl-5">
+            <li>
+              {t(
+                'Założenie i prowadzenie konta oraz działanie funkcji aplikacji - wykonanie umowy o świadczenie usługi, czyli Regulaminu (art. 6 ust. 1 lit. b RODO).',
+              )}
+            </li>
+            <li>
+              {t(
+                'Bezpieczeństwo: historia logowań, ochrona przed nadużyciami i nieautoryzowanym dostępem - nasz prawnie uzasadniony interes (art. 6 ust. 1 lit. f RODO).',
+              )}
+            </li>
+            <li>
+              {t(
+                'Statystyki korzystania z serwisu i rozwój aplikacji, w tym informacja, z której naszej strony przyszła rejestracja - nasz prawnie uzasadniony interes (art. 6 ust. 1 lit. f RODO).',
+              )}
+            </li>
+            <li>
+              {t(
+                'Przypomnienie e-mailem o aplikacji - wyłącznie na podstawie Twojej zgody (art. 6 ust. 1 lit. a RODO), którą możesz wycofać w każdej chwili.',
+              )}
+            </li>
+            <li>
+              {t(
+                'Odpowiedzi na zgłoszenia i reklamacje oraz ustalenie, dochodzenie lub obrona roszczeń - nasz prawnie uzasadniony interes (art. 6 ust. 1 lit. f RODO).',
+              )}
+            </li>
+          </ul>
+          <p>
+            {t(
+              'Podanie adresu e-mail i hasła jest dobrowolne, ale bez nich nie da się założyć konta. Pozostałe dane wpisujesz tylko wtedy, gdy chcesz korzystać z danej funkcji. Nie podejmujemy wobec Ciebie decyzji w sposób zautomatyzowany i nie profilujemy Cię w rozumieniu art. 22 RODO.',
             )}
           </p>
         </Section>
@@ -60,6 +95,11 @@ export default function PrivacyPolicy() {
           <p>
             {t(
               'Przy każdym logowaniu zapisujemy adres IP oraz podstawowe informacje o przeglądarce/systemie (User-Agent) - to podstawa historii logowań widocznej w Twoim koncie oraz ochrony przed nieautoryzowanym dostępem. Zapisujemy też, w które dni byłeś/aś aktywny(a) (do serii logowań i statystyk).',
+            )}
+          </p>
+          <p>
+            {t(
+              'Jeśli włączysz logowanie dwuetapowe, przechowujemy zaszyfrowany klucz Twojej aplikacji uwierzytelniającej oraz skróty kodów zapasowych. Samych kodów nie da się z nich odczytać, a klucza nie pokazujemy drugi raz.',
             )}
           </p>
           <p className="font-medium text-slate-700 dark:text-slate-300">{t('Klucz Gemini, jeśli go dodasz')}</p>
@@ -90,6 +130,24 @@ export default function PrivacyPolicy() {
           </p>
         </Section>
 
+        <Section title="Wiadomości e-mail">
+          <p>
+            {t(
+              'Wiadomości związane z kontem wysyłamy zawsze, bo bez nich usługa nie działa: potwierdzenie adresu, reset hasła, potwierdzenie usunięcia konta oraz zaproszenia, które sam(a) wysyłasz. Jeśli dodasz pojazd z datą końca polisy, przypomnimy też o kończącym się ubezpieczeniu.',
+            )}
+          </p>
+          <p>
+            {t(
+              'Miesięczne podsumowanie to raport z Twoich własnych liczb za poprzedni miesiąc, wysyłany tylko na potwierdzony adres. Jest częścią usługi i możesz je wyłączyć w ustawieniach konta albo jednym kliknięciem w wiadomości.',
+            )}
+          </p>
+          <p>
+            {t(
+              'Przypomnienie o aplikacji wysyłamy tylko wtedy, gdy wyrazisz na nie zgodę - przy rejestracji albo w ustawieniach konta - najwyżej raz w tygodniu i dopiero po co najmniej 14 dniach bez logowania. Zgodę wycofasz w ustawieniach albo jednym kliknięciem w wiadomości. Wycofanie zgody nie wpływa na zgodność z prawem wysyłek sprzed jej wycofania.',
+            )}
+          </p>
+        </Section>
+
         <Section title="Analityka odwiedzin">
           <p>
             {t(
@@ -111,11 +169,11 @@ export default function PrivacyPolicy() {
           </p>
           <ul className="list-disc space-y-1 pl-5">
             <li>{t('hosting aplikacji i baza danych (Microsoft Azure),')}</li>
-            <li>{t('dostawca poczty e-mail - do wysyłki e-maili weryfikacyjnych, resetu hasła i zaproszeń,')}</li>
-            <li>{t('dostawca analityki bez ciasteczek - zbiorcze statystyki odwiedzin (patrz sekcja wyżej),')}</li>
+            <li>{t('dostawca poczty e-mail (home.pl) - do wysyłki wiadomości opisanych w sekcji o e-mailach,')}</li>
+            <li>{t('dostawca analityki bez ciasteczek (Umami) - zbiorcze statystyki odwiedzin (patrz sekcja wyżej),')}</li>
             <li>
               {t(
-                'dostawca monitoringu błędów - dostaje techniczne zgłoszenie awarii (adres strony i ślad błędu w kodzie), nigdy treści Twoich danych finansowych ani zawartości formularzy,'
+                'dostawca monitoringu błędów (Sentry) - dostaje techniczne zgłoszenie awarii (adres strony i ślad błędu w kodzie), nigdy treści Twoich danych finansowych ani zawartości formularzy,'
               )}
             </li>
             <li>
@@ -178,12 +236,22 @@ export default function PrivacyPolicy() {
               'Dane konta przechowujemy tak długo, jak konto jest aktywne. Kiedy usuniesz konto w ustawieniach, blokujemy je od razu, a po 30 dniach trwale kasujemy wszystkie Twoje dane. Przez te 30 dni możesz cofnąć decyzję linkiem z maila, który wysyłamy przy usuwaniu. Osobno administrator może zarchiwizować konto, czyli je zdezaktywować z zachowaniem danych - takie konto czeka, aż zdecydujesz, co dalej, i nie jest kasowane automatycznie.',
             )}
           </p>
+          <p>
+            {t(
+              'Część danych technicznych usuwamy wcześniej, automatycznie: historię logowań (adres IP i przeglądarka) po 12 miesiącach, zapis dni aktywności po 410 dniach, a rozpatrzone zgłoszenia po 12 miesiącach od zamknięcia.',
+            )}
+          </p>
         </Section>
 
         <Section title="Twoje prawa">
           <p>
             {t(
-              'Masz prawo do wglądu w swoje dane, ich poprawienia, przeniesienia i usunięcia. Dwa z nich załatwisz sam(a) w ustawieniach konta: "Pobierz swoje dane" daje pełną kopię wszystkiego, co przechowujemy (JSON plus tabele CSV do Excela), a "Usuń konto" uruchamia trwałe skasowanie danych. Większość informacji poprawisz bezpośrednio w ustawieniach. W pozostałych sprawach napisz na adres podany niżej albo skorzystaj z widgetu "Zostaw feedback" w aplikacji.',
+              'Masz prawo do wglądu w swoje dane, ich poprawienia, przeniesienia i usunięcia, a także do ograniczenia przetwarzania i do sprzeciwu wobec przetwarzania opartego na naszym prawnie uzasadnionym interesie. Dwa z nich załatwisz sam(a) w ustawieniach konta: "Pobierz swoje dane" daje pełną kopię wszystkiego, co przechowujemy (JSON plus tabele CSV do Excela), a "Usuń konto" uruchamia trwałe skasowanie danych. Większość informacji poprawisz bezpośrednio w ustawieniach. W pozostałych sprawach napisz na adres podany niżej albo skorzystaj z widgetu "Zostaw feedback" w aplikacji.',
+            )}
+          </p>
+          <p>
+            {t(
+              'Jeśli uznasz, że przetwarzamy Twoje dane niezgodnie z prawem, możesz wnieść skargę do Prezesa Urzędu Ochrony Danych Osobowych (ul. Stawki 2, 00-193 Warszawa, uodo.gov.pl). Zachęcamy, żeby najpierw napisać do nas - większość spraw wyjaśniamy od ręki.',
             )}
           </p>
         </Section>

@@ -665,6 +665,15 @@ export default function Landing() {
             <Link to="/kalkulator" className="hover:text-accent-700 dark:hover:text-accent-400 hover:underline">
               {t('Kalkulator inwestycyjny')}
             </Link>
+            <Link to="/kalkulator/procent-skladany" className="hover:text-accent-700 dark:hover:text-accent-400 hover:underline">
+              {t('Procent składany')}
+            </Link>
+            <Link to="/kalkulator/podatek-belki" className="hover:text-accent-700 dark:hover:text-accent-400 hover:underline">
+              {t('Podatek Belki')}
+            </Link>
+            <Link to="/kalkulator/cel-oszczednosciowy" className="hover:text-accent-700 dark:hover:text-accent-400 hover:underline">
+              {t('Ile odkładać na cel')}
+            </Link>
             <Link to="/polityka-prywatnosci" className="hover:text-accent-700 dark:hover:text-accent-400 hover:underline">
               {t('Polityka prywatności')}
             </Link>

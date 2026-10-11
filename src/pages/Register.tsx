@@ -31,6 +31,9 @@ export default function Register() {
   const [password, setPassword] = useState('')
   const [showPassword, setShowPassword] = useState(false)
   const [termsAccepted, setTermsAccepted] = useState(false)
+  // Optional, and unticked to start with: an invitation to come back is
+  // marketing, and consent to it has to be something the person did.
+  const [reminderEmails, setReminderEmails] = useState(false)
   const [error, setError] = useState<string | null>(null)
   const [submitting, setSubmitting] = useState(false)
 
@@ -48,7 +51,7 @@ export default function Register() {
     setSubmitting(true)
     try {
       // The interface language doubles as the account's language; the server picks the currency from it.
-      await register({ email, password, language, inviteToken, termsAccepted })
+      await register({ email, password, language, inviteToken, termsAccepted, reminderEmails })
       trackEvent('registered')
       navigate('/onboarding')
     } catch (err) {
@@ -144,6 +147,20 @@ export default function Register() {
             <Link to="/polityka-prywatnosci" target="_blank" rel="noopener noreferrer" className="font-medium text-accent-700 dark:text-accent-400 hover:underline">
               {t('Politykę prywatności')}
             </Link>
+          </span>
+        </label>
+        <label className="mb-4 flex items-start gap-2 text-sm text-slate-600 dark:text-slate-300">
+          <input
+            type="checkbox"
+            className="mt-0.5"
+            checked={reminderEmails}
+            onChange={(e) => setReminderEmails(e.target.checked)}
+          />
+          <span>
+            {t('Przypomnij mi e-mailem, jeśli przestanę zaglądać do skiety.')}{' '}
+            <span className="text-slate-400 dark:text-slate-500">
+              {t('Nieobowiązkowe. Najwyżej raz w tygodniu, wyłączysz jednym kliknięciem.')}
+            </span>
           </span>
         </label>
         {error && <p className="mb-3 text-sm text-red-600 dark:text-red-400">{error}</p>}

@@ -32,7 +32,7 @@ export default function Terms() {
       <div className="mx-auto max-w-3xl space-y-8 px-4 py-12">
         <div>
           <h1 className="text-3xl font-bold text-slate-900 dark:text-slate-100">{t('Regulamin usługi')}</h1>
-          <p className="mt-2 text-sm text-slate-400 dark:text-slate-500">{t('Ostatnia aktualizacja: 18 września 2026')}</p>
+          <p className="mt-2 text-sm text-slate-400 dark:text-slate-500">{t('Ostatnia aktualizacja: 11 października 2026')}</p>
         </div>
 
         <Section title="1. Postanowienia ogólne">
@@ -76,7 +76,12 @@ export default function Terms() {
           </p>
           <p>
             {t(
-              'Żadna treść w Usłudze, w tym artykuły publikowane w dziale redakcyjnym, wyniki kalkulatora inwestycyjnego ani analizy spółek, nie stanowi rekomendacji inwestycyjnej ani porady finansowej, prawnej lub podatkowej w rozumieniu obowiązujących przepisów.',
+              'Żadna treść w Usłudze, w tym artykuły publikowane w dziale redakcyjnym, wyniki kalkulatorów ani analizy spółek, nie stanowi rekomendacji inwestycyjnej ani porady finansowej, prawnej lub podatkowej w rozumieniu obowiązujących przepisów.',
+            )}
+          </p>
+          <p>
+            {t(
+              'Częścią Usługi są wiadomości e-mail związane z Kontem oraz comiesięczne podsumowanie własnych danych Użytkownika, które można wyłączyć w ustawieniach Konta. Przypomnienia o Usłudze są wysyłane wyłącznie za zgodą Użytkownika, którą można wycofać w każdej chwili.',
             )}
           </p>
           <p>
@@ -105,6 +110,16 @@ export default function Terms() {
               )}
             </li>
             <li>{t('Jedna osoba fizyczna może posiadać jedno Konto, chyba że Usługodawca postanowi inaczej.')}</li>
+            <li>
+              {t(
+                'Do korzystania z Usługi potrzebne są: urządzenie z dostępem do internetu, aktualna przeglądarka internetowa z włączoną obsługą JavaScript i pamięci lokalnej (local storage) oraz adres e-mail.',
+              )}
+            </li>
+            <li>
+              {t(
+                'Umowa o świadczenie Usługi zostaje zawarta z chwilą założenia Konta, na czas nieokreślony. Użytkownik może ją rozwiązać w każdej chwili i bez podania przyczyny, usuwając Konto w ustawieniach. Konsument może również odstąpić od umowy w ciągu 14 dni od jej zawarcia bez podania przyczyny - wystarczy usunąć Konto albo napisać na adres z sekcji „Kontakt".',
+              )}
+            </li>
           </ul>
         </Section>
 
@@ -122,6 +137,11 @@ export default function Terms() {
           <p>
             {t(
               'O każdym podejrzeniu nieautoryzowanego dostępu do Konta Użytkownik powinien niezwłocznie poinformować Usługodawcę na adres podany w sekcji „Kontakt".',
+            )}
+          </p>
+          <p>
+            {t(
+              'Użytkownik może dodatkowo zabezpieczyć Konto logowaniem dwuetapowym. Kody zapasowe należy przechowywać w bezpiecznym miejscu - po utracie zarówno aplikacji uwierzytelniającej, jak i kodów zapasowych odzyskanie dostępu wymaga kontaktu z Usługodawcą i potwierdzenia, że Konto należy do zgłaszającego.',
             )}
           </p>
         </Section>
@@ -219,7 +239,12 @@ export default function Terms() {
         <Section title="11. Reklamacje">
           <p>
             {t(
-              'Reklamacje dotyczące działania Usługi można zgłaszać na adres e-mail podany w sekcji „Kontakt" lub za pomocą widgetu „Zostaw feedback" w aplikacji. Usługodawca rozpatruje zgłoszenia w miarę możliwości najszybciej, jak to praktycznie wykonalne.',
+              'Reklamacje dotyczące działania Usługi można zgłaszać na adres e-mail podany w sekcji „Kontakt" lub za pomocą widgetu „Zostaw feedback" w aplikacji. W zgłoszeniu opisz problem i podaj adres e-mail Konta. Usługodawca odpowiada na reklamację w ciągu 14 dni od jej otrzymania, na adres e-mail, z którego przyszła.',
+            )}
+          </p>
+          <p>
+            {t(
+              'Konsument może skorzystać z pozasądowych sposobów rozpatrywania reklamacji i dochodzenia roszczeń, między innymi z pomocy miejskiego lub powiatowego rzecznika konsumentów albo wojewódzkiego inspektoratu Inspekcji Handlowej. Informacje o tych procedurach są dostępne na stronie uokik.gov.pl.',
             )}
           </p>
         </Section>
@@ -227,7 +252,7 @@ export default function Terms() {
         <Section title="12. Zmiany Regulaminu">
           <p>
             {t(
-              'Usługodawca zastrzega sobie prawo do zmiany Regulaminu, w szczególności w związku z rozwojem funkcjonalności Usługi lub zmianą przepisów prawa. O istotnych zmianach Użytkownicy zostaną poinformowani odpowiednim komunikatem w Usłudze. Data ostatniej aktualizacji widoczna jest na górze tej strony.',
+              'Usługodawca może zmienić Regulamin z ważnych powodów: rozwoju funkcji Usługi, zmiany przepisów prawa albo względów bezpieczeństwa. O zmianie informuje e-mailem lub komunikatem w Usłudze co najmniej 14 dni przed jej wejściem w życie. Użytkownik, który nie akceptuje zmiany, może przed tym terminem usunąć Konto. Zmiany, które wyłącznie dodają nową funkcję albo są wymagane przez prawo, mogą obowiązywać od razu. Data ostatniej aktualizacji widoczna jest na górze tej strony.',
             )}
           </p>
         </Section>
@@ -235,7 +260,7 @@ export default function Terms() {
         <Section title="13. Postanowienia końcowe">
           <p>
             {t(
-              'W sprawach nieuregulowanych niniejszym Regulaminem zastosowanie mają przepisy prawa polskiego. Regulamin obowiązuje wraz z Polityką prywatności, dostępną pod adresem',
+              'W sprawach nieuregulowanych niniejszym Regulaminem zastosowanie mają przepisy prawa polskiego. Żadne postanowienie Regulaminu nie wyłącza ani nie ogranicza praw konsumenta wynikających z bezwzględnie obowiązujących przepisów - w razie wątpliwości pierwszeństwo mają te przepisy. Regulamin obowiązuje wraz z Polityką prywatności, dostępną pod adresem',
             )}{' '}
             <Link to="/polityka-prywatnosci" className="text-accent-700 dark:text-accent-400 hover:underline">
               skieta.com/polityka-prywatnosci

@@ -2,6 +2,7 @@ import { lazy } from 'react'
 import { Link } from 'react-router-dom'
 import SockLogo from '../components/SockLogo'
 import AuthTopBar from '../components/AuthTopBar'
+import { CALCULATORS } from '../lib/calculators'
 import { useLanguage } from '../i18n/LanguageContext'
 import { rememberSignupSource, trackEvent } from '../lib/analytics'
 
@@ -63,6 +64,21 @@ export default function PublicCalculator() {
             </Link>
           </div>
         </aside>
+
+        <nav className="mt-8" aria-label={t('Inne kalkulatory')}>
+          <h2 className="text-sm font-semibold uppercase tracking-wide text-slate-400 dark:text-slate-500">
+            {t('Inne kalkulatory')}
+          </h2>
+          <ul className="mt-2 flex flex-wrap gap-x-6 gap-y-1.5 text-sm">
+            {CALCULATORS.filter((c) => c.path !== '/kalkulator').map((c) => (
+              <li key={c.path}>
+                <Link to={c.path} className="font-medium text-accent-700 dark:text-accent-400 hover:underline">
+                  {t(c.label)}
+                </Link>
+              </li>
+            ))}
+          </ul>
+        </nav>
       </main>
     </div>
   )

@@ -444,6 +444,8 @@ export interface User {
      * the receipt button decide between opening the camera and showing the
      * setup instructions without a request of its own. */
     has_gemini_api_key: boolean
+    /** Whether logging in also asks for a code from an authenticator app. */
+    two_factor_enabled: boolean
   }
 }
 
@@ -551,6 +553,18 @@ export interface AdminAppStats {
     /** The rest fell back to the shared read-only demo because the copy limit was full. */
     private_copies: number
   }
+  /** What happens to people after they arrive, one row per week of sign-ups,
+   * oldest first - see accounts.services.weekly_funnel. `returned_week_2` is
+   * the number the product is judged by; `week_2_complete` is false while
+   * that week's accounts are still inside their second week. */
+  funnel: {
+    week_start: string
+    demo_launches: number
+    signups: number
+    activated: number
+    returned_week_2: number
+    week_2_complete: boolean
+  }[]
   /** Where the accounts themselves came from, not just the clicks - see
    * accounts.services.signup_sources. 'unknown' covers everyone who
    * registered before this was recorded and everyone who went straight to

@@ -13,13 +13,17 @@ export default function Login() {
   const [password, setPassword] = useState('')
   const [error, setError] = useState<string | null>(null)
   const [submitting, setSubmitting] = useState(false)
+  // Set once the server has accepted the password and asked for the second
+  // step. The login and password stay in state so the code is sent with them.
+  const [needsCode, setNeedsCode] = useState(false)
+  const [code, setCode] = useState('')
 
   async function onSubmit(e: FormEvent) {
     e.preventDefault()
     setError(null)
     setSubmitting(true)
     try {
-      await login(username, password)
+      await login(username, password, needsCode ? code.trim() : undefined)
       navigate('/dashboard')
     } catch (err) {
       // A 429 carries a real explanation from the server (too many attempts,
@@ -35,7 +39,20 @@ export default function Login() {
       const data = response?.data
       const detail =
         typeof data === 'object' && data !== null ? (data as { detail?: string }).detail : undefined
-      setError(response?.status === 429 && detail ? detail : t('Nieprawidłowy login lub hasło.'))
+      const reason = typeof data === 'object' && data !== null ? (data as { code?: string }).code : undefined
+      if (reason === 'two_factor_required') {
+        // Not an error: the password was right and the account has a second step.
+        setNeedsCode(true)
+      } else if (reason === 'two_factor_invalid') {
+        setCode('')
+        setError(t('Kod jest nieprawidłowy albo już wygasł.'))
+      } else if (reason === 'two_factor_locked') {
+        setError(t('Za dużo błędnych kodów. Spróbuj ponownie za 15 minut.'))
+      } else {
+        setNeedsCode(false)
+        setCode('')
+        setError(response?.status === 429 && detail ? detail : t('Nieprawidłowy login lub hasło.'))
+      }
     } finally {
       setSubmitting(false)
     }
@@ -76,6 +93,26 @@ export default function Login() {
             {t('Zapomniałeś hasła?')}
           </Link>
         </p>
+        {needsCode && (
+          <label className="mb-4 block text-sm">
+            {t('Kod z aplikacji uwierzytelniającej')}
+            <input
+              className="mt-1 w-full rounded-md border border-slate-300 dark:border-slate-600 px-3 py-2 text-sm tracking-widest focus:border-accent-500 focus:outline-none"
+              value={code}
+              onChange={(e) => setCode(e.target.value)}
+              autoComplete="one-time-code"
+              autoCapitalize="none"
+              autoCorrect="off"
+              spellCheck={false}
+              autoFocus
+              required
+              aria-describedby="login-code-hint"
+            />
+            <span id="login-code-hint" className="mt-1 block text-xs text-slate-400 dark:text-slate-500">
+              {t('Sześć cyfr z aplikacji. Jeśli nie masz telefonu pod ręką, wpisz jeden z kodów zapasowych.')}
+            </span>
+          </label>
+        )}
         {error && <p className="mb-3 text-sm text-red-600 dark:text-red-400">{error}</p>}
         <button
           type="submit"

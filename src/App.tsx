@@ -27,6 +27,11 @@ import NotFound from './pages/NotFound'
 // needs to ship in the bundle a first-time (logged-out) visitor downloads -
 // PageSpeed flagged ~224 KiB of this chunk as unused on the public landing
 // page before this split.
+// The three small public calculators - each its own chunk, since a visitor
+// arriving from a search lands on exactly one of them.
+const CompoundInterest = lazy(() => import('./pages/calculators/CompoundInterest'))
+const BelkaTax = lazy(() => import('./pages/calculators/BelkaTax'))
+const SavingsGoal = lazy(() => import('./pages/calculators/SavingsGoal'))
 const Onboarding = lazy(() => import('./pages/Onboarding'))
 const Dashboard = lazy(() => import('./pages/Dashboard'))
 const Banking = lazy(() => import('./pages/Banking'))
@@ -101,6 +106,9 @@ const PAGE_TITLES: [string, string][] = [
   ['/budzet/statystyki', 'Statystyki'],
   ['/budzet/samochod', 'Samochód'],
   ['/budzet', 'Budżet'],
+  ['/kalkulator/procent-skladany', 'Kalkulator procentu składanego po podatku Belki'],
+  ['/kalkulator/podatek-belki', 'Kalkulator podatku Belki - ile zostaje z odsetek i zysku'],
+  ['/kalkulator/cel-oszczednosciowy', 'Ile odkładać miesięcznie na cel - kalkulator oszczędzania'],
   ['/kalkulator', 'Kalkulator inwestycyjny - lokata, obligacje czy giełda'],
   ['/artykuly', 'Artykuły o finansach osobistych'],
   ['/analiza', 'Analiza'],
@@ -135,7 +143,16 @@ function useDocumentTitle() {
 // canonical tag pointing at themselves - everything else (the app itself,
 // behind login) points back at the landing page, since that's the one real
 // entry point search engines should treat as canonical for those paths.
-const CANONICAL_SELF_PATHS = ['/', '/artykuly', '/polityka-prywatnosci', '/regulamin', '/kalkulator']
+const CANONICAL_SELF_PATHS = [
+  '/',
+  '/artykuly',
+  '/polityka-prywatnosci',
+  '/regulamin',
+  '/kalkulator',
+  '/kalkulator/procent-skladany',
+  '/kalkulator/podatek-belki',
+  '/kalkulator/cel-oszczednosciowy',
+]
 
 function useCanonicalLink() {
   const location = useLocation()
@@ -175,6 +192,9 @@ export default function App() {
       <Route path="/anuluj-usuniecie" element={<CancelDeletion />} />
       <Route path="/wypisz-z-przypomnien" element={<UnsubscribeReengagement />} />
       <Route path="/kalkulator" element={<PublicCalculator />} />
+      <Route path="/kalkulator/procent-skladany" element={<CompoundInterest />} />
+      <Route path="/kalkulator/podatek-belki" element={<BelkaTax />} />
+      <Route path="/kalkulator/cel-oszczednosciowy" element={<SavingsGoal />} />
       <Route element={<ProtectedRoute />}>
         <Route element={<Layout />}>
           <Route path="/dashboard" element={<Dashboard />} />

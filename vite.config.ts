@@ -37,6 +37,6 @@ export default defineConfig({
     // script, which `npm run build` now runs before `vite build` so a broken
     // tax or money calculation fails the build instead of reaching Netlify.
     environment: 'jsdom',
-    include: ['src/**/*.test.ts'],
+    include: ['src/**/*.test.{ts,tsx}'],
   },
 })

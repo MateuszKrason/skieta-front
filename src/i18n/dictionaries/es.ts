@@ -1590,4 +1590,86 @@ export const es: Record<string, string> = {
   'Nie. skieta nie łączy się z bankami i nigdy nie prosi o hasła bankowe. Konta, lokaty i transakcje dodajesz sam, a historię możesz zaimportować z pliku wyciągu. Automatycznie pobierane są wyłącznie publiczne dane rynkowe: notowania akcji, kursy walut NBP i oprocentowanie obligacji skarbowych.': 'No. skieta no se conecta con los bancos y nunca pide contraseñas bancarias. Las cuentas, los depósitos y las transacciones los añades tú, y puedes importar el historial desde un archivo de extracto. Solo se descargan automáticamente datos públicos de mercado: cotizaciones de acciones, tipos de cambio del NBP y el interés de los bonos del Tesoro.',
   'Czy mogę usunąć swoje konto i dane?': '¿Puedo eliminar mi cuenta y mis datos?',
   'Tak, w każdej chwili i samodzielnie, z poziomu ustawień konta - bez pisania do kogokolwiek.': 'Sí, en cualquier momento y por tu cuenta, desde los ajustes de la cuenta, sin tener que escribir a nadie.',
+  'Przypomnij mi e-mailem, jeśli przestanę zaglądać do skiety.': 'Recuérdame por correo si dejo de entrar en skieta.',
+  'Nieobowiązkowe. Najwyżej raz w tygodniu, wyłączysz jednym kliknięciem.':
+    'Opcional. Como máximo una vez por semana, y se desactiva con un clic.',
+  'Kod jest nieprawidłowy albo już wygasł.': 'El código es incorrecto o ya ha caducado.',
+  'Za dużo błędnych kodów. Spróbuj ponownie za 15 minut.':
+    'Demasiados códigos incorrectos. Inténtalo de nuevo en 15 minutos.',
+  'Kod z aplikacji uwierzytelniającej': 'Código de tu aplicación de autenticación',
+  'Sześć cyfr z aplikacji. Jeśli nie masz telefonu pod ręką, wpisz jeden z kodów zapasowych.':
+    'Seis dígitos de la aplicación. Si no tienes el teléfono a mano, introduce uno de tus códigos de respaldo.',
+  'Zgadzam się na przypomnienie e-mailem, jeśli dawno się nie logowałem/am':
+    'Acepto recibir un recordatorio por correo si llevo tiempo sin iniciar sesión',
+  'Najwyżej raz w tygodniu. Zgodę wycofasz tutaj albo jednym kliknięciem w wiadomości.':
+    'Como máximo una vez por semana. Puedes retirar tu consentimiento aquí o con un clic en el correo.',
+  'Twoje własne liczby z poprzedniego miesiąca. Część usługi, którą możesz wyłączyć.':
+    'Tus propias cifras del mes anterior. Forma parte del servicio y puedes desactivarlo.',
+  'Nie udało się rozpocząć konfiguracji.': 'No se pudo iniciar la configuración.',
+  'Nie udało się potwierdzić kodu.': 'No se pudo confirmar el código.',
+  'Nie udało się wyłączyć logowania dwuetapowego.': 'No se pudo desactivar el inicio de sesión en dos pasos.',
+  'Logowanie dwuetapowe': 'Inicio de sesión en dos pasos',
+  'Logowanie dwuetapowe jest włączone.': 'El inicio de sesión en dos pasos está activado.',
+  'Zapisz kody zapasowe w bezpiecznym miejscu. Każdy działa jeden raz i pozwala się zalogować, gdy nie masz telefonu. Nie pokażemy ich drugi raz.':
+    'Guarda tus códigos de respaldo en un lugar seguro. Cada uno sirve una sola vez y te permite entrar cuando no tienes el teléfono. No volveremos a mostrarlos.',
+  'Skopiowano': 'Copiado',
+  'Kopiuj kody': 'Copiar los códigos',
+  'Mam je zapisane': 'Ya los he guardado',
+  'Otwórz aplikację uwierzytelniającą, na przykład Google Authenticator, Aegis albo 1Password.':
+    'Abre una aplicación de autenticación, por ejemplo Google Authenticator, Aegis o 1Password.',
+  'Zeskanuj kod QR albo przepisz klucz ręcznie.': 'Escanea el código QR o escribe la clave a mano.',
+  'Wpisz sześć cyfr, które pokaże aplikacja.': 'Introduce los seis dígitos que muestra la aplicación.',
+  'Klucz do wpisania ręcznie': 'Clave para escribir a mano',
+  'Włączone od {0}. Przy logowaniu oprócz hasła podajesz kod z aplikacji.':
+    'Activado desde {0}. Al iniciar sesión introduces, además de la contraseña, un código de la aplicación.',
+  'Niewykorzystane kody zapasowe: {0}': 'Códigos de respaldo sin usar: {0}',
+  'Kod z aplikacji albo kod zapasowy': 'Código de la aplicación o código de respaldo',
+  'Wyłącz logowanie dwuetapowe': 'Desactivar el inicio de sesión en dos pasos',
+  'Dodaj drugi krok do logowania: oprócz hasła podasz sześciocyfrowy kod z aplikacji w telefonie. Nawet jeśli ktoś pozna Twoje hasło, nie wejdzie na konto.':
+    'Añade un segundo paso al inicio de sesión: además de la contraseña introduces un código de seis dígitos de una aplicación en tu teléfono. Aunque alguien conozca tu contraseña, no podrá entrar en tu cuenta.',
+  'Włącz logowanie dwuetapowe': 'Activar el inicio de sesión en dos pasos',
+  'Procent składany': 'Interés compuesto',
+  'Podatek Belki': 'Impuesto Belka',
+  'Ile odkładać na cel': 'Cuánto ahorrar para una meta',
+  'Inne kalkulatory': 'Otras calculadoras',
+  'Kalkulator procentu składanego': 'Calculadora de interés compuesto',
+  'Kalkulator podatku Belki': 'Calculadora del impuesto Belka',
+  'Lokata, obligacje czy giełda': 'Depósito, bonos o bolsa',
+  'Ostatnia aktualizacja: 11 października 2026': 'Última actualización: 11 de octubre de 2026',
+  'skieta to osobisty tracker finansowy - aplikacja bez reklam i bez sprzedaży danych osobom trzecim. Administratorem danych osobowych jest Mateusz Krasoń, prowadzący działalność gospodarczą pod firmą Mateusz Krasoń Software. W sprawach danych osobowych napisz na adres podany na dole tej strony.':
+    'skieta es un gestor de finanzas personales: una aplicación sin anuncios y que no vende datos a terceros. El responsable del tratamiento de los datos personales es Mateusz Krasoń, que ejerce su actividad bajo el nombre Mateusz Krasoń Software. Para cualquier asunto sobre datos personales, escribe a la dirección que aparece al final de esta página.',
+  'Po co i na jakiej podstawie przetwarzamy dane': 'Para qué tratamos los datos y con qué base jurídica',
+  'Założenie i prowadzenie konta oraz działanie funkcji aplikacji - wykonanie umowy o świadczenie usługi, czyli Regulaminu (art. 6 ust. 1 lit. b RODO).':
+    'Crear y mantener la cuenta y hacer funcionar la aplicación: ejecución del contrato de prestación del servicio, es decir, de las Condiciones (art. 6.1.b del RGPD).',
+  'Bezpieczeństwo: historia logowań, ochrona przed nadużyciami i nieautoryzowanym dostępem - nasz prawnie uzasadniony interes (art. 6 ust. 1 lit. f RODO).':
+    'Seguridad: historial de inicios de sesión, protección frente a abusos y accesos no autorizados: nuestro interés legítimo (art. 6.1.f del RGPD).',
+  'Statystyki korzystania z serwisu i rozwój aplikacji, w tym informacja, z której naszej strony przyszła rejestracja - nasz prawnie uzasadniony interes (art. 6 ust. 1 lit. f RODO).':
+    'Estadísticas de uso y desarrollo de la aplicación, incluida la página nuestra desde la que llegó el registro: nuestro interés legítimo (art. 6.1.f del RGPD).',
+  'Przypomnienie e-mailem o aplikacji - wyłącznie na podstawie Twojej zgody (art. 6 ust. 1 lit. a RODO), którą możesz wycofać w każdej chwili.':
+    'Recordatorios por correo sobre la aplicación: solo con tu consentimiento (art. 6.1.a del RGPD), que puedes retirar en cualquier momento.',
+  'Odpowiedzi na zgłoszenia i reklamacje oraz ustalenie, dochodzenie lub obrona roszczeń - nasz prawnie uzasadniony interes (art. 6 ust. 1 lit. f RODO).':
+    'Responder a avisos y reclamaciones, y formular, ejercer o defender reclamaciones legales: nuestro interés legítimo (art. 6.1.f del RGPD).',
+  'Podanie adresu e-mail i hasła jest dobrowolne, ale bez nich nie da się założyć konta. Pozostałe dane wpisujesz tylko wtedy, gdy chcesz korzystać z danej funkcji. Nie podejmujemy wobec Ciebie decyzji w sposób zautomatyzowany i nie profilujemy Cię w rozumieniu art. 22 RODO.':
+    'Facilitar el correo electrónico y la contraseña es voluntario, pero sin ellos no se puede crear una cuenta. El resto de los datos los introduces solo si quieres usar una función concreta. No tomamos decisiones automatizadas sobre ti ni elaboramos perfiles en el sentido del art. 22 del RGPD.',
+  'Jeśli włączysz logowanie dwuetapowe, przechowujemy zaszyfrowany klucz Twojej aplikacji uwierzytelniającej oraz skróty kodów zapasowych. Samych kodów nie da się z nich odczytać, a klucza nie pokazujemy drugi raz.':
+    'Si activas el inicio de sesión en dos pasos, guardamos la clave cifrada de tu aplicación de autenticación y los resúmenes (hash) de tus códigos de respaldo. Los códigos no se pueden recuperar a partir de ellos y la clave no se muestra una segunda vez.',
+  'Wiadomości e-mail': 'Correos electrónicos',
+  'Wiadomości związane z kontem wysyłamy zawsze, bo bez nich usługa nie działa: potwierdzenie adresu, reset hasła, potwierdzenie usunięcia konta oraz zaproszenia, które sam(a) wysyłasz. Jeśli dodasz pojazd z datą końca polisy, przypomnimy też o kończącym się ubezpieczeniu.':
+    'Los correos relacionados con la cuenta los enviamos siempre, porque sin ellos el servicio no funciona: confirmación de la dirección, restablecimiento de la contraseña, confirmación de la eliminación de la cuenta e invitaciones que envías tú. Si añades un vehículo con la fecha de fin de la póliza, también te recordaremos que el seguro está a punto de vencer.',
+  'Miesięczne podsumowanie to raport z Twoich własnych liczb za poprzedni miesiąc, wysyłany tylko na potwierdzony adres. Jest częścią usługi i możesz je wyłączyć w ustawieniach konta albo jednym kliknięciem w wiadomości.':
+    'El resumen mensual es un informe con tus propias cifras del mes anterior, que se envía solo a una dirección confirmada. Forma parte del servicio y puedes desactivarlo en los ajustes de la cuenta o con un clic en el correo.',
+  'Przypomnienie o aplikacji wysyłamy tylko wtedy, gdy wyrazisz na nie zgodę - przy rejestracji albo w ustawieniach konta - najwyżej raz w tygodniu i dopiero po co najmniej 14 dniach bez logowania. Zgodę wycofasz w ustawieniach albo jednym kliknięciem w wiadomości. Wycofanie zgody nie wpływa na zgodność z prawem wysyłek sprzed jej wycofania.':
+    'Solo enviamos un recordatorio sobre la aplicación si has dado tu consentimiento, al registrarte o en los ajustes de la cuenta, como máximo una vez por semana y nunca antes de 14 días sin iniciar sesión. Puedes retirar el consentimiento en los ajustes o con un clic en el correo. La retirada no afecta a la licitud de los envíos anteriores.',
+  'dostawca poczty e-mail (home.pl) - do wysyłki wiadomości opisanych w sekcji o e-mailach,':
+    'el proveedor de correo electrónico (home.pl): para enviar los mensajes descritos en la sección sobre correos,',
+  'dostawca analityki bez ciasteczek (Umami) - zbiorcze statystyki odwiedzin (patrz sekcja wyżej),':
+    'el proveedor de analítica sin cookies (Umami): estadísticas agregadas de visitas (véase la sección anterior),',
+  'dostawca monitoringu błędów (Sentry) - dostaje techniczne zgłoszenie awarii (adres strony i ślad błędu w kodzie), nigdy treści Twoich danych finansowych ani zawartości formularzy,':
+    'el proveedor de monitorización de errores (Sentry): recibe un informe técnico del fallo (la dirección de la página y la traza del error en el código), nunca tus datos financieros ni el contenido de los formularios,',
+  'Część danych technicznych usuwamy wcześniej, automatycznie: historię logowań (adres IP i przeglądarka) po 12 miesiącach, zapis dni aktywności po 410 dniach, a rozpatrzone zgłoszenia po 12 miesiącach od zamknięcia.':
+    'Parte de los datos técnicos se elimina antes, de forma automática: el historial de inicios de sesión (dirección IP y navegador) a los 12 meses, el registro de días de actividad a los 410 días y los avisos resueltos a los 12 meses de su cierre.',
+  'Masz prawo do wglądu w swoje dane, ich poprawienia, przeniesienia i usunięcia, a także do ograniczenia przetwarzania i do sprzeciwu wobec przetwarzania opartego na naszym prawnie uzasadnionym interesie. Dwa z nich załatwisz sam(a) w ustawieniach konta: "Pobierz swoje dane" daje pełną kopię wszystkiego, co przechowujemy (JSON plus tabele CSV do Excela), a "Usuń konto" uruchamia trwałe skasowanie danych. Większość informacji poprawisz bezpośrednio w ustawieniach. W pozostałych sprawach napisz na adres podany niżej albo skorzystaj z widgetu "Zostaw feedback" w aplikacji.':
+    'Tienes derecho a acceder a tus datos, rectificarlos, portarlos y suprimirlos, así como a limitar su tratamiento y a oponerte al tratamiento basado en nuestro interés legítimo. Dos de ellos puedes ejercerlos tú mismo en los ajustes de la cuenta: "Descargar tus datos" te da una copia completa de todo lo que guardamos (JSON más tablas CSV para Excel) y "Eliminar cuenta" inicia el borrado definitivo de los datos. La mayor parte de la información puedes corregirla directamente en los ajustes. Para lo demás, escribe a la dirección indicada más abajo o usa el widget "Dejar comentarios" de la aplicación.',
+  'Jeśli uznasz, że przetwarzamy Twoje dane niezgodnie z prawem, możesz wnieść skargę do Prezesa Urzędu Ochrony Danych Osobowych (ul. Stawki 2, 00-193 Warszawa, uodo.gov.pl). Zachęcamy, żeby najpierw napisać do nas - większość spraw wyjaśniamy od ręki.':
+    'Si consideras que tratamos tus datos de forma ilícita, puedes presentar una reclamación ante el Presidente de la Oficina de Protección de Datos Personales de Polonia (ul. Stawki 2, 00-193 Warszawa, uodo.gov.pl). Te animamos a escribirnos primero: la mayoría de los asuntos los resolvemos al momento.',
 }
