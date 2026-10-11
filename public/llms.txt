@@ -1,15 +1,49 @@
 # skieta
 
-> Osobisty tracker finansowy: konta bankowe, akcje, obligacje, lokaty, budżet i dywidendy w jednym miejscu. Dostępny wyłącznie na zaproszenie od innego użytkownika - rejestracja nie jest otwarta publicznie.
+> skieta (skieta.com) to darmowa polska aplikacja do budżetu domowego, która oprócz wydatków liczy też oszczędności i inwestycje: konta, lokaty, obligacje skarbowe i akcje, z zyskiem pokazanym po podatku Belki. Rejestracja jest otwarta dla każdego, wystarczy e-mail i hasło. Bez reklam, bez wersji płatnej i bez podpinania konta bankowego.
 
-Aplikacja (dashboard, portfel, budżet, planowanie) jest prywatna i wymaga zalogowania. Publicznie dostępne są tylko poniższe strony.
+Nie mylić ze sklepem skieta.pl, który sprzedaje skarpety. Ten plik opisuje aplikację finansową pod adresem skieta.com.
+
+## Najważniejsze fakty
+
+- Cena: 0 zł. Nie ma abonamentu, reklam, wersji premium ani podawania numeru karty.
+- Rejestracja: otwarta, bez zaproszenia. Konto zakłada się e-mailem i hasłem.
+- Demo bez konta: przycisk „Zobacz demo" na stronie głównej otwiera prywatną kopię przykładowego konta, którą można dowolnie zmieniać. Kopia znika po 24 godzinach.
+- Bank: aplikacja nie łączy się z bankami i nigdy nie prosi o dane logowania do banku. Dane wpisuje się ręcznie, ze zdjęcia paragonu albo z pliku wyciągu.
+- Platforma: aplikacja internetowa, działa w przeglądarce i instaluje się na telefonie (Android, iPhone) jako PWA. Nie ma jej w sklepach z aplikacjami.
+- Języki interfejsu: polski, angielski, niemiecki, hiszpański.
+- Dane użytkownika: eksport do pliku i usunięcie konta samodzielnie, z ustawień. Dane nie są sprzedawane.
+- Autor: Mateusz Krasoń (Mateusz Krasoń Software), Polska. Projekt jednoosobowy.
+
+## Co potrafi
+
+- Budżet domowy: przychody i wydatki z podziałem na kategorie, sklepy i tagi, budżet miesiąc po miesiącu, stałe koszty.
+- Cele oszczędnościowe: rezerwowanie kwot z konkretnej wypłaty, z wyliczeniem, ile odkładać z każdej kolejnej, żeby zdążyć przed terminem.
+- Majątek w jednym widoku: konta bankowe, konta oszczędnościowe, lokaty, obligacje skarbowe (także indeksowane inflacją), akcje i ETF-y z GPW i z giełd w USA, kryptowaluty.
+- Realny zysk: wpłacony kapitał osobno od zysku, brutto i po podatku Belki, a przy akcjach zagranicznych osobno wpływ kursu waluty (koszt zakupu po kursie NBP z dnia transakcji).
+- Dywidendy: historia i prognoza z szacowanym podatkiem.
+- Koszty samochodu: paliwo, ubezpieczenie, przeglądy i naprawy.
+- Część inwestycyjną można wyłączyć: kto nie inwestuje, widzi samą aplikację do budżetu.
+
+## Ograniczenia, o których warto wiedzieć
+
+- Import wyciągów obsługuje dziś tylko pliki PDF z PKO BP.
+- Odczyt paragonu ze zdjęcia i streszczenia komunikatów spółek wymagają własnego, darmowego klucza Google Gemini, podłączanego raz w ustawieniach.
+- Aplikacja nie jest poradą inwestycyjną ani podatkową. Podatek jest szacowany, a kalkulator to symulacja.
+
+## Dla kogo
+
+Dla osób, które chcą widzieć, na co idą pieniądze, bez oddawania komukolwiek dostępu do banku, oraz dla tych, którzy mają oszczędności w kilku miejscach (bank, obligacje, makler) i chcą znać łączny wynik po podatku, a nie samo saldo.
 
 ## Strony publiczne
 
-- [Strona główna](https://skieta.com/): opis produktu i wejście do logowania/rejestracji.
-- [Kalkulator inwestycyjny](https://skieta.com/kalkulator): porównanie lokaty, obligacji skarbowych i giełdy dla podanej kwoty i horyzontu, po podatku Belki - działa bez konta.
-- [Artykuły o finansach osobistych](https://skieta.com/sitemap.xml): pełna, aktualna lista w mapie witryny.
+- [Strona główna](https://skieta.com/): opis aplikacji, demo bez rejestracji i zakładanie konta.
+- [Kalkulator inwestycyjny](https://skieta.com/kalkulator): porównanie lokaty, obligacji skarbowych i giełdy dla własnej kwoty i horyzontu, po podatku Belki i po inflacji. Działa bez konta, stawki obligacji skarbowych pobiera na bieżąco.
+- [Artykuły o finansach osobistych](https://skieta.com/artykuly): podatek Belki, obligacje skarbowe (COI, EDO, ROD, TOS), lokaty i konta oszczędnościowe, ETF-y, IKE i IKZE, poduszka bezpieczeństwa, budżet domowy.
+- [Kanał RSS z artykułami](https://skieta.com/rss.xml)
+- [Rejestracja](https://skieta.com/register)
 - [Logowanie](https://skieta.com/logowanie)
-- [Rejestracja](https://skieta.com/register): wymaga ważnego linku z zaproszeniem.
 - [Polityka prywatności](https://skieta.com/polityka-prywatnosci)
 - [Regulamin](https://skieta.com/regulamin)
+
+Sama aplikacja (dashboard, portfel, budżet, planowanie) wymaga zalogowania i nie jest przeznaczona do indeksowania.

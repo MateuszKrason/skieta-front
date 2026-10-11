@@ -37,7 +37,7 @@
          brand name cannot carry the page by itself. The slogan stays where a
          person reads it - in the hero. Keep the description under ~155
          characters or Google cuts it mid-sentence. -->
-    <meta name="description" content="Darmowa aplikacja do budżetu domowego, bez reklam. Wydatki dodasz zdjęciem paragonu, a obok budżetu policzysz też akcje, obligacje i lokaty." />
+    <meta name="description" content="Darmowa aplikacja do budżetu domowego, bez reklam i bez podpinania banku. Budżet, cele i inwestycje w jednym miejscu, z zyskiem po podatku Belki." />
     <!-- The app itself (behind login) stays private, but the landing page and
          its articles at / and /artykuly/* are genuinely public marketing/
          educational content - index those. Logged-in-only routes have no
@@ -46,7 +46,7 @@
     <link rel="canonical" href="https://skieta.com/" />
     <meta property="og:site_name" content="skieta" />
     <meta property="og:title" content="skieta - darmowa aplikacja do budżetu domowego" />
-    <meta property="og:description" content="Bez reklam i bez sprzedawania danych. Wydatki dodasz zdjęciem paragonu, a obok budżetu policzysz też akcje, obligacje i lokaty." />
+    <meta property="og:description" content="Bez reklam i bez podpinania banku. Budżet, cele oszczędnościowe i inwestycje w jednym miejscu, z zyskiem po podatku Belki." />
     <meta property="og:type" content="website" />
     <meta property="og:url" content="https://skieta.com/" />
     <meta property="og:image" content="https://skieta.com/og-image.png" />
@@ -55,13 +55,18 @@
     <meta property="og:locale" content="pl_PL" />
     <meta name="twitter:card" content="summary_large_image" />
     <meta name="twitter:title" content="skieta - darmowa aplikacja do budżetu domowego" />
-    <meta name="twitter:description" content="Bez reklam i bez sprzedawania danych. Wydatki dodasz zdjęciem paragonu, a obok budżetu policzysz też akcje, obligacje i lokaty." />
+    <meta name="twitter:description" content="Bez reklam i bez podpinania banku. Budżet, cele oszczędnościowe i inwestycje w jednym miejscu, z zyskiem po podatku Belki." />
     <meta name="twitter:image" content="https://skieta.com/og-image.png" />
     <!-- WebApplication alongside WebSite tells search engines this is a free
          finance app rather than a blog. No aggregateRating on purpose: Google
          only shows the star snippet with one, and there are no real ratings
          to put there - an invented one would be the kind of fake review
-         structured-data guidelines ban outright. -->
+         structured-data guidelines ban outright.
+
+         featureList, author and isAccessibleForFree answer, in a form a
+         machine reads without guessing, the three things an assistant is
+         asked about an app: what it does, who makes it and what it costs.
+         Keep them true to public/llms.txt, which says the same in prose. -->
     <script type="application/ld+json">
       {
         "@context": "https://schema.org",
@@ -71,7 +76,7 @@
             "name": "skieta",
             "url": "https://skieta.com/",
             "inLanguage": "pl-PL",
-            "description": "Darmowa aplikacja do budżetu domowego - wydatki ze zdjęcia paragonu, cele oszczędnościowe oraz akcje, obligacje i lokaty w jednym miejscu.",
+            "description": "Darmowa aplikacja do budżetu domowego: budżet, cele oszczędnościowe i inwestycje w jednym miejscu, z zyskiem po podatku Belki.",
             "image": "https://skieta.com/og-image.png"
           },
           {
@@ -79,11 +84,39 @@
             "name": "skieta",
             "url": "https://skieta.com/",
             "applicationCategory": "FinanceApplication",
-            "operatingSystem": "Web",
-            "inLanguage": "pl-PL",
-            "description": "Darmowa aplikacja do budżetu domowego, bez reklam. Wydatki dodasz zdjęciem paragonu, a obok budżetu policzysz też akcje, obligacje i lokaty.",
-            "offers": { "@type": "Offer", "price": "0", "priceCurrency": "PLN" },
-            "image": "https://skieta.com/og-image.png"
+            "operatingSystem": "Web, Android, iOS",
+            "inLanguage": [
+              "pl",
+              "en",
+              "de",
+              "es"
+            ],
+            "isAccessibleForFree": true,
+            "description": "Darmowa aplikacja do budżetu domowego, bez reklam i bez podpinania banku. Budżet, cele i inwestycje w jednym miejscu, z zyskiem po podatku Belki.",
+            "featureList": [
+              "Budżet domowy: przychody i wydatki z podziałem na kategorie, sklepy i tagi",
+              "Cele oszczędnościowe z kwotą do odłożenia z każdej wypłaty",
+              "Konta, lokaty, obligacje skarbowe, akcje i ETF-y w jednym widoku",
+              "Zysk osobno od wpłaconego kapitału, brutto i po podatku Belki",
+              "Historia i prognoza dywidend",
+              "Wydatek ze zdjęcia paragonu",
+              "Kalkulator: lokata, obligacje skarbowe czy giełda, bez zakładania konta",
+              "Bez łączenia z bankiem i bez podawania haseł bankowych"
+            ],
+            "offers": {
+              "@type": "Offer",
+              "price": "0",
+              "priceCurrency": "PLN"
+            },
+            "author": {
+              "@type": "Person",
+              "name": "Mateusz Krasoń"
+            },
+            "screenshot": "https://skieta.com/screens/dashboard-light.webp",
+            "image": "https://skieta.com/og-image.png",
+            "sameAs": [
+              "https://www.facebook.com/profile.php?id=61593710680861"
+            ]
           }
         ]
       }
