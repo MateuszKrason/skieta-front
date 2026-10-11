@@ -25,7 +25,7 @@ const PAGES: Record<string, Page> = {
   '/': {
     title: 'Darmowa aplikacja do budżetu domowego - skieta',
     description:
-      'Darmowa aplikacja do budżetu domowego, bez reklam i bez podpinania banku. Budżet, cele oszczędnościowe i inwestycje w jednym miejscu, z zyskiem po podatku Belki.',
+      'Darmowa aplikacja do budżetu domowego, bez reklam i bez podpinania banku. Budżet, cele i inwestycje w jednym miejscu, z zyskiem po podatku Belki.',
     // Mirrors what Landing.tsx renders, section by section, so a crawler that
     // reads the HTML before running the app sees the same page a person does.
     body:
@@ -57,7 +57,9 @@ const PAGES: Record<string, Page> = {
       '</main>',
   },
   '/kalkulator': {
-    title: 'Kalkulator inwestycyjny - lokata, obligacje czy giełda - skieta',
+    // No brand on the end: with it the title runs to 63 characters and a
+    // search result cuts it (see TITLE_LIMIT in src/lib/seo.ts).
+    title: 'Kalkulator inwestycyjny - lokata, obligacje czy giełda',
     description:
       'Porównaj lokatę, obligacje skarbowe i giełdę na własnej kwocie - wynik po podatku Belki i po inflacji. Za darmo i bez zakładania konta.',
     body:

@@ -7,6 +7,7 @@ import SockLogo from '../components/SockLogo'
 import { useLanguage } from '../i18n/LanguageContext'
 import { rememberSignupSource, trackEvent } from '../lib/analytics'
 import { formatDate } from '../lib/format'
+import { searchDescription, searchTitle } from '../lib/seo'
 import { useNoindex } from '../lib/useNoindex'
 import type { Article } from '../types'
 
@@ -120,8 +121,10 @@ export default function ArticleDetail() {
     if (!article) return
     const previousTitle = document.title
     const previousDescription = document.querySelector('meta[name="description"]')?.getAttribute('content') ?? ''
-    document.title = `${article.title} - skieta`
-    setMetaDescription(article.summary)
+    // The same two rules the edge function applied to the HTML this page
+    // arrived in (see lib/seo), so the title does not change under a crawler.
+    document.title = searchTitle(article.title)
+    setMetaDescription(searchDescription(article.summary))
     return () => {
       document.title = previousTitle
       setMetaDescription(previousDescription)

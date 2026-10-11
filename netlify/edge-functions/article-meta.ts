@@ -117,6 +117,27 @@ function renderArticle(article: Article): string {
  * not apply to it. "<" is escaped so no article text can close the tag early. */
 const INITIAL_DATA_ID = 'skieta-article'
 
+// Copies of src/lib/seo.ts, which has the reasoning and the tests: an edge
+// function cannot import from src/. They have to stay identical, or the HTML a
+// crawler reads first and the page the app then renders disagree.
+const TITLE_LIMIT = 60
+const DESCRIPTION_LIMIT = 155
+
+function searchTitle(title: string): string {
+  const withBrand = `${title} - skieta`
+  return withBrand.length <= TITLE_LIMIT ? withBrand : title
+}
+
+function searchDescription(text: string): string {
+  const clean = text.replace(/\s+/g, ' ').trim()
+  if (clean.length <= DESCRIPTION_LIMIT) return clean
+  const head = clean.slice(0, DESCRIPTION_LIMIT + 1)
+  const sentenceEnd = Math.max(head.lastIndexOf('. '), head.lastIndexOf('? '), head.lastIndexOf('! '))
+  if (sentenceEnd >= 100) return head.slice(0, sentenceEnd + 1)
+  const wordEnd = head.lastIndexOf(' ', DESCRIPTION_LIMIT - 1)
+  return `${head.slice(0, wordEnd).replace(/[\s,;:-]+$/, '')}…`
+}
+
 function renderInitialData(article: Article): string {
   const json = JSON.stringify(article).replace(/</g, '\\u003c')
   return `<script id="${INITIAL_DATA_ID}" type="application/json">${json}</script>`
@@ -145,8 +166,8 @@ export default async (request: Request, context: { next: () => Promise<Response>
   }
 
   const url = `${SITE}/artykuly/${slug}`
-  const title = escapeAttribute(`${article.title} - skieta`)
-  const description = escapeAttribute(article.summary)
+  const title = escapeAttribute(searchTitle(article.title))
+  const description = escapeAttribute(searchDescription(article.summary))
   // Per-article preview card carrying the headline (see
   // scripts/generate_og_images.py). A slug with no generated file falls back
   // to the site image through the /og/* rule in _redirects, so this is always

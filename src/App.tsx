@@ -4,6 +4,7 @@ import Layout from './components/Layout'
 import { useAuth } from './auth/AuthContext'
 import { useLanguage } from './i18n/LanguageContext'
 import { useLogVisit } from './i18n/useLogVisit'
+import { searchTitle } from './lib/seo'
 import AdminRoute from './components/AdminRoute'
 import EditorRoute from './components/EditorRoute'
 import ProtectedRoute from './components/ProtectedRoute'
@@ -126,7 +127,7 @@ function useDocumentTitle() {
     const match = PAGE_TITLES.find(([path]) =>
       EXACT_TITLE_PATHS.has(path) ? location.pathname === path : location.pathname.startsWith(path),
     )
-    document.title = match ? `${t(match[1])} - skieta` : 'skieta'
+    document.title = match ? searchTitle(t(match[1])) : 'skieta'
   }, [location.pathname, t])
 }
 
