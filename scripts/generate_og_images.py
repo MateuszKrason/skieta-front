@@ -16,7 +16,8 @@ file here, so a missing image degrades rather than breaks.
 
     python scripts/generate_og_images.py
 
-Reads the live article list, so titles always match what's published.
+Reads the live article list, so titles always match what's published, plus
+og_scheduled_titles.json for articles that have a publication date still ahead.
 """
 
 import json
@@ -33,6 +34,13 @@ API = 'https://api.skieta.com/api/content/articles/'
 # works is the last difference left to remove.
 OUT_DIR = pathlib.Path(__file__).resolve().parent.parent / 'public'
 PREFIX = 'og-'
+
+# Articles that are written but not public yet. A batch is released over
+# several weeks (see backend content/article_batches), and the live list does
+# not include an article before its date - so without this its card would not
+# exist on the day it goes out, and regenerating would delete it if it did.
+# slug -> title; an entry is harmless once the article is live, the API wins.
+SCHEDULED_TITLES = pathlib.Path(__file__).resolve().parent / 'og_scheduled_titles.json'
 
 WIDTH, HEIGHT = 1200, 630
 MARGIN = 84
@@ -119,6 +127,11 @@ def main() -> None:
     OUT_DIR.mkdir(parents=True, exist_ok=True)
     with urllib.request.urlopen(API, timeout=30) as response:
         articles = json.load(response)
+
+    live = {article['slug'] for article in articles}
+    if SCHEDULED_TITLES.exists():
+        scheduled = json.loads(SCHEDULED_TITLES.read_text(encoding='utf-8'))
+        articles += [{'slug': slug, 'title': title} for slug, title in scheduled.items() if slug not in live]
 
     # Only the generated cards, never og-image.png, which is a hand-made asset.
     for stale in OUT_DIR.glob(f'{PREFIX}*.jpg'):

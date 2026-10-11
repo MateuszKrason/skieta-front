@@ -18,7 +18,10 @@ export default function ArticlesIndex() {
   })
   // Same guard as the landing page: the SPA fallback answering /api/* with
   // index.html is a 200 full of HTML, and .map on a string takes the page down.
-  const articles = Array.isArray(data) ? data : []
+  // Newest first here, unlike the landing page, which keeps the editor's
+  // order for the three it features: an index is where a returning reader
+  // looks for what is new. ISO dates sort correctly as plain strings.
+  const articles = Array.isArray(data) ? [...data].sort((a, b) => b.published_at.localeCompare(a.published_at)) : []
 
   // The tab title comes from App's PAGE_TITLES, like every other route's.
   const heading = t('Artykuły o finansach osobistych')
