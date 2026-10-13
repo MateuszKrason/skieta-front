@@ -1670,4 +1670,149 @@ export const en: Record<string, string> = {
     'You have the right to access your data, correct it, take it with you and have it deleted, as well as to restrict processing and to object to processing based on our legitimate interest. Two of these you can handle yourself in your account settings: "Download your data" gives you a full copy of everything we store (JSON plus CSV tables for Excel), and "Delete account" starts the permanent erasure of your data. Most information you can correct directly in the settings. For anything else, write to the address below or use the "Leave feedback" widget in the app.',
   'Jeśli uznasz, że przetwarzamy Twoje dane niezgodnie z prawem, możesz wnieść skargę do Prezesa Urzędu Ochrony Danych Osobowych (ul. Stawki 2, 00-193 Warszawa, uodo.gov.pl). Zachęcamy, żeby najpierw napisać do nas - większość spraw wyjaśniamy od ręki.':
     'If you believe we are processing your data unlawfully, you can lodge a complaint with the President of the Personal Data Protection Office in Poland (ul. Stawki 2, 00-193 Warszawa, uodo.gov.pl). We encourage you to write to us first - most matters are cleared up straight away.',
+  'Nie udało się przygotować podsumowania. Spróbuj ponownie za chwilę.':
+    'Could not prepare the summary. Try again in a moment.',
+  'stan na {0}': 'as of {0}',
+  'cały rok w liczbach': 'the whole year in numbers',
+  'Twój rok {0} w skiecie': 'Your {0} in skieta',
+  'Rok jeszcze trwa, więc to podsumowanie do {0}. Wróć w grudniu po pełny obraz.':
+    'The year is not over, so this is a summary up to {0}. Come back in December for the full picture.',
+  'Sześć liczb, które mówią o roku więcej niż saldo, i kilka faktów, które po prostu miło znać.':
+    'Six numbers that say more about a year than the balance does, and a few facts that are simply nice to know.',
+  'Rok': 'Year',
+  'Za {0} rok nie ma jeszcze danych. Dodaj pierwsze wydatki i wpływy, a podsumowanie zacznie się wypełniać.':
+    'There is no data for {0} yet. Add your first expenses and income and the summary will start to fill in.',
+  'Przejdź do budżetu': 'Go to the budget',
+  'Sześć liczb': 'Six numbers',
+  'Majątek': 'Net worth',
+  'Z czego to się wzięło': 'Where it came from',
+  'tyle zostało z dochodów zapisanych w budżecie': 'is what was left of the income recorded in the budget',
+  'Pozostała różnica: {0}. To wynik inwestycji i wszystko, czego w budżecie nie ma.':
+    'The remaining difference: {0}. That is the result of investments and everything the budget does not contain.',
+  'Stopa oszczędności': 'Savings rate',
+  '{0} z {1} dochodu': '{0} of {1} income',
+  'Koszty stałe': 'Fixed costs',
+  '{0} miesięcznie': '{0} a month',
+  '{0} średniego dochodu': '{0} of average income',
+  'Największa kategoria wydatków': 'Biggest spending category',
+  'Poduszka': 'Cushion',
+  '{0} na kontach i lokatach przy średnich wydatkach {1} miesięcznie. Stan na dziś.':
+    '{0} in accounts and deposits against average spending of {1} a month. As of today.',
+  'Miesiąc po miesiącu': 'Month by month',
+  'wpływy': 'income',
+  'wydatki': 'expenses',
+  'Rok w kilku faktach': 'The year in a few facts',
+  'Zapisane wydatki i wpływy': 'Expenses and income recorded',
+  'Dni z jakimkolwiek wpisem': 'Days with at least one entry',
+  'Dni ze skietą': 'Days with skieta',
+  'Najlepszy miesiąc': 'Best month',
+  '{0}, odłożone {1}': '{0}, {1} set aside',
+  'Najdroższy miesiąc': 'Most expensive month',
+  'Największy pojedynczy wydatek': 'Biggest single expense',
+  'Najczęściej odwiedzany sklep': 'Most visited shop',
+  '{0}, {1} razy': '{0}, {1} times',
+  'Dywidendy brutto': 'Gross dividends',
+  'Wynik ze sprzedanych akcji, przed podatkiem': 'Result on shares sold, before tax',
+  'Odłożone na cele': 'Set aside for goals',
+  'Osiągnięte cele': 'Goals reached',
+  '{0} z {1}': '{0} of {1}',
+  'Pochwal się rokiem': 'Show off your year',
+  'Mój rok {0}': 'My {0}',
+  'skieta.com · budżet i inwestycje w jednym miejscu': 'skieta.com · budget and investments in one place',
+  'Obrazek powstaje w Twojej przeglądarce i nigdzie nie jest wysyłany. Domyślnie nie ma na nim żadnej kwoty, tylko procenty, liczby i nazwy.':
+    'The picture is made in your browser and is not sent anywhere. By default it shows no amounts at all, only percentages, counts and names.',
+  'Pokaż na obrazku odłożoną kwotę': 'Show the amount set aside on the picture',
+  'Pobierz obrazek': 'Download the picture',
+  'Udostępnij': 'Share',
+  'Nie udało się przygotować obrazka.': 'Could not prepare the picture.',
+  'dochodów odłożone, czyli {0}': 'of income set aside, that is {0}',
+  'dochodów odłożone': 'of income set aside',
+  'majątek w górę': 'net worth up',
+  'największa kategoria, {0} wydatków': 'biggest category, {0} of spending',
+  'mies. życia z poduszki': 'months the cushion would last',
+  'zapisanych wydatków i wpływów': 'expenses and income recorded',
+  'osiągnięte cele': 'goals reached',
+  'Twój rok w skiecie': 'Your year in skieta',
+  'Twój rok w skiecie jest gotowy.': 'Your year in skieta is ready.',
+  'Sześć liczb o Twoim roku i obrazek, którym możesz się pochwalić.':
+    'Six numbers about your year and a picture you can show off.',
+  'Nie udało się przygotować zestawienia. Spróbuj ponownie za chwilę.':
+    'Could not prepare the statement. Try again in a moment.',
+  'Nie udało się pobrać kursu NBP dla {0} ({1}) z dnia przed {2}. Ta pozycja nie jest wliczona do sum. Odśwież stronę za chwilę.':
+    'Could not get the NBP rate for {0} ({1}) from the day before {2}. This item is not included in the totals. Refresh the page in a moment.',
+  '{0}: sprzedaż z {1} obejmuje {2} szt. więcej, niż masz zapisanych zakupów. Dla tej części koszt wynosi zero, więc podatek wychodzi zawyżony. Dopisz brakujący zakup.':
+    '{0}: the sale on {1} covers {2} more shares than you have purchases recorded for. That part has a cost of zero, so the tax comes out too high. Add the missing purchase.',
+  'Pominięte sprzedaże na rachunkach IKE i IKZE: {0}. Nie rozlicza się ich w PIT-38.':
+    'Sales on IKE and IKZE accounts left out: {0}. They are not settled in PIT-38.',
+  'Sprzedaże bez wskazanego rachunku: {0}. Kolejność sprzedawanych akcji liczy się osobno dla każdego rachunku maklerskiego, więc przypisz je do rachunków.':
+    'Sales with no account given: {0}. The order in which shares are sold is worked out separately for each brokerage account, so assign them to accounts.',
+  'Od części dywidend pobrano za granicą więcej niż {0}%. Odliczasz tylko stawkę z umowy o unikaniu podwójnego opodatkowania, nadwyżkę odzyskuje się w kraju wypłaty (w USA zapobiega temu formularz W-8BEN).':
+    'More than {0}% was withheld abroad on some dividends. You deduct only the rate set by the double taxation treaty; the excess is reclaimed in the country that paid it (in the USA the W-8BEN form prevents this).',
+  'Pomocnik PIT-38': 'PIT-38 helper',
+  'Liczby do zeznania policzone z Twoich transakcji: kolejność FIFO, kursy NBP z dnia poprzedzającego i prowizje w kosztach. To zestawienie pomocnicze, a nie gotowe zeznanie.':
+    'The figures for your tax return worked out from your transactions: first in, first out, NBP rates from the day before, and commissions as costs. This is a helper statement, not a completed return.',
+  'Rok podatkowy': 'Tax year',
+  'Rok {0} jeszcze trwa. Te liczby zmienią się z każdą kolejną transakcją.':
+    '{0} is not over yet. These figures will change with every further transaction.',
+  'Akcje i ETF-y': 'Shares and ETFs',
+  'część C zeznania': 'part C of the return',
+  'Koszty uzyskania przychodu': 'Tax-deductible costs',
+  'Strata': 'Loss',
+  'Dochód': 'Income',
+  'Podatek 19% od dochodu zaokrąglonego do złotych': '19% tax on income rounded to the full złoty',
+  'Jeśli broker przysłał PIT-8C, przepisujesz jego kwoty do wiersza z PIT-8C i porównujesz z tym, co tutaj. Rachunki bez PIT-8C, zwykle u zagranicznych brokerów, wpisujesz w wierszu „Inne przychody”.':
+    'If your broker sent a PIT-8C, you copy its amounts into the PIT-8C row and compare them with what is shown here. Accounts without a PIT-8C, usually with foreign brokers, go in the row „Inne przychody” (other income).',
+  'Rachunek': 'Account',
+  'Koszty': 'Costs',
+  'Wynik': 'Result',
+  'Bez rachunku': 'No account',
+  'W {0} roku nie masz zapisanej sprzedaży akcji ani ETF-ów poza IKE i IKZE.':
+    'You have no sales of shares or ETFs recorded in {0} outside IKE and IKZE.',
+  'Dywidendy z zagranicy': 'Dividends from abroad',
+  'część G zeznania': 'part G of the return',
+  'Podatek 19%': '19% tax',
+  'Podatek pobrany za granicą': 'Tax withheld abroad',
+  'Z tego do odliczenia': 'Of which deductible',
+  'Do dopłaty w Polsce, po zaokrągleniu': 'Still to pay in Poland, rounded',
+  'Do odliczenia przyjmujemy najwyżej {0}% dywidendy, czyli stawkę z większości umów podatkowych (m.in. USA, Niemcy, Francja, Holandia). Dla spółek z Wielkiej Brytanii i Włoch umowa mówi o 10%.':
+    'We treat at most {0}% of a dividend as deductible, which is the rate in most tax treaties (the USA, Germany, France and the Netherlands among them). For companies from the United Kingdom and Italy the treaty says 10%.',
+  'Pokaż dywidendy ({0})': 'Show dividends ({0})',
+  'Kurs NBP (tabela z dnia)': 'NBP rate (table of)',
+  'Brutto': 'Gross',
+  'Pobrano': 'Withheld',
+  'Do dopłaty': 'To pay',
+  'brak kursu': 'no rate',
+  'W {0} roku nie masz zapisanych wypłaconych dywidend od zagranicznych spółek.':
+    'You have no paid dividends from foreign companies recorded in {0}.',
+  'Dywidendy polskich spółek ({0}) opodatkował już dom maklerski przy wypłacie. Nie wpisujesz ich do zeznania.':
+    'Dividends from Polish companies ({0}) were already taxed by the broker when they were paid. You do not enter them in the return.',
+  'Kryptowaluty': 'Cryptocurrency',
+  'część E zeznania': 'part E of the return',
+  'Przychód ze sprzedaży': 'Income from sales',
+  'Koszty poniesione w tym roku': 'Costs incurred this year',
+  'Koszty z lat ubiegłych': 'Costs from previous years',
+  'Koszty do odliczenia w kolejnych latach': 'Costs to deduct in later years',
+  'Przy kryptowalutach kosztem jest każdy zakup z danego roku, także wtedy, gdy nie było żadnej sprzedaży. Dlatego zeznanie składa się również za rok, w którym były same zakupy. Zamiana jednej kryptowaluty na drugą nie jest opodatkowana i nie powinna być tu zapisana jako sprzedaż.':
+    'With cryptocurrency every purchase made in a year is a cost of that year, even when nothing was sold. That is why a return is also filed for a year with purchases only. Swapping one cryptocurrency for another is not taxed and should not be recorded here as a sale.',
+  'Straty z poprzednich lat': 'Losses from previous years',
+  'część D zeznania': 'part D of the return',
+  'Stratę z akcji i ETF-ów odliczasz od dochodu z tego samego źródła przez pięć kolejnych lat, pod warunkiem że została wykazana w zeznaniu za tamten rok. skieta nie wie, ile z niej zostało już odliczone, więc tej kwoty nie odejmuje sama.':
+    'A loss on shares and ETFs can be deducted from income of the same kind over the following five years, provided it was declared in the return for that year. skieta does not know how much of it has already been deducted, so it does not subtract the amount itself.',
+  'Sprzedaże krok po kroku': 'Sales step by step',
+  'Przygotowuję…': 'Preparing…',
+  'Pobierz wyliczenie (CSV)': 'Download the working (CSV)',
+  'Kupno z {0}': 'Purchase of {0}',
+  'Koszty razem, z prowizjami': 'Total costs, with commissions',
+  'Jak to liczymy': 'How we work it out',
+  'Jako pierwsze sprzedawane są akcje kupione najwcześniej (FIFO), osobno na każdym rachunku maklerskim.':
+    'The shares bought earliest are sold first (FIFO), separately on each brokerage account.',
+  'Kwoty w walutach przeliczamy po średnim kursie NBP z ostatniego dnia roboczego przed transakcją: przychód po kursie sprzed sprzedaży, koszt po kursie sprzed zakupu.':
+    'Amounts in foreign currencies are converted at the NBP average rate from the last business day before the transaction: income at the rate before the sale, cost at the rate before the purchase.',
+  'Prowizje od zakupu i od sprzedaży są kosztem. Przychodem jest cała cena sprzedaży.':
+    'Commissions on the purchase and on the sale are costs. The income is the whole sale price.',
+  'Liczymy od dat wpisanych w transakcjach. Jeśli broker rozlicza transakcję dzień lub dwa później, właściwy kurs może pochodzić z innego dnia.':
+    'We go by the dates entered in the transactions. If your broker settles a trade a day or two later, the right rate may be from a different day.',
+  'Transakcje na rachunkach IKE i IKZE są pominięte.': 'Transactions on IKE and IKZE accounts are left out.',
+  'To zestawienie pomocnicze dla polskich rezydentów podatkowych, a nie porada podatkowa. Nie uwzględnia transakcji, których nie ma w skiecie, ani Twojej indywidualnej sytuacji. Oznaczenia części (C, D, E, G) odpowiadają formularzowi używanemu do rozliczenia za 2024 rok; jeśli w nowym druku są inne, kieruj się nazwami pól. Przed złożeniem zeznania porównaj liczby z dokumentami od brokera, a w razie wątpliwości zapytaj doradcę podatkowego.':
+    'This is a helper statement for Polish tax residents, not tax advice. It does not take into account transactions that are not in skieta, or your individual situation. The part letters (C, D, E, G) follow the form used for the 2024 return; if a newer form uses different ones, go by the names of the fields. Before filing, compare the figures with the documents from your broker, and ask a tax adviser if in doubt.',
 }

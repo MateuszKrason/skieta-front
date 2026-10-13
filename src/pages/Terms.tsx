@@ -32,7 +32,7 @@ export default function Terms() {
       <div className="mx-auto max-w-3xl space-y-8 px-4 py-12">
         <div>
           <h1 className="text-3xl font-bold text-slate-900 dark:text-slate-100">{t('Regulamin usługi')}</h1>
-          <p className="mt-2 text-sm text-slate-400 dark:text-slate-500">{t('Ostatnia aktualizacja: 11 października 2026')}</p>
+          <p className="mt-2 text-sm text-slate-400 dark:text-slate-500">{t('Ostatnia aktualizacja: 13 października 2026')}</p>
         </div>
 
         <Section title="1. Postanowienia ogólne">
@@ -87,6 +87,11 @@ export default function Terms() {
           <p>
             {t(
               'Kwoty "po podatku" wyliczane w Usłudze na podstawie zadeklarowanego kraju rezydencji podatkowej (Polska, Niemcy, Hiszpania, USA, Wielka Brytania) są wyłącznie orientacyjnym szacunkiem opartym na uproszczonych, ogólnych stawkach i ulgach - nie uwzględniają indywidualnej sytuacji podatkowej Użytkownika (m.in. innych źródeł dochodu, stanu cywilnego, podatków stanowych czy lokalnych) i mogą odbiegać od rzeczywistego zobowiązania podatkowego. Usługodawca nie ponosi odpowiedzialności za błędy w tych wyliczeniach ani za decyzje podjęte na ich podstawie - w sprawach podatkowych należy skonsultować się z licencjonowanym doradcą podatkowym we właściwej jurysdykcji.',
+            )}
+          </p>
+          <p>
+            {t(
+              'Zestawienie do PIT-38 jest wyliczeniem pomocniczym, przygotowanym wyłącznie z danych wprowadzonych przez Użytkownika i według zasad opisanych na jego stronie. Nie jest deklaracją podatkową ani poradą podatkową i nie zastępuje dokumentów od biura maklerskiego. Za treść składanego zeznania odpowiada Użytkownik.',
             )}
           </p>
         </Section>

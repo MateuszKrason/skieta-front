@@ -22,6 +22,8 @@ Nie mylić ze sklepem skieta.pl, który sprzedaje skarpety. Ten plik opisuje apl
 - Majątek w jednym widoku: konta bankowe, konta oszczędnościowe, lokaty, obligacje skarbowe (także indeksowane inflacją), akcje i ETF-y z GPW i z giełd w USA, kryptowaluty.
 - Realny zysk: wpłacony kapitał osobno od zysku, brutto i po podatku Belki, a przy akcjach zagranicznych osobno wpływ kursu waluty (koszt zakupu po kursie NBP z dnia transakcji).
 - Dywidendy: historia i prognoza z szacowanym podatkiem.
+- Pomocnik PIT-38: zestawienie do zeznania za wybrany rok z własnych transakcji, liczone metodą FIFO osobno dla każdego rachunku, po kursach NBP z dnia roboczego przed transakcją, z prowizjami w kosztach; osobno dywidendy zagraniczne i kryptowaluty. To wyliczenie pomocnicze, nie gotowe zeznanie.
+- Twój rok w skiecie: podsumowanie roku w sześciu liczbach (majątek, ile z niego odłożono, stopa oszczędności, koszty stałe, największa kategoria wydatków, poduszka) i obrazek do udostępnienia, domyślnie bez kwot.
 - Koszty samochodu: paliwo, ubezpieczenie, przeglądy i naprawy.
 - Część inwestycyjną można wyłączyć: kto nie inwestuje, widzi samą aplikację do budżetu.
 

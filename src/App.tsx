@@ -37,6 +37,7 @@ const Dashboard = lazy(() => import('./pages/Dashboard'))
 const Banking = lazy(() => import('./pages/Banking'))
 const Planowanie = lazy(() => import('./pages/Planowanie'))
 const Timeline = lazy(() => import('./pages/Timeline'))
+const YearReview = lazy(() => import('./pages/YearReview'))
 const Account = lazy(() => import('./pages/Account'))
 const AdminLayout = lazy(() => import('./pages/admin/AdminLayout'))
 const AdminUsers = lazy(() => import('./pages/admin/AdminUsers'))
@@ -55,6 +56,7 @@ const Dywidendy = lazy(() => import('./pages/gielda/Dywidendy'))
 const StatystykiPortfela = lazy(() => import('./pages/gielda/StatystykiPortfela'))
 const AnalizaSpolek = lazy(() => import('./pages/gielda/AnalizaSpolek'))
 const Wiadomosci = lazy(() => import('./pages/gielda/Wiadomosci'))
+const Pit38 = lazy(() => import('./pages/gielda/Pit38'))
 const KryptoLayout = lazy(() => import('./pages/gielda/krypto/KryptoLayout'))
 const KryptoPortfel = lazy(() => import('./pages/gielda/krypto/KryptoPortfel'))
 const KryptoAnaliza = lazy(() => import('./pages/gielda/krypto/KryptoAnaliza'))
@@ -95,6 +97,7 @@ const PAGE_TITLES: [string, string][] = [
   ['/gielda/statystyki', 'Statystyki portfela'],
   ['/gielda/analiza-spolek', 'Analiza spółek'],
   ['/gielda/wiadomosci', 'Wiadomości'],
+  ['/gielda/pit-38', 'Pomocnik PIT-38'],
   ['/gielda/krypto/portfel', 'Krypto - Portfel'],
   ['/gielda/krypto/analiza', 'Krypto - Analiza'],
   ['/gielda/krypto', 'Krypto'],
@@ -112,6 +115,7 @@ const PAGE_TITLES: [string, string][] = [
   ['/kalkulator', 'Kalkulator inwestycyjny - lokata, obligacje czy giełda'],
   ['/artykuly', 'Artykuły o finansach osobistych'],
   ['/analiza', 'Analiza'],
+  ['/moj-rok', 'Twój rok w skiecie'],
   ['/dashboard', 'Dashboard'],
 ]
 
@@ -202,6 +206,7 @@ export default function App() {
           <Route path="/konta" element={<Banking />} />
           <Route path="/planowanie" element={<Planowanie />} />
           <Route path="/timeline" element={<Timeline />} />
+          <Route path="/moj-rok" element={<YearReview />} />
           <Route path="/moje-konto" element={<Account />} />
           <Route element={<EditorRoute />}>
             <Route path="/redakcja" element={<Redakcja />} />
@@ -228,6 +233,7 @@ export default function App() {
             <Route path="statystyki" element={<StatystykiPortfela />} />
             <Route path="analiza-spolek" element={<AnalizaSpolek />} />
             <Route path="wiadomosci" element={<Wiadomosci />} />
+            <Route path="pit-38" element={<Pit38 />} />
             <Route path="krypto" element={<KryptoLayout />}>
               <Route index element={<Navigate to="portfel" replace />} />
               <Route path="portfel" element={<KryptoPortfel />} />

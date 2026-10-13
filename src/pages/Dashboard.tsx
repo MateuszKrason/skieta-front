@@ -23,6 +23,12 @@ const PERIOD_LABELS: Record<PeriodKey, string> = {
 
 const REFRESH_INTERVAL_MS = 60_000
 
+// December and January: the weeks in which looking back on the year is the
+// natural thing to do, and the only ones in which the page gets a banner.
+function isYearReviewSeason(now: Date = new Date()): boolean {
+  return now.getMonth() === 11 || now.getMonth() === 0
+}
+
 export default function Dashboard() {
   const queryClient = useQueryClient()
   const { user } = useAuth()
@@ -146,6 +152,10 @@ export default function Dashboard() {
           <h1 className="text-2xl font-bold text-slate-900 dark:text-slate-100">{t('Dashboard')}</h1>
           <p className="text-sm text-slate-500 dark:text-slate-400">
             {t('Podsumowanie Twojego majątku')}
+            {' · '}
+            <Link to="/moj-rok" className="font-medium text-accent-700 dark:text-accent-400 hover:underline">
+              {t('Twój rok w skiecie')}
+            </Link>
             {refreshPrices.isPending && (
               <span className="ml-1.5 inline-flex items-center gap-1 text-xs text-slate-400 dark:text-slate-500">
                 <Spinner size="sm" /> {t('pobieram bieżące kursy…')}
@@ -167,6 +177,15 @@ export default function Dashboard() {
       </div>
 
       {isEmpty && <EmptyDashboardBanner />}
+      {!isEmpty && isYearReviewSeason() && (
+        <Link
+          to="/moj-rok"
+          className="block rounded-xl border border-accent-200 dark:border-accent-800 bg-accent-50 dark:bg-accent-950/40 px-5 py-4 text-sm text-slate-700 dark:text-slate-200 hover:border-accent-400"
+        >
+          <span className="font-semibold text-accent-800 dark:text-accent-300">{t('Twój rok w skiecie jest gotowy.')}</span>{' '}
+          {t('Sześć liczb o Twoim roku i obrazek, którym możesz się pochwalić.')}
+        </Link>
+      )}
 
       <div className={`grid grid-cols-1 gap-4 sm:grid-cols-2 ${showCrypto ? 'lg:grid-cols-6' : 'lg:grid-cols-5'}`}>
         <StatCard label={t('Wartość majątku')} value={formatMoney(latest?.total, base)} highlight />
