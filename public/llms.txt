@@ -43,6 +43,7 @@ Dla osób, które chcą widzieć, na co idą pieniądze, bez oddawania komukolwi
 - [Kalkulator podatku Belki](https://skieta.com/kalkulator/podatek-belki): 19% od odsetek z lokaty albo od zysku ze sprzedaży akcji i ETF-ów, z zaokrągleniami jak w banku i w PIT-38.
 - [Ile odkładać na cel](https://skieta.com/kalkulator/cel-oszczednosciowy): miesięczna kwota potrzebna, żeby uzbierać daną sumę w danym terminie.
 - [Artykuły o finansach osobistych](https://skieta.com/artykuly): podatek Belki, obligacje skarbowe (COI, EDO, ROD, TOS), lokaty i konta oszczędnościowe, ETF-y, IKE i IKZE, poduszka bezpieczeństwa, budżet domowy.
+- [Porównanie aplikacji do budżetu domowego w Polsce](https://skieta.com/artykuly/aplikacje-do-budzetu-domowego-porownanie): skieta na tle Kontomierza, Walleta, Spendee, YNAB, myFund, Freenance i arkusza kalkulacyjnego, z cenami ze stron producentów (stan na 13.10.2026) i listą tego, w czym skieta jest słabsza.
 - [Kanał RSS z artykułami](https://skieta.com/rss.xml)
 - [Rejestracja](https://skieta.com/register)
 - [Logowanie](https://skieta.com/logowanie)
