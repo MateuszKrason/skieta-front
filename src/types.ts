@@ -565,6 +565,10 @@ export interface AdminAppStats {
     returned_week_2: number
     week_2_complete: boolean
   }[]
+  /** Per campaign label on our own links (utm_source / utm_campaign): demos
+   * opened and accounts created by visitors who arrived through it - see
+   * accounts.campaigns. Visits without a label are not listed. */
+  campaigns: { campaign: string; demo_launches: number; signups: number }[]
   /** Where the accounts themselves came from, not just the clicks - see
    * accounts.services.signup_sources. 'unknown' covers everyone who
    * registered before this was recorded and everyone who went straight to

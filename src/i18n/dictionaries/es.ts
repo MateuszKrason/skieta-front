@@ -1738,4 +1738,11 @@ export const es: Record<string, string> = {
   'Twój rok w skiecie jest gotowy.': 'Tu año en skieta está listo.',
   'Sześć liczb o Twoim roku i obrazek, którym możesz się pochwalić.':
     'Seis cifras sobre tu año y una imagen para presumir.',
+  'Ostatnia aktualizacja: 13 października 2026': 'Última actualización: 13 de octubre de 2026',
+  'Jeśli trafiłeś/aś do nas z linku w naszej reklamie albo naszym poście, zapisujemy też oznaczenie tego linku (na przykład „facebook/rolka-kalkulator”) - przy otwarciu demo i przy rejestracji. To nazwa naszego własnego ogłoszenia, a nie adres strony, z której przyszedłeś/aś. Dzięki temu wiemy, które ogłoszenia działają, bez ciasteczek i bez śledzenia Cię w sieci.':
+    'Si has llegado a través de un enlace de uno de nuestros anuncios o publicaciones, guardamos también la etiqueta de ese enlace (por ejemplo, „facebook/rolka-kalkulator”) al abrir la demo y al registrarte. Es el nombre de nuestro propio anuncio, no la dirección de la página desde la que llegaste. Así sabemos qué anuncios funcionan, sin cookies y sin rastrearte por la red.',
+  'Kalkulator lokaty': 'Calculadora de depósitos',
+  'Kalkulator inflacji': 'Calculadora de inflación',
+  'Kalkulator IKZE': 'Calculadora IKZE',
+  'Pomocnik PIT-38': 'Asistente PIT-38',
 }

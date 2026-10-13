@@ -1,5 +1,14 @@
 import { describe, expect, it } from 'vitest'
-import { breakEvenRatePct, compoundGrowth, depositInterestTax, monthlyForGoal, saleTax } from './savingsMath'
+import {
+  breakEvenRatePct,
+  compoundGrowth,
+  depositInterestTax,
+  depositOutcome,
+  ikzeOutcome,
+  monthlyForGoal,
+  realValue,
+  saleTax,
+} from './savingsMath'
 
 describe('compoundGrowth', () => {
   it('matches the textbook formula for a lump sum compounded yearly', () => {
@@ -134,5 +143,92 @@ describe('monthlyForGoal', () => {
 
     expect(result.monthly).toBe(0)
     expect(result.alreadyCovered).toBe(true)
+  })
+})
+
+describe('depositOutcome', () => {
+  it('pays interest once at the end when the deposit says so', () => {
+    // 10 000 zł at 5% for 12 months: 500 zł gross, 95 zł tax.
+    const result = depositOutcome({ amount: 10000, annualRatePct: 5, months: 12, periodsPerYear: 0 })
+
+    expect(result.grossInterest).toBe(500)
+    expect(result.tax).toBe(95)
+    expect(result.netInterest).toBe(405)
+    expect(result.finalValue).toBe(10405)
+    expect(result.netRatePct).toBeCloseTo(4.05, 6)
+  })
+
+  it('compounds monthly on what is left after tax', () => {
+    const result = depositOutcome({ amount: 10000, annualRatePct: 6, months: 12, periodsPerYear: 12 })
+
+    expect(result.finalValue).toBeCloseTo(10000 * Math.pow(1 + (0.06 * 0.81) / 12, 12), 2)
+    expect(result.grossInterest).toBeCloseTo(result.netInterest + result.tax, 2)
+    // Monthly compounding beats the nominal 6% * 0.81 = 4.86% by a little.
+    expect(result.netRatePct).toBeGreaterThan(4.86)
+    expect(result.netRatePct).toBeLessThan(5)
+  })
+
+  it('scales a three-month deposit to a yearly rate that can be compared', () => {
+    const result = depositOutcome({ amount: 10000, annualRatePct: 6, months: 3, periodsPerYear: 0 })
+
+    expect(result.netInterest).toBe(121.5)
+    expect(result.netRatePct).toBeCloseTo((Math.pow(1.01215, 4) - 1) * 100, 6)
+  })
+
+  it('has nothing to report for no money or no time', () => {
+    expect(depositOutcome({ amount: 0, annualRatePct: 6, months: 12, periodsPerYear: 12 }).netRatePct).toBe(0)
+    expect(depositOutcome({ amount: 1000, annualRatePct: 6, months: 0, periodsPerYear: 0 }).finalValue).toBe(1000)
+  })
+})
+
+describe('realValue', () => {
+  it('matches the figure in the article: 10 000 zł at 4% for ten years', () => {
+    const result = realValue(10000, 4, 10)
+
+    expect(result.real).toBe(6755.64)
+    expect(result.lost).toBe(3244.36)
+    expect(result.rows).toHaveLength(10)
+    expect(result.rows[0]).toEqual({ year: 1, real: 9615.38 })
+  })
+
+  it('leaves money alone when there is no inflation', () => {
+    expect(realValue(5000, 0, 20).real).toBe(5000)
+  })
+})
+
+describe('ikzeOutcome', () => {
+  it('refunds the contribution at the tax rate', () => {
+    // The article's own figures: 6 000 zł gives 720, 1 140 or 1 920 zł back.
+    expect(ikzeOutcome({ contribution: 6000, taxRatePct: 12, years: 1, annualReturnPct: 0 }).refundPerYear).toBe(720)
+    expect(ikzeOutcome({ contribution: 6000, taxRatePct: 19, years: 1, annualReturnPct: 0 }).refundPerYear).toBe(1140)
+    expect(ikzeOutcome({ contribution: 6000, taxRatePct: 32, years: 1, annualReturnPct: 0 }).refundPerYear).toBe(1920)
+  })
+
+  it('takes ten percent of everything on the way out', () => {
+    const result = ikzeOutcome({ contribution: 6000, taxRatePct: 12, years: 1, annualReturnPct: 0 })
+
+    expect(result.value).toBe(6000)
+    expect(result.exitTax).toBe(600)
+    // 6 000 - 600 + 720 back from the tax office, against 6 000 kept in an ordinary account.
+    expect(result.netIkze).toBe(6120)
+    expect(result.netRegular).toBe(6000)
+    expect(result.advantage).toBe(120)
+  })
+
+  it('grows yearly contributions made at the end of each year', () => {
+    const result = ikzeOutcome({ contribution: 1000, taxRatePct: 32, years: 2, annualReturnPct: 10 })
+
+    // 1 000 grows for one year, the second 1 000 not at all.
+    expect(result.value).toBe(2100)
+    expect(result.refundTotal).toBe(640)
+    expect(result.netRegular).toBe(2081)
+    expect(result.netIkze).toBe(2530)
+  })
+
+  it('can come out behind when the deduction is small and nothing is earned', () => {
+    // With no return there is no Belka to save, and a deduction under 10% does not cover the exit tax.
+    const result = ikzeOutcome({ contribution: 6000, taxRatePct: 8.5, years: 10, annualReturnPct: 0 })
+
+    expect(result.advantage).toBeLessThan(0)
   })
 })

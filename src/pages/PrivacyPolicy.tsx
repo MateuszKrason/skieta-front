@@ -32,7 +32,7 @@ export default function PrivacyPolicy() {
       <div className="mx-auto max-w-3xl space-y-8 px-4 py-12">
         <div>
           <h1 className="text-3xl font-bold text-slate-900 dark:text-slate-100">{t('Polityka prywatności')}</h1>
-          <p className="mt-2 text-sm text-slate-400 dark:text-slate-500">{t('Ostatnia aktualizacja: 11 października 2026')}</p>
+          <p className="mt-2 text-sm text-slate-400 dark:text-slate-500">{t('Ostatnia aktualizacja: 13 października 2026')}</p>
         </div>
 
         <Section title="Kim jesteśmy">
@@ -83,6 +83,11 @@ export default function PrivacyPolicy() {
           <p>
             {t(
               'Adres e-mail, hasło (przechowywane wyłącznie w postaci zahaszowanej, nigdy jawnym tekstem) i nazwa użytkownika, którą tworzymy z adresu e-mail. Imię i nazwisko tylko wtedy, gdy sam(a) je podasz. Przy rejestracji zapisujemy też, z czyjego zaproszenia założono konto oraz z której strony naszego serwisu trafiłeś/aś do formularza rejestracji (np. „artykuł" wraz z jego adresem, strona główna, kalkulator) - żebyśmy wiedzieli, które treści są naprawdę pomocne. To informacja o naszej własnej stronie, nie o Twojej historii przeglądania, i nie trafia do nikogo poza nami.',
+            )}
+          </p>
+          <p>
+            {t(
+              'Jeśli trafiłeś/aś do nas z linku w naszej reklamie albo naszym poście, zapisujemy też oznaczenie tego linku (na przykład „facebook/rolka-kalkulator”) - przy otwarciu demo i przy rejestracji. To nazwa naszego własnego ogłoszenia, a nie adres strony, z której przyszedłeś/aś. Dzięki temu wiemy, które ogłoszenia działają, bez ciasteczek i bez śledzenia Cię w sieci.',
             )}
           </p>
           <p className="font-medium text-slate-700 dark:text-slate-300">{t('Dane finansowe, które sam(a) wprowadzasz')}</p>

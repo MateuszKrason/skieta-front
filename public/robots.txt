@@ -20,6 +20,9 @@ Allow: /icons.svg
 Allow: /sitemap.xml
 Allow: /rss.xml
 Allow: /llms.txt
+Allow: /pit-38
+# The IndexNow key: search engines fetch it to check that page submissions really come from this site.
+Allow: /b1416682b4d3bf90097ddb00bc9f87e5.txt
 # The app's scripts, styles and screenshots: without them Google cannot render any page that is built in the browser.
 Allow: /assets/
 Allow: /screens/

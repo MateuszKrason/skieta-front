@@ -6,6 +6,7 @@ import { PageLoader } from '../components/Loader'
 import SockLogo from '../components/SockLogo'
 import { useLanguage } from '../i18n/LanguageContext'
 import { rememberSignupSource, trackEvent } from '../lib/analytics'
+import { toolForArticle } from '../lib/calculators'
 import { formatDate } from '../lib/format'
 import { searchDescription, searchTitle } from '../lib/seo'
 import { useNoindex } from '../lib/useNoindex'
@@ -107,6 +108,7 @@ function prerenderedArticle(slug: string | undefined): Article | undefined {
 export default function ArticleDetail() {
   const { t } = useLanguage()
   const { slug } = useParams<{ slug: string }>()
+  const tool = toolForArticle(slug)
 
   const { data: article, isLoading } = useQuery({
     initialData: () => prerenderedArticle(slug),
@@ -209,10 +211,10 @@ export default function ArticleDetail() {
                   {t('Załóż darmowe konto →')}
                 </Link>
                 <Link
-                  to="/kalkulator"
+                  to={tool.path}
                   className="rounded-full border border-accent-300 dark:border-accent-700 bg-white dark:bg-slate-900 px-5 py-2 text-sm font-semibold text-accent-700 dark:text-accent-400 transition hover:border-accent-500"
                 >
-                  {t('Otwórz kalkulator →')}
+                  {tool.path === '/kalkulator' ? t('Otwórz kalkulator →') : `${t(tool.label)} →`}
                 </Link>
               </div>
               <p className="mt-4 text-sm text-slate-500 dark:text-slate-400">

@@ -113,6 +113,61 @@ const PAGES: Record<string, Page> = {
       '<p><a href="/kalkulator">Kalkulator inwestycyjny: lokata, obligacje czy giełda</a> · <a href="/">skieta - darmowa aplikacja do budżetu domowego</a></p>' +
       '</main>',
   },
+  '/kalkulator/lokata': {
+    title: 'Kalkulator lokaty - ile zostaje po podatku Belki - skieta',
+    description:
+      'Ile naprawdę zarobisz na lokacie: odsetki po podatku Belki, kwota na koniec i oprocentowanie w skali roku po podatku. Za darmo, bez zakładania konta.',
+    body:
+      `<main style="${WRAPPER_STYLE}">` +
+      '<h1>Kalkulator lokaty po podatku Belki</h1>' +
+      '<p>Bank podaje oprocentowanie przed podatkiem i w skali roku. Wpisz kwotę, oprocentowanie i czas, a zobaczysz, ile złotych naprawdę wpłynie na konto i ile to jest rocznie po podatku.</p>' +
+      '<p>Od każdej wypłaty odsetek bank pobiera 19% podatku Belki. Przy 5% w skali roku roczna lokata na 10 000 zł daje 500 zł odsetek, z czego na konto wpływa 405 zł.</p>' +
+      '<p>Oprocentowanie po podatku w skali roku pozwala porównać lokaty o różnej długości, na przykład promocję na trzy miesiące ze zwykłą ofertą na rok.</p>' +
+      '<p>Kalkulator działa bez zakładania konta. To symulacja, nie porada inwestycyjna ani podatkowa.</p>' +
+      '<p><a href="/kalkulator">Kalkulator inwestycyjny: lokata, obligacje czy giełda</a> · <a href="/">skieta - darmowa aplikacja do budżetu domowego</a></p>' +
+      '</main>',
+  },
+  '/kalkulator/inflacja': {
+    title: 'Kalkulator inflacji - ile będą warte Twoje pieniądze',
+    description:
+      'Sprawdź, ile siły nabywczej stracą pieniądze przy danej inflacji i ile musi płacić lokata, żeby po podatku Belki wyjść na zero. Bez zakładania konta.',
+    body:
+      `<main style="${WRAPPER_STYLE}">` +
+      '<h1>Kalkulator inflacji: ile będą warte Twoje pieniądze</h1>' +
+      '<p>Pieniądze, które leżą bez odsetek, co roku kupują trochę mniej. Wpisz kwotę, inflację i liczbę lat, a zobaczysz, ile zostanie z ich siły nabywczej.</p>' +
+      '<p>Przy inflacji 4% rocznie za 10 000 zł kupisz za dziesięć lat tyle, ile dziś za około 6 756 zł.</p>' +
+      '<p>Żeby lokata dotrzymała kroku inflacji, musi płacić więcej niż sama inflacja, bo od odsetek odchodzi 19% podatku. Potrzebne oprocentowanie to inflacja podzielona przez 0,81.</p>' +
+      '<p>Kalkulator działa bez zakładania konta. To symulacja, nie porada inwestycyjna ani podatkowa.</p>' +
+      '<p><a href="/kalkulator">Kalkulator inwestycyjny: lokata, obligacje czy giełda</a> · <a href="/">skieta - darmowa aplikacja do budżetu domowego</a></p>' +
+      '</main>',
+  },
+  '/kalkulator/ikze': {
+    title: 'Kalkulator IKZE - zwrot podatku i wynik po latach - skieta',
+    description:
+      'Ile podatku wróci po wpłacie na IKZE i jak IKZE wypada po latach na tle zwykłego rachunku, z podatkiem 10% przy wypłacie. Bez zakładania konta.',
+    body:
+      `<main style="${WRAPPER_STYLE}">` +
+      '<h1>Kalkulator IKZE: zwrot podatku i wynik po latach</h1>' +
+      '<p>Wpłatę na IKZE odliczasz od dochodu, więc część pieniędzy wraca już przy najbliższym rozliczeniu PIT. Wpłata 6 000 zł to 720 zł zwrotu w pierwszym progu, 1 140 zł na podatku liniowym i 1 920 zł w drugim progu.</p>' +
+      '<p>Przy wypłacie po 65. roku życia od całej wypłacanej kwoty odchodzi 10% podatku. Kalkulator porównuje wynik z tymi samymi wpłatami na zwykłym rachunku, gdzie płacisz 19% od zysku.</p>' +
+      '<p>Roczny limit wpłat jest ogłaszany co roku. Niewykorzystany limit przepada z końcem roku.</p>' +
+      '<p>Kalkulator działa bez zakładania konta. To symulacja, nie porada inwestycyjna ani podatkowa.</p>' +
+      '<p><a href="/kalkulator">Kalkulator inwestycyjny: lokata, obligacje czy giełda</a> · <a href="/">skieta - darmowa aplikacja do budżetu domowego</a></p>' +
+      '</main>',
+  },
+  '/pit-38': {
+    title: 'Kalkulator PIT-38: FIFO i kursy NBP z Twoich transakcji',
+    description:
+      'PIT-38 z zagranicznego brokera: przychód i koszty metodą FIFO, kursy NBP z dnia przed transakcją, dywidendy i krypto. Za darmo, z demo bez rejestracji.',
+    body:
+      `<main style="${WRAPPER_STYLE}">` +
+      '<h1>PIT-38 z zagranicznego brokera, policzony z Twoich transakcji</h1>' +
+      '<p>Zagraniczny broker nie przyśle PIT-8C. Kolejność FIFO, kursy NBP z dnia przed każdą transakcją i prowizje trzeba policzyć samemu. skieta robi to za darmo i pokazuje każdy krok wyliczenia.</p>' +
+      '<p>Akcje i ETF-y liczone są metodą FIFO osobno dla każdego rachunku maklerskiego, a kwoty w walutach po średnim kursie NBP z ostatniego dnia roboczego przed transakcją. Osobno dywidendy z zagranicy (19% minus podatek pobrany u źródła) i kryptowaluty.</p>' +
+      '<p>Pomocnik nie wypełnia formularza i nie zastępuje PIT-8C ani doradcy podatkowego. Można go zobaczyć na koncie demo bez rejestracji.</p>' +
+      '<p><a href="/kalkulator/podatek-belki">Kalkulator podatku Belki</a> · <a href="/">skieta - darmowa aplikacja do budżetu domowego</a></p>' +
+      '</main>',
+  },
   '/regulamin': {
     title: 'Regulamin - skieta',
     description: 'Zasady korzystania z aplikacji skieta: rejestracja, konto demonstracyjne, odpowiedzialność i usuwanie konta.',
@@ -180,6 +235,10 @@ export const config = {
     '/kalkulator/procent-skladany',
     '/kalkulator/podatek-belki',
     '/kalkulator/cel-oszczednosciowy',
+    '/kalkulator/lokata',
+    '/kalkulator/inflacja',
+    '/kalkulator/ikze',
+    '/pit-38',
     '/regulamin',
     '/polityka-prywatnosci',
   ],

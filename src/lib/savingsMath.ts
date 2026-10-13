@@ -172,3 +172,120 @@ export function monthlyForGoal(input: GoalInput): GoalResult {
   const ownMoney = grosz(Math.max(0, input.saved) + monthly * months)
   return { monthly, ownMoney, fromInterest: grosz(Math.max(0, input.target - ownMoney)), alreadyCovered: false }
 }
+
+export interface DepositInput {
+  amount: number
+  annualRatePct: number
+  months: number
+  /** How often interest is added to the deposit: 12, 4 or 1 times a year, or
+   * 0 when it is paid once, when the deposit ends. */
+  periodsPerYear: number
+}
+
+export interface DepositResult {
+  grossInterest: number
+  tax: number
+  netInterest: number
+  finalValue: number
+  /** What the deposit really pays per year after tax, compounding included. */
+  netRatePct: number
+}
+
+/** A term deposit from start to finish, with Belka taken out of every interest payment. */
+export function depositOutcome(input: DepositInput): DepositResult {
+  const amount = Math.max(0, input.amount)
+  const months = Math.max(0, Math.round(input.months))
+  let netInterest: number
+  let tax: number
+  if (input.periodsPerYear === 0) {
+    const single = depositInterestTax(amount, input.annualRatePct, months)
+    netInterest = single.net
+    tax = single.tax
+  } else {
+    const growth = compoundGrowth({
+      initial: amount,
+      monthly: 0,
+      annualRatePct: input.annualRatePct,
+      years: months / 12,
+      periodsPerYear: input.periodsPerYear,
+      taxMode: 'each',
+    })
+    netInterest = growth.gain
+    tax = growth.tax
+  }
+  const finalValue = grosz(amount + netInterest)
+  const netRatePct = amount > 0 && months > 0 ? (Math.pow(finalValue / amount, 12 / months) - 1) * 100 : 0
+  return { grossInterest: grosz(netInterest + tax), tax, netInterest, finalValue, netRatePct }
+}
+
+export interface RealValue {
+  /** What the amount will buy after the years, in today's money. */
+  real: number
+  lost: number
+  rows: { year: number; real: number }[]
+}
+
+/** What inflation does to money that earns nothing. */
+export function realValue(amount: number, inflationPct: number, years: number): RealValue {
+  const whole = Math.max(0, Math.round(years))
+  const rows = []
+  for (let year = 1; year <= whole; year++) {
+    rows.push({ year, real: grosz(amount / Math.pow(1 + inflationPct / 100, year)) })
+  }
+  const real = whole > 0 ? rows[whole - 1].real : grosz(amount)
+  return { real, lost: grosz(amount - real), rows }
+}
+
+/** Tax on a withdrawal from IKZE after 65: a flat 10% of everything taken out. */
+export const IKZE_EXIT_RATE = 0.1
+
+export interface IkzeInput {
+  /** Paid in once a year. */
+  contribution: number
+  /** The rate the contribution is deducted at: 12, 19 or 32 for most people. */
+  taxRatePct: number
+  years: number
+  /** Assumed yearly return on what is invested, before any tax. */
+  annualReturnPct: number
+}
+
+export interface IkzeResult {
+  refundPerYear: number
+  refundTotal: number
+  /** The account's value at the end, before the withdrawal tax. */
+  value: number
+  exitTax: number
+  /** What IKZE leaves in hand: the withdrawal after its 10%, plus the refunds along the way. */
+  netIkze: number
+  /** The same contributions and return on an ordinary account, with Belka on the gain. */
+  netRegular: number
+  advantage: number
+}
+
+/**
+ * IKZE against an ordinary account, on the same contributions and the same
+ * assumed return. Contributions are made at the end of each year; the yearly
+ * refunds are counted as received but not reinvested, which understates IKZE
+ * slightly rather than flattering it.
+ */
+export function ikzeOutcome(input: IkzeInput): IkzeResult {
+  const years = Math.max(0, Math.round(input.years))
+  const contribution = Math.max(0, input.contribution)
+  const rate = input.annualReturnPct / 100
+  const paidIn = contribution * years
+  const value = rate === 0 ? paidIn : contribution * ((Math.pow(1 + rate, years) - 1) / rate)
+  const refundPerYear = contribution * (input.taxRatePct / 100)
+  const refundTotal = refundPerYear * years
+  const exitTax = value * IKZE_EXIT_RATE
+  const netIkze = value - exitTax + refundTotal
+  const netRegular = paidIn + Math.max(0, value - paidIn) * (1 - BELKA_RATE)
+  return {
+    refundPerYear: grosz(refundPerYear),
+    refundTotal: grosz(refundTotal),
+    value: grosz(value),
+    exitTax: grosz(exitTax),
+    netIkze: grosz(netIkze),
+    netRegular: grosz(netRegular),
+    advantage: grosz(netIkze - netRegular),
+  }
+}

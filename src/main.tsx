@@ -9,6 +9,7 @@ import { ThemeProvider } from './theme/ThemeContext'
 import { LanguageProvider } from './i18n/LanguageContext'
 import RootErrorBoundary from './components/RootErrorBoundary'
 import { initAnalytics } from './lib/analytics'
+import { captureCampaign } from './lib/campaign'
 import { initErrorReporting } from './lib/errorReporting'
 import { registerServiceWorker } from './lib/serviceWorker'
 
@@ -23,6 +24,7 @@ const queryClient = new QueryClient({
 
 initErrorReporting()
 initAnalytics()
+captureCampaign()
 registerServiceWorker()
 
 createRoot(document.getElementById('root')!).render(

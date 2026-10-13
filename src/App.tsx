@@ -32,12 +32,16 @@ import NotFound from './pages/NotFound'
 const CompoundInterest = lazy(() => import('./pages/calculators/CompoundInterest'))
 const BelkaTax = lazy(() => import('./pages/calculators/BelkaTax'))
 const SavingsGoal = lazy(() => import('./pages/calculators/SavingsGoal'))
+const Deposit = lazy(() => import('./pages/calculators/Deposit'))
+const Inflation = lazy(() => import('./pages/calculators/Inflation'))
+const Ikze = lazy(() => import('./pages/calculators/Ikze'))
 const Onboarding = lazy(() => import('./pages/Onboarding'))
 const Dashboard = lazy(() => import('./pages/Dashboard'))
 const Banking = lazy(() => import('./pages/Banking'))
 const Planowanie = lazy(() => import('./pages/Planowanie'))
 const Timeline = lazy(() => import('./pages/Timeline'))
 const YearReview = lazy(() => import('./pages/YearReview'))
+const Pit38Landing = lazy(() => import('./pages/Pit38Landing'))
 const Account = lazy(() => import('./pages/Account'))
 const AdminLayout = lazy(() => import('./pages/admin/AdminLayout'))
 const AdminUsers = lazy(() => import('./pages/admin/AdminUsers'))
@@ -109,6 +113,9 @@ const PAGE_TITLES: [string, string][] = [
   ['/budzet/statystyki', 'Statystyki'],
   ['/budzet/samochod', 'Samochód'],
   ['/budzet', 'Budżet'],
+  ['/kalkulator/lokata', 'Kalkulator lokaty - ile zostaje po podatku Belki'],
+  ['/kalkulator/inflacja', 'Kalkulator inflacji - ile będą warte Twoje pieniądze'],
+  ['/kalkulator/ikze', 'Kalkulator IKZE - zwrot podatku i wynik po latach'],
   ['/kalkulator/procent-skladany', 'Kalkulator procentu składanego po podatku Belki'],
   ['/kalkulator/podatek-belki', 'Kalkulator podatku Belki - ile zostaje z odsetek i zysku'],
   ['/kalkulator/cel-oszczednosciowy', 'Ile odkładać miesięcznie na cel - kalkulator oszczędzania'],
@@ -116,6 +123,7 @@ const PAGE_TITLES: [string, string][] = [
   ['/artykuly', 'Artykuły o finansach osobistych'],
   ['/analiza', 'Analiza'],
   ['/moj-rok', 'Twój rok w skiecie'],
+  ['/pit-38', 'Kalkulator PIT-38: FIFO i kursy NBP z Twoich transakcji'],
   ['/dashboard', 'Dashboard'],
 ]
 
@@ -156,6 +164,10 @@ const CANONICAL_SELF_PATHS = [
   '/kalkulator/procent-skladany',
   '/kalkulator/podatek-belki',
   '/kalkulator/cel-oszczednosciowy',
+  '/kalkulator/lokata',
+  '/kalkulator/inflacja',
+  '/kalkulator/ikze',
+  '/pit-38',
 ]
 
 function useCanonicalLink() {
@@ -199,6 +211,10 @@ export default function App() {
       <Route path="/kalkulator/procent-skladany" element={<CompoundInterest />} />
       <Route path="/kalkulator/podatek-belki" element={<BelkaTax />} />
       <Route path="/kalkulator/cel-oszczednosciowy" element={<SavingsGoal />} />
+      <Route path="/kalkulator/lokata" element={<Deposit />} />
+      <Route path="/kalkulator/inflacja" element={<Inflation />} />
+      <Route path="/kalkulator/ikze" element={<Ikze />} />
+      <Route path="/pit-38" element={<Pit38Landing />} />
       <Route element={<ProtectedRoute />}>
         <Route element={<Layout />}>
           <Route path="/dashboard" element={<Dashboard />} />

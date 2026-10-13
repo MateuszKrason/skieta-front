@@ -71,8 +71,8 @@ export default function BelkaTax() {
       ]}
       articles={[
         { slug: 'podatek-belki-ile-realnie-zostaje-z-twojego-zysku', title: 'Podatek Belki - ile realnie zostaje z Twojego zysku' },
-        { slug: 'lokata-terminowa-czy-konto-oszczednosciowe', title: 'Lokata terminowa czy konto oszczędnościowe' },
-        { slug: 'ike-i-ikze-jak-inwestowac-z-ulga-podatkowa-na-emeryture', title: 'IKE i IKZE - jak inwestować z ulgą podatkową' },
+        { slug: 'lokata-terminowa-czy-konto-oszczednosciowe', title: 'Lokata czy konto oszczędnościowe - kiedy co się opłaca' },
+        { slug: 'ike-i-ikze-jak-inwestowac-z-ulga-podatkowa-na-emeryture', title: 'IKE i IKZE - jedyny legalny sposób, żeby nie płacić Belki' },
       ]}
     >
       <div className="space-y-4">

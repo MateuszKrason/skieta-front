@@ -4,6 +4,7 @@ import { api, tokenStore } from '../api/client'
 import { useLanguage, type Language } from '../i18n/LanguageContext'
 import { useTheme } from '../theme/ThemeContext'
 import { takeSignupSource } from '../lib/analytics'
+import { currentCampaign } from '../lib/campaign'
 import { clearUserScopedStorage } from '../lib/userScopedStorage'
 import type { User } from '../types'
 
@@ -95,7 +96,8 @@ export function AuthProvider({ children }: { children: ReactNode }) {
   }
 
   async function startDemo() {
-    const { data } = await api.post('/auth/demo/')
+    // The campaign label of the link this visit started from, if it had one (lib/campaign).
+    const { data } = await api.post('/auth/demo/', { campaign: currentCampaign() })
     forgetPreviousUser()
     tokenStore.set(data.access, data.refresh)
     await fetchMe()
@@ -118,6 +120,7 @@ export function AuthProvider({ children }: { children: ReactNode }) {
       invite_token: inviteToken,
       terms_accepted: termsAccepted,
       reminder_emails: reminderEmails,
+      signup_campaign: currentCampaign(),
       // Read here rather than passed down from the form: the source was
       // recorded pages ago, by a button in an article, and threading it
       // through the form would put it everywhere except where it is

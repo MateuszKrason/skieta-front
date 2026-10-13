@@ -171,6 +171,46 @@ function FunnelTable({ weeks }: { weeks: AdminAppStats['funnel'] }) {
   )
 }
 
+// What each labelled link brought: an ad or a post is worth what it adds to
+// the right-hand column, whatever its click count says.
+function CampaignTable({ rows }: { rows: AdminAppStats['campaigns'] }) {
+  const { t } = useLanguage()
+  return (
+    <div className="rounded-xl border border-slate-200 dark:border-slate-700 bg-white dark:bg-slate-800 p-5 shadow-sm">
+      <h2 className="text-sm font-semibold text-slate-700 dark:text-slate-300">{t('Kampanie')}</h2>
+      <p className="mt-1 text-xs text-slate-500 dark:text-slate-400">
+        {t(
+          'Linki z oznaczeniem utm_source i utm_campaign w reklamach i postach. Liczone w wybranym zakresie dat: ile osób z danego linku otworzyło demo i ile założyło konto.',
+        )}
+      </p>
+      {rows.length === 0 ? (
+        <p className="mt-3 text-sm text-slate-400 dark:text-slate-500">{t('Nikt jeszcze nie przyszedł z oznaczonego linku.')}</p>
+      ) : (
+        <div className="mt-3 overflow-x-auto">
+          <table className="w-full min-w-[24rem] text-sm tabular-nums">
+            <thead>
+              <tr className="text-left text-xs uppercase tracking-wide text-slate-400 dark:text-slate-500">
+                <th className="py-2 pr-3 font-medium">{t('Kampania')}</th>
+                <th className="py-2 pr-3 text-right font-medium">{t('Demo')}</th>
+                <th className="py-2 text-right font-medium">{t('Rejestracje')}</th>
+              </tr>
+            </thead>
+            <tbody>
+              {rows.map((row) => (
+                <tr key={row.campaign} className="border-t border-slate-100 dark:border-slate-700 text-slate-700 dark:text-slate-200">
+                  <td className="break-all py-2 pr-3">{row.campaign}</td>
+                  <td className="py-2 pr-3 text-right">{row.demo_launches}</td>
+                  <td className="py-2 text-right font-semibold">{row.signups}</td>
+                </tr>
+              ))}
+            </tbody>
+          </table>
+        </div>
+      )}
+    </div>
+  )
+}
+
 export default function AdminStatystyki() {
   const { t } = useLanguage()
   const tooltipStyle = useTooltipStyle()
@@ -338,6 +378,8 @@ export default function AdminStatystyki() {
           rows={stats.signup_sources.by_article.map((row) => ({ label: row.article, count: row.count }))}
         />
       </div>
+
+      <CampaignTable rows={stats.campaigns ?? []} />
 
       {funnel && (
         <div className="rounded-xl border border-slate-200 dark:border-slate-700 bg-white dark:bg-slate-800 p-5 shadow-sm">

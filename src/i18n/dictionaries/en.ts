@@ -1815,4 +1815,10 @@ export const en: Record<string, string> = {
   'Transakcje na rachunkach IKE i IKZE są pominięte.': 'Transactions on IKE and IKZE accounts are left out.',
   'To zestawienie pomocnicze dla polskich rezydentów podatkowych, a nie porada podatkowa. Nie uwzględnia transakcji, których nie ma w skiecie, ani Twojej indywidualnej sytuacji. Oznaczenia części (C, D, E, G) odpowiadają formularzowi używanemu do rozliczenia za 2024 rok; jeśli w nowym druku są inne, kieruj się nazwami pól. Przed złożeniem zeznania porównaj liczby z dokumentami od brokera, a w razie wątpliwości zapytaj doradcę podatkowego.':
     'This is a helper statement for Polish tax residents, not tax advice. It does not take into account transactions that are not in skieta, or your individual situation. The part letters (C, D, E, G) follow the form used for the 2024 return; if a newer form uses different ones, go by the names of the fields. Before filing, compare the figures with the documents from your broker, and ask a tax adviser if in doubt.',
+  'Ostatnia aktualizacja: 13 października 2026': 'Last updated: 13 October 2026',
+  'Jeśli trafiłeś/aś do nas z linku w naszej reklamie albo naszym poście, zapisujemy też oznaczenie tego linku (na przykład „facebook/rolka-kalkulator”) - przy otwarciu demo i przy rejestracji. To nazwa naszego własnego ogłoszenia, a nie adres strony, z której przyszedłeś/aś. Dzięki temu wiemy, które ogłoszenia działają, bez ciasteczek i bez śledzenia Cię w sieci.':
+    'If you came to us through a link in one of our ads or posts, we also record that link\'s label (for example „facebook/rolka-kalkulator”) - when you open the demo and when you register. It is the name of our own advertisement, not the address of the page you came from. This tells us which of our ads work, without cookies and without tracking you across the web.',
+  'Kalkulator lokaty': 'Deposit calculator',
+  'Kalkulator inflacji': 'Inflation calculator',
+  'Kalkulator IKZE': 'IKZE calculator',
 }
