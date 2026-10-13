@@ -1,5 +1,7 @@
 User-agent: *
 Allow: /$
+# The landing page opened from a labelled link (/?utm_source=...): Facebook and LinkedIn build the link preview with a crawler that obeys this file.
+Allow: /?
 Allow: /artykuly
 Allow: /kalkulator
 Allow: /polityka-prywatnosci
