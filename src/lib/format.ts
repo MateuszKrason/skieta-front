@@ -89,7 +89,7 @@ export function formatPct(value: string | number | null | undefined): string {
   if (value === null || value === undefined) return '—'
   const num = typeof value === 'string' ? Number(value) : value
   if (Number.isNaN(num)) return '—'
-  return `${num > 0 ? '+' : ''}${num.toFixed(2)}%`
+  return `${num > 0 ? '+' : ''}${num.toLocaleString(activeLocale(), { minimumFractionDigits: 2, maximumFractionDigits: 2 })}%`
 }
 
 export function formatNumber(value: string | number | null | undefined, digits = 2): string {

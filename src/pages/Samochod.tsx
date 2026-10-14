@@ -6,7 +6,7 @@ import { CardLoader } from '../components/Loader'
 import { ScanReceiptButton } from '../components/ScanReceiptButton'
 import { useLanguage } from '../i18n/LanguageContext'
 import { useTooltipStyle } from '../lib/chartTooltip'
-import { formatAxisValue, formatDate, formatMoney } from '../lib/format'
+import { formatAxisValue, formatDate, formatMoney, formatNumber } from '../lib/format'
 import type {
   BankAccount,
   Category,
@@ -546,7 +546,7 @@ function VehicleDetail({ vehicle }: { vehicle: Vehicle }) {
         <>
           <div className="grid grid-cols-1 gap-4 sm:grid-cols-2 lg:grid-cols-4">
             <Stat label={t('Koszty łącznie')} value={formatMoney(summary.total, 'PLN')} hint={t('Wpisów: {0}', String(summary.entries))} />
-            <Stat label={t('Paliwo')} value={formatMoney(summary.fuel_total, 'PLN')} hint={`${Number(summary.fuel_litres).toFixed(1)} l`} />
+            <Stat label={t('Paliwo')} value={formatMoney(summary.fuel_total, 'PLN')} hint={`${formatNumber(summary.fuel_litres, 1)} l`} />
             <Stat
               label={t('Średnia cena litra')}
               value={summary.average_price_per_litre ? formatMoney(summary.average_price_per_litre, 'PLN') : '—'}
@@ -554,18 +554,18 @@ function VehicleDetail({ vehicle }: { vehicle: Vehicle }) {
             />
             <Stat
               label={t('Spalanie')}
-              value={summary.litres_per_100km ? `${summary.litres_per_100km} l/100 km` : '—'}
+              value={summary.litres_per_100km ? `${formatNumber(summary.litres_per_100km, 1)} l/100 km` : '—'}
               hint={
                 summary.litres_per_100km
-                  ? t('Na {0} km', String(summary.distance_km))
+                  ? t('Na {0} km', formatNumber(summary.distance_km, 0))
                   : t('Potrzebne dwa tankowania z przebiegiem')
               }
             />
             {summary.cost_per_km && (
-              <Stat label={t('Koszt na kilometr')} value={`${summary.cost_per_km} zł/km`} hint={t('Wszystkie koszty, nie samo paliwo')} />
+              <Stat label={t('Koszt na kilometr')} value={`${formatNumber(summary.cost_per_km)} zł/km`} hint={t('Wszystkie koszty, nie samo paliwo')} />
             )}
             {summary.last_odometer_km !== null && (
-              <Stat label={t('Ostatni przebieg')} value={`${summary.last_odometer_km} km`} />
+              <Stat label={t('Ostatni przebieg')} value={`${formatNumber(summary.last_odometer_km, 0)} km`} />
             )}
           </div>
 

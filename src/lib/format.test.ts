@@ -71,6 +71,11 @@ describe('formatPct', () => {
   it('formats both numeric and string input the same way', () => {
     expect(formatPct(12.345)).toBe(formatPct('12.345'))
   })
+
+  it('writes the decimal separator the Polish way, with a sign for gains', () => {
+    expect(formatPct(54.69)).toBe('+54,69%')
+    expect(formatPct(-3.5)).toBe('-3,50%')
+  })
 })
 
 describe('formatNumber', () => {
