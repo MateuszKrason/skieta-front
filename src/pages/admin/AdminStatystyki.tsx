@@ -37,6 +37,7 @@ const SIGNUP_SOURCE_LABELS: Record<string, string> = {
   landing_faq: 'Strona główna (FAQ)',
   article: 'Artykuł',
   calculator: 'Kalkulator',
+  split_link: 'Link do wspólnego rozliczenia',
   unknown: 'Nieznane / wejście wprost',
 }
 

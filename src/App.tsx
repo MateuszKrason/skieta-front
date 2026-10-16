@@ -71,6 +71,9 @@ const Wydatki = lazy(() => import('./pages/analysis/Wydatki'))
 const Kategorie = lazy(() => import('./pages/analysis/Kategorie'))
 const Statystyki = lazy(() => import('./pages/analysis/Statystyki'))
 const Samochod = lazy(() => import('./pages/Samochod'))
+const WspolneLista = lazy(() => import('./pages/wspolne/WspolneLista'))
+const WspolneGrupa = lazy(() => import('./pages/wspolne/WspolneGrupa'))
+const WspolneShell = lazy(() => import('./pages/wspolne/WspolneGrupa').then((m) => ({ default: m.WspolneShell })))
 const InvestmentCalculator = lazy(() => import('./pages/InvestmentCalculator'))
 const PublicCalculator = lazy(() => import('./pages/PublicCalculator'))
 
@@ -112,6 +115,8 @@ const PAGE_TITLES: [string, string][] = [
   ['/budzet/kategorie', 'Kategorie'],
   ['/budzet/statystyki', 'Statystyki'],
   ['/budzet/samochod', 'Samochód'],
+  ['/budzet/wspolne', 'Wspólne rozliczenia'],
+  ['/wspolne', 'Wspólne rozliczenia'],
   ['/budzet', 'Budżet'],
   ['/kalkulator/lokata', 'Kalkulator lokaty - ile zostaje po podatku Belki'],
   ['/kalkulator/inflacja', 'Kalkulator inflacji - ile będą warte Twoje pieniądze'],
@@ -215,6 +220,11 @@ export default function App() {
       <Route path="/kalkulator/inflacja" element={<Inflation />} />
       <Route path="/kalkulator/ikze" element={<Ikze />} />
       <Route path="/pit-38" element={<Pit38Landing />} />
+      {/* Open to anyone with the link - friends splitting a trip need no
+          account. Signed-in people get the usual app frame around it. */}
+      <Route path="/wspolne/:token" element={<WspolneShell />}>
+        <Route index element={<WspolneGrupa />} />
+      </Route>
       <Route element={<ProtectedRoute />}>
         <Route element={<Layout />}>
           <Route path="/dashboard" element={<Dashboard />} />
@@ -265,7 +275,9 @@ export default function App() {
             <Route path="kategorie" element={<Kategorie />} />
             <Route path="statystyki" element={<Statystyki />} />
             <Route path="samochod" element={<Samochod />} />
+            <Route path="wspolne" element={<WspolneLista />} />
           </Route>
+          <Route path="/wspolne" element={<Navigate to="/budzet/wspolne" replace />} />
           {/* Lived at the top level for a day before moving in with the rest
               of the budget - cheaper to keep the old address working than to
               hand anyone who bookmarked it a 404. */}

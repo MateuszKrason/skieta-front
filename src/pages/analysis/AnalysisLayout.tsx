@@ -21,6 +21,7 @@ export default function AnalysisLayout() {
           { to: '/budzet/kategorie', label: t('Kategorie') },
           { to: '/budzet/statystyki', label: t('Statystyki') },
           ...(showVehicles ? [{ to: '/budzet/samochod', label: t('Samochód') }] : []),
+          { to: '/budzet/wspolne', label: t('Wspólne') },
         ]}
       />
       <Outlet />

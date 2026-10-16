@@ -32,7 +32,7 @@ export default function PrivacyPolicy() {
       <div className="mx-auto max-w-3xl space-y-8 px-4 py-12">
         <div>
           <h1 className="text-3xl font-bold text-slate-900 dark:text-slate-100">{t('Polityka prywatności')}</h1>
-          <p className="mt-2 text-sm text-slate-400 dark:text-slate-500">{t('Ostatnia aktualizacja: 13 października 2026')}</p>
+          <p className="mt-2 text-sm text-slate-400 dark:text-slate-500">{t('Ostatnia aktualizacja: 16 października 2026')}</p>
         </div>
 
         <Section title="Kim jesteśmy">
@@ -231,6 +231,14 @@ export default function PrivacyPolicy() {
           <p>
             {t(
               'Pamiętaj, że sama nazwa analizowanej spółki mówi Google, że się nią interesujesz. Analiza nie jest rekomendacją inwestycyjną - to podsumowanie cudzych materiałów przygotowane przez model AI, który może się pomylić.',
+            )}
+          </p>
+        </Section>
+
+        <Section title="Wspólne rozliczenia">
+          <p>
+            {t(
+              'Jeśli założysz wspólne rozliczenie, przechowujemy jego nazwę i opis, imiona uczestników wpisane przez Ciebie albo przez nich samych oraz dodane wydatki i zwroty. Widzi je każdy, kto ma link do wydarzenia, bez zakładania konta, dlatego wpisuj tylko imiona albo ksywki, bez nazwisk i danych kontaktowych. Osoba, która założyła wydarzenie, może w każdej chwili wygenerować nowy link albo je usunąć. Usunięcie jej konta usuwa też wydarzenie. Zdjęć paragonów nie przechowujemy.',
             )}
           </p>
         </Section>
