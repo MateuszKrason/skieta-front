@@ -32,14 +32,17 @@ export function TourProvider({ children }: { children: ReactNode }) {
 
   // Auto-start once per account, the very first time it loads the app after
   // registering - never again afterwards, regardless of how many times this
-  // provider remounts within the session.
+  // provider remounts within the session. Someone who signed up from a
+  // shared expense link came for that event: the tour would cover it and
+  // then walk them away from it, so it waits until they open the app itself.
+  const onSharedEvent = location.pathname.startsWith('/wspolne/')
   useEffect(() => {
-    if (!autoStarted.current && user && !user.profile.has_seen_tour) {
+    if (!autoStarted.current && user && !user.profile.has_seen_tour && !onSharedEvent) {
       autoStarted.current = true
       setStepIndex(0)
       setActive(true)
     }
-  }, [user])
+  }, [user, onSharedEvent])
 
   const step = active ? (steps[stepIndex] ?? null) : null
 

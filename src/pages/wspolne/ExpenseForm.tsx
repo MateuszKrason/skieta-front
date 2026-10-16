@@ -1,7 +1,6 @@
 import { useMemo, useState, type FormEvent, type KeyboardEvent } from 'react'
 import { useMutation, useQuery } from '@tanstack/react-query'
 import { Link } from 'react-router-dom'
-import { useAuth } from '../../auth/AuthContext'
 import { AmountInput } from '../../components/AmountInput'
 import { ScanReceiptButton } from '../../components/ScanReceiptButton'
 import { useLanguage } from '../../i18n/LanguageContext'
@@ -53,7 +52,6 @@ export default function ExpenseForm({
   onCancel: () => void
 }) {
   const { t } = useLanguage()
-  const { user } = useAuth()
   const members = state.members
   const memberIds = members.map((m) => m.id)
   const groupCurrency = state.group.currency
@@ -169,7 +167,6 @@ export default function ExpenseForm({
       paid_by: paidBy,
       split_mode: mode,
       shares,
-      acting_member: meId,
     })
   }
 
@@ -181,8 +178,7 @@ export default function ExpenseForm({
         <h2 className="text-base font-semibold text-slate-900 dark:text-slate-100">
           {expense ? t('Edytuj wydatek') : t('Nowy wydatek')}
         </h2>
-        {user ? (
-          <ScanReceiptButton
+        <ScanReceiptButton
             label={t('📷 Odczytaj z paragonu')}
             onParsed={(r) => {
               if (r.amount) setAmount(r.amount)
@@ -196,15 +192,6 @@ export default function ExpenseForm({
             }
             onError={(message) => setScanNote(message)}
           />
-        ) : (
-          <span className="text-xs text-slate-400 dark:text-slate-500">
-            {t('Odczyt paragonu działa po')}{' '}
-            <Link to="/logowanie" className="font-medium text-accent-700 dark:text-accent-400 hover:underline">
-              {t('zalogowaniu do skiety')}
-            </Link>{' '}
-            {t('z własnym kluczem Gemini.')}
-          </span>
-        )}
       </div>
       {scanNote && (
         <p className="rounded-md bg-slate-50 dark:bg-slate-900/40 px-3 py-2 text-xs text-slate-600 dark:text-slate-400">
@@ -298,7 +285,7 @@ export default function ExpenseForm({
               key={m.id}
               type="button"
               onClick={() => setPaidBy(m.id)}
-              className={`rounded-full border px-3 py-1 text-sm ${
+              className={`rounded-full border px-3 py-1.5 text-sm sm:py-1 ${
                 paidBy === m.id
                   ? 'border-accent-600 bg-accent-50 dark:bg-accent-900/30 font-semibold text-accent-800 dark:text-accent-300'
                   : 'border-slate-300 dark:border-slate-600 text-slate-700 dark:text-slate-300 hover:bg-slate-100 dark:hover:bg-slate-700'
@@ -314,13 +301,13 @@ export default function ExpenseForm({
       <div>
         <div className="flex flex-wrap items-center justify-between gap-2">
           <p className="text-xs font-medium text-slate-500 dark:text-slate-400">{t('Jak dzielicie')}</p>
-          <div className="inline-flex rounded-md border border-slate-300 dark:border-slate-600 p-0.5">
+          <div className="grid w-full grid-cols-3 rounded-md border border-slate-300 dark:border-slate-600 p-0.5 sm:inline-flex sm:w-auto">
             {MODES.map(({ mode: m, label }) => (
               <button
                 key={m}
                 type="button"
                 onClick={() => switchMode(m)}
-                className={`rounded px-3 py-1 text-sm ${
+                className={`rounded px-3 py-1.5 text-sm sm:py-1 ${
                   mode === m
                     ? 'bg-accent-600 font-medium text-white'
                     : 'text-slate-600 dark:text-slate-300 hover:bg-slate-100 dark:hover:bg-slate-700'
@@ -335,9 +322,9 @@ export default function ExpenseForm({
           {members.map((m) => {
             const owed = preview.owed[m.id] ?? 0
             return (
-              <li key={m.id} className="flex items-center gap-3 px-3 py-2">
+              <li key={m.id} className="flex items-center gap-2 px-3 py-2 sm:gap-3">
                 {mode === 'equal' ? (
-                  <label className="flex flex-1 items-center gap-2 text-sm text-slate-800 dark:text-slate-200">
+                  <label className="flex min-w-0 flex-1 items-center gap-2 py-1 text-sm text-slate-800 dark:text-slate-200">
                     <input
                       type="checkbox"
                       checked={!!included[m.id]}
@@ -348,11 +335,11 @@ export default function ExpenseForm({
                   </label>
                 ) : (
                   <>
-                    <span className="flex-1 text-sm text-slate-800 dark:text-slate-200">
+                    <span className="min-w-0 flex-1 truncate text-sm text-slate-800 dark:text-slate-200">
                       {m.name}
                       {m.id === meId ? ` (${t('Ty')})` : ''}
                     </span>
-                    <div className="flex w-32 items-center gap-1">
+                    <div className="flex w-24 shrink-0 items-center gap-1 sm:w-32">
                       <AmountInput
                         className="input text-right"
                         value={values[m.id] ?? ''}
@@ -360,11 +347,11 @@ export default function ExpenseForm({
                         placeholder="0"
                         aria-label={m.name}
                       />
-                      <span className="w-8 text-xs text-slate-500">{mode === 'percent' ? '%' : currency}</span>
+                      <span className="w-7 text-xs text-slate-500 sm:w-8">{mode === 'percent' ? '%' : currency}</span>
                     </div>
                   </>
                 )}
-                <span className="w-28 text-right text-sm tabular-nums text-slate-600 dark:text-slate-400">
+                <span className="w-20 shrink-0 text-right text-xs tabular-nums text-slate-600 dark:text-slate-400 sm:w-28 sm:text-sm">
                   {owed > 0 ? formatMoney(owed / 100, currency) : '—'}
                 </span>
               </li>
@@ -452,10 +439,10 @@ export default function ExpenseForm({
 
       <ErrorText>{error}</ErrorText>
       <div className="flex gap-2">
-        <button type="submit" className={PRIMARY} disabled={save.isPending}>
+        <button type="submit" className={`${PRIMARY} flex-1 py-2.5 sm:flex-none sm:py-1.5`} disabled={save.isPending}>
           {save.isPending ? t('Zapisywanie…') : expense ? t('Zapisz zmiany') : t('Dodaj wydatek')}
         </button>
-        <button type="button" className={SECONDARY} onClick={onCancel}>
+        <button type="button" className={`${SECONDARY} py-2.5 sm:py-1.5`} onClick={onCancel}>
           {t('Anuluj')}
         </button>
       </div>

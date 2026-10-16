@@ -7,6 +7,7 @@ import AuthTopBar from '../components/AuthTopBar'
 import SockLogo from '../components/SockLogo'
 import { useLanguage } from '../i18n/LanguageContext'
 import { trackEvent } from '../lib/analytics'
+import { takeReturnTo } from '../lib/returnTo'
 
 const INPUT_CLASS =
   'mt-1 w-full rounded-md border border-slate-300 dark:border-slate-600 px-3 py-2 text-sm focus:border-accent-500 focus:outline-none'
@@ -53,7 +54,9 @@ export default function Register() {
       // The interface language doubles as the account's language; the server picks the currency from it.
       await register({ email, password, language, inviteToken, termsAccepted, reminderEmails })
       trackEvent('registered')
-      navigate('/onboarding')
+      // Someone who came from an invitation goes straight back to it; the
+      // onboarding stays one click away on the dashboard.
+      navigate(takeReturnTo() ?? '/onboarding')
     } catch (err) {
       if (err instanceof AxiosError && err.response?.data) {
         const data = err.response.data as Record<string, string[]>

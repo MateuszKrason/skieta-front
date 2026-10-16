@@ -238,7 +238,7 @@ export default function PrivacyPolicy() {
         <Section title="Wspólne rozliczenia">
           <p>
             {t(
-              'Jeśli założysz wspólne rozliczenie, przechowujemy jego nazwę i opis, imiona uczestników wpisane przez Ciebie albo przez nich samych oraz dodane wydatki i zwroty. Widzi je każdy, kto ma link do wydarzenia, bez zakładania konta, dlatego wpisuj tylko imiona albo ksywki, bez nazwisk i danych kontaktowych. Osoba, która założyła wydarzenie, może w każdej chwili wygenerować nowy link albo je usunąć. Usunięcie jej konta usuwa też wydarzenie. Zdjęć paragonów nie przechowujemy.',
+              'Jeśli założysz wspólne rozliczenie, przechowujemy jego nazwę i opis, imiona uczestników oraz dodane wydatki i zwroty. Do wydarzenia dołącza się przez link, po zalogowaniu do skiety: uczestnik wybiera swoje imię i od tej chwili jest ono połączone z jego kontem. Wydatki i rozliczenia widzą tylko osoby, które dołączyły. Zalogowana osoba z linkiem, która jeszcze nie dołączyła, widzi tylko nazwę i opis wydarzenia oraz imiona uczestników, żeby wybrać swoje - dlatego wpisuj tylko imiona albo ksywki, bez nazwisk i danych kontaktowych. Osoba, która założyła wydarzenie, może w każdej chwili wygenerować nowy link albo je usunąć. Usunięcie jej konta usuwa też wydarzenie, a usunięcie konta innego uczestnika zostawia w wydarzeniu tylko jego imię. Zdjęć paragonów nie przechowujemy.',
             )}
           </p>
         </Section>

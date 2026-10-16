@@ -1,6 +1,6 @@
-import { useState, type FormEvent } from 'react'
+import { useEffect, useState, type FormEvent } from 'react'
 import { useMutation, useQuery, useQueryClient } from '@tanstack/react-query'
-import { Link, Outlet, useNavigate, useParams } from 'react-router-dom'
+import { Link, useLocation, useNavigate, useParams } from 'react-router-dom'
 import { useAuth } from '../../auth/AuthContext'
 import AuthTopBar from '../../components/AuthTopBar'
 import Layout from '../../components/Layout'
@@ -9,7 +9,8 @@ import SockLogo from '../../components/SockLogo'
 import { useLanguage } from '../../i18n/LanguageContext'
 import { rememberSignupSource, trackEvent } from '../../lib/analytics'
 import { formatMoney } from '../../lib/format'
-import { apiError, KIND_ICONS, rememberedMember, rememberMember, shareUrl, splitsApi, type SplitState } from '../../lib/splits'
+import { rememberReturnTo } from '../../lib/returnTo'
+import { apiError, KIND_ICONS, shareUrl, splitsApi, type SplitState } from '../../lib/splits'
 import ExpensesTab from './ExpensesTab'
 import ExportTab from './ExportTab'
 import GroupSettings from './GroupSettings'
@@ -20,30 +21,71 @@ import { CARD, ErrorText, NetLabel, PRIMARY, SECONDARY } from './ui'
 type Tab = 'wydatki' | 'rozliczenie' | 'osoby' | 'budzet'
 const TABS: Tab[] = ['wydatki', 'rozliczenie', 'osoby', 'budzet']
 
-/** The group page is open to anyone with the link. Signed-in people see it
- * inside the app's usual frame; guests get a bare page with the logo. */
-export function WspolneShell() {
-  const { user, loading } = useAuth()
-  if (loading) return <PageLoader />
-  if (user) return <Layout />
+/** Someone opened a shared link without being signed in. The event itself
+ * needs an account, so all they get is what it is and the way in - and the
+ * link is kept, so signing in or registering brings them straight back. */
+function Invitation() {
+  const { t } = useLanguage()
+  const location = useLocation()
+
+  useEffect(() => {
+    rememberReturnTo(location.pathname)
+  }, [location.pathname])
+
   return (
     <div className="min-h-screen bg-slate-50 dark:bg-slate-900">
-      <header className="mx-auto flex max-w-4xl items-center justify-between gap-3 px-4 pt-4">
+      <header className="mx-auto flex max-w-lg items-center justify-between gap-3 px-4 pt-4">
         <Link to="/" className="inline-flex items-center gap-2 text-lg font-bold text-accent-700 dark:text-accent-400">
           <SockLogo className="h-7 w-7" />
           skieta
         </Link>
         {/* The switcher pins itself to the corner on the login pages; here it
-            scrolls away with the header instead of covering the form. */}
+            sits in the header so it never covers the card on a phone. */}
         <div className="*:static">
           <AuthTopBar />
         </div>
       </header>
-      <main className="mx-auto max-w-4xl px-4 py-6">
-        <Outlet />
+      <main className="mx-auto max-w-lg px-4 py-10">
+        <div className={`${CARD} text-center`}>
+          <p className="text-4xl">🧳🍕🏠</p>
+          <h1 className="mt-3 text-xl font-bold text-slate-900 dark:text-slate-100 [text-wrap:balance]">
+            {t('Masz zaproszenie do wspólnego rozliczenia')}
+          </h1>
+          <p className="mt-2 text-sm text-slate-600 dark:text-slate-400">
+            {t(
+              'Ktoś ze znajomych liczy w skiecie wspólne wydatki i chce, żebyś do nich dołączył(a). Żeby zobaczyć wydarzenie, załóż darmowe konto - zajmie to chwilę, a potem od razu wrócisz tutaj.',
+            )}
+          </p>
+          <div className="mt-6 flex flex-col gap-2">
+            <Link
+              to="/register"
+              className={`${PRIMARY} py-3 text-base`}
+              onClick={() => {
+                trackEvent('register_clicked', { source: 'split_link' })
+                rememberSignupSource('split_link')
+              }}
+            >
+              {t('Załóż darmowe konto')}
+            </Link>
+            <Link to="/logowanie" className="py-2 text-sm font-medium text-accent-700 dark:text-accent-400 hover:underline">
+              {t('Mam już konto - zaloguj się')}
+            </Link>
+          </div>
+          <p className="mt-4 text-xs text-slate-400 dark:text-slate-500">
+            {t('W skiecie przeniesiesz potem swoją część wydatków do własnego budżetu jednym kliknięciem.')}
+          </p>
+        </div>
       </main>
     </div>
   )
+}
+
+/** The group page needs an account. Signed-in people see it inside the
+ * app's usual frame; everyone else gets the invitation above. */
+export function WspolneShell() {
+  const { user, loading } = useAuth()
+  if (loading) return <PageLoader />
+  return user ? <Layout /> : <Invitation />
 }
 
 function ShareBox({ token, name }: { token: string; name: string }) {
@@ -64,7 +106,7 @@ function ShareBox({ token, name }: { token: string; name: string }) {
 
   async function share() {
     try {
-      await navigator.share({ title: name, text: t('Dopisz swoje wydatki: {0}', name), url })
+      await navigator.share({ title: name, text: t('Dołącz do wspólnego rozliczenia: {0}', name), url })
     } catch {
       // Closed the share sheet - nothing to do.
     }
@@ -76,14 +118,14 @@ function ShareBox({ token, name }: { token: string; name: string }) {
         readOnly
         value={url}
         onFocus={(e) => e.target.select()}
-        className="input min-w-0 flex-1 font-mono text-xs"
+        className="input min-w-0 basis-full font-mono text-xs sm:basis-auto sm:flex-1"
         aria-label={t('Link do wydarzenia')}
       />
-      <button type="button" className={PRIMARY} onClick={copy}>
+      <button type="button" className={`${PRIMARY} flex-1 py-2 sm:flex-none sm:py-1.5`} onClick={copy}>
         {copied ? t('Skopiowane ✓') : t('Kopiuj link')}
       </button>
       {canShare && (
-        <button type="button" className={SECONDARY} onClick={share}>
+        <button type="button" className={`${SECONDARY} flex-1 py-2 sm:flex-none sm:py-1.5`} onClick={share}>
           {t('Udostępnij')}
         </button>
       )}
@@ -91,29 +133,35 @@ function ShareBox({ token, name }: { token: string; name: string }) {
   )
 }
 
-function WhoAmI({
+/** Signed in, holding the link, not in the group yet: pick a name or add one. */
+function JoinGroup({
   state,
   token,
-  onPick,
   onState,
 }: {
   state: SplitState
   token: string
-  onPick: (id: number) => void
-  onState: (s: SplitState, created?: number) => void
+  onState: (s: SplitState) => void
 }) {
   const { t } = useLanguage()
   const { user } = useAuth()
-  const [name, setName] = useState('')
-  const [adding, setAdding] = useState(state.members.length <= 1)
+  const free = state.members.filter((m) => !m.linked)
+  const [name, setName] = useState(free.length === 0 ? user?.first_name || '' : '')
+  const [adding, setAdding] = useState(free.length === 0)
   const [error, setError] = useState('')
   const full = state.members.length >= state.limits.members
 
-  const add = useMutation({
-    mutationFn: () => splitsApi.addMember(token, name, !!user),
-    onSuccess: (next) => onState(next, next.created_member),
-    onError: (e) => setError(apiError(e, t('Nie udało się dopisać.'))),
+  const claim = useMutation({
+    mutationFn: (id: number) => splitsApi.updateMember(token, id, { claim: true }),
+    onSuccess: onState,
+    onError: (e) => setError(apiError(e, t('Nie udało się dołączyć.'))),
   })
+  const add = useMutation({
+    mutationFn: () => splitsApi.addMember(token, name, true),
+    onSuccess: onState,
+    onError: (e) => setError(apiError(e, t('Nie udało się dołączyć.'))),
+  })
+  const busy = claim.isPending || add.isPending
 
   function submit(e: FormEvent) {
     e.preventDefault()
@@ -123,47 +171,69 @@ function WhoAmI({
 
   return (
     <div className={`${CARD} border-accent-300 dark:border-accent-700`}>
-      <h2 className="text-base font-semibold text-slate-900 dark:text-slate-100">{t('Kim jesteś?')}</h2>
+      <h2 className="text-lg font-semibold text-slate-900 dark:text-slate-100">{t('Dołącz do wydarzenia')}</h2>
       <p className="mt-1 text-sm text-slate-500 dark:text-slate-400">
-        {t('Wybierz swoje imię, żeby widzieć swój bilans i swoją część każdego wydatku.')}
+        {t('Wybierz swoje imię. Połączymy je z Twoim kontem i zobaczysz wszystkie wydatki, swój bilans i kto komu ile oddaje.')}
       </p>
-      <div className="mt-3 flex flex-wrap gap-2">
-        {state.members.map((m) => (
-          <button
-            key={m.id}
-            type="button"
-            onClick={() => onPick(m.id)}
-            className="rounded-full border border-slate-300 dark:border-slate-600 px-3 py-1.5 text-sm font-medium text-slate-800 dark:text-slate-200 hover:border-accent-500 hover:bg-accent-50 dark:hover:bg-accent-900/30"
-          >
-            {m.name}
-          </button>
-        ))}
+      <div className="mt-4 grid grid-cols-2 gap-2 sm:flex sm:flex-wrap">
+        {state.members.map((m) =>
+          m.linked ? (
+            <span
+              key={m.id}
+              className="rounded-full border border-slate-200 dark:border-slate-700 px-3 py-2 text-center text-sm text-slate-400 dark:text-slate-500"
+              title={t('To imię jest już połączone z czyimś kontem')}
+            >
+              ✓ {m.name}
+            </span>
+          ) : (
+            <button
+              key={m.id}
+              type="button"
+              disabled={busy}
+              onClick={() => {
+                setError('')
+                claim.mutate(m.id)
+              }}
+              className="rounded-full border border-accent-300 dark:border-accent-700 px-3 py-2 text-sm font-medium text-slate-800 dark:text-slate-200 hover:bg-accent-50 dark:hover:bg-accent-900/30 disabled:opacity-60"
+            >
+              {t('To ja: {0}', m.name)}
+            </button>
+          ),
+        )}
         {!adding && !full && (
           <button
             type="button"
             onClick={() => setAdding(true)}
-            className="rounded-full border border-dashed border-slate-300 dark:border-slate-600 px-3 py-1.5 text-sm text-slate-500 dark:text-slate-400 hover:border-accent-500"
+            className="col-span-2 rounded-full border border-dashed border-slate-300 dark:border-slate-600 px-3 py-2 text-sm text-slate-500 dark:text-slate-400 hover:border-accent-500"
           >
             {t('Nie ma mnie na liście')}
           </button>
         )}
       </div>
       {adding && !full && (
-        <form onSubmit={submit} className="mt-3 flex flex-wrap gap-2">
+        <form onSubmit={submit} className="mt-4 flex flex-col gap-2 sm:flex-row">
           <input
-            className="input min-w-0 flex-1 sm:max-w-xs"
+            className="input min-w-0 sm:max-w-xs"
             value={name}
             onChange={(e) => setName(e.target.value)}
             placeholder={t('Twoje imię')}
             maxLength={40}
             required
+            autoFocus
           />
-          <button type="submit" className={PRIMARY} disabled={add.isPending}>
-            {t('Dopisz mnie')}
+          <button type="submit" className={`${PRIMARY} py-2`} disabled={busy}>
+            {t('Dołącz')}
           </button>
         </form>
       )}
-      <ErrorText>{error}</ErrorText>
+      {full && free.length === 0 && (
+        <p className="mt-4 text-sm text-slate-500 dark:text-slate-400">
+          {t('Wydarzenie ma już komplet: {0} osób.', String(state.limits.members))}
+        </p>
+      )}
+      <div className="mt-2">
+        <ErrorText>{error}</ErrorText>
+      </div>
     </div>
   )
 }
@@ -176,15 +246,14 @@ export default function WspolneGrupa() {
 
 function GroupPage({ token }: { token: string }) {
   const { t } = useLanguage()
-  const { user } = useAuth()
   const navigate = useNavigate()
   const queryClient = useQueryClient()
-  const [localMe, setLocalMe] = useState<number | null>(() => rememberedMember(token))
   const [tab, setTab] = useState<Tab>(() => {
     const hash = window.location.hash.replace('#', '') as Tab
     return TABS.includes(hash) ? hash : 'wydatki'
   })
   const [settings, setSettings] = useState(false)
+  const [leaving, setLeaving] = useState(false)
   const [identityError, setIdentityError] = useState('')
 
   const { data: state, isLoading, error } = useQuery({
@@ -195,24 +264,19 @@ function GroupPage({ token }: { token: string }) {
     retry: (count, e) => (e as { response?: { status?: number } })?.response?.status !== 404 && count < 1,
   })
 
-
-  function applyState(next: SplitState, created?: number) {
+  function applyState(next: SplitState) {
     queryClient.setQueryData(['split', next.group.share_token], next)
     queryClient.invalidateQueries({ queryKey: ['splits'] })
-    if (created !== undefined) {
-      rememberMember(next.group.share_token, created)
-      setLocalMe(created)
-    }
-    if (next.group.share_token !== token) {
-      rememberMember(next.group.share_token, rememberedMember(token))
-      navigate(`/wspolne/${next.group.share_token}`, { replace: true })
-    }
+    if (next.group.share_token !== token) navigate(`/wspolne/${next.group.share_token}`, { replace: true })
   }
 
-  const claim = useMutation({
-    mutationFn: ({ id, value }: { id: number; value: boolean }) => splitsApi.updateMember(token, id, { claim: value }),
-    onSuccess: (next) => applyState(next),
-    onError: (e) => setIdentityError(apiError(e, t('Nie udało się połączyć imienia z kontem.'))),
+  const leave = useMutation({
+    mutationFn: (id: number) => splitsApi.updateMember(token, id, { claim: false }),
+    onSuccess: (next) => {
+      setLeaving(false)
+      applyState(next)
+    },
+    onError: (e) => setIdentityError(apiError(e, t('Nie udało się odłączyć imienia.'))),
   })
 
   if (isLoading) return <PageLoader />
@@ -223,32 +287,16 @@ function GroupPage({ token }: { token: string }) {
         <p className="mt-2 font-medium text-slate-800 dark:text-slate-200">
           {apiError(error, t('Nie udało się wczytać wydarzenia. Spróbuj odświeżyć stronę.'))}
         </p>
-        <Link to={user ? '/budzet/wspolne' : '/'} className={`${SECONDARY} mt-4 inline-block`}>
-          {user ? t('Moje wspólne rozliczenia') : t('Strona główna skiety')}
+        <Link to="/budzet/wspolne" className={`${SECONDARY} mt-4 inline-block`}>
+          {t('Moje wspólne rozliczenia')}
         </Link>
       </div>
     )
   }
 
-  const meId = state.me ?? (localMe !== null && state.members.some((m) => m.id === localMe) ? localMe : null)
+  const meId = state.me
   const me = state.members.find((m) => m.id === meId)
   const myBalance = state.balances.find((b) => b.member === meId)
-
-  function pick(id: number) {
-    setIdentityError('')
-    const member = state!.members.find((m) => m.id === id)
-    rememberMember(token, id)
-    setLocalMe(id)
-    // Signed in: tie the name to the account, so the group shows up on the
-    // person's own list and its expenses can go into their budget.
-    if (user && member && !member.linked) claim.mutate({ id, value: true })
-  }
-
-  function forgetMe() {
-    rememberMember(token, null)
-    setLocalMe(null)
-    if (user && state!.me !== null && me && !me.is_owner) claim.mutate({ id: me.id, value: false })
-  }
 
   function openTab(next: Tab) {
     setTab(next)
@@ -259,21 +307,18 @@ function GroupPage({ token }: { token: string }) {
     wydatki: t('Wydatki ({0})', String(state.expenses.length)),
     rozliczenie: t('Kto komu ile'),
     osoby: t('Osoby ({0})', String(state.members.length)),
-    budzet: t('Do mojego budżetu'),
+    budzet: t('Do budżetu'),
   }
-  const visibleTabs = TABS.filter((x) => x !== 'budzet' || (user && state.me !== null))
 
   return (
     <div className="mx-auto max-w-4xl space-y-4">
       <div className={CARD}>
-        <div className="flex flex-wrap items-start justify-between gap-3">
+        <Link to="/budzet/wspolne" className="text-xs text-slate-500 dark:text-slate-400 hover:underline">
+          ← {t('Wspólne rozliczenia')}
+        </Link>
+        <div className="mt-1 flex flex-col gap-3 sm:flex-row sm:items-start sm:justify-between">
           <div className="min-w-0">
-            {user && (
-              <Link to="/budzet/wspolne" className="text-xs text-slate-500 dark:text-slate-400 hover:underline">
-                ← {t('Wspólne rozliczenia')}
-              </Link>
-            )}
-            <h1 className="mt-0.5 text-2xl font-bold text-slate-900 dark:text-slate-100 [overflow-wrap:anywhere]">
+            <h1 className="text-xl font-bold text-slate-900 dark:text-slate-100 [overflow-wrap:anywhere] sm:text-2xl">
               {KIND_ICONS[state.group.kind]} {state.group.name}
             </h1>
             {state.group.description && (
@@ -283,96 +328,105 @@ function GroupPage({ token }: { token: string }) {
               {state.members.map((m) => m.name).join(', ')}
             </p>
           </div>
-          <div className="text-right">
-            <p className="text-xs uppercase tracking-wide text-slate-500 dark:text-slate-400">{t('Razem')}</p>
-            <p className="text-2xl font-bold tabular-nums text-slate-900 dark:text-slate-100">
-              {formatMoney(state.total, state.group.currency)}
-            </p>
-            {myBalance && state.expenses.length > 0 && (
-              <p className="text-sm">
-                <NetLabel net={myBalance.net} currency={state.group.currency} me />
+          {me && (
+            <div className="flex items-baseline justify-between gap-3 rounded-lg bg-slate-50 dark:bg-slate-900/40 px-3 py-2 sm:block sm:bg-transparent sm:p-0 sm:text-right dark:sm:bg-transparent">
+              <div>
+                <p className="text-xs uppercase tracking-wide text-slate-500 dark:text-slate-400">{t('Razem')}</p>
+                <p className="text-xl font-bold tabular-nums text-slate-900 dark:text-slate-100 sm:text-2xl">
+                  {formatMoney(state.total, state.group.currency)}
+                </p>
+              </div>
+              {myBalance && state.expenses.length > 0 && (
+                <p className="text-sm">
+                  <NetLabel net={myBalance.net} currency={state.group.currency} me />
+                </p>
+              )}
+            </div>
+          )}
+        </div>
+
+        {me && (
+          <>
+            <div className="mt-4">
+              <ShareBox token={state.group.share_token} name={state.group.name} />
+              <p className="mt-1 text-xs text-slate-400 dark:text-slate-500">
+                {t('Wyślij ten link znajomym. Po zalogowaniu do skiety wybiorą swoje imię i dołączą.')}
               </p>
-            )}
-          </div>
-        </div>
+            </div>
 
-        <div className="mt-4">
-          <ShareBox token={state.group.share_token} name={state.group.name} />
-          <p className="mt-1 text-xs text-slate-400 dark:text-slate-500">
-            {t('Każdy, kto ma ten link, widzi wydarzenie i może dopisywać wydatki. Nie potrzeba konta.')}
-          </p>
-        </div>
-
-        <div className="mt-3 flex flex-wrap items-center justify-between gap-2 text-sm">
-          {me ? (
-            <span className="text-slate-600 dark:text-slate-400">
-              {t('Jesteś tu jako')} <strong className="text-slate-900 dark:text-slate-100">{me.name}</strong>
-              {!me.is_owner && (
-                <button type="button" className="ml-2 text-xs text-accent-700 dark:text-accent-400 hover:underline" onClick={forgetMe}>
-                  {t('to nie ja')}
+            <div className="mt-3 flex flex-wrap items-center justify-between gap-2 text-sm">
+              <span className="text-slate-600 dark:text-slate-400">
+                {t('Jesteś tu jako')} <strong className="text-slate-900 dark:text-slate-100">{me.name}</strong>
+                {!me.is_owner && !leaving && (
+                  <button
+                    type="button"
+                    className="ml-2 text-xs text-accent-700 dark:text-accent-400 hover:underline"
+                    onClick={() => setLeaving(true)}
+                  >
+                    {t('to nie moje imię')}
+                  </button>
+                )}
+              </span>
+              {state.group.is_owner && !settings && (
+                <button
+                  type="button"
+                  className="text-sm font-medium text-slate-600 dark:text-slate-300 hover:underline"
+                  onClick={() => setSettings(true)}
+                >
+                  ⚙️ {t('Ustawienia')}
                 </button>
               )}
-            </span>
-          ) : (
-            <span />
-          )}
-          {state.group.is_owner && !settings && (
-            <button type="button" className="text-sm font-medium text-slate-600 dark:text-slate-300 hover:underline" onClick={() => setSettings(true)}>
-              ⚙️ {t('Ustawienia')}
-            </button>
-          )}
-        </div>
+            </div>
+            {leaving && (
+              <div className="mt-2 flex flex-wrap items-center gap-2 rounded-lg bg-slate-50 dark:bg-slate-900/40 p-3 text-sm">
+                <span className="w-full text-slate-700 dark:text-slate-300 sm:w-auto sm:flex-1">
+                  {t('Odłączyć imię „{0}” od Twojego konta? Potem wybierzesz właściwe.', me.name)}
+                </span>
+                <button type="button" className={PRIMARY} onClick={() => leave.mutate(me.id)} disabled={leave.isPending}>
+                  {t('Odłącz')}
+                </button>
+                <button type="button" className={SECONDARY} onClick={() => setLeaving(false)}>
+                  {t('Anuluj')}
+                </button>
+              </div>
+            )}
+          </>
+        )}
         <ErrorText>{identityError}</ErrorText>
       </div>
 
-      {settings && state.group.is_owner && (
-        <GroupSettings state={state} token={token} onState={applyState} onClose={() => setSettings(false)} />
-      )}
+      {!me ? (
+        <JoinGroup state={state} token={token} onState={applyState} />
+      ) : (
+        <>
+          {settings && state.group.is_owner && (
+            <GroupSettings state={state} token={token} onState={applyState} onClose={() => setSettings(false)} />
+          )}
 
-      {meId === null && <WhoAmI state={state} token={token} onPick={pick} onState={applyState} />}
+          <div className="flex border-b border-slate-200 dark:border-slate-700" role="tablist">
+            {TABS.map((x) => (
+              <button
+                key={x}
+                type="button"
+                role="tab"
+                aria-selected={tab === x}
+                onClick={() => openTab(x)}
+                className={`-mb-px flex-1 border-b-2 px-1 py-2.5 text-[13px] font-medium leading-tight sm:flex-none sm:px-3 sm:text-sm ${
+                  tab === x
+                    ? 'border-accent-600 text-accent-700 dark:text-accent-400'
+                    : 'border-transparent text-slate-500 dark:text-slate-400 hover:text-slate-800 dark:hover:text-slate-200'
+                }`}
+              >
+                {tabLabels[x]}
+              </button>
+            ))}
+          </div>
 
-      <div className="flex gap-1 overflow-x-auto border-b border-slate-200 dark:border-slate-700" role="tablist">
-        {visibleTabs.map((x) => (
-          <button
-            key={x}
-            type="button"
-            role="tab"
-            aria-selected={tab === x}
-            onClick={() => openTab(x)}
-            className={`shrink-0 border-b-2 px-3 py-2 text-sm font-medium ${
-              tab === x
-                ? 'border-accent-600 text-accent-700 dark:text-accent-400'
-                : 'border-transparent text-slate-500 dark:text-slate-400 hover:text-slate-800 dark:hover:text-slate-200'
-            }`}
-          >
-            {tabLabels[x]}
-          </button>
-        ))}
-      </div>
-
-      {tab === 'wydatki' && <ExpensesTab state={state} token={token} meId={meId} onState={applyState} />}
-      {tab === 'rozliczenie' && <SettleTab state={state} token={token} meId={meId} onState={applyState} />}
-      {tab === 'osoby' && <PeopleTab state={state} token={token} meId={meId} onState={applyState} onPick={pick} />}
-      {tab === 'budzet' && user && state.me !== null && <ExportTab state={state} token={token} onState={applyState} />}
-
-      {!user && (
-        <div className={`${CARD} flex flex-wrap items-center justify-between gap-3`}>
-          <p className="max-w-xl text-sm text-slate-600 dark:text-slate-400">
-            {t(
-              'Prowadzisz budżet? W skiecie przeniesiesz swoją część tych wydatków do własnych transakcji jednym kliknięciem i odczytasz paragon ze zdjęcia. Za darmo.',
-            )}
-          </p>
-          <Link
-            to="/register"
-            className={PRIMARY}
-            onClick={() => {
-              trackEvent('register_clicked', { source: 'split_link' })
-              rememberSignupSource('split_link')
-            }}
-          >
-            {t('Załóż konto')}
-          </Link>
-        </div>
+          {tab === 'wydatki' && <ExpensesTab state={state} token={token} meId={me.id} onState={applyState} />}
+          {tab === 'rozliczenie' && <SettleTab state={state} token={token} meId={me.id} onState={applyState} />}
+          {tab === 'osoby' && <PeopleTab state={state} token={token} meId={me.id} onState={applyState} />}
+          {tab === 'budzet' && <ExportTab state={state} token={token} onState={applyState} />}
+        </>
       )}
     </div>
   )

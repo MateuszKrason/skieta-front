@@ -30,7 +30,6 @@ function TransferRow({
         from_member: transfer.from_member,
         to_member: transfer.to_member,
         amount: transfer.amount,
-        acting_member: meId,
       }),
     onSuccess: onState,
     onError: (e) => setError(apiError(e, t('Nie udało się zapisać zwrotu.'))),
@@ -63,7 +62,12 @@ function TransferRow({
       <span className="text-base font-semibold tabular-nums text-slate-900 dark:text-slate-100">
         {formatMoney(transfer.amount, currency)}
       </span>
-      <button type="button" className={SECONDARY} onClick={() => settle.mutate()} disabled={settle.isPending}>
+      <button
+        type="button"
+        className={`${SECONDARY} w-full py-2 sm:w-auto sm:py-1.5`}
+        onClick={() => settle.mutate()}
+        disabled={settle.isPending}
+      >
         {settle.isPending ? t('Zapisywanie…') : t('✓ Oddane')}
       </button>
       {error && (
@@ -98,7 +102,7 @@ function ManualSettlement({
   const [error, setError] = useState('')
   const save = useMutation({
     mutationFn: () =>
-      splitsApi.addSettlement(token, { from_member: from, to_member: to, amount, date, note, acting_member: meId }),
+      splitsApi.addSettlement(token, { from_member: from, to_member: to, amount, date, note }),
     onSuccess: (next) => {
       onState(next)
       onClose()
@@ -114,7 +118,7 @@ function ManualSettlement({
 
   return (
     <form onSubmit={submit} className="space-y-3 rounded-lg border border-slate-200 dark:border-slate-700 p-3">
-      <div className="grid gap-3 sm:grid-cols-4">
+      <div className="grid grid-cols-2 gap-3 sm:grid-cols-4">
         <Field label={t('Kto oddaje')}>
           <select className="input" value={from} onChange={(e) => setFrom(Number(e.target.value))}>
             {members.map((m) => (
@@ -324,47 +328,29 @@ export default function SettleTab({
 
       <div className={CARD}>
         <h2 className="text-base font-semibold text-slate-900 dark:text-slate-100">{t('Bilans osób')}</h2>
-        <div className="mt-3 overflow-x-auto">
-          <table className="w-full min-w-[28rem] text-sm">
-            <thead>
-              <tr className="text-left text-xs text-slate-500 dark:text-slate-400">
-                <th className="py-1 pr-3 font-medium">{t('Osoba')}</th>
-                <th className="py-1 pr-3 text-right font-medium">{t('Wyłożone')}</th>
-                <th className="py-1 pr-3 text-right font-medium">{t('Część')}</th>
-                <th className="py-1 pr-3 text-right font-medium">{t('Zwroty')}</th>
-                <th className="py-1 text-right font-medium">{t('Saldo')}</th>
-              </tr>
-            </thead>
-            <tbody className="divide-y divide-slate-100 dark:divide-slate-700">
-              {state.balances.map((b) => {
-                return (
-                  <tr key={b.member} className={b.member === meId ? 'font-medium' : ''}>
-                    <td className="py-2 pr-3 text-slate-800 dark:text-slate-200">{memberName(state.members, b.member, meId, t)}</td>
-                    <td className="py-2 pr-3 text-right tabular-nums text-slate-700 dark:text-slate-300">
-                      {formatMoney(b.paid, currency)}
-                    </td>
-                    <td className="py-2 pr-3 text-right tabular-nums text-slate-700 dark:text-slate-300">
-                      {formatMoney(b.share, currency)}
-                    </td>
-                    <td className="py-2 pr-3 text-right text-slate-700 dark:text-slate-300">
-                      {Number(b.sent) === 0 && Number(b.received) === 0 ? (
-                        '—'
-                      ) : (
-                        <span className="flex flex-col items-end text-xs tabular-nums">
-                          {Number(b.sent) > 0 && <span>{t('oddane {0}', formatMoney(b.sent, currency))}</span>}
-                          {Number(b.received) > 0 && <span>{t('otrzymane {0}', formatMoney(b.received, currency))}</span>}
-                        </span>
-                      )}
-                    </td>
-                    <td className="py-2 text-right">
-                      <Money value={b.net} currency={currency} tone="signed" />
-                    </td>
-                  </tr>
-                )
-              })}
-            </tbody>
-          </table>
-        </div>
+        <ul className="mt-2 divide-y divide-slate-100 dark:divide-slate-700">
+          {state.balances.map((b) => (
+            <li key={b.member} className="flex items-start justify-between gap-3 py-2.5">
+              <div className="min-w-0">
+                <p
+                  className={`text-sm text-slate-800 dark:text-slate-200 [overflow-wrap:anywhere] ${
+                    b.member === meId ? 'font-semibold' : 'font-medium'
+                  }`}
+                >
+                  {memberName(state.members, b.member, meId, t)}
+                </p>
+                <p className="mt-0.5 text-xs tabular-nums text-slate-500 dark:text-slate-400">
+                  {t('wyłożone {0}', formatMoney(b.paid, currency))} · {t('część {0}', formatMoney(b.share, currency))}
+                  {Number(b.sent) > 0 && ` · ${t('oddane {0}', formatMoney(b.sent, currency))}`}
+                  {Number(b.received) > 0 && ` · ${t('otrzymane {0}', formatMoney(b.received, currency))}`}
+                </p>
+              </div>
+              <span className="shrink-0 text-sm font-semibold">
+                <Money value={b.net} currency={currency} tone="signed" />
+              </span>
+            </li>
+          ))}
+        </ul>
         <p className="mt-2 text-xs text-slate-400 dark:text-slate-500">
           {t('Saldo na plus: tyle ta osoba ma dostać. Na minus: tyle ma oddać. Wydatki w innych walutach są przeliczone na {0}.', currency)}
         </p>

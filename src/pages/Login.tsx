@@ -4,6 +4,7 @@ import { useAuth } from '../auth/AuthContext'
 import AuthTopBar from '../components/AuthTopBar'
 import SockLogo from '../components/SockLogo'
 import { useLanguage } from '../i18n/LanguageContext'
+import { takeReturnTo } from '../lib/returnTo'
 
 export default function Login() {
   const { login } = useAuth()
@@ -24,7 +25,7 @@ export default function Login() {
     setSubmitting(true)
     try {
       await login(username, password, needsCode ? code.trim() : undefined)
-      navigate('/dashboard')
+      navigate(takeReturnTo() ?? '/dashboard')
     } catch (err) {
       // A 429 carries a real explanation from the server (too many attempts,
       // and how long to wait). Collapsing it into "wrong password" would send

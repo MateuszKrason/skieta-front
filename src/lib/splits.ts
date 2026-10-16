@@ -1,7 +1,9 @@
 import { api } from '../api/client'
 import { formatMoney } from './format'
 
-// Shared expense groups (backend/splits). The server does the arithmetic
+// Shared expense groups (backend/splits). Everyone in a group is signed in
+// and takes part under their own account: "me" always comes from the
+// server, never from this device. The server does the arithmetic
 // that counts - every write answers with the whole group state - and the
 // helpers below only mirror it for the live preview in the expense form.
 
@@ -164,7 +166,6 @@ export interface ExpenseInput {
   paid_by: number
   split_mode: SplitMode
   shares: { member: number; value: string }[]
-  acting_member: number | null
 }
 
 const base = (token: string) => `/splits/s/${encodeURIComponent(token)}/`
@@ -202,7 +203,7 @@ export const splitsApi = {
     api.delete<SplitState>(`${base(token)}expenses/${id}/`).then((r) => r.data),
   addSettlement: (
     token: string,
-    body: { from_member: number; to_member: number; amount: string; date?: string; note?: string; acting_member: number | null },
+    body: { from_member: number; to_member: number; amount: string; date?: string; note?: string },
   ) => api.post<SplitState>(`${base(token)}settlements/`, body).then((r) => r.data),
   removeSettlement: (token: string, id: number) =>
     api.delete<SplitState>(`${base(token)}settlements/${id}/`).then((r) => r.data),
@@ -211,28 +212,6 @@ export const splitsApi = {
     token: string,
     body: { items: { expense: number; category: number | null }[]; account: number | null; add_tags: boolean },
   ) => api.post<SplitState>(`${base(token)}export/`, body).then((r) => r.data),
-}
-
-// --- Which name on the list is "me" on this device -----------------------------------------
-
-const identityKey = (token: string) => `skieta_split_me_${token}`
-
-export function rememberedMember(token: string): number | null {
-  try {
-    const raw = localStorage.getItem(identityKey(token))
-    return raw ? Number(raw) : null
-  } catch {
-    return null
-  }
-}
-
-export function rememberMember(token: string, memberId: number | null) {
-  try {
-    if (memberId === null) localStorage.removeItem(identityKey(token))
-    else localStorage.setItem(identityKey(token), String(memberId))
-  } catch {
-    // Private mode: the choice simply lasts until the tab is closed.
-  }
 }
 
 // --- Live preview of a split (mirrors backend/splits/services.resolve_shares) ---------------

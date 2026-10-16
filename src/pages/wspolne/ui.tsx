@@ -2,7 +2,7 @@ import type { ReactNode } from 'react'
 import { useLanguage } from '../../i18n/LanguageContext'
 import { formatMoney } from '../../lib/format'
 
-export const CARD = 'rounded-xl border border-slate-200 dark:border-slate-700 bg-white dark:bg-slate-800 p-5 shadow-sm'
+export const CARD = 'rounded-xl border border-slate-200 dark:border-slate-700 bg-white dark:bg-slate-800 p-4 shadow-sm sm:p-5'
 export const PRIMARY =
   'rounded-md bg-accent-600 px-3 py-1.5 text-sm font-medium text-white hover:bg-accent-700 disabled:opacity-60'
 export const SECONDARY =

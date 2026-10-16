@@ -155,7 +155,7 @@ export default function WspolneLista() {
           <h1 className="text-2xl font-bold text-slate-900 dark:text-slate-100">{t('Wspólne rozliczenia')}</h1>
           <p className="mt-1 max-w-2xl text-sm text-slate-500 dark:text-slate-400">
             {t(
-              'Wyjazd, wspólne mieszkanie albo wyjście ze znajomymi. Wysyłasz link, każdy dopisuje, co zapłacił, a skieta liczy, kto komu ile oddaje. Znajomi nie muszą mieć konta.',
+              'Wyjazd, wspólne mieszkanie albo wyjście ze znajomymi. Wysyłasz link, znajomi dołączają swoim kontem w skiecie, każdy dopisuje, co zapłacił, a skieta liczy, kto komu ile oddaje.',
             )}
           </p>
         </div>
