@@ -125,8 +125,8 @@ export default function ArticleDetail() {
     const previousDescription = document.querySelector('meta[name="description"]')?.getAttribute('content') ?? ''
     // The same two rules the edge function applied to the HTML this page
     // arrived in (see lib/seo), so the title does not change under a crawler.
-    document.title = searchTitle(article.title)
-    setMetaDescription(searchDescription(article.summary))
+    document.title = searchTitle(article.search_title || article.title)
+    setMetaDescription(searchDescription(article.search_description || article.summary))
     return () => {
       document.title = previousTitle
       setMetaDescription(previousDescription)

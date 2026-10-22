@@ -36,6 +36,8 @@ interface Article {
   title: string
   slug: string
   summary: string
+  search_title?: string
+  search_description?: string
   body: string
   author_name: string | null
   published_at: string
@@ -166,8 +168,10 @@ export default async (request: Request, context: { next: () => Promise<Response>
   }
 
   const url = `${SITE}/artykuly/${slug}`
-  const title = escapeAttribute(searchTitle(article.title))
-  const description = escapeAttribute(searchDescription(article.summary))
+  // A search title/description, when the editor wrote one, is what the
+  // result shows; the headline and summary stay for readers and link cards.
+  const title = escapeAttribute(searchTitle(article.search_title || article.title))
+  const description = escapeAttribute(searchDescription(article.search_description || article.summary))
   // Per-article preview card carrying the headline (see
   // scripts/generate_og_images.py). A slug with no generated file falls back
   // to the site image through the /og/* rule in _redirects, so this is always

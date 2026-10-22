@@ -751,6 +751,10 @@ export interface Article {
   title: string
   slug: string
   summary: string
+  /** What a search result shows instead of the title; blank = the title. */
+  search_title?: string
+  /** What a search result shows instead of the summary; blank = the summary. */
+  search_description?: string
   body: string
   is_published: boolean
   order: number

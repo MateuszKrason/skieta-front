@@ -8,12 +8,22 @@ import type { Article } from '../types'
 type FormState = {
   title: string
   summary: string
+  search_title: string
+  search_description: string
   body: string
   is_published: boolean
   order: number
 }
 
-const EMPTY_FORM: FormState = { title: '', summary: '', body: '', is_published: true, order: 0 }
+const EMPTY_FORM: FormState = {
+  title: '',
+  summary: '',
+  search_title: '',
+  search_description: '',
+  body: '',
+  is_published: true,
+  order: 0,
+}
 
 export default function Redakcja() {
   const { t } = useLanguage()
@@ -61,6 +71,8 @@ export default function Redakcja() {
     setForm({
       title: article.title,
       summary: article.summary,
+      search_title: article.search_title ?? '',
+      search_description: article.search_description ?? '',
       body: article.body,
       is_published: article.is_published,
       order: article.order,
@@ -132,6 +144,32 @@ export default function Redakcja() {
               maxLength={300}
               className="input mt-1"
             />
+          </label>
+          <label className="block text-xs font-medium text-slate-500 dark:text-slate-400">
+            {t('Tytuł w Google (opcjonalnie)')}
+            <input
+              value={form.search_title}
+              onChange={(e) => setForm((f) => ({ ...f, search_title: e.target.value }))}
+              maxLength={70}
+              placeholder={form.title}
+              className="input mt-1"
+            />
+            <span className="mt-1 block font-normal text-slate-400">
+              {t('{0}/60 znaków. Puste = tytuł artykułu. Najlepiej zacząć od frazy, którą ludzie wpisują.', String(form.search_title.length))}
+            </span>
+          </label>
+          <label className="block text-xs font-medium text-slate-500 dark:text-slate-400">
+            {t('Opis w Google (opcjonalnie)')}
+            <input
+              value={form.search_description}
+              onChange={(e) => setForm((f) => ({ ...f, search_description: e.target.value }))}
+              maxLength={160}
+              placeholder={form.summary}
+              className="input mt-1"
+            />
+            <span className="mt-1 block font-normal text-slate-400">
+              {t('{0}/155 znaków. Puste = krótki opis.', String(form.search_description.length))}
+            </span>
           </label>
           <label className="block text-xs font-medium text-slate-500 dark:text-slate-400">
             {t('Treść')}

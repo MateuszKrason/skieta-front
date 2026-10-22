@@ -1,4 +1,4 @@
-import { useMemo, useState, type FormEvent, type KeyboardEvent } from 'react'
+import { useMemo, useState, type FormEvent } from 'react'
 import { useMutation, useQuery } from '@tanstack/react-query'
 import { Link } from 'react-router-dom'
 import { AmountInput } from '../../components/AmountInput'
@@ -18,6 +18,7 @@ import {
   todayIso,
   type SplitState,
 } from '../../lib/splits'
+import TagChips from './TagChips'
 import { CARD, ErrorText, Field, PRIMARY, SECONDARY } from './ui'
 
 const MODES: { mode: SplitMode; label: string }[] = [
@@ -74,7 +75,6 @@ export default function ExpenseForm({
   })
   const [description, setDescription] = useState(expense?.description ?? '')
   const [tags, setTags] = useState<string[]>(expense?.tags ?? [])
-  const [tagInput, setTagInput] = useState('')
   const [manualRate, setManualRate] = useState(expense?.rate_source === 'manual' ? expense.rate : '')
   const [error, setError] = useState('')
   const [scanNote, setScanNote] = useState('')
@@ -126,26 +126,9 @@ export default function ExpenseForm({
     setValues(Object.fromEntries(memberIds.map((id) => [id, people.includes(id) ? split[people.indexOf(id)] : ''])))
   }
 
-  function addTag(raw: string) {
-    const tag = raw.trim().replace(/^#/, '')
-    if (!tag) return
-    if (!tags.some((x) => x.toLowerCase() === tag.toLowerCase()) && tags.length < 10) setTags([...tags, tag.slice(0, 30)])
-    setTagInput('')
-  }
-
-  function onTagKey(e: KeyboardEvent<HTMLInputElement>) {
-    if (e.key === 'Enter' || e.key === ',') {
-      e.preventDefault()
-      addTag(tagInput)
-    } else if (e.key === 'Backspace' && !tagInput && tags.length) {
-      setTags(tags.slice(0, -1))
-    }
-  }
-
   function submit(e: FormEvent) {
     e.preventDefault()
     setError('')
-    if (tagInput.trim()) addTag(tagInput)
     if (preview.problem) {
       setError(t(preview.problem))
       return
@@ -159,7 +142,7 @@ export default function ExpenseForm({
     save.mutate({
       title,
       description,
-      tags: tagInput.trim() ? [...tags, tagInput.trim().replace(/^#/, '')] : tags,
+      tags,
       amount,
       currency,
       rate: foreign && manualRate ? manualRate : null,
@@ -169,8 +152,6 @@ export default function ExpenseForm({
       shares,
     })
   }
-
-  const suggestions = state.tags.filter((tag) => !tags.some((x) => x.toLowerCase() === tag.toLowerCase())).slice(0, 8)
 
   return (
     <form onSubmit={submit} className={`${CARD} space-y-4`}>
@@ -359,7 +340,7 @@ export default function ExpenseForm({
           })}
         </ul>
         <div className="mt-2 flex flex-wrap items-center justify-between gap-2 text-xs">
-          {preview.problem ? (
+          {preview.problem && amount.trim() ? (
             <span className="text-amber-700 dark:text-amber-400">
               {t(preview.problem)}
               {preview.remainder !== 0 && ' '}
@@ -392,49 +373,7 @@ export default function ExpenseForm({
             maxLength={1000}
           />
         </Field>
-        <Field label={t('Tagi (opcjonalnie)')} hint={t('Enter albo przecinek dodaje tag.')}>
-          <div className="input flex flex-wrap items-center gap-1">
-            {tags.map((tag) => (
-              <span
-                key={tag}
-                className="inline-flex items-center gap-1 rounded-full bg-slate-100 dark:bg-slate-700 px-2 py-0.5 text-xs text-slate-700 dark:text-slate-200"
-              >
-                #{tag}
-                <button
-                  type="button"
-                  aria-label={t('Usuń tag {0}', tag)}
-                  onClick={() => setTags(tags.filter((x) => x !== tag))}
-                  className="text-slate-400 hover:text-red-600"
-                >
-                  ×
-                </button>
-              </span>
-            ))}
-            <input
-              className="min-w-[6rem] flex-1 border-0 bg-transparent p-0 text-sm outline-none focus:ring-0"
-              value={tagInput}
-              onChange={(e) => setTagInput(e.target.value)}
-              onKeyDown={onTagKey}
-              onBlur={() => tagInput.trim() && addTag(tagInput)}
-              placeholder={tags.length ? '' : t('np. jedzenie')}
-              maxLength={30}
-            />
-          </div>
-          {suggestions.length > 0 && (
-            <div className="mt-1 flex flex-wrap gap-1">
-              {suggestions.map((tag) => (
-                <button
-                  key={tag}
-                  type="button"
-                  onClick={() => addTag(tag)}
-                  className="rounded-full border border-dashed border-slate-300 dark:border-slate-600 px-2 py-0.5 text-xs text-slate-500 dark:text-slate-400 hover:border-accent-500 hover:text-accent-700"
-                >
-                  +#{tag}
-                </button>
-              ))}
-            </div>
-          )}
-        </Field>
+        <TagChips value={tags} onChange={setTags} groupTags={state.tags} />
       </div>
 
       <ErrorText>{error}</ErrorText>

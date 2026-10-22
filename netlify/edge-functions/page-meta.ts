@@ -178,6 +178,31 @@ const PAGES: Record<string, Page> = {
   },
 }
 
+// The calculators, linked from the plain HTML of the home page and of every
+// tool page. In the app the same list renders as "Inne kalkulatory", but only
+// once JavaScript runs; Search Console (22.10.2026) still knew /pit-38 from
+// no page at all. A copy of src/lib/calculators.ts (an edge function cannot
+// import from src/) - keep the two in step.
+const TOOLS: [string, string][] = [
+  ['/kalkulator/procent-skladany', 'Kalkulator procentu składanego'],
+  ['/kalkulator/podatek-belki', 'Kalkulator podatku Belki'],
+  ['/kalkulator/cel-oszczednosciowy', 'Ile odkładać na cel'],
+  ['/kalkulator/lokata', 'Kalkulator lokaty'],
+  ['/kalkulator/inflacja', 'Kalkulator inflacji'],
+  ['/kalkulator/ikze', 'Kalkulator IKZE'],
+  ['/kalkulator', 'Lokata, obligacje czy giełda'],
+  ['/pit-38', 'Pomocnik PIT-38'],
+]
+
+function toolsNav(current: string): string {
+  const links = TOOLS.filter(([path]) => path !== current)
+    .map(([path, label]) => `<li><a href="${path}">${label}</a></li>`)
+    .join('')
+  return `<nav><h2>Kalkulatory</h2><ul>${links}</ul></nav>`
+}
+
+const WITH_TOOLS_NAV = new Set(['/', ...TOOLS.map(([path]) => path)])
+
 function escapeAttribute(value: string): string {
   return value.replace(/&/g, '&amp;').replace(/</g, '&lt;').replace(/>/g, '&gt;').replace(/"/g, '&quot;')
 }
@@ -219,7 +244,8 @@ export default async (request: Request, context: { next: () => Promise<Response>
     )
   }
   if (page.body) {
-    html = replaceOnce(html, /<div id="root"><\/div>/, `<div id="root">${page.body}</div>`)
+    const body = WITH_TOOLS_NAV.has(path) ? page.body.replace(/<\/main>$/, `${toolsNav(path)}</main>`) : page.body
+    html = replaceOnce(html, /<div id="root"><\/div>/, `<div id="root">${body}</div>`)
   }
 
   const headers = new Headers(response.headers)
