@@ -8,11 +8,16 @@
 //
 // This rewrites the <head> at the edge, before the HTML reaches the browser or
 // the crawler. Any failure - a missing slug, an unpublished article, a slow or
-// unreachable API - returns the untouched response, so the page still renders.
+// unreachable API - still renders the page, with only its canonical and og:url
+// pointed at the article itself: left as index.html has them, a crawler that
+// arrived while the API was waking up was told the article is a copy of "/".
 
 const API_BASE = 'https://api.skieta.com/api/content/articles'
 const SITE = 'https://skieta.com'
-const FETCH_TIMEOUT_MS = 2000
+// A short first try so a reader never waits long, then one longer one: a miss
+// is almost always the API waking up, and the second try usually lands
+// (22.10.2026: one fetch in a row of 30 came back as the homepage).
+const FETCH_TIMEOUTS_MS = [2000, 6000]
 
 // Cards are served from the Netlify hostname, not from skieta.com, and that is
 // deliberate. Facebook rejects every image URL it has not already cached from
@@ -145,6 +150,29 @@ function renderInitialData(article: Article): string {
   return `<script id="${INITIAL_DATA_ID}" type="application/json">${json}</script>`
 }
 
+async function fetchArticle(slug: string): Promise<Article | null> {
+  for (const timeout of FETCH_TIMEOUTS_MS) {
+    try {
+      const res = await fetch(`${API_BASE}/${encodeURIComponent(slug)}/`, { signal: AbortSignal.timeout(timeout) })
+      if (res.ok) return await res.json()
+      // No such article, or not published yet: another try will not change that.
+      if (res.status < 500) return null
+    } catch {
+      // Timed out or unreachable - worth the second try.
+    }
+  }
+  return null
+}
+
+async function withOwnCanonical(response: Response, url: string): Promise<Response> {
+  let html = await response.text()
+  html = replaceOnce(html, /<link rel="canonical" href="[^"]*"\s*\/?>/, `<link rel="canonical" href="${url}" />`)
+  html = replaceOnce(html, /<meta property="og:url" content="[^"]*"\s*\/?>/, `<meta property="og:url" content="${url}" />`)
+  const headers = new Headers(response.headers)
+  headers.delete('content-length')
+  return new Response(html, { status: response.status, headers })
+}
+
 export default async (request: Request, context: { next: () => Promise<Response> }) => {
   const response = await context.next()
 
@@ -156,18 +184,10 @@ export default async (request: Request, context: { next: () => Promise<Response>
   const slug = segments[0] === 'artykuly' ? segments[1] : undefined
   if (!slug) return response
 
-  let article: Article
-  try {
-    const res = await fetch(`${API_BASE}/${encodeURIComponent(slug)}/`, {
-      signal: AbortSignal.timeout(FETCH_TIMEOUT_MS),
-    })
-    if (!res.ok) return response
-    article = await res.json()
-  } catch {
-    return response
-  }
-
   const url = `${SITE}/artykuly/${slug}`
+  const article = await fetchArticle(slug)
+  if (!article) return withOwnCanonical(response, url)
+
   // A search title/description, when the editor wrote one, is what the
   // result shows; the headline and summary stay for readers and link cards.
   const title = escapeAttribute(searchTitle(article.search_title || article.title))

@@ -1547,6 +1547,9 @@ export const de: Record<string, string> = {
   'Profil dywidendowy w skiecie: suma wypłat, projekcja rocznego dochodu i planowane dywidendy':
     'Das Dividendenprofil in skieta: Summe der Auszahlungen, prognostiziertes Jahreseinkommen und geplante Dividenden',
   'Cele, które same się pilnują': 'Ziele, die sich selbst im Blick behalten',
+  'Wspólne wydatki ze znajomymi': 'Gemeinsame Ausgaben mit Freunden',
+  'Wyjazd, wspólne mieszkanie albo prezent na składkę: każdy dopisuje swoje wydatki z telefonu, a skieta liczy, kto komu ile oddaje, najmniejszą liczbą przelewów. Także w euro.': 'Eine Reise, eine WG oder ein gemeinsames Geschenk: Jede Person trägt ihre Ausgaben vom Handy aus ein, und skieta rechnet aus, wer wem wie viel schuldet, mit möglichst wenigen Überweisungen. Auch in Euro.',
+  'Wspólne rozliczenie wyjazdu w skiecie: link dla znajomych, bilans i lista przelewów, kto komu ile oddaje': 'Eine gemeinsame Reise in skieta: Link für Freunde, Saldo und Liste der Überweisungen, wer wem wie viel zahlt',
   'Planowanie budżetu w skiecie z celami oszczędnościowymi i postępem zbierania':
     'Budgetplanung in skieta mit Sparzielen und dem Fortschritt beim Ansparen',
 

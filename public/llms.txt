@@ -19,6 +19,7 @@ Nie mylić ze sklepem skieta.pl, który sprzedaje skarpety. Ten plik opisuje apl
 
 - Budżet domowy: przychody i wydatki z podziałem na kategorie, sklepy i tagi, budżet miesiąc po miesiącu, stałe koszty.
 - Cele oszczędnościowe: rezerwowanie kwot z konkretnej wypłaty, z wyliczeniem, ile odkładać z każdej kolejnej, żeby zdążyć przed terminem.
+- Wspólne rozliczenia: wyjazd, wspólne mieszkanie albo składka na prezent. Osoba zakładająca wysyła znajomym link, każdy po zalogowaniu wybiera swoje imię i dopisuje wydatki, także w obcej walucie. skieta wylicza, kto komu ile oddaje, najmniejszą liczbą przelewów, a swoją część można przenieść do własnego budżetu.
 - Majątek w jednym widoku: konta bankowe, konta oszczędnościowe, lokaty, obligacje skarbowe (także indeksowane inflacją), akcje i ETF-y z GPW i z giełd w USA, kryptowaluty.
 - Realny zysk: wpłacony kapitał osobno od zysku, brutto i po podatku Belki, a przy akcjach zagranicznych osobno wpływ kursu waluty (koszt zakupu po kursie NBP z dnia transakcji).
 - Dywidendy: historia i prognoza z szacowanym podatkiem.

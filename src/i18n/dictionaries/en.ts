@@ -1545,6 +1545,9 @@ export const en: Record<string, string> = {
   'Profil dywidendowy w skiecie: suma wypłat, projekcja rocznego dochodu i planowane dywidendy':
     'The dividend profile in skieta: total paid out, projected annual income and upcoming dividends',
   'Cele, które same się pilnują': 'Goals that keep track of themselves',
+  'Wspólne wydatki ze znajomymi': 'Shared expenses with friends',
+  'Wyjazd, wspólne mieszkanie albo prezent na składkę: każdy dopisuje swoje wydatki z telefonu, a skieta liczy, kto komu ile oddaje, najmniejszą liczbą przelewów. Także w euro.': 'A trip, a shared flat or a group gift: everyone adds their own expenses from their phone, and skieta works out who owes whom, in the fewest transfers. In euros too.',
+  'Wspólne rozliczenie wyjazdu w skiecie: link dla znajomych, bilans i lista przelewów, kto komu ile oddaje': 'A shared trip in skieta: the link for friends, the balance and the list of transfers showing who pays whom',
   'Planowanie budżetu w skiecie z celami oszczędnościowymi i postępem zbierania':
     'Budget planning in skieta, with savings goals and the progress towards each one',
 

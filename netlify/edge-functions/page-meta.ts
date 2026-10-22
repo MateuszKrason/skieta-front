@@ -36,6 +36,8 @@ const PAGES: Record<string, Page> = {
       '<p><a href="/register">Załóż darmowe konto</a> · <a href="/kalkulator">Kalkulator: lokata, obligacje czy giełda</a></p>' +
       '<h2>Widać, na co naprawdę idą pieniądze</h2>' +
       '<p>Wydatki z podziałem na kategorie, sklepy i tagi, miesiąc po miesiącu. Paragon dodasz zdjęciem.</p>' +
+      '<h2>Wspólne wydatki ze znajomymi</h2>' +
+      '<p>Wyjazd, wspólne mieszkanie albo prezent na składkę: każdy dopisuje swoje wydatki z telefonu, a skieta liczy, kto komu ile oddaje, najmniejszą liczbą przelewów. Także w euro.</p>' +
       '<h2>Zysk, a nie tylko saldo</h2>' +
       '<p>Wpłacony kapitał osobno, zysk osobno, brutto i po podatku Belki. Przy akcjach z zagranicy widać też, ile zrobił sam kurs waluty.</p>' +
       '<h2>Cele, które same się pilnują</h2>' +

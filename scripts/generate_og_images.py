@@ -42,6 +42,13 @@ PREFIX = 'og-'
 # slug -> title; an entry is harmless once the article is live, the API wins.
 SCHEDULED_TITLES = pathlib.Path(__file__).resolve().parent / 'og_scheduled_titles.json'
 
+# Cards for pages that are not articles, rendered on every run alongside them
+# so the stale-card cleanup below never leaves them missing. name -> title.
+PAGE_CARDS = {
+    # Preview of every /wspolne/<token> link (netlify/edge-functions/split-meta.ts).
+    'wspolne': 'Wspólne wydatki: kto komu ile oddaje?',
+}
+
 WIDTH, HEIGHT = 1200, 630
 MARGIN = 84
 
@@ -137,12 +144,13 @@ def main() -> None:
     for stale in OUT_DIR.glob(f'{PREFIX}*.jpg'):
         stale.unlink()
 
-    for article in articles:
-        path = OUT_DIR / f"{PREFIX}{article['slug']}.jpg"
-        render(article['title'], path)
-        print(f"{path.name}  ({path.stat().st_size // 1024} KB)")
+    cards = [(article['slug'], article['title']) for article in articles] + list(PAGE_CARDS.items())
+    for name, title in cards:
+        path = OUT_DIR / f'{PREFIX}{name}.jpg'
+        render(title, path)
+        print(f'{path.name}  ({path.stat().st_size // 1024} KB)')
 
-    print(f'\n{len(articles)} grafik w {OUT_DIR}')
+    print(f'\n{len(cards)} grafik w {OUT_DIR}')
 
 
 if __name__ == '__main__':

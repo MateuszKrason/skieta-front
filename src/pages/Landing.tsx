@@ -116,15 +116,25 @@ const PROMISES: { icon: keyof typeof ICONS; title: string; body: string }[] = [
   { icon: 'exit', title: 'Wychodzisz, kiedy chcesz', body: 'Pobierasz swoje dane i usuwasz konto sam, z ustawień.' },
 ]
 
-// The three things skieta does that are hardest to believe without seeing
-// them, each paired with the screen that proves it. This is the page's whole
+// The things skieta does that are hardest to believe without seeing them,
+// each paired with the screen that proves it. This is the page's whole
 // feature list now, so each gets one sentence: the screenshot does the rest.
-const SHOWCASE: { name: 'wydatki' | 'portfel' | 'planowanie'; title: string; body: string; alt: string }[] = [
+//
+// Shared expenses sit second: from 22.10.2026 most reels are about them, so a
+// visitor who typed skieta.com after one finds that feature one scroll down
+// instead of a page about budgets and the Belka tax.
+const SHOWCASE: { name: 'wydatki' | 'wspolne' | 'portfel' | 'planowanie'; title: string; body: string; alt: string }[] = [
   {
     name: 'wydatki',
     title: 'Widać, na co naprawdę idą pieniądze',
     body: 'Wydatki z podziałem na kategorie, sklepy i tagi, miesiąc po miesiącu. Paragon dodasz zdjęciem.',
     alt: 'Strona wydatków w skiecie: podział na kategorie i sklepy, wykres wydatków w czasie i przycisk wgrywania paragonu',
+  },
+  {
+    name: 'wspolne',
+    title: 'Wspólne wydatki ze znajomymi',
+    body: 'Wyjazd, wspólne mieszkanie albo prezent na składkę: każdy dopisuje swoje wydatki z telefonu, a skieta liczy, kto komu ile oddaje, najmniejszą liczbą przelewów. Także w euro.',
+    alt: 'Wspólne rozliczenie wyjazdu w skiecie: link dla znajomych, bilans i lista przelewów, kto komu ile oddaje',
   },
   {
     name: 'portfel',
@@ -217,6 +227,8 @@ const PRODUCT_SHOTS = {
   wydatki: { width: 1248, height: 1015 },
   portfel: { width: 1248, height: 725 },
   planowanie: { width: 1248, height: 788 },
+  // Captured at 1.5x and cropped to the page's own column, which is narrower than the budget pages.
+  wspolne: { width: 1392, height: 1112 },
   // Phone captures: the app is used on a phone as much as on a computer, receipts most of all.
   'dashboard-mobile': { width: 780, height: 1500 },
   'wydatki-mobile': { width: 780, height: 1500 },
