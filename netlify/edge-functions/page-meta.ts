@@ -15,9 +15,15 @@ const SITE = 'https://skieta.com'
 interface Page {
   title: string
   description: string
+  /** Link-preview card, when the page has its own; otherwise the site's. */
+  image?: string
   /** Plain-HTML version of the page's own text, for crawlers; omitted where the head is all that was wrong. */
   body?: string
 }
+
+// Same reason as IMAGE_HOST in article-meta.ts: Facebook rejects new image
+// URLs on skieta.com, while the Netlify hostname serves the same deploy.
+const IMAGE_HOST = 'https://skieta.netlify.app'
 
 const WRAPPER_STYLE = 'max-width:48rem;margin:0 auto;padding:3rem 1rem;font-family:system-ui,sans-serif;line-height:1.6'
 
@@ -37,7 +43,7 @@ const PAGES: Record<string, Page> = {
       '<h2>Widać, na co naprawdę idą pieniądze</h2>' +
       '<p>Wydatki z podziałem na kategorie, sklepy i tagi, miesiąc po miesiącu. Paragon dodasz zdjęciem.</p>' +
       '<h2>Wspólne wydatki ze znajomymi</h2>' +
-      '<p>Wyjazd, wspólne mieszkanie albo prezent na składkę: każdy dopisuje swoje wydatki z telefonu, a skieta liczy, kto komu ile oddaje, najmniejszą liczbą przelewów. Także w euro.</p>' +
+      '<p>Wyjazd, wspólne mieszkanie albo prezent na składkę: każdy dopisuje swoje wydatki z telefonu, a skieta liczy, kto komu ile oddaje, najmniejszą liczbą przelewów. Także w euro. <a href="/rozliczenia">Jak działają wspólne rozliczenia</a></p>' +
       '<h2>Zysk, a nie tylko saldo</h2>' +
       '<p>Wpłacony kapitał osobno, zysk osobno, brutto i po podatku Belki. Przy akcjach z zagranicy widać też, ile zrobił sam kurs waluty.</p>' +
       '<h2>Cele, które same się pilnują</h2>' +
@@ -170,6 +176,28 @@ const PAGES: Record<string, Page> = {
       '<p><a href="/kalkulator/podatek-belki">Kalkulator podatku Belki</a> · <a href="/">skieta - darmowa aplikacja do budżetu domowego</a></p>' +
       '</main>',
   },
+  '/rozliczenia': {
+    title: 'Rozliczenie wydatków ze znajomymi za darmo - skieta',
+    description:
+      'Kto komu ile? Rozlicz wyjazd, mieszkanie albo składkę: każdy dopisuje wydatki, a skieta liczy przelewy. Waluty po kursie NBP. Za darmo, bez reklam.',
+    image: `${IMAGE_HOST}/og-wspolne.jpg`,
+    body:
+      `<main style="${WRAPPER_STYLE}">` +
+      '<h1>Kto komu ile? Rozlicz wyjazd ze znajomymi za darmo</h1>' +
+      '<p>Wspólne wydatki z wyjazdu, mieszkania albo składki na prezent w jednym miejscu. Każdy dopisuje swoje z telefonu, a skieta liczy, kto komu oddaje, najmniejszą liczbą przelewów. Bez reklam i bez dziennego limitu wpisów.</p>' +
+      '<p><a href="/register">Załóż darmowe rozliczenie</a></p>' +
+      '<h2>Jak to działa</h2>' +
+      '<ol><li>Zakładasz rozliczenie: wyjazd, wspólne mieszkanie, wyjście albo inną okazję, i wpisujesz imiona.</li>' +
+      '<li>Wysyłasz link na grupę, na Messengerze albo WhatsAppie. Znajomi logują się, wybierają swoje imię z listy i dołączają.</li>' +
+      '<li>Każdy dopisuje swoje wydatki: kto płacił, ile i za kogo.</li>' +
+      '<li>skieta pokazuje, kto komu ile oddaje, najmniejszą liczbą przelewów.</li></ol>' +
+      '<h2>Co potrafi</h2>' +
+      '<p>Podział po równo, procentowo albo kwotowo. Wydatki w 14 walutach, przeliczane po średnim kursie NBP z dnia wydatku. Podsumowanie do skopiowania na czat. Swoją część przeniesiesz do własnego budżetu. Do 10 osób i 1000 wydatków w jednym rozliczeniu.</p>' +
+      '<h2>Czym to się różni od Splitwise?</h2>' +
+      '<p>To ten sam pomysł: wspólna lista wydatków i wyliczenie, kto komu ile oddaje. skieta jest po polsku, przelicza waluty po kursie NBP, nie ma reklam, abonamentu ani dziennego limitu wpisów, a swoją część wydatków przeniesiesz do budżetu domowego w tej samej aplikacji.</p>' +
+      '<p><a href="/">skieta - darmowa aplikacja do budżetu domowego</a></p>' +
+      '</main>',
+  },
   '/regulamin': {
     title: 'Regulamin - skieta',
     description: 'Zasady korzystania z aplikacji skieta: rejestracja, konto demonstracyjne, odpowiedzialność i usuwanie konta.',
@@ -245,6 +273,10 @@ export default async (request: Request, context: { next: () => Promise<Response>
       `<meta name="twitter:description" content="${description}" />`,
     )
   }
+  if (page.image) {
+    html = replaceOnce(html, /<meta property="og:image" content="[^"]*"\s*\/?>/, `<meta property="og:image" content="${page.image}" />`)
+    html = replaceOnce(html, /<meta name="twitter:image" content="[^"]*"\s*\/?>/, `<meta name="twitter:image" content="${page.image}" />`)
+  }
   if (page.body) {
     const body = WITH_TOOLS_NAV.has(path) ? page.body.replace(/<\/main>$/, `${toolsNav(path)}</main>`) : page.body
     html = replaceOnce(html, /<div id="root"><\/div>/, `<div id="root">${body}</div>`)
@@ -267,6 +299,7 @@ export const config = {
     '/kalkulator/inflacja',
     '/kalkulator/ikze',
     '/pit-38',
+    '/rozliczenia',
     '/regulamin',
     '/polityka-prywatnosci',
   ],

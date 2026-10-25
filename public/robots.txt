@@ -23,6 +23,7 @@ Allow: /sitemap.xml
 Allow: /rss.xml
 Allow: /llms.txt
 Allow: /pit-38
+Allow: /rozliczenia
 # Shared-expenses links get pasted into group chats, and Messenger builds the preview with Facebook's crawler, which obeys this file. The pages themselves say noindex (netlify/edge-functions/split-meta.ts).
 Allow: /wspolne/
 # The IndexNow key: search engines fetch it to check that page submissions really come from this site.

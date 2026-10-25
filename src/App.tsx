@@ -42,6 +42,7 @@ const Planowanie = lazy(() => import('./pages/Planowanie'))
 const Timeline = lazy(() => import('./pages/Timeline'))
 const YearReview = lazy(() => import('./pages/YearReview'))
 const Pit38Landing = lazy(() => import('./pages/Pit38Landing'))
+const RozliczeniaLanding = lazy(() => import('./pages/RozliczeniaLanding'))
 const Account = lazy(() => import('./pages/Account'))
 const AdminLayout = lazy(() => import('./pages/admin/AdminLayout'))
 const AdminUsers = lazy(() => import('./pages/admin/AdminUsers'))
@@ -129,6 +130,7 @@ const PAGE_TITLES: [string, string][] = [
   ['/analiza', 'Analiza'],
   ['/moj-rok', 'Twój rok w skiecie'],
   ['/pit-38', 'Kalkulator PIT-38: FIFO i kursy NBP z Twoich transakcji'],
+  ['/rozliczenia', 'Rozliczenie wydatków ze znajomymi za darmo'],
   ['/dashboard', 'Dashboard'],
 ]
 
@@ -173,6 +175,7 @@ const CANONICAL_SELF_PATHS = [
   '/kalkulator/inflacja',
   '/kalkulator/ikze',
   '/pit-38',
+  '/rozliczenia',
 ]
 
 function useCanonicalLink() {
@@ -220,6 +223,7 @@ export default function App() {
       <Route path="/kalkulator/inflacja" element={<Inflation />} />
       <Route path="/kalkulator/ikze" element={<Ikze />} />
       <Route path="/pit-38" element={<Pit38Landing />} />
+      <Route path="/rozliczenia" element={<RozliczeniaLanding />} />
       {/* Open to anyone with the link - friends splitting a trip need no
           account. Signed-in people get the usual app frame around it. */}
       <Route path="/wspolne/:token" element={<WspolneShell />}>

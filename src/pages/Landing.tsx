@@ -536,6 +536,14 @@ export default function Landing() {
                 <div className={i % 2 === 1 ? 'lg:col-span-2 lg:order-1' : 'lg:col-span-2'}>
                   <h3 className="text-2xl font-bold text-slate-900 dark:text-slate-100">{t(item.title)}</h3>
                   <p className="mt-3 text-base leading-relaxed text-slate-600 dark:text-slate-400">{t(item.body)}</p>
+                  {item.name === 'wspolne' && (
+                    <Link
+                      to="/rozliczenia"
+                      className="mt-3 inline-block text-sm font-semibold text-accent-700 dark:text-accent-400 hover:underline"
+                    >
+                      {t('Jak działają wspólne rozliczenia →')}
+                    </Link>
+                  )}
                 </div>
               </div>
             ))}

@@ -38,6 +38,7 @@ const SIGNUP_SOURCE_LABELS: Record<string, string> = {
   article: 'Artykuł',
   calculator: 'Kalkulator',
   split_link: 'Link do wspólnego rozliczenia',
+  split_page: 'Strona o wspólnych rozliczeniach',
   unknown: 'Nieznane / wejście wprost',
 }
 
