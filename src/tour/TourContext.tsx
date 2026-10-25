@@ -35,14 +35,17 @@ export function TourProvider({ children }: { children: ReactNode }) {
   // provider remounts within the session. Someone who signed up from a
   // shared expense link came for that event: the tour would cover it and
   // then walk them away from it, so it waits until they open the app itself.
-  const onSharedEvent = location.pathname.startsWith('/wspolne/')
+  // The same goes for the setup wizard every new account lands on: the tour
+  // opened over its first step and its "Dalej" navigated off to other pages,
+  // so it now starts on the dashboard the wizard ends on.
+  const waitsForUser = location.pathname.startsWith('/wspolne/') || location.pathname === '/onboarding'
   useEffect(() => {
-    if (!autoStarted.current && user && !user.profile.has_seen_tour && !onSharedEvent) {
+    if (!autoStarted.current && user && !user.profile.has_seen_tour && !waitsForUser) {
       autoStarted.current = true
       setStepIndex(0)
       setActive(true)
     }
-  }, [user, onSharedEvent])
+  }, [user, waitsForUser])
 
   const step = active ? (steps[stepIndex] ?? null) : null
 

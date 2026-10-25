@@ -64,6 +64,11 @@ export const de: Record<string, string> = {
   'Obligacje': 'Anleihen',
   'Gotowe': 'Fertig',
   'Dodaj posiadane rzeczy': 'Füge hinzu, was du besitzt',
+  'Ustaw skietę pod siebie': 'Richte skieta nach deinen Wünschen ein',
+  'Każdy krok możesz pominąć i wrócić do niego później przyciskiem „+ Dodaj pozycje” w górnym menu.': 'Du kannst jeden Schritt überspringen und später über die Schaltfläche „+ Positionen hinzufügen“ im oberen Menü zurückkehren.',
+  'Kolejne kroki będą tylko o tym, co zostawisz zaznaczone.': 'Die nächsten Schritte betreffen nur, was du angehakt lässt.',
+  'Zacznij od jednego wpisu': 'Fang mit einem Eintrag an',
+  'Wpisz ostatnią wypłatę i jeden albo dwa wydatki, choćby dzisiejsze zakupy. Tyle wystarczy, żeby skieta zaczęła pokazywać, gdzie znikają pieniądze. Paragon dodasz później zdjęciem, na stronie Wydatki.': 'Trag dein letztes Gehalt und ein, zwei Ausgaben ein, etwa den heutigen Einkauf. Das reicht, damit skieta zeigt, wohin dein Geld geht. Kassenbons fügst du später per Foto auf der Seite Ausgaben hinzu.',
   'Wprowadź to, co już posiadasz - z prawdziwą, wsteczną datą zakupu - żeby historia i zyski liczyły się poprawnie od początku.':
     'Trage ein, was du bereits besitzt - mit dem echten, rückwirkenden Kaufdatum - damit Verlauf und Gewinne von Anfang an korrekt berechnet werden.',
   'Zakończ teraz →': 'Jetzt abschließen →',

@@ -89,7 +89,7 @@ const PAGE_TITLES: [string, string][] = [
   ['/zapomnialem-hasla', 'Reset hasła'],
   ['/reset-hasla', 'Reset hasła'],
   ['/zweryfikuj-email', 'Weryfikacja e-mail'],
-  ['/onboarding', 'Dodaj posiadane rzeczy'],
+  ['/onboarding', 'Ustaw skietę pod siebie'],
   ['/moje-konto', 'Moje konto'],
   ['/redakcja', 'Redakcja artykułów'],
   ['/admin/uzytkownicy/', 'Szczegóły użytkownika'],

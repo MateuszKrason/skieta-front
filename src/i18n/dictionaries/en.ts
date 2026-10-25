@@ -64,6 +64,11 @@ export const en: Record<string, string> = {
   'Obligacje': 'Bonds',
   'Gotowe': 'Done',
   'Dodaj posiadane rzeczy': 'Add what you own',
+  'Ustaw skietę pod siebie': 'Set skieta up your way',
+  'Każdy krok możesz pominąć i wrócić do niego później przyciskiem „+ Dodaj pozycje” w górnym menu.': 'You can skip any step and come back to it later with the "+ Add holdings" button in the top menu.',
+  'Kolejne kroki będą tylko o tym, co zostawisz zaznaczone.': 'The next steps cover only what you leave ticked.',
+  'Zacznij od jednego wpisu': 'Start with one entry',
+  'Wpisz ostatnią wypłatę i jeden albo dwa wydatki, choćby dzisiejsze zakupy. Tyle wystarczy, żeby skieta zaczęła pokazywać, gdzie znikają pieniądze. Paragon dodasz później zdjęciem, na stronie Wydatki.': 'Enter your last pay and one or two expenses, even today\'s shopping. That is enough for skieta to start showing where your money goes. You can add receipts later from a photo, on the Expenses page.',
   'Wprowadź to, co już posiadasz - z prawdziwą, wsteczną datą zakupu - żeby historia i zyski liczyły się poprawnie od początku.':
     'Enter what you already own - with the real, backdated purchase date - so history and gains are calculated correctly from the start.',
   'Zakończ teraz →': 'Finish now →',

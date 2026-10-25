@@ -64,6 +64,11 @@ export const es: Record<string, string> = {
   'Obligacje': 'Obligaciones',
   'Gotowe': 'Listo',
   'Dodaj posiadane rzeczy': 'Añade lo que ya tienes',
+  'Ustaw skietę pod siebie': 'Configura skieta a tu manera',
+  'Każdy krok możesz pominąć i wrócić do niego później przyciskiem „+ Dodaj pozycje” w górnym menu.': 'Puedes saltarte cualquier paso y volver más tarde con el botón «+ Añadir posiciones» del menú superior.',
+  'Kolejne kroki będą tylko o tym, co zostawisz zaznaczone.': 'Los siguientes pasos tratan solo de lo que dejes marcado.',
+  'Zacznij od jednego wpisu': 'Empieza con una entrada',
+  'Wpisz ostatnią wypłatę i jeden albo dwa wydatki, choćby dzisiejsze zakupy. Tyle wystarczy, żeby skieta zaczęła pokazywać, gdzie znikają pieniądze. Paragon dodasz później zdjęciem, na stronie Wydatki.': 'Introduce tu último sueldo y uno o dos gastos, aunque sea la compra de hoy. Con eso skieta empieza a mostrar adónde se va tu dinero. Los tiques los añadirás después con una foto, en la página Gastos.',
   'Wprowadź to, co już posiadasz - z prawdziwą, wsteczną datą zakupu - żeby historia i zyski liczyły się poprawnie od początku.':
     'Introduce lo que ya tienes - con la fecha de compra real y retroactiva - para que el historial y las ganancias se calculen correctamente desde el principio.',
   'Zakończ teraz →': 'Terminar ahora →',

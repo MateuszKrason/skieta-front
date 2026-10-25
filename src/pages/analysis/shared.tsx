@@ -1,4 +1,4 @@
-import { useEffect, useRef, useState, type FormEvent } from 'react'
+import { useEffect, useRef, useState, type FormEvent, type Ref } from 'react'
 import { useMutation, useQuery, useQueryClient } from '@tanstack/react-query'
 import {
   Area,
@@ -1618,14 +1618,21 @@ export function AddTransactionForm({
   accounts,
   onDone,
   lockedType,
+  initialType,
   lockedAccount,
   initialValues,
+  formRef,
 }: {
   categories: Category[]
   accounts: BankAccount[]
   onDone: () => void
   lockedType?: BudgetType
+  /** The type the form opens with when it is not locked to one. */
+  initialType?: BudgetType
   lockedAccount?: BankAccount
+  /** Lets a caller check or submit the form from outside, as the onboarding
+   * wizard does before moving to its next step. */
+  formRef?: Ref<HTMLFormElement>
   /** Pre-fills the form from a source outside it - today, a scanned receipt
    * (see ScanReceiptButton below). Nothing here is saved until the user
    * reviews it and hits "Zapisz" like any other transaction. */
@@ -1639,7 +1646,7 @@ export function AddTransactionForm({
   }
 }) {
   const { t } = useLanguage()
-  const [type, setType] = useState<BudgetType>(lockedType ?? 'expense')
+  const [type, setType] = useState<BudgetType>(lockedType ?? initialType ?? 'expense')
   const [category, setCategory] = useState<number | ''>('')
   const [store, setStore] = useState<number | ''>('')
   const [tags, setTags] = useState<number[]>([])
@@ -1788,7 +1795,7 @@ export function AddTransactionForm({
   }
 
   return (
-    <form onSubmit={onSubmit} className="grid grid-cols-1 gap-3 rounded-xl border border-slate-200 dark:border-slate-700 bg-white dark:bg-slate-800 p-4 shadow-sm sm:grid-cols-4">
+    <form ref={formRef} onSubmit={onSubmit} className="grid grid-cols-1 gap-3 rounded-xl border border-slate-200 dark:border-slate-700 bg-white dark:bg-slate-800 p-4 shadow-sm sm:grid-cols-4">
       {!lockedType && (
         <Field label="Typ">
           <select

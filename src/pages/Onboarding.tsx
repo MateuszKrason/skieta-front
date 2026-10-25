@@ -10,10 +10,13 @@ import StockAutocomplete from '../components/StockAutocomplete'
 import { useLanguage } from '../i18n/LanguageContext'
 import { trackEvent } from '../lib/analytics'
 import { accountTypeLabel, BOND_TYPE_LABELS, formatDate, formatMoney, formatNumber, groupAccountsByBank } from '../lib/format'
+import { AddTransactionForm } from './analysis/shared'
 import type {
   BankAccount,
   BankAccountType,
   BondType,
+  BudgetTransaction,
+  Category,
   CryptoAsset,
   CryptoSearchResult,
   CryptoTransaction,
@@ -24,9 +27,10 @@ import type {
   StockTransaction,
   TermDeposit,
   TreasuryBond,
+  User,
 } from '../types'
 
-type StepId = 'interests' | 'accounts' | 'stocks' | 'crypto' | 'deposits' | 'bonds' | 'done'
+type StepId = 'interests' | 'budget' | 'accounts' | 'stocks' | 'crypto' | 'deposits' | 'bonds' | 'done'
 
 // Exposed by every step form below so the wizard can save-then-advance
 // instead of silently discarding whatever someone typed but never explicitly
@@ -47,22 +51,42 @@ function trySubmitForm(formEl: HTMLFormElement | null): boolean {
   return true
 }
 
-const STEPS: { id: StepId; label: string }[] = [
+// Lokaty and obligacje are where savings go, so they follow any interest in
+// saving or investing; someone who ticked only the budget skips them.
+const saves = (p: User['profile']) => p.interest_stocks || p.interest_planning || p.interest_analysis
+
+// The steps follow the interests picked on the first one, the same switches
+// that hide sections of the menu (Layout's getNavLinks). The wizard used to
+// walk everybody through shares, crypto, deposits and bonds and never once
+// asked for a budget entry - while the landing page promises "see where your
+// pay goes", and nearly every account opened from it (admin list, 22.10.2026)
+// left without entering a single transaction.
+const ALL_STEPS: { id: StepId; label: string; shown?: (p: User['profile']) => boolean }[] = [
   { id: 'interests', label: 'Zainteresowania' },
+  { id: 'budget', label: 'Budżet', shown: (p) => p.interest_budget !== false },
   { id: 'accounts', label: 'Konta' },
-  { id: 'stocks', label: 'Akcje' },
-  { id: 'crypto', label: 'Krypto' },
-  { id: 'deposits', label: 'Lokaty' },
-  { id: 'bonds', label: 'Obligacje' },
+  { id: 'stocks', label: 'Akcje', shown: (p) => p.interest_stocks },
+  { id: 'crypto', label: 'Krypto', shown: (p) => p.interest_crypto },
+  { id: 'deposits', label: 'Lokaty', shown: saves },
+  { id: 'bonds', label: 'Obligacje', shown: saves },
   { id: 'done', label: 'Gotowe' },
 ]
+
+// Steps about things already owned, where the purchase date decides how the
+// history and the gains are counted.
+const HOLDING_STEPS = new Set<StepId>(['stocks', 'crypto', 'deposits', 'bonds'])
 
 export default function Onboarding() {
   const navigate = useNavigate()
   const queryClient = useQueryClient()
   const { t } = useLanguage()
-  const [stepIndex, setStepIndex] = useState(0)
-  const step = STEPS[stepIndex]
+  const { user } = useAuth()
+  const steps = ALL_STEPS.filter((s) => !s.shown || !user || s.shown(user.profile))
+  // Kept by id, not position: unticking an interest on the first step changes
+  // which steps follow, and an index would then point at a different one.
+  const [stepId, setStepId] = useState<StepId>('interests')
+  const stepIndex = Math.max(0, steps.findIndex((s) => s.id === stepId))
+  const step = steps[stepIndex]
 
   // The wizard used to hard-block past the "accounts" step until one
   // existed. Nothing downstream actually requires that: every other step's
@@ -80,6 +104,7 @@ export default function Onboarding() {
   // it - see StepHandle. Steps without a ref here (interests/done) have
   // nothing that can be silently lost.
   const stepRefs: Partial<Record<StepId, React.RefObject<StepHandle | null>>> = {
+    budget: useRef<StepHandle>(null),
     accounts: useRef<StepHandle>(null),
     stocks: useRef<StepHandle>(null),
     crypto: useRef<StepHandle>(null),
@@ -97,11 +122,11 @@ export default function Onboarding() {
 
   function next() {
     if (!tryLeaveStep()) return
-    setStepIndex((i) => Math.min(i + 1, STEPS.length - 1))
+    setStepId(steps[Math.min(stepIndex + 1, steps.length - 1)].id)
   }
   function back() {
     if (!tryLeaveStep()) return
-    setStepIndex((i) => Math.max(i - 1, 0))
+    setStepId(steps[Math.max(stepIndex - 1, 0)].id)
   }
   function finish() {
     if (!tryLeaveStep()) return
@@ -110,22 +135,20 @@ export default function Onboarding() {
     navigate('/dashboard')
   }
   function goToStep(i: number) {
-    if (tryLeaveStep()) setStepIndex(i)
+    if (tryLeaveStep()) setStepId(steps[i].id)
   }
 
   return (
     <div className="mx-auto max-w-3xl space-y-6">
       <div>
-        <h1 className="text-2xl font-bold text-slate-900 dark:text-slate-100">{t('Dodaj posiadane rzeczy')}</h1>
+        <h1 className="text-2xl font-bold text-slate-900 dark:text-slate-100">{t('Ustaw skietę pod siebie')}</h1>
         <p className="text-sm text-slate-500 dark:text-slate-400">
-          {t(
-            'Wprowadź to, co już posiadasz - z prawdziwą, wsteczną datą zakupu - żeby historia i zyski liczyły się poprawnie od początku.',
-          )}
+          {t('Każdy krok możesz pominąć i wrócić do niego później przyciskiem „+ Dodaj pozycje” w górnym menu.')}
         </p>
       </div>
 
       <div className="flex flex-wrap items-center gap-2">
-        {STEPS.map((s, i) => (
+        {steps.map((s, i) => (
           <button
             key={s.id}
             onClick={() => goToStep(i)}
@@ -148,7 +171,16 @@ export default function Onboarding() {
         </button>
       </div>
 
+      {HOLDING_STEPS.has(step.id) && (
+        <p className="text-sm text-slate-500 dark:text-slate-400">
+          {t(
+            'Wprowadź to, co już posiadasz - z prawdziwą, wsteczną datą zakupu - żeby historia i zyski liczyły się poprawnie od początku.',
+          )}
+        </p>
+      )}
+
       {step.id === 'interests' && <InterestsStep />}
+      {step.id === 'budget' && <BudgetStep ref={stepRefs.budget} />}
       {step.id === 'accounts' && <AccountsStep ref={stepRefs.accounts} />}
       {step.id === 'stocks' && <StocksStep ref={stepRefs.stocks} />}
       {step.id === 'crypto' && <CryptoStep ref={stepRefs.crypto} />}
@@ -253,7 +285,8 @@ function InterestsStep() {
         />
       </label>
       <p className="text-sm text-slate-500 dark:text-slate-400">
-        {t('Z czego chcesz korzystać? Odznacz to, czego nie potrzebujesz - zawsze możesz to zmienić później w ustawieniach konta.')}
+        {t('Z czego chcesz korzystać? Odznacz to, czego nie potrzebujesz - zawsze możesz to zmienić później w ustawieniach konta.')}{' '}
+        {t('Kolejne kroki będą tylko o tym, co zostawisz zaznaczone.')}
       </p>
       {INTEREST_OPTIONS.map((opt) => (
         <label key={opt.field} className="flex items-start gap-3">
@@ -272,6 +305,97 @@ function InterestsStep() {
     </div>
   )
 }
+
+const BUDGET_QUERY_KEYS = [
+  'budget-transactions',
+  'budget-breakdown',
+  'budget-summary',
+  'budget-trend',
+  'budget-category-trend',
+  'budget-categories',
+  'accounts',
+  'dashboard',
+  'timeline',
+]
+
+// The first budget entry, made where a new account starts: the same form as
+// on the Przychody and Wydatki pages. It opens on income until there is one,
+// then on expenses, and lists what has been entered so far.
+const BudgetStep = forwardRef<StepHandle>(function BudgetStep(_props, ref) {
+  const queryClient = useQueryClient()
+  const { t } = useLanguage()
+  const formRef = useRef<HTMLFormElement>(null)
+  const [saved, setSaved] = useState(0)
+
+  const { data: categories } = useQuery({
+    queryKey: ['budget-categories'],
+    queryFn: async () => (await api.get<Category[]>('/budget/categories/')).data,
+  })
+  const { data: accounts } = useQuery({
+    queryKey: ['accounts'],
+    queryFn: async () => (await api.get<BankAccount[]>('/banking/accounts/')).data,
+  })
+  const { data: recent } = useQuery({
+    queryKey: ['budget-transactions', 'onboarding'],
+    queryFn: async () => (await api.get<{ results: BudgetTransaction[] }>('/budget/transactions/')).data.results,
+  })
+  const hasIncome = (recent ?? []).some((tx) => tx.type === 'income')
+
+  // Only the amount is required, so a typed amount is what makes the form
+  // worth saving on "Dalej" rather than losing it.
+  useImperativeHandle(ref, () => ({
+    trySubmitPending: () =>
+      formRef.current?.querySelector<HTMLInputElement>('input[inputmode="decimal"]')?.value.trim()
+        ? trySubmitForm(formRef.current)
+        : true,
+  }))
+
+  function onDone() {
+    for (const key of BUDGET_QUERY_KEYS) queryClient.invalidateQueries({ queryKey: [key] })
+    setSaved((n) => n + 1)
+  }
+
+  return (
+    <div className="space-y-4">
+      <div className="space-y-1 rounded-xl border border-slate-200 dark:border-slate-700 bg-white dark:bg-slate-800 p-4 shadow-sm">
+        <p className="text-sm font-medium text-slate-800 dark:text-slate-200">{t('Zacznij od jednego wpisu')}</p>
+        <p className="text-sm text-slate-500 dark:text-slate-400">
+          {t(
+            'Wpisz ostatnią wypłatę i jeden albo dwa wydatki, choćby dzisiejsze zakupy. Tyle wystarczy, żeby skieta zaczęła pokazywać, gdzie znikają pieniądze. Paragon dodasz później zdjęciem, na stronie Wydatki.',
+          )}
+        </p>
+      </div>
+      {(recent?.length ?? 0) > 0 && (
+        <ul className="space-y-1 text-sm">
+          {recent!.slice(0, 5).map((tx) => (
+            <li key={tx.id} className="flex justify-between gap-3 rounded-md bg-slate-50 dark:bg-slate-900 px-3 py-2">
+              <span className="min-w-0 truncate">
+                {tx.category_detail?.name ?? t('bez kategorii')}
+                {tx.description ? ` - ${tx.description}` : ''}{' '}
+                <span className="text-xs text-slate-400 dark:text-slate-500">{formatDate(tx.date)}</span>
+              </span>
+              <span className="shrink-0 font-medium">
+                {tx.type === 'income' ? '+' : '-'}
+                {formatMoney(tx.amount, tx.currency)}
+              </span>
+            </li>
+          ))}
+        </ul>
+      )}
+      {/* Remounted after each save, and once the first income has loaded, so it opens empty and on the right type. */}
+      <AddTransactionForm
+        key={`${saved}-${hasIncome}`}
+        categories={categories ?? []}
+        accounts={accounts ?? []}
+        onDone={onDone}
+        initialType={hasIncome ? 'expense' : 'income'}
+        // A first income is almost always the pay; the default categories have one for it.
+        initialValues={hasIncome ? undefined : { categoryName: 'Wynagrodzenie' }}
+        formRef={formRef}
+      />
+    </div>
+  )
+})
 
 const AccountsStep = forwardRef<StepHandle>(function AccountsStep(_props, ref) {
   const queryClient = useQueryClient()
