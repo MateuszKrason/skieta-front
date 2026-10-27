@@ -33,14 +33,16 @@ const LANGUAGE_CODE_LABELS: Record<Language, string> = {
 // "Konta i lokaty" always shows since a bank account is required at signup.
 type InterestKey = 'interest_stocks' | 'interest_budget' | 'interest_planning' | 'interest_analysis'
 
-const DASHBOARD_LINK = { to: '/dashboard', label: 'Dashboard', end: true, tourId: 'nav-dashboard' }
+type NavLinkDef = { to: string; label: string; interest?: InterestKey; end?: boolean; tourId: string }
+
+const DASHBOARD_LINK: NavLinkDef = { to: '/dashboard', label: 'Dashboard', end: true, tourId: 'nav-dashboard' }
 
 // Right after Dashboard and outside the reorderable set: shared expenses are
 // the one feature that brings new people in (every group invites the friends
 // it is sent to), and as the seventh tab inside Budżet hardly anyone found
 // them - nor could anyone who had switched the budget off. Not tied to an
 // interest toggle either, for the same reason.
-const SPLITS_LINK = { to: '/wspolne', label: 'Wspólne wydatki', tourId: 'nav-wspolne' }
+const SPLITS_LINK: NavLinkDef = { to: '/wspolne', label: 'Wspólne wydatki', tourId: 'nav-wspolne' }
 
 // Everything except Dashboard (always first) and Admin (conditional, always
 // last) - keyed by route slug so a user's custom order (Profile.nav_order,
@@ -48,10 +50,7 @@ const SPLITS_LINK = { to: '/wspolne', label: 'Wspólne wydatki', tourId: 'nav-ws
 // backend's Profile.NAV_ORDER_KEYS / DEFAULT_NAV_ORDER exactly. `tourId`
 // feeds the first-login interactive tour (see ../tour) - it spotlights each
 // nav link by this data-tour value, so it must stay unique per link.
-export const REORDERABLE_LINKS: Record<
-  string,
-  { to: string; label: string; interest?: InterestKey; end?: boolean; tourId: string }
-> = {
+export const REORDERABLE_LINKS: Record<string, NavLinkDef> = {
   budzet: { to: '/budzet', label: 'Budżet', interest: 'interest_budget', tourId: 'nav-budzet' },
   konta: { to: '/konta', label: 'Konta i lokaty', tourId: 'nav-konta' },
   gielda: { to: '/gielda', label: 'Giełda', interest: 'interest_stocks', tourId: 'nav-gielda' },
@@ -69,11 +68,12 @@ function getNavLinks(profile: User['profile'] | undefined, isStaff: boolean | un
   const order = [...saved, ...DEFAULT_NAV_ORDER.filter((key) => !saved.includes(key))]
   const ordered = order
     .map((key) => REORDERABLE_LINKS[key])
-    .filter((link): link is (typeof REORDERABLE_LINKS)[string] => !!link)
+    .filter((link): link is NavLinkDef => !!link)
   const links = [DASHBOARD_LINK, SPLITS_LINK, ...ordered].filter(
-    (link) => !('interest' in link) || !link.interest || !profile || profile[link.interest],
+    (link) => !link.interest || !profile || profile[link.interest],
   )
-  return isStaff ? [...links, { to: '/admin', label: 'Admin', tourId: 'nav-admin' }] : links
+  const admin: NavLinkDef = { to: '/admin', label: 'Admin', tourId: 'nav-admin' }
+  return isStaff ? [...links, admin] : links
 }
 
 const SCAN_BUTTON_CLASS =
