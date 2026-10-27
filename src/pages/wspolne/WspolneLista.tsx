@@ -1,6 +1,6 @@
 import { useState, type FormEvent } from 'react'
 import { useMutation, useQuery, useQueryClient } from '@tanstack/react-query'
-import { Link, useNavigate } from 'react-router-dom'
+import { Link, useNavigate, useSearchParams } from 'react-router-dom'
 import { useAuth } from '../../auth/AuthContext'
 import { CardLoader } from '../../components/Loader'
 import { useLanguage } from '../../i18n/LanguageContext'
@@ -145,7 +145,10 @@ function NewGroupForm({ onCancel }: { onCancel: () => void }) {
 
 export default function WspolneLista() {
   const { t } = useLanguage()
-  const [creating, setCreating] = useState(false)
+  // "?nowe" opens the form straight away, for buttons elsewhere that already
+  // promise a new event - one tap there should not be followed by another here.
+  const [searchParams] = useSearchParams()
+  const [creating, setCreating] = useState(() => searchParams.has('nowe'))
   const { data: groups, isLoading } = useQuery({ queryKey: ['splits'], queryFn: splitsApi.list })
 
   return (

@@ -287,7 +287,7 @@ function GroupPage({ token }: { token: string }) {
         <p className="mt-2 font-medium text-slate-800 dark:text-slate-200">
           {apiError(error, t('Nie udało się wczytać wydarzenia. Spróbuj odświeżyć stronę.'))}
         </p>
-        <Link to="/budzet/wspolne" className={`${SECONDARY} mt-4 inline-block`}>
+        <Link to="/wspolne" className={`${SECONDARY} mt-4 inline-block`}>
           {t('Moje wspólne rozliczenia')}
         </Link>
       </div>
@@ -313,7 +313,7 @@ function GroupPage({ token }: { token: string }) {
   return (
     <div className="mx-auto max-w-4xl space-y-4">
       <div className={CARD}>
-        <Link to="/budzet/wspolne" className="text-xs text-slate-500 dark:text-slate-400 hover:underline">
+        <Link to="/wspolne" className="text-xs text-slate-500 dark:text-slate-400 hover:underline">
           ← {t('Wspólne rozliczenia')}
         </Link>
         <div className="mt-1 flex flex-col gap-3 sm:flex-row sm:items-start sm:justify-between">

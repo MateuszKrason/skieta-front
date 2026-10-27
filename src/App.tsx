@@ -116,7 +116,6 @@ const PAGE_TITLES: [string, string][] = [
   ['/budzet/kategorie', 'Kategorie'],
   ['/budzet/statystyki', 'Statystyki'],
   ['/budzet/samochod', 'Samochód'],
-  ['/budzet/wspolne', 'Wspólne rozliczenia'],
   ['/wspolne', 'Wspólne rozliczenia'],
   ['/budzet', 'Budżet'],
   ['/kalkulator/lokata', 'Kalkulator lokaty - ile zostaje po podatku Belki'],
@@ -279,9 +278,12 @@ export default function App() {
             <Route path="kategorie" element={<Kategorie />} />
             <Route path="statystyki" element={<Statystyki />} />
             <Route path="samochod" element={<Samochod />} />
-            <Route path="wspolne" element={<WspolneLista />} />
           </Route>
-          <Route path="/wspolne" element={<Navigate to="/budzet/wspolne" replace />} />
+          {/* Shared expenses have their own place in the top bar now; the old
+              tab address inside Budżet keeps working for bookmarks and for
+              anyone who was mid-signup with it as their way back. */}
+          <Route path="/wspolne" element={<WspolneLista />} />
+          <Route path="/budzet/wspolne" element={<Navigate to="/wspolne" replace />} />
           {/* Lived at the top level for a day before moving in with the rest
               of the budget - cheaper to keep the old address working than to
               hand anyone who bookmarked it a 404. */}

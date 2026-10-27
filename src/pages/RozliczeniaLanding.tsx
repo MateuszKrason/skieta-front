@@ -65,7 +65,7 @@ const FAQ = [
   },
 ]
 
-const SPLITS_PATH = '/budzet/wspolne'
+const SPLITS_PATH = '/wspolne'
 
 export default function RozliczeniaLanding() {
   const { t } = useLanguage()

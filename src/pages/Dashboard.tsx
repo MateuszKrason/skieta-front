@@ -10,6 +10,8 @@ import { useLanguage } from '../i18n/LanguageContext'
 import { useTooltipStyle } from '../lib/chartTooltip'
 import { signalInviteMoment } from '../lib/inviteMoment'
 import { formatAxisValue, formatDate, formatMoney, formatPct } from '../lib/format'
+import { KIND_ICONS, splitsApi } from '../lib/splits'
+import { NetLabel } from './wspolne/ui'
 import type { CategoryBreakdown, DashboardSummary, NetWorthSnapshot, PeriodKey } from '../types'
 
 const PERIOD_LABELS: Record<PeriodKey, string> = {
@@ -246,6 +248,8 @@ export default function Dashboard() {
         </div>
       </div>
 
+      <SharedExpensesCard />
+
       <div className="grid grid-cols-1 gap-4 lg:grid-cols-3">
         <div
           data-tour="dashboard-chart"
@@ -356,6 +360,69 @@ export default function Dashboard() {
           </div>
         </div>
       </div>
+    </div>
+  )
+}
+
+// Shared expenses are the one part of skieta used together with other people,
+// and every group pulls in the friends it is sent to - so the first screen
+// after login shows them: the open events with what you get back or owe, or,
+// before the first one, what they are for and a button that opens the form.
+function SharedExpensesCard() {
+  const { t } = useLanguage()
+  const { data: groups } = useQuery({ queryKey: ['splits'], queryFn: splitsApi.list })
+  if (!groups) return null
+  const open = groups.filter((g) => !g.settled).slice(0, 3)
+
+  return (
+    <div className="rounded-xl border border-slate-200 dark:border-slate-700 bg-white dark:bg-slate-800 p-5 shadow-sm">
+      <div className="mb-3 flex flex-wrap items-center justify-between gap-2">
+        <h2 className="text-sm font-semibold text-slate-700 dark:text-slate-300">{t('Wspólne wydatki')}</h2>
+        {groups.length > 0 && (
+          <div className="flex items-center gap-3 text-xs font-medium">
+            <Link to="/wspolne?nowe" className="text-accent-700 dark:text-accent-400 hover:underline">
+              {t('+ Nowe wydarzenie')}
+            </Link>
+            <Link to="/wspolne" className="text-accent-700 dark:text-accent-400 hover:underline">
+              {t('Wszystkie →')}
+            </Link>
+          </div>
+        )}
+      </div>
+      {groups.length === 0 ? (
+        <div className="flex flex-wrap items-center justify-between gap-3">
+          <p className="max-w-2xl text-sm text-slate-600 dark:text-slate-400">
+            {t('Wyjazd, wspólne mieszkanie albo zrzutka na prezent? Załóż wydarzenie, wyślij znajomym link, a skieta policzy, kto komu ile oddaje.')}
+          </p>
+          <Link to="/wspolne?nowe" className="btn-primary shrink-0">
+            {t('+ Nowe wydarzenie')}
+          </Link>
+        </div>
+      ) : open.length === 0 ? (
+        <p className="text-sm text-slate-500 dark:text-slate-400">{t('Wszystkie wydarzenia są rozliczone.')}</p>
+      ) : (
+        <ul className="divide-y divide-slate-100 dark:divide-slate-700">
+          {open.map((g) => (
+            <li key={g.share_token}>
+              <Link
+                to={`/wspolne/${g.share_token}`}
+                className="flex items-center justify-between gap-3 py-2 text-sm hover:text-accent-700 dark:hover:text-accent-400"
+              >
+                <span className="min-w-0 truncate font-medium text-slate-800 dark:text-slate-200">
+                  {KIND_ICONS[g.kind]} {g.name}
+                </span>
+                <span className="shrink-0 tabular-nums">
+                  {g.my_net !== null ? (
+                    <NetLabel net={g.my_net} currency={g.currency} me />
+                  ) : (
+                    formatMoney(g.total, g.currency)
+                  )}
+                </span>
+              </Link>
+            </li>
+          ))}
+        </ul>
+      )}
     </div>
   )
 }

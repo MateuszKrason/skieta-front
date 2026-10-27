@@ -48,7 +48,7 @@ export default function GroupSettings({
     onSuccess: () => {
       queryClient.removeQueries({ queryKey: ['split', token] })
       queryClient.invalidateQueries({ queryKey: ['splits'] })
-      navigate('/budzet/wspolne', { replace: true })
+      navigate('/wspolne', { replace: true })
     },
     onError: (e) => setError(apiError(e, t('Nie udało się usunąć wydarzenia.'))),
   })

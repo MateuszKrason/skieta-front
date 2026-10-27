@@ -38,6 +38,13 @@ export const TOUR_STEPS: TourStep[] = [
     body: 'Tu sprawdzisz, ile z Twojego majątku to realny zysk, a ile to pieniądze, które sam(a) wpłaciłeś(-aś) - z pełną historią wpłat/wypłat.',
   },
   {
+    id: 'nav-wspolne',
+    target: 'nav-wspolne',
+    path: '/wspolne',
+    title: 'Wspólne wydatki',
+    body: 'Wyjazd, wspólne mieszkanie albo zrzutka na prezent: załóż wydarzenie, wyślij znajomym link, a skieta policzy, kto komu ile oddaje.',
+  },
+  {
     id: 'nav-budzet',
     target: 'nav-budzet',
     path: '/budzet/bilans',

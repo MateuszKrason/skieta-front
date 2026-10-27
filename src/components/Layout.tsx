@@ -35,6 +35,13 @@ type InterestKey = 'interest_stocks' | 'interest_budget' | 'interest_planning' |
 
 const DASHBOARD_LINK = { to: '/dashboard', label: 'Dashboard', end: true, tourId: 'nav-dashboard' }
 
+// Right after Dashboard and outside the reorderable set: shared expenses are
+// the one feature that brings new people in (every group invites the friends
+// it is sent to), and as the seventh tab inside Budżet hardly anyone found
+// them - nor could anyone who had switched the budget off. Not tied to an
+// interest toggle either, for the same reason.
+const SPLITS_LINK = { to: '/wspolne', label: 'Wspólne wydatki', tourId: 'nav-wspolne' }
+
 // Everything except Dashboard (always first) and Admin (conditional, always
 // last) - keyed by route slug so a user's custom order (Profile.nav_order,
 // reorderable in Account.tsx) can be applied by key lookup. Must mirror the
@@ -63,7 +70,7 @@ function getNavLinks(profile: User['profile'] | undefined, isStaff: boolean | un
   const ordered = order
     .map((key) => REORDERABLE_LINKS[key])
     .filter((link): link is (typeof REORDERABLE_LINKS)[string] => !!link)
-  const links = [DASHBOARD_LINK, ...ordered].filter(
+  const links = [DASHBOARD_LINK, SPLITS_LINK, ...ordered].filter(
     (link) => !('interest' in link) || !link.interest || !profile || profile[link.interest],
   )
   return isStaff ? [...links, { to: '/admin', label: 'Admin', tourId: 'nav-admin' }] : links
@@ -72,8 +79,11 @@ function getNavLinks(profile: User['profile'] | undefined, isStaff: boolean | un
 const SCAN_BUTTON_CLASS =
   'rounded-md border border-accent-300 dark:border-accent-700 bg-accent-50 dark:bg-accent-950/40 px-2.5 py-1 text-sm font-medium text-accent-700 dark:text-accent-300 hover:bg-accent-100 dark:hover:bg-accent-900/50 disabled:opacity-60'
 
+// Narrower padding between lg and xl only: from 1024 px the whole bar is on
+// one line, and with seven links it no longer fits there at px-3 - every
+// label wrapped onto two lines.
 function navLinkClass({ isActive }: { isActive: boolean }) {
-  return `rounded-md px-3 py-1.5 text-sm font-medium transition ${
+  return `whitespace-nowrap rounded-md px-3 lg:px-2 xl:px-3 py-1.5 text-sm font-medium transition ${
     isActive
       ? 'bg-accent-100 dark:bg-accent-900/50 text-accent-800 dark:text-accent-300'
       : 'text-slate-600 dark:text-slate-400 hover:bg-slate-100 dark:hover:bg-slate-700'
