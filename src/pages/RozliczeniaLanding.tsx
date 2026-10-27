@@ -182,6 +182,14 @@ export default function RozliczeniaLanding() {
             </li>
             <li>
               <Link
+                to="/artykuly/jak-rozliczyc-wyjazd-ze-znajomymi"
+                className="font-medium text-accent-700 dark:text-accent-400 hover:underline"
+              >
+                Jak rozliczyć wyjazd ze znajomymi: kto komu ile
+              </Link>
+            </li>
+            <li>
+              <Link
                 to="/artykuly/budzet-pary-wspolne-konto-osobne-czy-mieszane"
                 className="font-medium text-accent-700 dark:text-accent-400 hover:underline"
               >
