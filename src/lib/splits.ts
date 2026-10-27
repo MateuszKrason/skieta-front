@@ -168,9 +168,21 @@ export interface ExpenseInput {
   shares: { member: number; value: string }[]
 }
 
+/** What the share link shows before signing in (backend splits.views.group_preview). */
+export interface SplitPreview {
+  name: string
+  kind: SplitKind
+  currency: string
+  members: string[]
+  expense_count: number
+  total: string
+  transfers: { from: string; to: string; amount: string }[]
+}
+
 const base = (token: string) => `/splits/s/${encodeURIComponent(token)}/`
 
 export const splitsApi = {
+  preview: (token: string) => api.get<SplitPreview>(`${base(token)}preview/`).then((r) => r.data),
   list: () => api.get<SplitGroupSummary[]>('/splits/groups/').then((r) => r.data),
   create: (body: {
     name: string

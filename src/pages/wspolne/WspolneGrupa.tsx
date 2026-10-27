@@ -1,4 +1,5 @@
 import { useEffect, useState, type FormEvent } from 'react'
+import type { AxiosError } from 'axios'
 import { useMutation, useQuery, useQueryClient } from '@tanstack/react-query'
 import { Link, useLocation, useNavigate, useParams } from 'react-router-dom'
 import { useAuth } from '../../auth/AuthContext'
@@ -21,12 +22,21 @@ import { CARD, ErrorText, NetLabel, PRIMARY, SECONDARY } from './ui'
 type Tab = 'wydatki' | 'rozliczenie' | 'osoby' | 'budzet'
 const TABS: Tab[] = ['wydatki', 'rozliczenie', 'osoby', 'budzet']
 
-/** Someone opened a shared link without being signed in. The event itself
- * needs an account, so all they get is what it is and the way in - and the
- * link is kept, so signing in or registering brings them straight back. */
+/** Someone opened a shared link without being signed in. They see the summary
+ * (whose event it is, the total, who pays whom) and the way in - with only a
+ * sign-up form, a friend had no reason to join. Adding anything still needs an
+ * account, and the link is kept, so signing in or registering brings them
+ * straight back. */
 function Invitation() {
   const { t } = useLanguage()
   const location = useLocation()
+  const { token = '' } = useParams()
+  const { data: preview, error } = useQuery({
+    queryKey: ['split-preview', token],
+    queryFn: () => splitsApi.preview(token),
+    retry: false,
+  })
+  const gone = (error as AxiosError | null)?.response?.status === 404
 
   useEffect(() => {
     rememberReturnTo(location.pathname)
@@ -46,16 +56,84 @@ function Invitation() {
         </div>
       </header>
       <main className="mx-auto max-w-lg px-4 py-10">
+        {gone ? (
+          <div className={`${CARD} text-center`}>
+            <p className="text-4xl">🔗</p>
+            <h1 className="mt-3 text-xl font-bold text-slate-900 dark:text-slate-100">{t('Ten link nie działa')}</h1>
+            <p className="mt-2 text-sm text-slate-600 dark:text-slate-400">
+              {t('Mógł zostać zmieniony albo wydarzenie usunięto. Poproś znajomego o nowy link.')}
+            </p>
+            <Link
+              to="/rozliczenia"
+              className="mt-4 inline-block text-sm font-medium text-accent-700 dark:text-accent-400 hover:underline"
+            >
+              {t('Jak działają wspólne rozliczenia →')}
+            </Link>
+          </div>
+        ) : (
         <div className={`${CARD} text-center`}>
-          <p className="text-4xl">🧳🍕🏠</p>
-          <h1 className="mt-3 text-xl font-bold text-slate-900 dark:text-slate-100 [text-wrap:balance]">
-            {t('Masz zaproszenie do wspólnego rozliczenia')}
-          </h1>
-          <p className="mt-2 text-sm text-slate-600 dark:text-slate-400">
-            {t(
-              'Ktoś ze znajomych liczy w skiecie wspólne wydatki i chce, żebyś do nich dołączył(a). Żeby zobaczyć wydarzenie, załóż darmowe konto - zajmie to chwilę, a potem od razu wrócisz tutaj.',
-            )}
-          </p>
+          {preview ? (
+            <>
+              <p className="text-4xl">{KIND_ICONS[preview.kind]}</p>
+              <p className="mt-3 text-xs font-semibold uppercase tracking-wide text-accent-700 dark:text-accent-400">
+                {t('Zaproszenie do wspólnego rozliczenia')}
+              </p>
+              <h1 className="mt-1 text-xl font-bold text-slate-900 dark:text-slate-100 [text-wrap:balance]">
+                {preview.name}
+              </h1>
+              <p className="mt-1 text-sm text-slate-500 dark:text-slate-400">{preview.members.join(', ')}</p>
+              <div className="mt-5 rounded-lg bg-slate-50 dark:bg-slate-900/60 p-4 text-left text-sm">
+                <div className="flex items-baseline justify-between gap-3">
+                  <span className="font-semibold text-slate-900 dark:text-slate-100">
+                    {t('Razem: {0}', formatMoney(preview.total, preview.currency))}
+                  </span>
+                  <span className="text-xs text-slate-500 dark:text-slate-400">
+                    {t('Wydatków: {0}', String(preview.expense_count))}
+                  </span>
+                </div>
+                {preview.expense_count === 0 ? (
+                  <p className="mt-3 text-slate-500 dark:text-slate-400">{t('Na razie nie ma tu wydatków.')}</p>
+                ) : preview.transfers.length === 0 ? (
+                  <p className="mt-3 text-slate-500 dark:text-slate-400">{t('Wszyscy są rozliczeni.')}</p>
+                ) : (
+                  <>
+                    <p className="mt-3 text-xs font-semibold uppercase tracking-wide text-slate-500 dark:text-slate-400">
+                      {t('Kto komu ile')}
+                    </p>
+                    <ul className="mt-1.5 space-y-1.5">
+                      {preview.transfers.map((tr) => (
+                        <li key={`${tr.from}-${tr.to}`} className="flex items-baseline justify-between gap-3">
+                          <span className="min-w-0 text-slate-700 dark:text-slate-300">
+                            {tr.from} → {tr.to}
+                          </span>
+                          <span className="shrink-0 font-semibold tabular-nums text-slate-900 dark:text-slate-100">
+                            {formatMoney(tr.amount, preview.currency)}
+                          </span>
+                        </li>
+                      ))}
+                    </ul>
+                  </>
+                )}
+              </div>
+              <p className="mt-4 text-sm text-slate-600 dark:text-slate-400">
+                {t(
+                  'Żeby dopisać swoje wydatki i odhaczać oddane przelewy, załóż darmowe konto - zajmie to chwilę, a potem od razu wrócisz tutaj.',
+                )}
+              </p>
+            </>
+          ) : (
+            <>
+              <p className="text-4xl">🧳🍕🏠</p>
+              <h1 className="mt-3 text-xl font-bold text-slate-900 dark:text-slate-100 [text-wrap:balance]">
+                {t('Masz zaproszenie do wspólnego rozliczenia')}
+              </h1>
+              <p className="mt-2 text-sm text-slate-600 dark:text-slate-400">
+                {t(
+                  'Ktoś ze znajomych liczy w skiecie wspólne wydatki i chce, żebyś do nich dołączył(a). Żeby zobaczyć wydarzenie, załóż darmowe konto - zajmie to chwilę, a potem od razu wrócisz tutaj.',
+                )}
+              </p>
+            </>
+          )}
           <div className="mt-6 flex flex-col gap-2">
             <Link
               to="/register"
@@ -75,6 +153,7 @@ function Invitation() {
             {t('W skiecie przeniesiesz potem swoją część wydatków do własnego budżetu jednym kliknięciem.')}
           </p>
         </div>
+        )}
       </main>
     </div>
   )

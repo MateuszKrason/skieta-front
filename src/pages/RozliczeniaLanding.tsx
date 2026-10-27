@@ -37,7 +37,7 @@ const FAQ = [
   {
     question: 'Czy wszyscy muszą mieć konto?',
     answer:
-      'Żeby zobaczyć rozliczenie i dopisywać wydatki, tak: darmowe konto zakłada się w minutę, e-mailem i hasłem. Osoby, które jeszcze go nie mają, możesz dopisać po imieniu i wpisywać wydatki za nie. Dołączą później z linku, wybierając swoje imię.',
+      'Żeby dopisywać wydatki, tak: darmowe konto zakłada się w minutę, e-mailem i hasłem. Bez konta link pokazuje podsumowanie: kto jest w rozliczeniu, ile wydaliście i kto komu ile oddaje. Osoby, które jeszcze nie mają konta, możesz dopisać po imieniu i wpisywać wydatki za nie. Dołączą później z linku, wybierając swoje imię.',
   },
   {
     question: 'Ile to kosztuje?',
