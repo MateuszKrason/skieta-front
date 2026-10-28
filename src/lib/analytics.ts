@@ -58,6 +58,9 @@ type EventName =
   | 'receipt_scanned'
   | 'data_exported'
   | 'demo_opened'
+  // A shared group link opened without an account and its summary shown -
+  // the top of the funnel that ends in register_clicked with source split_link.
+  | 'split_preview_viewed'
 
 /** Where a conversion came from, so articles can be compared against the
  * landing page and against each other. */

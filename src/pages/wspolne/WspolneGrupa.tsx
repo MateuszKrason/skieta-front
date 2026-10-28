@@ -42,6 +42,13 @@ function Invitation() {
     rememberReturnTo(location.pathname)
   }, [location.pathname])
 
+  // Once per link and page load: how many people the summary reaches, to set
+  // against how many of them then press "Załóż darmowe konto".
+  const shown = Boolean(preview)
+  useEffect(() => {
+    if (shown) trackEvent('split_preview_viewed')
+  }, [shown, token])
+
   return (
     <div className="min-h-screen bg-slate-50 dark:bg-slate-900">
       <header className="mx-auto flex max-w-lg items-center justify-between gap-3 px-4 pt-4">
