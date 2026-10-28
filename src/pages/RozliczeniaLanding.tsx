@@ -190,6 +190,14 @@ export default function RozliczeniaLanding() {
             </li>
             <li>
               <Link
+                to="/artykuly/alternatywa-dla-splitwise-bez-limitu"
+                className="font-medium text-accent-700 dark:text-accent-400 hover:underline"
+              >
+                Alternatywa dla Splitwise: rozliczenia bez dziennego limitu
+              </Link>
+            </li>
+            <li>
+              <Link
                 to="/artykuly/budzet-pary-wspolne-konto-osobne-czy-mieszane"
                 className="font-medium text-accent-700 dark:text-accent-400 hover:underline"
               >

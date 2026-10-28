@@ -195,7 +195,7 @@ const PAGES: Record<string, Page> = {
       '<p>Podział po równo, procentowo albo kwotowo. Wydatki w 14 walutach, przeliczane po średnim kursie NBP z dnia wydatku. Podsumowanie do skopiowania na czat. Swoją część przeniesiesz do własnego budżetu. Do 10 osób i 1000 wydatków w jednym rozliczeniu.</p>' +
       '<h2>Czym to się różni od Splitwise?</h2>' +
       '<p>To ten sam pomysł: wspólna lista wydatków i wyliczenie, kto komu ile oddaje. skieta jest po polsku, przelicza waluty po kursie NBP, nie ma reklam, abonamentu ani dziennego limitu wpisów, a swoją część wydatków przeniesiesz do budżetu domowego w tej samej aplikacji.</p>' +
-      '<p><a href="/artykuly/jak-rozliczyc-wyjazd-ze-znajomymi">Jak rozliczyć wyjazd ze znajomymi: kto komu ile</a> · <a href="/">skieta - darmowa aplikacja do budżetu domowego</a></p>' +
+      '<p><a href="/artykuly/jak-rozliczyc-wyjazd-ze-znajomymi">Jak rozliczyć wyjazd ze znajomymi: kto komu ile</a> · <a href="/artykuly/alternatywa-dla-splitwise-bez-limitu">Alternatywa dla Splitwise: rozliczenia bez dziennego limitu</a> · <a href="/">skieta - darmowa aplikacja do budżetu domowego</a></p>' +
       '</main>',
   },
   '/regulamin': {
