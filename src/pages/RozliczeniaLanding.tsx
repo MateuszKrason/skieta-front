@@ -190,7 +190,7 @@ export default function RozliczeniaLanding() {
             </li>
             <li>
               <Link
-                to="/artykuly/alternatywa-dla-splitwise-bez-limitu"
+                to="/artykuly/alternatywa-dla-splitwise-bez-dziennego-limitu"
                 className="font-medium text-accent-700 dark:text-accent-400 hover:underline"
               >
                 Alternatywa dla Splitwise: rozliczenia bez dziennego limitu
