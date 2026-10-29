@@ -7,8 +7,9 @@
 //
 // This gives each page its own title, description and canonical at the edge,
 // and puts the text of the two pages with real content inside #root as plain
-// HTML. React replaces it when it mounts, exactly as with the articles. Nothing
-// here fetches anything, so the pages cost no extra time to serve.
+// HTML. React replaces it when it mounts, exactly as with the articles. Only
+// /artykuly fetches anything (its list of articles, see fetchArticles); the
+// other pages cost no extra time to serve.
 
 const SITE = 'https://skieta.com'
 
@@ -26,6 +27,41 @@ interface Page {
 const IMAGE_HOST = 'https://skieta.netlify.app'
 
 const WRAPPER_STYLE = 'max-width:48rem;margin:0 auto;padding:3rem 1rem;font-family:system-ui,sans-serif;line-height:1.6'
+
+// /artykuly lists its articles only once the app runs, so the HTML a crawler reads
+// first linked to none of them. Articles link only back to older ones, so the
+// newest had no link anywhere but the sitemap, and Google left "Pierwsza pensja"
+// at "crawled, not indexed" with the sitemap as its only referrer (29.10.2026).
+// The list is fetched from the API and put into the plain-HTML body; if the API
+// does not answer in time the page is served without it, as before.
+const ARTICLES_API = 'https://api.skieta.com/api/content/articles/'
+const ARTICLES_TIMEOUT_MS = 3000
+const ARTICLE_LIST_SLOT = '<!--article-list-->'
+
+interface ArticleLink {
+  title: string
+  slug: string
+  summary: string
+}
+
+async function fetchArticles(): Promise<ArticleLink[]> {
+  try {
+    const res = await fetch(ARTICLES_API, { signal: AbortSignal.timeout(ARTICLES_TIMEOUT_MS) })
+    if (!res.ok) return []
+    const data = await res.json()
+    return Array.isArray(data) ? data : []
+  } catch {
+    return []
+  }
+}
+
+function articleList(articles: ArticleLink[]): string {
+  if (articles.length === 0) return ''
+  const items = articles.map(
+    (a) => `<li><a href="/artykuly/${encodeURIComponent(a.slug)}">${escapeAttribute(a.title)}</a> - ${escapeAttribute(a.summary)}</li>`,
+  )
+  return `<ul>${items.join('')}</ul>`
+}
 
 const PAGES: Record<string, Page> = {
   '/': {
@@ -61,6 +97,7 @@ const PAGES: Record<string, Page> = {
       `<main style="${WRAPPER_STYLE}">` +
       '<h1>Artykuły o finansach osobistych</h1>' +
       '<p>Oszczędzanie i inwestowanie w polskich realiach: podatek Belki, obligacje skarbowe, lokaty, ETF-y, IKE i IKZE, budżet domowy.</p>' +
+      ARTICLE_LIST_SLOT +
       '<p><a href="/">skieta - darmowa aplikacja do budżetu domowego</a></p>' +
       '</main>',
   },
@@ -278,7 +315,11 @@ export default async (request: Request, context: { next: () => Promise<Response>
     html = replaceOnce(html, /<meta name="twitter:image" content="[^"]*"\s*\/?>/, `<meta name="twitter:image" content="${page.image}" />`)
   }
   if (page.body) {
-    const body = WITH_TOOLS_NAV.has(path) ? page.body.replace(/<\/main>$/, `${toolsNav(path)}</main>`) : page.body
+    let body = WITH_TOOLS_NAV.has(path) ? page.body.replace(/<\/main>$/, `${toolsNav(path)}</main>`) : page.body
+    if (body.includes(ARTICLE_LIST_SLOT)) {
+      const list = articleList(await fetchArticles())
+      body = body.replace(ARTICLE_LIST_SLOT, () => list)
+    }
     html = replaceOnce(html, /<div id="root"><\/div>/, `<div id="root">${body}</div>`)
   }
 
