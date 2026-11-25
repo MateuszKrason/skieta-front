@@ -250,6 +250,8 @@ export default function SettleTab({
   const [copied, setCopied] = useState(false)
   const currency = state.group.currency
   const myBalance = meId !== null ? state.balances.find((b) => b.member === meId) : undefined
+  // A poker night alone, with no shared costs yet, is already something to settle.
+  const hasActivity = state.expenses.length > 0 || state.games.length > 0
 
   async function copySummary() {
     try {
@@ -263,7 +265,7 @@ export default function SettleTab({
 
   return (
     <div className="space-y-4">
-      {myBalance && state.expenses.length > 0 && (
+      {myBalance && hasActivity && (
         <div className={`${CARD} flex flex-wrap items-center justify-between gap-3`}>
           <div>
             <p className="text-xs font-medium uppercase tracking-wide text-slate-500 dark:text-slate-400">{t('Twój bilans')}</p>
@@ -273,6 +275,12 @@ export default function SettleTab({
           </div>
           <p className="text-sm text-slate-500 dark:text-slate-400">
             {t('Wyłożone: {0} · Twoja część: {1}', formatMoney(myBalance.paid, currency), formatMoney(myBalance.share, currency))}
+            {Number(myBalance.games) !== 0 && (
+              <>
+                {' · '}
+                {t('gry: {0}', `${Number(myBalance.games) > 0 ? '+' : '−'}${formatMoney(Math.abs(Number(myBalance.games)), currency)}`)}
+              </>
+            )}
           </p>
         </div>
       )}
@@ -280,7 +288,7 @@ export default function SettleTab({
       <div className={CARD}>
         <div className="flex flex-wrap items-center justify-between gap-2">
           <h2 className="text-base font-semibold text-slate-900 dark:text-slate-100">{t('Kto komu ile')}</h2>
-          {state.expenses.length > 0 && (
+          {hasActivity && (
             <button type="button" className="text-sm font-medium text-accent-700 dark:text-accent-400 hover:underline" onClick={copySummary}>
               {copied ? t('Skopiowane ✓') : t('Kopiuj podsumowanie na czat')}
             </button>
@@ -289,7 +297,7 @@ export default function SettleTab({
         <p className="mt-1 text-xs text-slate-500 dark:text-slate-400">
           {t('Najmniej przelewów, jakie wystarczą, żeby wszyscy wyszli na zero. Kliknij „Oddane”, gdy pieniądze dotrą.')}
         </p>
-        {state.expenses.length === 0 ? (
+        {!hasActivity ? (
           <p className="mt-4 text-sm text-slate-500 dark:text-slate-400">{t('Najpierw dodajcie wydatki.')}</p>
         ) : state.transfers.length === 0 ? (
           <p className="mt-4 rounded-lg bg-emerald-50 dark:bg-emerald-900/20 px-3 py-3 text-sm font-medium text-emerald-800 dark:text-emerald-300">
@@ -343,6 +351,8 @@ export default function SettleTab({
                   {t('wyłożone {0}', formatMoney(b.paid, currency))} · {t('część {0}', formatMoney(b.share, currency))}
                   {Number(b.sent) > 0 && ` · ${t('oddane {0}', formatMoney(b.sent, currency))}`}
                   {Number(b.received) > 0 && ` · ${t('otrzymane {0}', formatMoney(b.received, currency))}`}
+                  {Number(b.games) !== 0 &&
+                    ` · ${t('gry {0}', `${Number(b.games) > 0 ? '+' : '−'}${formatMoney(Math.abs(Number(b.games)), currency)}`)}`}
                 </p>
               </div>
               <span className="shrink-0 text-sm font-semibold">
@@ -353,6 +363,7 @@ export default function SettleTab({
         </ul>
         <p className="mt-2 text-xs text-slate-400 dark:text-slate-500">
           {t('Saldo na plus: tyle ta osoba ma dostać. Na minus: tyle ma oddać. Wydatki w innych walutach są przeliczone na {0}.', currency)}
+          {state.games.length > 0 && ` ${t('Wygrane i przegrane w grach są już w saldzie.')}`}
         </p>
       </div>
 

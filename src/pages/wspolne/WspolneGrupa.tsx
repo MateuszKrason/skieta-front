@@ -200,20 +200,36 @@ function ShareBox({ token, name }: { token: string; name: string }) {
 
   return (
     <div className="flex flex-wrap items-center gap-2">
+      {/* On a phone the raw link is a long unreadable line that pushed the
+          expenses below the fold; the buttons do the same job. */}
       <input
         readOnly
         value={url}
         onFocus={(e) => e.target.select()}
-        className="input min-w-0 basis-full font-mono text-xs sm:basis-auto sm:flex-1"
+        className="input hidden min-w-0 font-mono text-xs sm:block sm:flex-1"
         aria-label={t('Link do wydarzenia')}
       />
-      <button type="button" className={`${PRIMARY} flex-1 py-2 sm:flex-none sm:py-1.5`} onClick={copy}>
+      {canShare && (
+        <button type="button" className={`${PRIMARY} flex-1 py-2 sm:hidden`} onClick={share}>
+          🔗 {t('Zaproś znajomych')}
+        </button>
+      )}
+      <button
+        type="button"
+        className={`${canShare ? SECONDARY : PRIMARY} flex-1 py-2 sm:flex-none sm:py-1.5 ${canShare ? 'sm:hidden' : ''}`}
+        onClick={copy}
+      >
         {copied ? t('Skopiowane ✓') : t('Kopiuj link')}
       </button>
       {canShare && (
-        <button type="button" className={`${SECONDARY} flex-1 py-2 sm:flex-none sm:py-1.5`} onClick={share}>
-          {t('Udostępnij')}
-        </button>
+        <>
+          <button type="button" className={`${PRIMARY} hidden py-1.5 sm:block`} onClick={copy}>
+            {copied ? t('Skopiowane ✓') : t('Kopiuj link')}
+          </button>
+          <button type="button" className={`${SECONDARY} hidden py-1.5 sm:block`} onClick={share}>
+            {t('Udostępnij')}
+          </button>
+        </>
       )}
     </div>
   )
@@ -383,17 +399,22 @@ function GroupPage({ token }: { token: string }) {
   const meId = state.me
   const me = state.members.find((m) => m.id === meId)
   const myBalance = state.balances.find((b) => b.member === meId)
+  const hasActivity = state.expenses.length > 0 || state.games.length > 0
+  const pair = state.group.kind === 'pair'
+  const partner = pair ? state.members.find((m) => m.id !== meId) : undefined
 
   function openTab(next: Tab) {
     setTab(next)
     window.history.replaceState(null, '', `#${next}`)
   }
 
-  const tabLabels: Record<Tab, string> = {
-    wydatki: t('Wydatki ({0})', String(state.expenses.length)),
-    rozliczenie: t('Kto komu ile'),
-    osoby: t('Osoby ({0})', String(state.members.length)),
-    budzet: t('Do budżetu'),
+  // Four tabs did not fit across a phone ("Do budżetu" was cut off), so
+  // narrow screens get shorter names.
+  const tabLabels: Record<Tab, [string, string]> = {
+    wydatki: [t('Wydatki ({0})', String(state.expenses.length)), t('Wydatki ({0})', String(state.expenses.length))],
+    rozliczenie: [t('Kto komu ile'), t('Rozliczenie')],
+    osoby: [t('Osoby ({0})', String(state.members.length)), t('Osoby')],
+    budzet: [t('Do budżetu'), t('Budżet')],
   }
 
   return (
@@ -411,7 +432,11 @@ function GroupPage({ token }: { token: string }) {
               <p className="mt-1 whitespace-pre-line text-sm text-slate-600 dark:text-slate-400">{state.group.description}</p>
             )}
             <p className="mt-1 text-sm text-slate-500 dark:text-slate-400">
-              {state.members.map((m) => m.name).join(', ')}
+              {pair && me
+                ? partner
+                  ? t('Stałe rozliczenie z: {0}', partner.name)
+                  : t('Stałe rozliczenie. Druga osoba jeszcze nie dołączyła.')
+                : state.members.map((m) => m.name).join(', ')}
             </p>
           </div>
           {me && (
@@ -422,7 +447,7 @@ function GroupPage({ token }: { token: string }) {
                   {formatMoney(state.total, state.group.currency)}
                 </p>
               </div>
-              {myBalance && state.expenses.length > 0 && (
+              {myBalance && hasActivity && (
                 <p className="text-sm">
                   <NetLabel net={myBalance.net} currency={state.group.currency} me />
                 </p>
@@ -433,12 +458,23 @@ function GroupPage({ token }: { token: string }) {
 
         {me && (
           <>
-            <div className="mt-4">
-              <ShareBox token={state.group.share_token} name={state.group.name} />
-              <p className="mt-1 text-xs text-slate-400 dark:text-slate-500">
-                {t('Wyślij ten link znajomym. Po zalogowaniu do skiety wybiorą swoje imię i dołączą.')}
+            {pair && partner?.linked ? (
+              <p className="mt-4 rounded-lg bg-accent-50/70 dark:bg-accent-900/20 px-3 py-2 text-sm text-slate-700 dark:text-slate-300">
+                {t(
+                  'Wasze konta są połączone. Wydatek dodasz tutaj albo prosto z budżetu: przy dodawaniu wydatku zaznacz „Wspólny wydatek, po połowie z: {0}”.',
+                  partner.name,
+                )}
               </p>
-            </div>
+            ) : (
+              <div className="mt-4">
+                <ShareBox token={state.group.share_token} name={state.group.name} />
+                <p className="mt-1 text-xs text-slate-400 dark:text-slate-500">
+                  {pair
+                    ? t('Wyślij ten link drugiej osobie. Po zalogowaniu wybierze swoje imię i Wasze konta zostaną połączone.')
+                    : t('Wyślij ten link znajomym. Po zalogowaniu do skiety wybiorą swoje imię i dołączą.')}
+                </p>
+              </div>
+            )}
 
             <div className="mt-3 flex flex-wrap items-center justify-between gap-2 text-sm">
               <span className="text-slate-600 dark:text-slate-400">
@@ -489,7 +525,7 @@ function GroupPage({ token }: { token: string }) {
             <GroupSettings state={state} token={token} onState={applyState} onClose={() => setSettings(false)} />
           )}
 
-          <div className="flex border-b border-slate-200 dark:border-slate-700" role="tablist">
+          <div className="flex overflow-x-auto border-b border-slate-200 dark:border-slate-700" role="tablist">
             {TABS.map((x) => (
               <button
                 key={x}
@@ -497,13 +533,14 @@ function GroupPage({ token }: { token: string }) {
                 role="tab"
                 aria-selected={tab === x}
                 onClick={() => openTab(x)}
-                className={`-mb-px flex-1 border-b-2 px-1 py-2.5 text-[13px] font-medium leading-tight sm:flex-none sm:px-3 sm:text-sm ${
+                className={`-mb-px flex-1 whitespace-nowrap border-b-2 px-1.5 py-2.5 text-[13px] font-medium leading-tight sm:flex-none sm:px-3 sm:text-sm ${
                   tab === x
                     ? 'border-accent-600 text-accent-700 dark:text-accent-400'
                     : 'border-transparent text-slate-500 dark:text-slate-400 hover:text-slate-800 dark:hover:text-slate-200'
                 }`}
               >
-                {tabLabels[x]}
+                <span className="hidden sm:inline">{tabLabels[x][0]}</span>
+                <span className="sm:hidden">{tabLabels[x][1]}</span>
               </button>
             ))}
           </div>

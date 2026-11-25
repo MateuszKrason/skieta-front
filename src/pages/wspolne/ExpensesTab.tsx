@@ -4,6 +4,8 @@ import { useLanguage } from '../../i18n/LanguageContext'
 import { formatDate, formatDateTime, formatMoney, formatNumber } from '../../lib/format'
 import { apiError, memberName, splitsApi, type SplitExpense, type SplitState } from '../../lib/splits'
 import ExpenseForm from './ExpenseForm'
+import GameForm from './GameForm'
+import GamesList from './GamesList'
 import { CARD, DANGER, ErrorText, PRIMARY, SECONDARY } from './ui'
 
 function shareLabel(expense: SplitExpense, value: string) {
@@ -166,10 +168,23 @@ export default function ExpensesTab({
   onState: (s: SplitState) => void
 }) {
   const { t } = useLanguage()
-  const [adding, setAdding] = useState(false)
+  const [adding, setAdding] = useState<'expense' | 'game' | null>(null)
   const [editing, setEditing] = useState<number | null>(null)
+  const [editingGame, setEditingGame] = useState<number | null>(null)
   const [tag, setTag] = useState<string | null>(null)
   const [search, setSearch] = useState('')
+
+  function closeForms() {
+    setAdding(null)
+    setEditing(null)
+    setEditingGame(null)
+  }
+
+  function open(next: 'expense' | 'game') {
+    closeForms()
+    setAdding(next)
+    window.scrollTo({ top: 0, behavior: 'smooth' })
+  }
 
   const expenses = useMemo(() => {
     const needle = search.trim().toLowerCase()
@@ -187,31 +202,70 @@ export default function ExpensesTab({
 
   const filteredTotal = expenses.reduce((sum, e) => sum + Number(e.amount_group), 0)
   const editingExpense = state.expenses.find((e) => e.id === editing)
+  const gameBeingEdited = state.games.find((g) => g.id === editingGame)
+  const formOpen = adding !== null || Boolean(editingExpense) || Boolean(gameBeingEdited)
+  const done = (next: SplitState) => {
+    onState(next)
+    closeForms()
+  }
 
   return (
     <div className="space-y-4">
-      {adding || editingExpense ? (
+      {adding === 'expense' || editingExpense ? (
         <ExpenseForm
           key={editingExpense?.id ?? 'new'}
           state={state}
           token={token}
           meId={meId}
           expense={editingExpense}
-          onDone={(next) => {
-            onState(next)
-            setAdding(false)
-            setEditing(null)
-          }}
-          onCancel={() => {
-            setAdding(false)
-            setEditing(null)
-          }}
+          onDone={done}
+          onCancel={closeForms}
+        />
+      ) : adding === 'game' || gameBeingEdited ? (
+        <GameForm
+          key={gameBeingEdited?.id ?? 'new-game'}
+          state={state}
+          token={token}
+          meId={meId}
+          game={gameBeingEdited}
+          onDone={done}
+          onCancel={closeForms}
         />
       ) : (
-        <button type="button" className={`${PRIMARY} w-full py-2.5 text-base sm:w-auto`} onClick={() => setAdding(true)}>
-          {t('+ Dodaj wydatek')}
+        <div className="grid grid-cols-2 gap-2 sm:flex">
+          <button type="button" className={`${PRIMARY} py-2.5 text-base`} onClick={() => open('expense')}>
+            {t('+ Dodaj wydatek')}
+          </button>
+          <button type="button" className={`${SECONDARY} py-2.5 text-base`} onClick={() => open('game')}>
+            {t('🎲 Gra lub zakład')}
+          </button>
+        </div>
+      )}
+
+      {/* On a phone the list gets long and the add button scrolls away; this
+          one stays under the thumb. */}
+      {!formOpen && state.expenses.length > 3 && (
+        <button
+          type="button"
+          onClick={() => open('expense')}
+          aria-label={t('Dodaj wydatek')}
+          className="fixed bottom-4 right-4 z-40 flex h-14 w-14 items-center justify-center rounded-full bg-accent-600 text-3xl leading-none text-white shadow-lg hover:bg-accent-700 sm:hidden"
+        >
+          +
         </button>
       )}
+
+      <GamesList
+        state={state}
+        token={token}
+        meId={meId}
+        onState={onState}
+        onEdit={(id) => {
+          closeForms()
+          setEditingGame(id)
+          window.scrollTo({ top: 0, behavior: 'smooth' })
+        }}
+      />
 
       <div className={CARD}>
         {state.expenses.length === 0 ? (
@@ -219,7 +273,9 @@ export default function ExpensesTab({
             <p className="text-3xl">🧾</p>
             <p className="mt-2 font-medium text-slate-800 dark:text-slate-200">{t('Jeszcze nic tu nie ma.')}</p>
             <p className="mt-1 text-sm text-slate-500 dark:text-slate-400">
-              {t('Dodaj pierwszy wydatek. Każdy z linkiem może dopisywać swoje.')}
+              {state.group.kind === 'pair'
+                ? t('Dodaj wydatek tutaj albo w Budżecie: przy nowym wydatku zaznacz „Wspólny wydatek, po połowie”.')
+                : t('Dodaj pierwszy wydatek. Każdy z linkiem może dopisywać swoje.')}
             </p>
           </div>
         ) : (
@@ -265,7 +321,7 @@ export default function ExpensesTab({
                   meId={meId}
                   onState={onState}
                   onEdit={() => {
-                    setAdding(false)
+                    closeForms()
                     setEditing(expense.id)
                     window.scrollTo({ top: 0, behavior: 'smooth' })
                   }}

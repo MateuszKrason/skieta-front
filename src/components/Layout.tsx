@@ -344,6 +344,25 @@ export default function Layout() {
                 className={SCAN_BUTTON_CLASS}
               />
             )}
+            {/* Shared expenses are used on a phone more than anything else
+                here (at the table, on the trip), yet on a phone they sat
+                behind the burger as the second of eight links. On the bar
+                they are one tap away; the narrowest phones get the icon only. */}
+            <NavLink
+              to="/wspolne"
+              onClick={() => setMobileOpen(false)}
+              aria-label={t('Wspólne wydatki')}
+              className={({ isActive }) =>
+                `rounded-md border px-2.5 py-1 text-sm font-medium ${
+                  isActive
+                    ? 'border-accent-500 bg-accent-100 dark:bg-accent-900/50 text-accent-800 dark:text-accent-300'
+                    : 'border-slate-300 dark:border-slate-600 text-slate-600 dark:text-slate-300 hover:bg-slate-100 dark:hover:bg-slate-700'
+                }`
+              }
+            >
+              <span aria-hidden="true">👥</span>
+              <span className="hidden min-[370px]:inline"> {t('Wspólne')}</span>
+            </NavLink>
             <button
               onClick={() => setMobileOpen((v) => !v)}
               aria-label={t('Menu')}

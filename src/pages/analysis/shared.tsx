@@ -23,6 +23,7 @@ import { LoadMoreButton } from '../../components/LoadMoreButton'
 import { useLanguage } from '../../i18n/LanguageContext'
 import { useTooltipStyle } from '../../lib/chartTooltip'
 import { formatAxisValue, formatDate, formatMoney, formatPct, groupAccountsByBank } from '../../lib/format'
+import { apiError, splitsApi } from '../../lib/splits'
 import { LAST_ACCOUNT_KEY_PREFIX, LAST_CATEGORY_KEY_PREFIX } from '../../lib/userScopedStorage'
 import type {
   BankAccount,
@@ -1664,6 +1665,19 @@ export function AddTransactionForm({
   const [description, setDescription] = useState(initialValues?.description ?? '')
   const [unmatchedStoreName, setUnmatchedStoreName] = useState<string | null>(null)
   const [error, setError] = useState<string | null>(null)
+  const queryClient = useQueryClient()
+  // A standing settlement with another account (splits kind "pair"): ticking
+  // it sends this expense there, half and half, right after it is saved.
+  const { data: splitGroups } = useQuery({ queryKey: ['splits'], queryFn: splitsApi.list })
+  const pairs = (splitGroups ?? []).filter((g) => g.kind === 'pair' && g.my_name && g.members.length === 2)
+  const partnerOf = (token: string) => {
+    const g = pairs.find((p) => p.share_token === token)
+    return g?.members.find((m) => m !== g.my_name) ?? ''
+  }
+  const [sharedWith, setSharedWith] = useState('')
+  // Set once the transaction is saved: if sending it into the settlement then
+  // fails, pressing "Zapisz" again retries only that step, never a second copy.
+  const savedTransaction = useRef<number | null>(null)
   const appliedRememberedAccount = useRef(false)
   const appliedRememberedCategory = useRef(false)
   const appliedStoreMatch = useRef(false)
@@ -1755,30 +1769,52 @@ export function AddTransactionForm({
     setTags((prev) => (prev.includes(id) ? prev.filter((t) => t !== id) : [...prev, id]))
   }
 
+  const shared = type === 'expense' && pairs.some((p) => p.share_token === sharedWith)
+
   const mutation = useMutation({
-    mutationFn: () =>
-      api.post('/budget/transactions/', {
-        type,
-        category: category || null,
-        store: store || null,
-        tags,
-        account: account || null,
-        amount,
-        // Only ever sent for expenses, and only when the user actually
-        // opened the toggle - a stale value left behind by switching the
-        // type from expense to income would be rejected by the API.
-        reimbursed_amount: type === 'expense' && showFronted && reimbursedAmount ? reimbursedAmount : '0',
-        reimbursement_received: type === 'expense' && showFronted ? reimbursementReceived : false,
-        currency,
-        date,
-        description,
-      }),
+    mutationFn: async () => {
+      if (savedTransaction.current === null) {
+        const created = await api.post<{ id: number }>('/budget/transactions/', {
+          type,
+          category: category || null,
+          store: store || null,
+          tags,
+          account: account || null,
+          amount,
+          // Only ever sent for expenses, and only when the user actually
+          // opened the toggle - a stale value left behind by switching the
+          // type from expense to income would be rejected by the API. A
+          // shared expense gets its part for the other person from the
+          // settlement instead.
+          reimbursed_amount:
+            type === 'expense' && showFronted && !shared && reimbursedAmount ? reimbursedAmount : '0',
+          reimbursement_received: type === 'expense' && showFronted && !shared ? reimbursementReceived : false,
+          currency,
+          date,
+          description,
+        })
+        savedTransaction.current = created.data.id
+      }
+      if (shared) await splitsApi.fromTransaction(sharedWith, savedTransaction.current as number)
+    },
     onSuccess: () => {
       if (account) writeLastAccount(type, account)
       if (category) writeLastCategory(type, category)
+      if (shared) queryClient.invalidateQueries({ queryKey: ['splits'] })
+      savedTransaction.current = null
       onDone()
     },
     onError: (err: unknown) => {
+      if (savedTransaction.current !== null) {
+        setError(
+          t(
+            'Wydatek jest już zapisany w budżecie, ale nie trafił do stałego rozliczenia ({0}): {1} Spróbuj jeszcze raz albo odznacz wspólny wydatek.',
+            partnerOf(sharedWith),
+            apiError(err, t('Nie udało się połączyć z serwerem.')),
+          ),
+        )
+        return
+      }
       const data = (err as { response?: { data?: unknown } }).response?.data
       if (data && typeof data === 'object') {
         setError(Object.values(data as Record<string, unknown>).flat().join(' '))
@@ -1840,7 +1876,7 @@ export function AddTransactionForm({
       )}
       <Field label="Kwota">
         <AmountInput value={amount} onChange={setAmount} required className="input" />
-        {type === 'expense' && !showFronted && (
+        {type === 'expense' && !showFronted && !shared && (
           <button
             type="button"
             onClick={() => setShowFronted(true)}
@@ -1896,7 +1932,40 @@ export function AddTransactionForm({
           thing being explained - that this money is not your expense even
           though you paid it - is easy to get wrong if it looks like just
           another number box. */}
-      {type === 'expense' && showFronted && (
+      {type === 'expense' && pairs.length > 0 && (
+        <div className="space-y-1 rounded-lg border border-accent-200 dark:border-accent-800 bg-accent-50/50 dark:bg-accent-900/20 p-3 sm:col-span-4">
+          {pairs.length === 1 ? (
+            <label className="flex items-center gap-2 text-sm font-medium text-slate-800 dark:text-slate-200">
+              <input
+                type="checkbox"
+                checked={sharedWith === pairs[0].share_token}
+                onChange={(e) => setSharedWith(e.target.checked ? pairs[0].share_token : '')}
+              />
+              👫 {t('Wspólny wydatek, po połowie z: {0}', partnerOf(pairs[0].share_token))}
+            </label>
+          ) : (
+            <label className="flex flex-wrap items-center gap-2 text-sm font-medium text-slate-800 dark:text-slate-200">
+              👫 {t('Wspólny wydatek, po połowie z:')}
+              <select className="input w-auto" value={sharedWith} onChange={(e) => setSharedWith(e.target.value)}>
+                <option value="">{t('nie, tylko mój')}</option>
+                {pairs.map((p) => (
+                  <option key={p.share_token} value={p.share_token}>
+                    {partnerOf(p.share_token)} · {p.name}
+                  </option>
+                ))}
+              </select>
+            </label>
+          )}
+          {shared && (
+            <p className="text-xs text-slate-500 dark:text-slate-400">
+              {t(
+                'Połowa trafi do Waszego stałego rozliczenia i policzy się jako część za kogoś innego. Saldo konta zmieni się o pełną kwotę.',
+              )}
+            </p>
+          )}
+        </div>
+      )}
+      {type === 'expense' && showFronted && !shared && (
         <div className="space-y-2 rounded-lg border border-slate-200 dark:border-slate-700 bg-slate-50 dark:bg-slate-900/40 p-3 sm:col-span-4">
           <div className="flex flex-wrap items-end gap-3">
             <Field label="Z tego za kogoś innego">

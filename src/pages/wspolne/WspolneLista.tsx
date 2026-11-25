@@ -12,17 +12,19 @@ import {
   MAX_MEMBERS,
   SPLIT_CURRENCIES,
   splitsApi,
+  type SplitGroupSummary,
   type SplitKind,
 } from '../../lib/splits'
 import { CARD, ErrorText, Field, NetLabel, PRIMARY, SECONDARY } from './ui'
 
-function NewGroupForm({ onCancel }: { onCancel: () => void }) {
+function NewGroupForm({ initialKind, onCancel }: { initialKind: SplitKind; onCancel: () => void }) {
   const { t } = useLanguage()
   const { user } = useAuth()
   const navigate = useNavigate()
   const queryClient = useQueryClient()
   const [name, setName] = useState('')
-  const [kind, setKind] = useState<SplitKind>('trip')
+  const [kind, setKind] = useState<SplitKind>(initialKind)
+  const pair = kind === 'pair'
   const [currency, setCurrency] = useState('PLN')
   const [description, setDescription] = useState('')
   const [myName, setMyName] = useState(user?.first_name || user?.username || '')
@@ -42,30 +44,55 @@ function NewGroupForm({ onCancel }: { onCancel: () => void }) {
   function submit(e: FormEvent) {
     e.preventDefault()
     setError('')
+    const names = others.map((o) => o.trim()).filter(Boolean)
     create.mutate({
-      name,
+      name: name.trim() || (pair && names[0] ? `${myName.trim()} i ${names[0]}` : name),
       kind,
       currency,
       description,
       my_name: myName,
-      other_names: others.map((o) => o.trim()).filter(Boolean),
+      other_names: pair ? names.slice(0, 1) : names,
     })
   }
 
   return (
     <form onSubmit={submit} className={`${CARD} space-y-4`}>
-      <h2 className="text-base font-semibold text-slate-900 dark:text-slate-100">{t('Nowe wydarzenie')}</h2>
+      <div>
+        <h2 className="text-base font-semibold text-slate-900 dark:text-slate-100">
+          {pair ? t('Stałe rozliczenie we dwoje') : t('Nowe wydarzenie')}
+        </h2>
+        {pair && (
+          <p className="mt-1 text-sm text-slate-500 dark:text-slate-400">
+            {t(
+              'Dla pary albo dwóch współlokatorów: bez końca i bez zakładania wydarzeń. Łączycie swoje konta, a każdy wydatek z budżetu możecie jednym kliknięciem podzielić po połowie. Zawsze widać, kto komu ile oddaje.',
+            )}
+          </p>
+        )}
+      </div>
+      {pair && (
+        <Field label={t('Druga osoba')} hint={t('Jej imię. Potem wyślesz jej link, a po zalogowaniu połączy je ze swoim kontem.')}>
+          <input
+            className="input sm:max-w-xs"
+            value={others[0] ?? ''}
+            maxLength={40}
+            placeholder={t('np. Kuba')}
+            onChange={(e) => setOthers((list) => [e.target.value, ...list.slice(1)])}
+            required
+            autoFocus
+          />
+        </Field>
+      )}
       <div className="grid gap-4 sm:grid-cols-3">
         <div className="sm:col-span-2">
-          <Field label={t('Nazwa')}>
+          <Field label={pair ? t('Nazwa (opcjonalnie)') : t('Nazwa')}>
             <input
               className="input"
               value={name}
               onChange={(e) => setName(e.target.value)}
-              placeholder={t('np. Zakopane w lutym')}
+              placeholder={pair ? t('np. Mieszkanie na Mokotowie') : t('np. Zakopane w lutym')}
               maxLength={80}
-              required
-              autoFocus
+              required={!pair}
+              autoFocus={!pair}
             />
           </Field>
         </div>
@@ -101,6 +128,7 @@ function NewGroupForm({ onCancel }: { onCancel: () => void }) {
           />
         </Field>
       </div>
+      {!pair && (
       <div>
         <p className="text-xs font-medium text-slate-500 dark:text-slate-400">
           {t('Pozostałe osoby (opcjonalnie, do {0} razem z Tobą)', String(MAX_MEMBERS))}
@@ -130,10 +158,11 @@ function NewGroupForm({ onCancel }: { onCancel: () => void }) {
           </button>
         )}
       </div>
+      )}
       <ErrorText>{error}</ErrorText>
       <div className="flex gap-2">
         <button type="submit" className={PRIMARY} disabled={create.isPending}>
-          {create.isPending ? t('Zakładanie…') : t('Załóż i przejdź do wydarzenia')}
+          {create.isPending ? t('Zakładanie…') : pair ? t('Załóż stałe rozliczenie') : t('Załóż i przejdź do wydarzenia')}
         </button>
         <button type="button" className={SECONDARY} onClick={onCancel}>
           {t('Anuluj')}
@@ -148,8 +177,49 @@ export default function WspolneLista() {
   // "?nowe" opens the form straight away, for buttons elsewhere that already
   // promise a new event - one tap there should not be followed by another here.
   const [searchParams] = useSearchParams()
-  const [creating, setCreating] = useState(() => searchParams.has('nowe'))
+  // "?nowe=para" opens the form for a standing settlement of two.
+  const [creating, setCreating] = useState<SplitKind | null>(() =>
+    searchParams.has('nowe') ? (searchParams.get('nowe') === 'para' ? 'pair' : 'trip') : null,
+  )
   const { data: groups, isLoading } = useQuery({ queryKey: ['splits'], queryFn: splitsApi.list })
+  const pairs = (groups ?? []).filter((g) => g.kind === 'pair')
+  const events = (groups ?? []).filter((g) => g.kind !== 'pair')
+
+  function card(g: SplitGroupSummary) {
+    const partner = g.kind === 'pair' ? g.members.find((m) => m !== g.my_name) : undefined
+    return (
+      <Link
+        key={g.share_token}
+        to={`/wspolne/${g.share_token}`}
+        className={`${CARD} block transition hover:border-accent-400 dark:hover:border-accent-600`}
+      >
+        <div className="flex items-start justify-between gap-3">
+          <div className="min-w-0">
+            <p className="truncate text-base font-semibold text-slate-900 dark:text-slate-100">
+              {KIND_ICONS[g.kind]} {g.name}
+            </p>
+            <p className="mt-0.5 truncate text-xs text-slate-500 dark:text-slate-400">
+              {g.kind === 'pair'
+                ? partner
+                  ? t('z: {0}', partner)
+                  : t('druga osoba jeszcze nie dołączyła')
+                : g.members.join(', ')}
+            </p>
+          </div>
+          <span className="shrink-0 text-sm font-semibold tabular-nums text-slate-900 dark:text-slate-100">
+            {formatMoney(g.total, g.currency)}
+          </span>
+        </div>
+        <div className="mt-3 flex items-center justify-between gap-3 text-sm">
+          <span className="text-slate-500 dark:text-slate-400">
+            {t('Wydatków: {0}', String(g.expense_count))}
+            {g.game_count > 0 && ` · ${t('gier: {0}', String(g.game_count))}`} · {formatDate(g.updated_at)}
+          </span>
+          {g.my_net !== null && <NetLabel net={g.my_net} currency={g.currency} me />}
+        </div>
+      </Link>
+    )
+  }
 
   return (
     <div className="space-y-6">
@@ -163,13 +233,18 @@ export default function WspolneLista() {
           </p>
         </div>
         {!creating && (
-          <button type="button" className={PRIMARY} onClick={() => setCreating(true)}>
-            {t('+ Nowe wydarzenie')}
-          </button>
+          <div className="grid w-full grid-cols-2 gap-2 sm:flex sm:w-auto">
+            <button type="button" className={`${PRIMARY} py-2`} onClick={() => setCreating('trip')}>
+              {t('+ Nowe wydarzenie')}
+            </button>
+            <button type="button" className={`${SECONDARY} py-2`} onClick={() => setCreating('pair')}>
+              {t('👫 We dwoje')}
+            </button>
+          </div>
         )}
       </div>
 
-      {creating && <NewGroupForm onCancel={() => setCreating(false)} />}
+      {creating && <NewGroupForm key={creating} initialKind={creating} onCancel={() => setCreating(null)} />}
 
       {isLoading ? (
         <CardLoader />
@@ -181,39 +256,37 @@ export default function WspolneLista() {
             <p className="mt-1 text-sm text-slate-500 dark:text-slate-400">
               {t('Załóż wydarzenie, wyślij link znajomym i dopisujcie wydatki na bieżąco.')}
             </p>
-            <button type="button" className={`${PRIMARY} mt-4`} onClick={() => setCreating(true)}>
-              {t('+ Nowe wydarzenie')}
-            </button>
+            <div className="mt-4 flex flex-wrap justify-center gap-2">
+              <button type="button" className={PRIMARY} onClick={() => setCreating('trip')}>
+                {t('+ Nowe wydarzenie')}
+              </button>
+              <button type="button" className={SECONDARY} onClick={() => setCreating('pair')}>
+                {t('👫 Stałe rozliczenie we dwoje')}
+              </button>
+            </div>
           </div>
         )
       ) : (
-        <div className="grid gap-4 sm:grid-cols-2">
-          {groups.map((g) => (
-            <Link
-              key={g.share_token}
-              to={`/wspolne/${g.share_token}`}
-              className={`${CARD} block transition hover:border-accent-400 dark:hover:border-accent-600`}
-            >
-              <div className="flex items-start justify-between gap-3">
-                <div className="min-w-0">
-                  <p className="truncate text-base font-semibold text-slate-900 dark:text-slate-100">
-                    {KIND_ICONS[g.kind]} {g.name}
-                  </p>
-                  <p className="mt-0.5 truncate text-xs text-slate-500 dark:text-slate-400">{g.members.join(', ')}</p>
-                </div>
-                <span className="shrink-0 text-sm font-semibold tabular-nums text-slate-900 dark:text-slate-100">
-                  {formatMoney(g.total, g.currency)}
-                </span>
-              </div>
-              <div className="mt-3 flex items-center justify-between gap-3 text-sm">
-                <span className="text-slate-500 dark:text-slate-400">
-                  {t('Wydatków: {0}', String(g.expense_count))} · {formatDate(g.updated_at)}
-                </span>
-                {g.my_net !== null && <NetLabel net={g.my_net} currency={g.currency} me />}
-              </div>
-            </Link>
-          ))}
-        </div>
+        <>
+          {pairs.length > 0 && (
+            <section className="space-y-2">
+              <h2 className="text-sm font-semibold uppercase tracking-wide text-slate-500 dark:text-slate-400">
+                {t('Stałe rozliczenia')}
+              </h2>
+              <div className="grid gap-4 sm:grid-cols-2">{pairs.map(card)}</div>
+            </section>
+          )}
+          {events.length > 0 && (
+            <section className="space-y-2">
+              {pairs.length > 0 && (
+                <h2 className="text-sm font-semibold uppercase tracking-wide text-slate-500 dark:text-slate-400">
+                  {t('Wydarzenia')}
+                </h2>
+              )}
+              <div className="grid gap-4 sm:grid-cols-2">{events.map(card)}</div>
+            </section>
+          )}
+        </>
       )}
     </div>
   )
