@@ -4,6 +4,7 @@ import { Link, useNavigate, useSearchParams } from 'react-router-dom'
 import { useAuth } from '../../auth/AuthContext'
 import { CardLoader } from '../../components/Loader'
 import { useLanguage } from '../../i18n/LanguageContext'
+import { trackEvent } from '../../lib/analytics'
 import { formatDate, formatMoney } from '../../lib/format'
 import {
   apiError,
@@ -34,6 +35,7 @@ function NewGroupForm({ initialKind, onCancel }: { initialKind: SplitKind; onCan
   const create = useMutation({
     mutationFn: splitsApi.create,
     onSuccess: (state) => {
+      trackEvent('split_created', { kind: state.group.kind })
       queryClient.invalidateQueries({ queryKey: ['splits'] })
       queryClient.setQueryData(['split', state.group.share_token], state)
       navigate(`/wspolne/${state.group.share_token}`)

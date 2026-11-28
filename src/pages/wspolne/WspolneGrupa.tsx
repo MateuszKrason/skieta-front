@@ -253,14 +253,18 @@ function JoinGroup({
   const [error, setError] = useState('')
   const full = state.members.length >= state.limits.members
 
+  const joined = (next: SplitState) => {
+    trackEvent('split_joined', { kind: next.group.kind })
+    onState(next)
+  }
   const claim = useMutation({
     mutationFn: (id: number) => splitsApi.updateMember(token, id, { claim: true }),
-    onSuccess: onState,
+    onSuccess: joined,
     onError: (e) => setError(apiError(e, t('Nie udało się dołączyć.'))),
   })
   const add = useMutation({
     mutationFn: () => splitsApi.addMember(token, name, true),
-    onSuccess: onState,
+    onSuccess: joined,
     onError: (e) => setError(apiError(e, t('Nie udało się dołączyć.'))),
   })
   const busy = claim.isPending || add.isPending

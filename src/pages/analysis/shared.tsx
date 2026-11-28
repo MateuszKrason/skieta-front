@@ -23,6 +23,7 @@ import { LoadMoreButton } from '../../components/LoadMoreButton'
 import { useLanguage } from '../../i18n/LanguageContext'
 import { useTooltipStyle } from '../../lib/chartTooltip'
 import { formatAxisValue, formatDate, formatMoney, formatPct, groupAccountsByBank } from '../../lib/format'
+import { trackEvent } from '../../lib/analytics'
 import { apiError, splitsApi } from '../../lib/splits'
 import { LAST_ACCOUNT_KEY_PREFIX, LAST_CATEGORY_KEY_PREFIX } from '../../lib/userScopedStorage'
 import type {
@@ -1795,7 +1796,10 @@ export function AddTransactionForm({
         })
         savedTransaction.current = created.data.id
       }
-      if (shared) await splitsApi.fromTransaction(sharedWith, savedTransaction.current as number)
+      if (shared) {
+        await splitsApi.fromTransaction(sharedWith, savedTransaction.current as number)
+        trackEvent('expense_from_budget')
+      }
     },
     onSuccess: () => {
       if (account) writeLastAccount(type, account)

@@ -2,6 +2,7 @@ import { useMemo, useState, type FormEvent } from 'react'
 import { useMutation } from '@tanstack/react-query'
 import { AmountInput } from '../../components/AmountInput'
 import { useLanguage } from '../../i18n/LanguageContext'
+import { trackEvent } from '../../lib/analytics'
 import { formatMoney } from '../../lib/format'
 import {
   apiError,
@@ -217,7 +218,10 @@ export default function GameForm({
 
   const save = useMutation({
     mutationFn: (body: GameInput) => (game ? splitsApi.updateGame(token, game.id, body) : splitsApi.addGame(token, body)),
-    onSuccess: onDone,
+    onSuccess: (next, body) => {
+      if (!game) trackEvent('game_added', { kind: body.kind })
+      onDone(next)
+    },
     onError: (e) => setError(apiError(e, t('Nie udało się zapisać gry.'))),
   })
 

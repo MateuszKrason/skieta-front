@@ -61,6 +61,14 @@ type EventName =
   // A shared group link opened without an account and its summary shown -
   // the top of the funnel that ends in register_clicked with source split_link.
   | 'split_preview_viewed'
+  // Shared expenses in use (from 28.11.2026): a group created (`kind`, so the
+  // standing settlement of two shows apart from trips), someone joining one
+  // through its link - the loop that brought every outside sign-up so far -
+  // a game or bet added (`kind`), and a budget expense sent into a settlement.
+  | 'split_created'
+  | 'split_joined'
+  | 'game_added'
+  | 'expense_from_budget'
 
 /** Where a conversion came from, so articles can be compared against the
  * landing page and against each other. */
@@ -81,6 +89,8 @@ type EventParams = {
   trigger?: 'moment' | 'streak'
   /** Which export was taken: the full copy or one of the CSV tables. */
   dataset?: string
+  /** The kind of shared-expense group or of game - a fixed code, never a name. */
+  kind?: string
 }
 
 export function initAnalytics() {
